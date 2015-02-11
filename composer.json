@@ -1,0 +1,18 @@
+{
+	"name": "yoast/yoastcs",
+	"description": "PHP_CodeSniffer rules for Yoast projects",
+	"keywords": [
+		"phpcs",
+		"standards",
+		"wordpress"
+	],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Team Yoast",
+			"email": "support@yoast.com",
+			"homepage": "https://yoast.com"
+		}
+	],
+	"require": {}
+}

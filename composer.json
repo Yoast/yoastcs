@@ -20,5 +20,13 @@
 	"require": {
 		"squizlabs/php_codesniffer": "^2.2.0",
 		"wp-coding-standards/wpcs": "dev-develop"
+	},
+	"scripts": {
+		"config-set" : [
+			"\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../../vendor/wp-coding-standards/wpcs",
+			"\"vendor/bin/phpcs\" --config-set default_standard WordPress-Yoast"
+		],
+		"post-install-cmd": "composer config-set",
+		"post-update-cmd": "composer config-set"
 	}
 }

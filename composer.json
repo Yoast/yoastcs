@@ -14,5 +14,11 @@
 			"homepage": "https://yoast.com"
 		}
 	],
-	"require": {}
+	"support": {
+		"issues": "https://github.com/Yoast/yoastcs/issues"
+	},
+	"require": {
+		"squizlabs/php_codesniffer": "^2.2.0",
+		"wp-coding-standards/wpcs": "dev-develop"
+	}
 }

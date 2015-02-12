@@ -14,7 +14,7 @@ Standards are provided as [Composer](https://getcomposer.org/) package and can b
 composer create-project yoast/yoastcs:dev-master
 ```
 
-Composer will automatically install dependencies, register standards paths, and set default standard to `WordPress-Yoast`.
+Composer will automatically install dependencies, register standards paths, and set default standard to `Yoast`.
 
 ### As dependency
 
@@ -38,4 +38,4 @@ Note that Composer won't run configuration scripts in this scenario and root pro
 
 Refer to [Using PHP Code Sniffer Tool](https://www.jetbrains.com/phpstorm/help/using-php-code-sniffer-tool.html) in PhpStorm documentation.
 
-After installation `WordPress-Yoast` standard will be available as a choice in PHP Code Sniffer Validation inspection.
+After installation `Yoast` standard will be available as a choice in PHP Code Sniffer Validation inspection.

@@ -24,7 +24,7 @@
 	"scripts": {
 		"config-set" : [
 			"\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../../vendor/wp-coding-standards/wpcs",
-			"\"vendor/bin/phpcs\" --config-set default_standard WordPress-Yoast"
+			"\"vendor/bin/phpcs\" --config-set default_standard Yoast"
 		],
 		"post-install-cmd": "composer config-set",
 		"post-update-cmd": "composer config-set"

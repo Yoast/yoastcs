@@ -17,6 +17,7 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions.file_get_contents"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions.curl"/>
 		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
+		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
 
 		<!-- We should probably want to turn the below rules on, but these give issues with the current code base. -->
 		<exclude name="WordPress.XSS.EscapeOutput" /><!-- This sniff also has known & reported bugs -->

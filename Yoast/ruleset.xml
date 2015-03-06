@@ -81,10 +81,10 @@
 		<exclude name="Squiz.Commenting.ClassComment.SpacingAfter" />
 		<exclude name="Squiz.Commenting.ClassComment.SpacingBefore" />
 
-		<exclude name="Squiz.Commenting.FileComment.@authorTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.@copyrightTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.Missing@authorTag" />
-		<exclude name="Squiz.Commenting.FileComment.Missing@copyrightTag" />
+		<exclude name="Squiz.Commenting.FileComment.AuthorTagOrder" />
+		<exclude name="Squiz.Commenting.FileComment.CopyrightTagOrder" />
+		<exclude name="Squiz.Commenting.FileComment.MissingAuthorTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingCopyrightTag" />
 
 		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName" />
 		<exclude name="Squiz.Commenting.FunctionComment.InvalidReturn" />

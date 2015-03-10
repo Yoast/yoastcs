@@ -57,7 +57,8 @@
 	</rule>
 
 	<!-- Application memory use! -->
-	<rule ref="Generic.Strings.UnnecessaryStringConcat" />
+    <!-- Temporarily disabled to discuss, see https://github.com/Yoast/yoastcs/issues/4 R. -->
+	<!--<rule ref="Generic.Strings.UnnecessaryStringConcat" />-->
 
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration" />

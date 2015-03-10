@@ -16,7 +16,10 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions.wp_remote_get"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions.file_get_contents"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions.curl"/>
+		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_link"/>
+		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_by"/>
 		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
+		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
 
 		<!-- We should probably want to turn the below rules on, but these give issues with the current code base. -->
 		<exclude name="WordPress.XSS.EscapeOutput" /><!-- This sniff also has known & reported bugs -->
@@ -54,7 +57,8 @@
 	</rule>
 
 	<!-- Application memory use! -->
-	<rule ref="Generic.Strings.UnnecessaryStringConcat" />
+    <!-- Temporarily disabled to discuss, see https://github.com/Yoast/yoastcs/issues/4 R. -->
+	<!--<rule ref="Generic.Strings.UnnecessaryStringConcat" />-->
 
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration" />
@@ -80,10 +84,10 @@
 		<exclude name="Squiz.Commenting.ClassComment.SpacingAfter" />
 		<exclude name="Squiz.Commenting.ClassComment.SpacingBefore" />
 
-		<exclude name="Squiz.Commenting.FileComment.@authorTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.@copyrightTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.Missing@authorTag" />
-		<exclude name="Squiz.Commenting.FileComment.Missing@copyrightTag" />
+		<exclude name="Squiz.Commenting.FileComment.AuthorTagOrder" />
+		<exclude name="Squiz.Commenting.FileComment.CopyrightTagOrder" />
+		<exclude name="Squiz.Commenting.FileComment.MissingAuthorTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingCopyrightTag" />
 
 		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName" />
 		<exclude name="Squiz.Commenting.FunctionComment.InvalidReturn" />

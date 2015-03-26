@@ -84,6 +84,8 @@
 		<exclude name="Squiz.Commenting.ClassComment.SpacingAfter" />
 		<exclude name="Squiz.Commenting.ClassComment.SpacingBefore" />
 
+		<exclude name="Squiz.Commenting.FileComment.MissingSubpackageTag" />
+		<exclude name="Squiz.Commenting.FileComment.SubpackageTagOrder" />
 		<exclude name="Squiz.Commenting.FileComment.AuthorTagOrder" />
 		<exclude name="Squiz.Commenting.FileComment.CopyrightTagOrder" />
 		<exclude name="Squiz.Commenting.FileComment.MissingAuthorTag" />

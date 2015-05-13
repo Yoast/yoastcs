@@ -63,6 +63,13 @@
 		</properties>
 	</rule>
 
+	<rule ref="Squiz.ControlStructures.ForLoopDeclaration">
+		<properties>
+			<property name="requiredSpacesAfterOpen" value="1"/>
+			<property name="requiredSpacesBeforeClose" value="1"/>
+		</properties>
+	</rule>
+
 	<!-- Application memory use! -->
     <!-- Temporarily disabled to discuss, see https://github.com/Yoast/yoastcs/issues/4 R. -->
 	<!--<rule ref="Generic.Strings.UnnecessaryStringConcat" />-->

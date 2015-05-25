@@ -52,6 +52,8 @@
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
 		<!-- elseif is fine by WP -->
 		<exclude name="Squiz.ControlStructures.ElseIfDeclaration"/>
+		<!-- WP got nothing about switch -->
+		<exclude name="Squiz.ControlStructures.SwitchDeclaration"/>
 	</rule>
 
 	<!-- ##### Some miscellanous other sniffs ##### -->

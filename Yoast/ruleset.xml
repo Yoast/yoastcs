@@ -46,14 +46,26 @@
 
 	<!-- ##### Sniffs for else on new line ##### -->
 	<rule ref="Yoast.ControlStructures.IfElseDeclaration" /><!-- This is a custom sniff we copy in -->
-	<!-- Prevent errors for Spaces after closing braces, as we want a newline -->
+
 	<rule ref="Squiz.ControlStructures">
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
+		<!-- Prevent errors for Spaces after closing braces, as we want a newline -->
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+		<!-- elseif is fine by WP -->
+		<exclude name="Squiz.ControlStructures.ElseIfDeclaration"/>
+		<!-- WP got nothing about switch -->
+		<exclude name="Squiz.ControlStructures.SwitchDeclaration"/>
 	</rule>
 
 	<!-- ##### Some miscellanous other sniffs ##### -->
 	<!-- Added for lowercase keywords check -->
 	<rule ref="Squiz.ControlStructures.ForEachLoopDeclaration">
+		<properties>
+			<property name="requiredSpacesAfterOpen" value="1"/>
+			<property name="requiredSpacesBeforeClose" value="1"/>
+		</properties>
+	</rule>
+
+	<rule ref="Squiz.ControlStructures.ForLoopDeclaration">
 		<properties>
 			<property name="requiredSpacesAfterOpen" value="1"/>
 			<property name="requiredSpacesBeforeClose" value="1"/>

@@ -87,7 +87,10 @@
 
 	<!-- ##### Documentation Sniffs ##### -->
 
-	<rule ref="WordPress-Docs" />
+	<rule ref="WordPress-Docs">
+		<!-- Catches way too many things, like vars and file headers. -->
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
+	</rule>
 
 	<!-- exclude the 'empty' index files from some documentation checks -->
 	<rule ref="Squiz.Commenting.FileComment">

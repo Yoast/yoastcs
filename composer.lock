@@ -1,27 +1,28 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d3f4724fdb6373ca7205f4a326692a6",
+    "hash": "d5da5b64e798f700fb068a6e36624899",
     "packages": [
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.2.0",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "b301c98f19414d836fdaa678648745fcca5aeb4f"
+                "reference": "e96d8579fbed0c95ecf2a0501ec4f307a4aa6404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b301c98f19414d836fdaa678648745fcca5aeb4f",
-                "reference": "b301c98f19414d836fdaa678648745fcca5aeb4f",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/e96d8579fbed0c95ecf2a0501ec4f307a4aa6404",
+                "reference": "e96d8579fbed0c95ecf2a0501ec4f307a4aa6404",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
             },
             "bin": [
@@ -29,6 +30,11 @@
                 "scripts/phpcbf"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "CodeSniffer.php",
@@ -72,7 +78,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-01-21 22:44:05"
+            "time": "2015-04-28 23:28:20"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -80,16 +86,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "baa992579c6312ea7cc59dbc4143da587e74cf0a"
+                "reference": "7f935b83634e28bc75d217d34f9455d69fe1569c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/baa992579c6312ea7cc59dbc4143da587e74cf0a",
-                "reference": "baa992579c6312ea7cc59dbc4143da587e74cf0a",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/7f935b83634e28bc75d217d34f9455d69fe1569c",
+                "reference": "7f935b83634e28bc75d217d34f9455d69fe1569c",
                 "shasum": ""
             },
             "require": {
-                "squizlabs/php_codesniffer": "~2.0"
+                "squizlabs/php_codesniffer": "~2.2"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -97,10 +103,6 @@
                 "MIT"
             ],
             "authors": [
-                {
-                    "name": "X-Team",
-                    "homepage": "http://x-team.com/"
-                },
                 {
                     "name": "Contributors",
                     "homepage": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/graphs/contributors"
@@ -112,7 +114,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2015-02-09 22:15:30"
+            "time": "2015-06-04 12:13:26"
         }
     ],
     "packages-dev": [],

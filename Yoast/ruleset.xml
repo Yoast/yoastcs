@@ -86,47 +86,8 @@
 	<!--<rule ref="Generic.CodeAnalysis.EmptyStatement" />-->
 
 	<!-- ##### Documentation Sniffs ##### -->
-	<rule ref="Squiz.Commenting">
-		<!-- exclude everything what would become too annoying too quickly -->
-		<exclude name="Squiz.Commenting.BlockComment.LastLineIndent" />
-		<exclude name="Squiz.Commenting.BlockComment.LineIndent" />
-		<exclude name="Squiz.Commenting.BlockComment.NoNewLine" />
-		<exclude name="Squiz.Commenting.BlockComment.SingleLine" />
-		<exclude name="Squiz.Commenting.BlockComment.WrongStart" />
 
-		<exclude name="Squiz.Commenting.ClosingDeclarationComment.Missing" />
-
-		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed" />
-		<exclude name="Squiz.Commenting.ClassComment.SpacingAfter" />
-		<exclude name="Squiz.Commenting.ClassComment.SpacingBefore" />
-
-		<exclude name="Squiz.Commenting.FileComment.MissingSubpackageTag" />
-		<exclude name="Squiz.Commenting.FileComment.SubpackageTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.AuthorTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.CopyrightTagOrder" />
-		<exclude name="Squiz.Commenting.FileComment.MissingAuthorTag" />
-		<exclude name="Squiz.Commenting.FileComment.MissingCopyrightTag" />
-
-		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName" />
-		<exclude name="Squiz.Commenting.FunctionComment.InvalidReturn" />
-		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
-		<exclude name="Squiz.Commenting.FunctionComment.MissingReturn" />
-		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
-		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentNotCapital" />
-		<exclude name="Squiz.Commenting.FunctionComment.ShortFullStop" />
-		<exclude name="Squiz.Commenting.FunctionComment.TypeHintMissing" />
-
-		<exclude name="Squiz.Commenting.InlineComment.DocBlock" />
-		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
-		<exclude name="Squiz.Commenting.InlineComment.NotCapital" />
-		<exclude name="Squiz.Commenting.InlineComment.SpacingAfter" />
-
-		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
-
-		<exclude name="Squiz.Commenting.PostStatementComment" />
-
-		<exclude name="Squiz.Commenting.VariableComment.TagNotAllowed" />
-	</rule>
+	<rule ref="WordPress-Docs" />
 
 	<!-- exclude the 'empty' index files from some documentation checks -->
 	<rule ref="Squiz.Commenting.FileComment">

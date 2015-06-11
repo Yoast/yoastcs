@@ -16,13 +16,13 @@ Composer will automatically install dependencies, register standards paths, and 
 
 ### As dependency
 
-To include standards as part of project require them as development dependencies:
+To include standards as part of a project require them as development dependencies:
 
 ```bash
 composer require yoast/yoastcs:dev-master --dev
 ```
 
-Note that Composer won't run configuration scripts in this scenario and root project needs to take care of it.
+Note that Composer won't run configuration scripts in this scenario and the root project needs to take care of it.
 
 ## PHP Code Sniffer
 

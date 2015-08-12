@@ -19,7 +19,7 @@
 	},
 	"require": {
 		"squizlabs/php_codesniffer": "^2.2.0",
-		"wp-coding-standards/wpcs": "dev-develop",
+		"wp-coding-standards/wpcs": "~0.6",
 		"phpmd/phpmd": "^2.2.3"
 	},
 	"conflict": {

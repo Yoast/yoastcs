@@ -90,8 +90,6 @@
 	<rule ref="WordPress-Docs">
 		<!-- Catches way too many things, like vars and file headers. -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort" />
-		<!-- Can be pretty self-explanatory or redundant. -->
-		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
 	</rule>
 
 	<!-- exclude the 'empty' index files from some documentation checks -->

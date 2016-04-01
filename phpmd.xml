@@ -26,8 +26,8 @@
 	<rule ref="rulesets/naming.xml/ShortVariable">
 		<properties>
 
-			<!-- common in WP for object IDs -->
-			<property name="exceptions" value="id" />
+			<!-- common in WP -->
+			<property name="exceptions" value="id,wp" />
 		</properties>
 	</rule>
 

@@ -21,6 +21,7 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_link"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_by"/>
 		<exclude name="WordPress.VIP.RestrictedFunctions.count_user_posts"/>
+		<exclude name="WordPress.VIP.RestrictedFunctions.get_pages"/>
 		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
 		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
 

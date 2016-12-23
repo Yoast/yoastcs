@@ -42,11 +42,6 @@
 		</properties>
 	</rule>
 
-	<rule ref="WordPress.NamingConventions">
-		<!-- complains about core cat_ID -->
-		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
-	</rule>
-
 	<!-- Rules from WP-Extra which are not in WP-VIP -->
 	<rule ref="WordPress.PHP.DiscouragedFunctions"/>
 	<rule ref="WordPress.WP.EnqueuedResources" />

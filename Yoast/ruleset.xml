@@ -97,8 +97,6 @@
 	<rule ref="WordPress-Docs">
 		<!-- Catches way too many things, like vars and file headers. -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort" />
-		<!-- PHP 7 -->
-		<exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing" />
 	</rule>
 
 	<!-- exclude the 'empty' index files from some documentation checks -->

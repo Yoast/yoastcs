@@ -1,0 +1,37 @@
+sudo: false
+
+language:
+    - php
+
+php:
+    - 5.2
+    - 5.3
+    - 5.4
+    - 5.5
+    - 5.6
+    - 7.0
+    - 7.1
+
+env:
+  - PHPCS_BRANCH=master
+  - PHPCS_BRANCH=2.7.1
+
+matrix:
+  fast_finish: true
+  include:
+    # Run against PHPCS 3.0. I just picked to run it against 5.6.
+    - php: 5.6
+      env: PHPCS_BRANCH=3.0
+  allow_failures:
+    # Allow failures for unstable builds.
+    - env: PHPCS_BRANCH=3.0
+
+before_script:
+    - export PHPCS_DIR=/tmp/phpcs
+    - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == 3.0 ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
+    - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
+    - $PHPCS_BIN --config-set installed_paths $(pwd)
+
+script:
+    - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
+    - phpunit --filter Yoast /tmp/phpcs/tests/AllTests.php

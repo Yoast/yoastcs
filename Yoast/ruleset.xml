@@ -3,7 +3,7 @@
 	<description>Yoast Coding Standards</description>
 
     <!-- ##### WordPress sniffs #####-->
-	<rule ref="WordPress-VIP">
+	<rule ref="WordPress">
 		<exclude name="Generic.Files.LineEndings.InvalidEOLChar" />
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines" />
 		<!-- Some calls just too quirky and complicated for this. -->
@@ -21,6 +21,14 @@
 
 		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+
+		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
+		<!-- Exclusion can be removed once the WPCS 0.11.0 has been released - in which the bugs have been fixed -
+		     and the the minimum WPCS version required by Yoast CS has been upped to 0.11.0. -->
+		<exclude name="WordPress.Variables.GlobalVariables"/><!-- WPCS #300 -->
+
+		<!-- Catches way too many things, like vars and file headers. -->
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
 	</rule>
 
 	<!-- Adjust some WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
@@ -41,13 +49,6 @@
 			<property name="exclude" value="posts_per_page" />
 		</properties>
 	</rule>
-
-	<!-- Rules from WP-Extra which are not in WP-VIP -->
-	<rule ref="WordPress.PHP.DiscouragedFunctions"/>
-	<rule ref="WordPress.WP.EnqueuedResources" />
-
-	<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
-	<!--<rule ref="WordPress.Variables.GlobalVariables"/>--><!-- WPCS #300 -->
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
 	<!-- Currently disabled because it does not play nice with Composer.
@@ -93,12 +94,7 @@
 	<!-- Should be turned on, but gives issue with current codebase -->
 	<!--<rule ref="Generic.CodeAnalysis.EmptyStatement" />-->
 
-	<!-- ##### Documentation Sniffs ##### -->
-
-	<rule ref="WordPress-Docs">
-		<!-- Catches way too many things, like vars and file headers. -->
-		<exclude name="Generic.Commenting.DocComment.MissingShort" />
-	</rule>
+	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- exclude the 'empty' index files from some documentation checks -->
 	<rule ref="Squiz.Commenting.FileComment">

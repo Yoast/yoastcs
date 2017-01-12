@@ -51,9 +51,6 @@
     <!-- Requires CodeSniffer <2.0 at the moment, conflicts with other packages -->
 	<!--<rule ref="PHPCompatibility"/>-->
 
-	<!-- ##### Sniffs for else on new line ##### -->
-	<rule ref="Yoast.ControlStructures.IfElseDeclaration" /><!-- This is a custom sniff we copy in -->
-
 	<rule ref="Squiz.ControlStructures">
 		<!-- Prevent errors for Spaces after closing braces, as we want a newline -->
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>

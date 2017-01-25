@@ -12,18 +12,6 @@
 		<!-- WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
 		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
 		<exclude name="WordPress.VIP.FileSystemWritesDisallow"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.user_meta" />
-		<exclude name="WordPress.VIP.RestrictedVariables.user_meta"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.switch_to_blog"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.wp_remote_get"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.file_get_contents"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.curl"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_link"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_by"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.count_user_posts"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions.get_pages"/>
-		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
-		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
 
 		<!-- We should probably want to turn the below rules on, but these give issues with the current code base. -->
 		<exclude name="WordPress.XSS.EscapeOutput" /><!-- This sniff also has known & reported bugs -->
@@ -33,6 +21,25 @@
 
 		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+	</rule>
+
+	<!-- Adjust some WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
+	<rule ref="WordPress.VIP.RestrictedFunctions">
+		<properties>
+			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,curl,get_term_link,get_term_by,count_user_posts,get_pages" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.VIP.RestrictedVariables">
+		<properties>
+			<property name="exclude" value="user_meta,cache_constraints" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.VIP.PostsPerPage">
+		<properties>
+			<property name="exclude" value="posts_per_page" />
+		</properties>
 	</rule>
 
 	<rule ref="WordPress.NamingConventions">

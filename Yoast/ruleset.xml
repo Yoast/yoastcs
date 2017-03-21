@@ -55,7 +55,9 @@
 	<!--<rule ref="WordPress.Variables.GlobalVariables"/>--><!-- WPCS #300 -->
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
-    <!-- Requires CodeSniffer <2.0 at the moment, conflicts with other packages -->
+	<!-- Currently disabled because it does not play nice with Composer.
+	     This is being worked on in https://github.com/wimg/PHPCompatibility/issues/102 -->
+	<!--<config name="testVersion" value="5.2-99.0"/>-->
 	<!--<rule ref="PHPCompatibility"/>-->
 
 	<rule ref="Squiz.ControlStructures">

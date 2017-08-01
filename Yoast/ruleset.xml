@@ -38,7 +38,7 @@
 	<!-- Adjust some WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
 	<rule ref="WordPress.VIP.RestrictedFunctions">
 		<properties>
-			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,curl,get_term_link,get_term_by,count_user_posts,get_pages" />
+			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,curl,get_term_link,get_term_by,count_user_posts,get_pages,url_to_postid" />
 		</properties>
 	</rule>
 

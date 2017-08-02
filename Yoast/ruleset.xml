@@ -26,6 +26,9 @@
 		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
 
+		<!-- Single line one item associative arrays are fine. -->
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound"/>
+
 		<!-- Catches way too many things, like vars and file headers. -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort" />
 

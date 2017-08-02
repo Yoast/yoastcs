@@ -97,13 +97,6 @@
 		</properties>
 	</rule>
 
-	<!-- Application memory use! -->
-	<rule ref="Generic.Strings.UnnecessaryStringConcat">
-		<properties>
-			<property name="allowMultiline" value="true" />
-		</properties>
-	</rule>
-
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration" />
 

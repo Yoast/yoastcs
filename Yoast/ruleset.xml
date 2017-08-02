@@ -63,6 +63,12 @@
 		</properties>
 	</rule>
 
+	<!-- Allow more freedom in the filenames used for classes. -->
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="strict_class_file_names" value="false"/>
+		</properties>
+	</rule>
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
 	<config name="testVersion" value="5.2-99.0"/>

@@ -37,7 +37,7 @@
 	<!-- Ignore some WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
 	<rule ref="WordPress.VIP.RestrictedFunctions">
 		<properties>
-			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,get_term_link,get_term_by,count_user_posts,url_to_postid,attachment_url_to_postid" />
+			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,get_term_link,get_term_by,count_user_posts,url_to_postid,attachment_url_to_postid"/>
 		</properties>
 	</rule>
 
@@ -93,13 +93,6 @@
 		<properties>
 			<property name="requiredSpacesAfterOpen" value="1"/>
 			<property name="requiredSpacesBeforeClose" value="1"/>
-		</properties>
-	</rule>
-
-	<!-- Application memory use! -->
-	<rule ref="Generic.Strings.UnnecessaryStringConcat">
-		<properties>
-			<property name="allowMultiline" value="true"/>
 		</properties>
 	</rule>
 

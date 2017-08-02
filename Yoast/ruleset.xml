@@ -62,6 +62,12 @@
 		</properties>
 	</rule>
 
+	<!-- Allow more freedom in the filenames used for classes. -->
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="strict_class_file_names" value="false"/>
+		</properties>
+	</rule>
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
 	<!-- Currently disabled because it does not play nice with Composer.

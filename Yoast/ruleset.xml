@@ -27,12 +27,6 @@
 		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
 
-		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
-		<!-- Exclusion can be removed once the WPCS 0.11.0 has been released - in which the bugs have been fixed -
-		     and the minimum WPCS version required by Yoast CS has been upped to 0.11.0. -->
-		<!-- WPCS #300 -->
-		<exclude name="WordPress.Variables.GlobalVariables"/>
-
 		<!-- Catches way too many things, like vars and file headers. -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 	</rule>
@@ -55,6 +49,14 @@
 			<property name="exclude" value="posts_per_page"/>
 		</properties>
 	</rule>
+
+	<!-- Whitelist the Yoast base test classes so that overruling global variables in test files is not flagged. -->
+	<rule ref="WordPress.Variables.GlobalVariables">
+		<properties>
+			<property name="custom_test_class_whitelist" type="array" value="WPSEO_UnitTestCase,VideoSEO_UnitTestCase,WPSEO_WooCommerce_UnitTestCase,WPSEO_News_UnitTestCase,Yst_License_Manager_UnitTestCase,Clicky_UnitTestCase"/>
+		</properties>
+	</rule>
+
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
 	<config name="testVersion" value="5.2-99.0"/>

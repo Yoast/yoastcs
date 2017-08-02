@@ -3,36 +3,53 @@ sudo: false
 language:
     - php
 
+dist: trusty
+
 php:
-    - 5.2
-    - 5.3
     - 5.4
     - 5.5
     - 5.6
     - 7.0
     - 7.1
+    - nightly
 
 env:
-  - PHPCS_BRANCH=master
+  # Test against the highest supported PHPCS version (2.x dev).
+  # This can be changed back to "master" once PHPCS 3.x is supported. See issue #36
+  - PHPCS_BRANCH=2.9
+  # Test against the lowest supported PHPCS 2.x version.
   - PHPCS_BRANCH=2.8.1
 
 matrix:
   fast_finish: true
   include:
-    # Run against PHPCS 3.0. I just picked to run it against 5.6.
+    # PHP 5.2/5.3 need precise.
+    - php: 5.2
+      dist: precise
+      env: PHPCS_BRANCH=2.9
+    - php: 5.2
+      dist: precise
+      env: PHPCS_BRANCH=2.8.1
+    - php: 5.3
+      dist: precise
+      env: PHPCS_BRANCH=2.9
+    - php: 5.3
+      dist: precise
+      env: PHPCS_BRANCH=2.8.1
+
+    # Run against PHPCS 3.x. I just picked to run it against 5.6.
     - php: 5.6
-      env: PHPCS_BRANCH=3.0
-    - php: nightly
       env: PHPCS_BRANCH=master
+
   allow_failures:
     # Allow failures for unstable builds.
-    - env: PHPCS_BRANCH=3.0
+    - env: PHPCS_BRANCH=master
     - php: nightly
 
 before_install:
     - export PHPCS_DIR=/tmp/phpcs
     - export PHPUNIT_DIR=/tmp/phpunit
-    - export PHPCS_BIN=$(if [[ $PHPCS_BRANCH == 3.0 || $PHPCS_BRANCH == "master" ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
+    - export PHPCS_BIN=$(if [[ ${PHPCS_BRANCH:0:2} != "2." ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - $PHPCS_BIN --config-set installed_paths $(pwd)
     # Download PHPUnit 5.x for builds on PHP 7 and nightly as

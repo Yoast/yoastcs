@@ -5,6 +5,9 @@ language:
 
 dist: trusty
 
+cache:
+    apt: true
+
 php:
     - 5.4
     - 5.5
@@ -32,7 +35,11 @@ matrix:
       env: PHPCS_BRANCH=2.8.1
     - php: 5.3
       dist: precise
-      env: PHPCS_BRANCH=2.9
+      env: PHPCS_BRANCH=2.9 SNIFF=1
+      addons:
+          apt:
+              packages:
+                - libxml2-utils
     - php: 5.3
       dist: precise
       env: PHPCS_BRANCH=2.8.1
@@ -47,6 +54,7 @@ matrix:
     - php: nightly
 
 before_install:
+    - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=/tmp/phpcs
     - export PHPUNIT_DIR=/tmp/phpunit
     - export PHPCS_BIN=$(if [[ ${PHPCS_BRANCH:0:2} != "2." ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
@@ -60,3 +68,10 @@ script:
     - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
     - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then phpunit --filter Yoast /tmp/phpcs/tests/AllTests.php; fi
     - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then php $PHPUNIT_DIR/phpunit-5.7.phar --filter Yoast /tmp/phpcs/tests/AllTests.php; fi
+    # Validate the xml files.
+    # @link http://xmlsoft.org/xmllint.html
+    - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./Yoast/ruleset.xml; fi
+    - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./phpmd.xml; fi
+    # Check the code-style consistency of the xml files.
+    - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml"); fi
+    - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./phpmd.xml <(xmllint --format "./phpmd.xml"); fi

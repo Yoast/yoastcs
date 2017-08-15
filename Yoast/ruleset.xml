@@ -2,20 +2,21 @@
 <ruleset name="WordPress Yoast">
 	<description>Yoast Coding Standards</description>
 
-    <!-- ##### WordPress sniffs #####-->
+	<!-- ##### WordPress sniffs #####-->
 	<rule ref="WordPress">
-		<exclude name="Generic.Files.LineEndings.InvalidEOLChar" />
-		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines" />
+		<exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->
-		<exclude name="Generic.PHP.Syntax" />
+		<exclude name="Generic.PHP.Syntax"/>
 
 		<!-- WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
-		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery"/>
 		<exclude name="WordPress.VIP.FileSystemWritesDisallow"/>
 
 		<!-- We should probably want to turn the below rules on, but these give issues with the current code base. -->
-		<exclude name="WordPress.XSS.EscapeOutput" /><!-- This sniff also has known & reported bugs -->
+		<!-- This sniff also has known & reported bugs -->
+		<exclude name="WordPress.XSS.EscapeOutput"/>
 
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
@@ -42,13 +43,13 @@
 
 	<rule ref="WordPress.VIP.RestrictedVariables">
 		<properties>
-			<property name="exclude" value="user_meta,cache_constraints" />
+			<property name="exclude" value="user_meta,cache_constraints"/>
 		</properties>
 	</rule>
 
 	<rule ref="WordPress.VIP.PostsPerPage">
 		<properties>
-			<property name="exclude" value="posts_per_page" />
+			<property name="exclude" value="posts_per_page"/>
 		</properties>
 	</rule>
 
@@ -98,10 +99,10 @@
 	</rule>
 
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed -->
-	<rule ref="Squiz.ControlStructures.InlineIfDeclaration" />
+	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 
 	<!-- Error prevention: Make sure arithmetics are bracketed -->
-	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets" />
+	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
 
 	<!-- Should be turned on, but gives issue with current codebase -->
 	<!--<rule ref="Generic.CodeAnalysis.EmptyStatement" />-->

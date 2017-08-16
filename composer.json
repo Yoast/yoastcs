@@ -21,6 +21,7 @@
 	"require": {
 		"squizlabs/php_codesniffer": "^2.8.1",
 		"wp-coding-standards/wpcs": "~0.11.0",
+		"wimg/php-compatibility": "^8.0.0",
 		"phpmd/phpmd": "^2.2.3"
 	},
 	"suggest" : {
@@ -28,7 +29,7 @@
 	},
 	"scripts": {
 		"config-set" : [
-			"\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../../vendor/wp-coding-standards/wpcs",
+			"\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../../vendor/wp-coding-standards/wpcs,../../../vendor/wimg/php-compatibility",
 			"\"vendor/bin/phpcs\" --config-set default_standard Yoast"
 		],
 		"post-install-cmd": "composer config-set",

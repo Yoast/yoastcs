@@ -57,10 +57,8 @@
 	</rule>
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
-	<!-- Currently disabled because it does not play nice with Composer.
-	     This is being worked on in https://github.com/wimg/PHPCompatibility/issues/102 -->
-	<!--<config name="testVersion" value="5.2-99.0"/>-->
-	<!--<rule ref="PHPCompatibility"/>-->
+	<config name="testVersion" value="5.2-99.0"/>
+	<rule ref="PHPCompatibility"/>
 
 	<rule ref="Squiz.ControlStructures">
 		<!-- Prevent errors for Spaces after closing braces, as we want a newline -->

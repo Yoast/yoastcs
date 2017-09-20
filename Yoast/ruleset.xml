@@ -10,9 +10,6 @@
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->
 		<exclude name="Generic.PHP.Syntax"/>
 
-		<!-- Some calls just too quirky and complicated for this. -->
-		<exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
-
 		<!-- WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
 		<exclude name="WordPress.VIP.DirectDatabaseQuery"/>
 		<exclude name="WordPress.VIP.FileSystemWritesDisallow"/>
@@ -27,20 +24,20 @@
 		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
 
-		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
-		<!-- Exclusion can be removed once the WPCS 0.11.0 has been released - in which the bugs have been fixed -
-		     and the minimum WPCS version required by Yoast CS has been upped to 0.11.0. -->
-		<!-- WPCS #300 -->
-		<exclude name="WordPress.Variables.GlobalVariables"/>
+		<!-- Single line one item associative arrays are fine. -->
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound"/>
 
 		<!-- Catches way too many things, like vars and file headers. -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+
+		<!-- Closing comments do not make for tidy code. -->
+		<exclude name="Squiz.Commenting.LongConditionClosingComment"/>
 	</rule>
 
-	<!-- Adjust some WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
+	<!-- Ignore some WP VIP rules which are very restrictive and not all that applicable as WPSEO is not on VIP -->
 	<rule ref="WordPress.VIP.RestrictedFunctions">
 		<properties>
-			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,curl,get_term_link,get_term_by,count_user_posts,get_pages,error_log,runtime_configuration,prevent_path_disclosure,url_to_postid"/>
+			<property name="exclude" value="user_meta,switch_to_blog,wp_remote_get,file_get_contents,get_term_link,get_term_by,count_user_posts,url_to_postid,attachment_url_to_postid"/>
 		</properties>
 	</rule>
 
@@ -53,6 +50,20 @@
 	<rule ref="WordPress.VIP.PostsPerPage">
 		<properties>
 			<property name="exclude" value="posts_per_page"/>
+		</properties>
+	</rule>
+
+	<!-- Whitelist the Yoast base test classes so that overruling global variables in test files is not flagged. -->
+	<rule ref="WordPress.Variables.GlobalVariables">
+		<properties>
+			<property name="custom_test_class_whitelist" type="array" value="WPSEO_UnitTestCase,VideoSEO_UnitTestCase,WPSEO_WooCommerce_UnitTestCase,WPSEO_News_UnitTestCase,Yst_License_Manager_UnitTestCase,Clicky_UnitTestCase"/>
+		</properties>
+	</rule>
+
+	<!-- Allow more freedom in the filenames used for classes. -->
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="strict_class_file_names" value="false"/>
 		</properties>
 	</rule>
 
@@ -82,13 +93,6 @@
 		<properties>
 			<property name="requiredSpacesAfterOpen" value="1"/>
 			<property name="requiredSpacesBeforeClose" value="1"/>
-		</properties>
-	</rule>
-
-	<!-- Application memory use! -->
-	<rule ref="Generic.Strings.UnnecessaryStringConcat">
-		<properties>
-			<property name="allowMultiline" value="true"/>
 		</properties>
 	</rule>
 

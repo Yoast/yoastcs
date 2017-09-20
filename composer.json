@@ -20,8 +20,8 @@
 		"issues": "https://github.com/Yoast/yoastcs/issues"
 	},
 	"require": {
-		"squizlabs/php_codesniffer": "~2.8.1",
-		"wp-coding-standards/wpcs": "~0.10.0",
+		"squizlabs/php_codesniffer": "^2.8.1",
+		"wp-coding-standards/wpcs": "~0.11.0",
 		"wimg/php-compatibility": "^8.0.0",
 		"phpmd/phpmd": "^2.2.3"
 	},

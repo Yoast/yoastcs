@@ -4,7 +4,6 @@
 
 	<!-- ##### WordPress sniffs #####-->
 	<rule ref="WordPress">
-		<exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->

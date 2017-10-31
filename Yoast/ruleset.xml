@@ -64,9 +64,6 @@
 	<!-- Error prevention: Make sure arithmetics are bracketed -->
 	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
 
-	<!-- Should be turned on, but gives issue with current codebase -->
-	<!--<rule ref="Generic.CodeAnalysis.EmptyStatement" />-->
-
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- exclude the 'empty' index files from some documentation checks -->

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Yoast">
+<ruleset name="Yoast" namespace="YoastCS\Yoast">
 	<description>Yoast Coding Standards</description>
 
 	<!-- ##### WordPress sniffs #####-->

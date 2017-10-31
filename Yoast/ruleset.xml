@@ -17,6 +17,17 @@
 
 	</rule>
 
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<properties>
+			<!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->
+			<property name="exact" value="false"/>
+			<!-- Don't align multi-line items if ALL items in the array are multi-line. -->
+			<property name="alignMultilineItems" value="!=100"/>
+			<!-- Array Assignment operator should always be on the same line as the array key. -->
+			<property name="ignoreNewlines" value="false"/>
+		</properties>
+	</rule>
+
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
 	<config name="testVersion" value="5.2-99.0"/>
 	<rule ref="PHPCompatibility"/>

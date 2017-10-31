@@ -28,6 +28,7 @@
 		<!-- As the YoastCS ruleset is loaded *after* this ruleset, it overrules the
 			 PHPCompatibility testVersion set here, so we have to resort to excluding
 			 some error messages.... -->
+		<exclude name="PHPCompatibility.PHP.NewConstants.t_traitFound"/>
 		<exclude name="PHPCompatibility.PHP.NewKeywords.t_dirFound"/>
 		<exclude name="PHPCompatibility.PHP.NewKeywords.t_namespaceFound"/>
 		<exclude name="PHPCompatibility.PHP.NewKeywords.t_useFound"/>

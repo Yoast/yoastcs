@@ -20,7 +20,7 @@
 	<rule ref="Yoast">
 
 		<!-- Conflicts with PHPCS autoloading of sniffs. -->
-		<exclude name="WordPress.Files.FileName"/>
+		<exclude name="Yoast.Files.FileName"/>
 
 		<!-- Conflicts with variable names coming from PHPCS itself. -->
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>

@@ -15,11 +15,6 @@
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 
-		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
-		<!-- Exclusion can be removed once the WPCS 0.11.0 has been released - in which the bugs have been fixed -
-		     and the minimum WPCS version required by Yoast CS has been upped to 0.11.0. -->
-		<!-- WPCS #300 -->
-		<exclude name="WordPress.Variables.GlobalVariables"/>
 	</rule>
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="Yoast Coding Standard">
+	<description>The Coding standard for the Yoast Coding Standard itself.</description>
+
+	<!-- Scan all files. -->
+	<file>.</file>
+
+	<!-- Exclude Composer vendor directory. -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<!-- Only check PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Show progress, show the error codes for each message (source). -->
+	<arg value="sp"/>
+
+	<!-- YoastCS supports PHP 5.4 or higher. -->
+	<config name="testVersion" value="5.4-"/>
+
+	<rule ref="Yoast">
+
+		<!-- Conflicts with PHPCS autoloading of sniffs. -->
+		<exclude name="WordPress.Files.FileName"/>
+
+		<!-- Conflicts with variable names coming from PHPCS itself. -->
+		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
+
+		<!-- As the YoastCS ruleset is loaded *after* this ruleset, it overrules the
+			 PHPCompatibility testVersion set here, so we have to resort to excluding
+			 some error messages.... -->
+		<exclude name="PHPCompatibility.PHP.NewKeywords.t_dirFound"/>
+		<exclude name="PHPCompatibility.PHP.NewKeywords.t_namespaceFound"/>
+		<exclude name="PHPCompatibility.PHP.NewKeywords.t_useFound"/>
+		<exclude name="PHPCompatibility.PHP.NewLanguageConstructs.t_ns_separatorFound"/>
+
+	</rule>
+
+	<!-- Enforce PSR1 compatible namespaces. -->
+	<rule ref="PSR1.Classes.ClassDeclaration"/>
+
+</ruleset>

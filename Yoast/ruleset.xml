@@ -103,11 +103,11 @@
 
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
-	<!-- exclude the 'empty' index files from some documentation checks -->
+	<!-- Exclude the 'empty' index files from some documentation checks -->
 	<rule ref="Squiz.Commenting.FileComment">
-		<exclude-pattern>*/index.php</exclude-pattern>
+		<exclude-pattern>*/index\.php</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.InlineComment.NoSpaceBefore">
-		<exclude-pattern>*/index.php</exclude-pattern>
+		<exclude-pattern>*/index\.php</exclude-pattern>
 	</rule>
 </ruleset>

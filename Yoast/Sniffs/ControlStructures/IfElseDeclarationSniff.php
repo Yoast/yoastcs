@@ -1,20 +1,27 @@
 <?php
 /**
- * Yoast_Sniffs_ControlStructures_WpseoIfElseDeclarationSniff.
+ * YoastCS\Yoast\Sniffs\ControlStructures\IfElseDeclarationSniff.
  *
- * PHP version 5
- *
- * @author    Juliette Reinders Folmer
+ * @package Yoast\YoastCS
+ * @author  Juliette Reinders Folmer
+ * @license https://opensource.org/licenses/MIT MIT
  */
 
+namespace YoastCS\Yoast\Sniffs\ControlStructures;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
 /**
- * Yoast_Sniffs_ControlStructures_WpseoIfElseDeclarationSniff.
- *
  * Verifies that else statements are on a new line.
  *
- * @author    Juliette Reinders Folmer
+ * @package Yoast\YoastCS
+ * @author  Juliette Reinders Folmer
+ *
+ * @since   0.1
+ * @since   0.5 This class now uses namespaces and is no longer compatible with PHPCS 2.x.
  */
-class Yoast_Sniffs_ControlStructures_IfElseDeclarationSniff implements PHP_CodeSniffer_Sniff
+class IfElseDeclarationSniff implements Sniff
 {
 
 
@@ -36,13 +43,13 @@ class Yoast_Sniffs_ControlStructures_IfElseDeclarationSniff implements PHP_CodeS
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current
+     *                                               in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process( PHP_CodeSniffer_File $phpcsFile, $stackPtr )
+    public function process( File $phpcsFile, $stackPtr )
     {
         $tokens     = $phpcsFile->getTokens();
 		$has_errors = 0;

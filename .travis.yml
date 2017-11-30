@@ -18,57 +18,36 @@ php:
     - nightly
 
 env:
-  # Test against the highest supported PHPCS version (2.x dev).
-  # This can be changed back to "master" once PHPCS 3.x is supported. See issue #36
-  - PHPCS_BRANCH=2.9
-  # Test against the lowest supported PHPCS 2.x version.
-  - PHPCS_BRANCH=2.8.1
+  # Test against the highest supported PHPCS version.
+  - PHPCS_BRANCH=master
+  # Test against the lowest supported PHPCS version.
+  - PHPCS_BRANCH=3.1.1
 
 matrix:
   fast_finish: true
   include:
-    # PHP 5.2/5.3 need precise.
-    - php: 5.2
-      dist: precise
-      env: PHPCS_BRANCH=2.9
-    - php: 5.2
-      dist: precise
-      env: PHPCS_BRANCH=2.8.1
-    - php: 5.3
-      dist: precise
-      env: PHPCS_BRANCH=2.9 SNIFF=1
+    # Extra build to check for XML codestyle.
+    - php: 7.1
+      env: PHPCS_BRANCH=master SNIFF=1
       addons:
           apt:
               packages:
                 - libxml2-utils
-    - php: 5.3
-      dist: precise
-      env: PHPCS_BRANCH=2.8.1
-
-    # Run against PHPCS 3.x. I just picked to run it against 5.6.
-    - php: 5.6
-      env: PHPCS_BRANCH=master
 
   allow_failures:
     # Allow failures for unstable builds.
-    - env: PHPCS_BRANCH=master
     - php: nightly
 
 before_install:
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=/tmp/phpcs
-    - export PHPUNIT_DIR=/tmp/phpunit
-    - export PHPCS_BIN=$(if [[ ${PHPCS_BRANCH:0:2} != "2." ]]; then echo $PHPCS_DIR/bin/phpcs; else echo $PHPCS_DIR/scripts/phpcs; fi)
+    - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - $PHPCS_BIN --config-set installed_paths $(pwd)
-    # Download PHPUnit 5.x for builds on PHP 7 and nightly as
-    # PHPCS test suite is currently not compatible with PHPUnit 6.x.
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then wget -P $PHPUNIT_DIR https://phar.phpunit.de/phpunit-5.7.phar && chmod +x $PHPUNIT_DIR/phpunit-5.7.phar; fi
 
 script:
     - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then phpunit --filter Yoast /tmp/phpcs/tests/AllTests.php; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:2} != "5." ]]; then php $PHPUNIT_DIR/phpunit-5.7.phar --filter Yoast /tmp/phpcs/tests/AllTests.php; fi
+    - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
     # Validate the xml files.
     # @link http://xmlsoft.org/xmllint.html
     - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./Yoast/ruleset.xml; fi

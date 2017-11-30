@@ -6,13 +6,19 @@
  * @license https://opensource.org/licenses/MIT MIT
  */
 
+namespace YoastCS\Yoast\Tests\ControlStructures;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
 /**
- * Unit test class for the ControlStructureSpacing sniff.
+ * Unit test class for the IfElseDeclaration sniff.
  *
  * @package Yoast\YoastCS
- * @since   0.5
+ *
+ * @since   0.4.1
+ * @since   0.5   This class now uses namespaces and is no longer compatible with PHPCS 2.x.
  */
-class Yoast_Tests_ControlStructures_IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
+class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

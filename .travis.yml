@@ -42,12 +42,24 @@ before_install:
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=/tmp/phpcs
     - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs
+    - export WPCS_DIR=/tmp/wpcs
+    - export PHPCOMPAT_DIR=/tmp/phpcompatibility
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - $PHPCS_BIN --config-set installed_paths $(pwd)
+    # Install WordPress Coding Standards.
+    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $WPCS_DIR; fi
+    # Install PHP Compatibility sniffs.
+    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/wimg/PHPCompatibility.git $PHPCOMPAT_DIR; fi
+    # Set install path for PHPCS sniffs.
+    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR,$PHPCOMPAT_DIR; fi
+    # After CodeSniffer install you should refresh your path.
+    - phpenv rehash
 
 script:
     - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
     - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
+    # Check the codestyle of the files within YoastCS.
+    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --runtime-set ignore_warnings_on_exit 1; fi
     # Validate the xml files.
     # @link http://xmlsoft.org/xmllint.html
     - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./Yoast/ruleset.xml; fi

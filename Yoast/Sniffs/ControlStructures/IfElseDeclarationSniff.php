@@ -21,47 +21,44 @@ use PHP_CodeSniffer\Files\File;
  * @since   0.1
  * @since   0.5 This class now uses namespaces and is no longer compatible with PHPCS 2.x.
  */
-class IfElseDeclarationSniff implements Sniff
-{
+class IfElseDeclarationSniff implements Sniff {
 
 
-    /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
-     */
-    public function register()
-    {
-        return array(
-                T_ELSE,
-                T_ELSEIF,
-               );
+	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array
+	 */
+	public function register() {
+		return array(
+			T_ELSE,
+			T_ELSEIF,
+		);
 
-    }//end register()
+	}//end register()
 
 
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process( File $phpcsFile, $stackPtr )
-    {
-        $tokens     = $phpcsFile->getTokens();
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens     = $phpcsFile->getTokens();
 		$has_errors = 0;
 
-		if( isset( $tokens[ $stackPtr ]['scope_opener'] ) ) {
+		if ( isset( $tokens[ $stackPtr ]['scope_opener'] ) ) {
 			$scope_open = $tokens[ $stackPtr ]['scope_opener'];
 		}
-		else if( $tokens[ ( $stackPtr + 2 ) ]['code'] === T_IF && isset( $tokens[ ( $stackPtr + 2 ) ]['scope_opener'] ) ) {
+		elseif ( $tokens[ ( $stackPtr + 2 ) ]['code'] === T_IF && isset( $tokens[ ( $stackPtr + 2 ) ]['scope_opener'] ) ) {
 			$scope_open = $tokens[ ( $stackPtr + 2 ) ]['scope_opener'];
 		}
 
-		if ( isset( $scope_open ) && $tokens[ $scope_open ]['code'] !== T_COLON ) { // Ignore alternative syntax
+		if ( isset( $scope_open ) && $tokens[ $scope_open ]['code'] !== T_COLON ) { // Ignore alternative syntax.
 
 			$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, $stackPtr, null, false );
 
@@ -76,8 +73,8 @@ class IfElseDeclarationSniff implements Sniff
 			$other_start  = null;
 			$other_length = 0;
 			for ( $i = $start; $i < $stackPtr; $i++ ) {
-				if( $tokens[ $i ]['code'] !== T_COMMENT && $tokens[ $i ]['code'] !== T_WHITESPACE) {
-					if( ! isset( $other_start ) ) {
+				if ( $tokens[ $i ]['code'] !== T_COMMENT && $tokens[ $i ]['code'] !== T_WHITESPACE ) {
+					if ( ! isset( $other_start ) ) {
 						$other_start = $i;
 					}
 					$other_length++;
@@ -85,9 +82,9 @@ class IfElseDeclarationSniff implements Sniff
 			}
 			unset( $i );
 
-			if( isset( $other_start, $other_length ) ) {
+			if ( isset( $other_start, $other_length ) ) {
 				$error = 'Nothing but whitespace and comments allowed between closing bracket and else(if) statement, found "%s"';
-				$data = $phpcsFile->getTokensAsString( $other_start, $other_length );
+				$data  = $phpcsFile->getTokensAsString( $other_start, $other_length );
 				$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
 				$has_errors++;
 				unset( $error, $data, $other_start, $other_length );
@@ -103,6 +100,6 @@ class IfElseDeclarationSniff implements Sniff
 			}
 		}
 
-    }//end process()
+	}//end process()
 
 }//end class

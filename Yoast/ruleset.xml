@@ -18,7 +18,9 @@
 		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
 		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
 
-		<!-- If a conscious choice has been made for a non-strict comparison, that's ok. -->
+		<!-- If a conscious choice has been made for a non-strict comparison, that's ok.
+			 I.e. when `strict` has been explicitely set to `false` in an array comparison,
+			 it will be allowed. -->
 		<exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
 	</rule>
 

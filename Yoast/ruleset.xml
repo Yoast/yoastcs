@@ -12,6 +12,9 @@
 		<!-- Some calls just too quirky and complicated for this. -->
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
 
+		<!-- Excluded in favour of the YoastCS native Filename sniff. -->
+		<exclude name="WordPress.Files.FileName"/>
+
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 

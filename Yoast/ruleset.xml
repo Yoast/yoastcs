@@ -15,11 +15,24 @@
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 
-		<!-- Turned off because of known & reported bugs in the Sniffs, should be turned on once the bugs are fixed. -->
-		<!-- Exclusion can be removed once the WPCS 0.11.0 has been released - in which the bugs have been fixed -
-		     and the minimum WPCS version required by Yoast CS has been upped to 0.11.0. -->
-		<!-- WPCS #300 -->
-		<exclude name="WordPress.Variables.GlobalVariables"/>
+		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
+		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+
+		<!-- If a conscious choice has been made for a non-strict comparison, that's ok.
+			 I.e. when `strict` has been explicitely set to `false` in an array comparison,
+			 it will be allowed. -->
+		<exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
+	</rule>
+
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<properties>
+			<!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->
+			<property name="exact" value="false"/>
+			<!-- Don't align multi-line items if ALL items in the array are multi-line. -->
+			<property name="alignMultilineItems" value="!=100"/>
+			<!-- Array Assignment operator should always be on the same line as the array key. -->
+			<property name="ignoreNewlines" value="false"/>
+		</properties>
 	</rule>
 
 	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
@@ -73,13 +86,6 @@
 		<properties>
 			<property name="requiredSpacesAfterOpen" value="1"/>
 			<property name="requiredSpacesBeforeClose" value="1"/>
-		</properties>
-	</rule>
-
-	<!-- Application memory use! -->
-	<rule ref="Generic.Strings.UnnecessaryStringConcat">
-		<properties>
-			<property name="allowMultiline" value="true"/>
 		</properties>
 	</rule>
 

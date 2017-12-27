@@ -2,7 +2,13 @@
 <ruleset name="Yoast" namespace="YoastCS\Yoast">
 	<description>Yoast Coding Standards</description>
 
-	<!-- ##### WordPress sniffs #####-->
+	<!--
+	#############################################################################
+	SNIFF AGAINST THE WordPress RULESET
+	Exclude a few select sniffs/errorcodes for specific reasons and
+	add configuration for a sniff.
+	#############################################################################
+	-->
 	<rule ref="WordPress">
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 
@@ -38,7 +44,13 @@
 		</properties>
 	</rule>
 
-	<!-- ##### Sniffs for PHP cross-version compatibility ##### -->
+
+	<!--
+	#############################################################################
+	SNIFF FOR PHP CROSS-VERSION COMPATIBILITY
+	Exclude a few select errorcodes for things back-filled by WP Core.
+	#############################################################################
+	-->
 	<config name="testVersion" value="5.2-99.0"/>
 	<rule ref="PHPCompatibility">
 		<!-- Whitelist PHP native classes, interfaces, functions and constants which
@@ -70,6 +82,13 @@
 		</properties>
 	</rule>
 
+
+	<!--
+	#############################################################################
+	ADD SOME SPECIFIC EXTRA SNIFFS
+	These may make it into WPCS at some point. If so, they can be removed here.
+	#############################################################################
+	-->
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 
@@ -85,4 +104,5 @@
 	<rule ref="Squiz.Commenting.InlineComment.NoSpaceBefore">
 		<exclude-pattern>*/index\.php</exclude-pattern>
 	</rule>
+
 </ruleset>

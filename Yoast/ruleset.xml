@@ -9,6 +9,9 @@
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->
 		<exclude name="Generic.PHP.Syntax"/>
 
+		<!-- Excluded in favour of the YoastCS native "else on new line" sniff. -->
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+
 		<!-- Excluded in favour of the YoastCS native Filename sniff. -->
 		<exclude name="WordPress.Files.FileName"/>
 
@@ -48,6 +51,9 @@
 		<exclude name="PHPCompatibility.PHP.NewClasses.errorFound"/>
 		<exclude name="PHPCompatibility.PHP.NewClasses.typeerrorFound"/>
 
+		<exclude name="PHPCompatibility.PHP.NewConstants.json_pretty_printFound"/>
+		<exclude name="PHPCompatibility.PHP.NewConstants.php_version_idFound"/>
+
 		<exclude name="PHPCompatibility.PHP.NewFunctions.hash_equalsFound"/>
 		<exclude name="PHPCompatibility.PHP.NewFunctions.json_last_error_msgFound"/>
 		<exclude name="PHPCompatibility.PHP.NewFunctions.random_intFound"/>
@@ -61,31 +67,6 @@
 	<rule ref="PHPCompatibility.PHP.RemovedExtensions">
 		<properties>
 			<property name="functionWhitelist" type="array" value="mysql_to_rfc3339"/>
-		</properties>
-	</rule>
-
-	<rule ref="Squiz.ControlStructures">
-		<!-- Prevent errors for Spaces after closing braces, as we want a newline -->
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
-		<!-- elseif is fine by WP -->
-		<exclude name="Squiz.ControlStructures.ElseIfDeclaration"/>
-		<!-- WP got nothing about switch -->
-		<exclude name="Squiz.ControlStructures.SwitchDeclaration"/>
-	</rule>
-
-	<!-- ##### Some miscellanous other sniffs ##### -->
-	<!-- Added for lowercase keywords check -->
-	<rule ref="Squiz.ControlStructures.ForEachLoopDeclaration">
-		<properties>
-			<property name="requiredSpacesAfterOpen" value="1"/>
-			<property name="requiredSpacesBeforeClose" value="1"/>
-		</properties>
-	</rule>
-
-	<rule ref="Squiz.ControlStructures.ForLoopDeclaration">
-		<properties>
-			<property name="requiredSpacesAfterOpen" value="1"/>
-			<property name="requiredSpacesBeforeClose" value="1"/>
 		</properties>
 	</rule>
 

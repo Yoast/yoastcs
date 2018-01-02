@@ -11,6 +11,7 @@ namespace YoastCS\Yoast\Sniffs\ControlStructures;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Verifies that else statements are on a new line.
@@ -54,8 +55,12 @@ class IfElseDeclarationSniff implements Sniff {
 		if ( isset( $tokens[ $stackPtr ]['scope_opener'] ) ) {
 			$scope_open = $tokens[ $stackPtr ]['scope_opener'];
 		}
-		elseif ( $tokens[ ( $stackPtr + 2 ) ]['code'] === T_IF && isset( $tokens[ ( $stackPtr + 2 ) ]['scope_opener'] ) ) {
-			$scope_open = $tokens[ ( $stackPtr + 2 ) ]['scope_opener'];
+		else {
+			// Deal with "else if".
+			$next = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+			if ( $tokens[ $next ]['code'] === T_IF && isset( $tokens[ $next ]['scope_opener'] ) ) {
+				$scope_open = $tokens[ $next ]['scope_opener'];
+			}
 		}
 
 		if ( isset( $scope_open ) && $tokens[ $scope_open ]['code'] !== T_COLON ) { // Ignore alternative syntax.

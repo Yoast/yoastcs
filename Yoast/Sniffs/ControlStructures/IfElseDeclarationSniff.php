@@ -49,8 +49,7 @@ class IfElseDeclarationSniff implements Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens     = $phpcsFile->getTokens();
-		$has_errors = 0;
+		$tokens = $phpcsFile->getTokens();
 
 		if ( isset( $tokens[ $stackPtr ]['scope_opener'] ) ) {
 			$scope_open = $tokens[ $stackPtr ]['scope_opener'];
@@ -77,7 +76,14 @@ class IfElseDeclarationSniff implements Sniff {
 				'NewLine',
 				array( ucfirst( $tokens[ $stackPtr ]['content'] ) )
 			);
-			$has_errors++;
+		}
+		elseif ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
+			$phpcsFile->addError(
+				'%s statement not aligned with previous part of the control structure',
+				$stackPtr,
+				'Alignment',
+				array( ucfirst( $tokens[ $stackPtr ]['content'] ) )
+			);
 		}
 
 		$start        = ( $previous + 1 );
@@ -100,20 +106,8 @@ class IfElseDeclarationSniff implements Sniff {
 				$phpcsFile->getTokensAsString( $other_start, $other_length ),
 			);
 			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
-			$has_errors++;
 			unset( $error, $data, $other_start, $other_length );
 
-		}
-
-		if ( $has_errors === 0 ) {
-			if ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
-				$phpcsFile->addError(
-					'%s statement not aligned with previous part of the control structure',
-					$stackPtr,
-					'Alignment',
-					array( ucfirst( $tokens[ $stackPtr ]['content'] ) )
-				);
-			}
 		}
 
 	}//end process()

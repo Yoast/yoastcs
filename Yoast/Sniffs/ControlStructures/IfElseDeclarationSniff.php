@@ -68,7 +68,7 @@ class IfElseDeclarationSniff implements Sniff {
 			return;
 		}
 
-		$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, $stackPtr, null, false );
+		$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
 
 		if ( $tokens[ $previous ]['line'] === $tokens[ $stackPtr ]['line'] ) {
 			$error = 'else(if) statement must be on a new line';

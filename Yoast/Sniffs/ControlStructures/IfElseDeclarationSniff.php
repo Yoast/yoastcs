@@ -67,9 +67,9 @@ class IfElseDeclarationSniff implements Sniff {
 			return;
 		}
 
-		$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
+		$previous_scope_closer = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
 
-		if ( $tokens[ $previous ]['line'] === $tokens[ $stackPtr ]['line'] ) {
+		if ( $tokens[ $previous_scope_closer ]['line'] === $tokens[ $stackPtr ]['line'] ) {
 			$phpcsFile->addError(
 				'%s statement must be on a new line',
 				$stackPtr,
@@ -77,7 +77,7 @@ class IfElseDeclarationSniff implements Sniff {
 				array( ucfirst( $tokens[ $stackPtr ]['content'] ) )
 			);
 		}
-		elseif ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
+		elseif ( $tokens[ $previous_scope_closer ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
 			$phpcsFile->addError(
 				'%s statement not aligned with previous part of the control structure',
 				$stackPtr,
@@ -86,28 +86,15 @@ class IfElseDeclarationSniff implements Sniff {
 			);
 		}
 
-		$start        = ( $previous + 1 );
-		$other_start  = null;
-		$other_length = 0;
-		for ( $i = $start; $i < $stackPtr; $i++ ) {
-			if ( $tokens[ $i ]['code'] !== T_COMMENT && $tokens[ $i ]['code'] !== T_WHITESPACE ) {
-				if ( ! isset( $other_start ) ) {
-					$other_start = $i;
-				}
-				$other_length++;
-			}
-		}
-		unset( $i );
+		$previous_non_empty = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 
-		if ( isset( $other_start, $other_length ) ) {
+		if ( $previous_scope_closer !== $previous_non_empty ) {
 			$error = 'Nothing but whitespace and comments allowed between closing bracket and %s statement, found "%s"';
 			$data  = array(
 				$tokens[ $stackPtr ]['content'],
-				$phpcsFile->getTokensAsString( $other_start, $other_length ),
+				trim( $phpcsFile->getTokensAsString( ( $previous_scope_closer + 1 ), ( $stackPtr - ( $previous_scope_closer + 1 ) ) ) ),
 			);
 			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
-			unset( $error, $data, $other_start, $other_length );
-
 		}
 
 	}//end process()

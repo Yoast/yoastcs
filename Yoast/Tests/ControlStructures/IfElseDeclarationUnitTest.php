@@ -27,10 +27,11 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			19 => 1,
-			25 => 1,
-			27 => 1,
-			29 => 1,
+			22 => 1,
+			28 => 1,
+			30 => 1,
+			34 => 1,
+			37 => 1,
 		);
 
 	} // end getErrorList()

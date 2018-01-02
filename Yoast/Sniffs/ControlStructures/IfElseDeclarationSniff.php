@@ -71,10 +71,12 @@ class IfElseDeclarationSniff implements Sniff {
 		$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
 
 		if ( $tokens[ $previous ]['line'] === $tokens[ $stackPtr ]['line'] ) {
-			$error = 'else(if) statement must be on a new line';
-			$phpcsFile->addError( $error, $stackPtr, 'NewLine' );
+			$phpcsFile->addError(
+				'else(if) statement must be on a new line',
+				$stackPtr,
+				'NewLine'
+			);
 			$has_errors++;
-			unset( $error );
 		}
 
 		$start        = ( $previous + 1 );
@@ -101,9 +103,11 @@ class IfElseDeclarationSniff implements Sniff {
 
 		if ( $has_errors === 0 ) {
 			if ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
-				$error = 'else(if) statement not aligned with previous part of the control structure';
-				$phpcsFile->addError( $error, $stackPtr, 'Alignment' );
-				unset( $error );
+				$phpcsFile->addError(
+					'else(if) statement not aligned with previous part of the control structure',
+					$stackPtr,
+					'Alignment'
+				);
 			}
 		}
 

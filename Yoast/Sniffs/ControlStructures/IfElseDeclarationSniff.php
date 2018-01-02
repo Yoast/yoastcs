@@ -63,45 +63,47 @@ class IfElseDeclarationSniff implements Sniff {
 			}
 		}
 
-		if ( isset( $scope_open ) && $tokens[ $scope_open ]['code'] !== T_COLON ) { // Ignore alternative syntax.
+		if ( ! isset( $scope_open ) || $tokens[ $scope_open ]['code'] === T_COLON ) {
+			// No scope opener found or alternative syntax (not our concern).
+			return;
+		}
 
-			$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, $stackPtr, null, false );
+		$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, $stackPtr, null, false );
 
-			if ( $tokens[ $previous ]['line'] === $tokens[ $stackPtr ]['line'] ) {
-				$error = 'else(if) statement must be on a new line';
-				$phpcsFile->addError( $error, $stackPtr, 'NewLine' );
-				$has_errors++;
+		if ( $tokens[ $previous ]['line'] === $tokens[ $stackPtr ]['line'] ) {
+			$error = 'else(if) statement must be on a new line';
+			$phpcsFile->addError( $error, $stackPtr, 'NewLine' );
+			$has_errors++;
+			unset( $error );
+		}
+
+		$start        = ( $previous + 1 );
+		$other_start  = null;
+		$other_length = 0;
+		for ( $i = $start; $i < $stackPtr; $i++ ) {
+			if ( $tokens[ $i ]['code'] !== T_COMMENT && $tokens[ $i ]['code'] !== T_WHITESPACE ) {
+				if ( ! isset( $other_start ) ) {
+					$other_start = $i;
+				}
+				$other_length++;
+			}
+		}
+		unset( $i );
+
+		if ( isset( $other_start, $other_length ) ) {
+			$error = 'Nothing but whitespace and comments allowed between closing bracket and else(if) statement, found "%s"';
+			$data  = $phpcsFile->getTokensAsString( $other_start, $other_length );
+			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
+			$has_errors++;
+			unset( $error, $data, $other_start, $other_length );
+
+		}
+
+		if ( $has_errors === 0 ) {
+			if ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
+				$error = 'else(if) statement not aligned with previous part of the control structure';
+				$phpcsFile->addError( $error, $stackPtr, 'Alignment' );
 				unset( $error );
-			}
-
-			$start        = ( $previous + 1 );
-			$other_start  = null;
-			$other_length = 0;
-			for ( $i = $start; $i < $stackPtr; $i++ ) {
-				if ( $tokens[ $i ]['code'] !== T_COMMENT && $tokens[ $i ]['code'] !== T_WHITESPACE ) {
-					if ( ! isset( $other_start ) ) {
-						$other_start = $i;
-					}
-					$other_length++;
-				}
-			}
-			unset( $i );
-
-			if ( isset( $other_start, $other_length ) ) {
-				$error = 'Nothing but whitespace and comments allowed between closing bracket and else(if) statement, found "%s"';
-				$data  = $phpcsFile->getTokensAsString( $other_start, $other_length );
-				$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
-				$has_errors++;
-				unset( $error, $data, $other_start, $other_length );
-
-			}
-
-			if ( $has_errors === 0 ) {
-				if ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
-					$error = 'else(if) statement not aligned with previous part of the control structure';
-					$phpcsFile->addError( $error, $stackPtr, 'Alignment' );
-					unset( $error );
-				}
 			}
 		}
 

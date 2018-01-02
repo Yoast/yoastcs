@@ -32,6 +32,10 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 			30 => 1,
 			34 => 1,
 			37 => 1,
+			44 => 1,
+			51 => 1,
+			76 => 1,
+			84 => 2,
 		);
 
 	} // end getErrorList()

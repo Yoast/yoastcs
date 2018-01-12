@@ -39,6 +39,10 @@ matrix:
     - php: nightly
 
 before_install:
+    # Speed up build time by disabling Xdebug.
+    # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
+    # https://twitter.com/kelunik/status/954242454676475904
+    - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=/tmp/phpcs
     - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs

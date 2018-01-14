@@ -19,7 +19,7 @@ php:
 
 env:
   # Test against the highest supported PHPCS version.
-  - PHPCS_BRANCH=master
+  - PHPCS_BRANCH=master PHPLINT=1
   # Test against the lowest supported PHPCS version.
   - PHPCS_BRANCH=3.1.1
 
@@ -56,7 +56,7 @@ before_install:
     - phpenv rehash
 
 script:
-    - if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi;
+    - if [[ "$PHPLINT" == "1" ]]; then if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
     - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
     # Check the codestyle of the files within YoastCS.
     - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --runtime-set ignore_warnings_on_exit 1; fi
@@ -67,3 +67,6 @@ script:
     # Check the code-style consistency of the xml files.
     - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml"); fi
     - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./phpmd.xml <(xmllint --format "./phpmd.xml"); fi
+    # Validate the composer.json file.
+    # @link https://getcomposer.org/doc/03-cli.md#validate
+    - if [[ "$PHPLINT" == "1" ]]; then composer validate --no-check-all --strict; fi

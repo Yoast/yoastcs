@@ -21,7 +21,7 @@ env:
   # Test against the highest supported PHPCS version.
   - PHPCS_BRANCH=master PHPLINT=1
   # Test against the lowest supported PHPCS version.
-  - PHPCS_BRANCH=3.1.1
+  - PHPCS_BRANCH=3.2.0
 
 matrix:
   fast_finish: true

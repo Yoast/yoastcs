@@ -11,6 +11,7 @@ namespace YoastCS\Yoast\Sniffs\ControlStructures;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Verifies that else statements are on a new line.
@@ -48,56 +49,52 @@ class IfElseDeclarationSniff implements Sniff {
 	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens     = $phpcsFile->getTokens();
-		$has_errors = 0;
+		$tokens = $phpcsFile->getTokens();
 
 		if ( isset( $tokens[ $stackPtr ]['scope_opener'] ) ) {
 			$scope_open = $tokens[ $stackPtr ]['scope_opener'];
 		}
-		elseif ( $tokens[ ( $stackPtr + 2 ) ]['code'] === T_IF && isset( $tokens[ ( $stackPtr + 2 ) ]['scope_opener'] ) ) {
-			$scope_open = $tokens[ ( $stackPtr + 2 ) ]['scope_opener'];
+		else {
+			// Deal with "else if".
+			$next = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+			if ( $tokens[ $next ]['code'] === T_IF && isset( $tokens[ $next ]['scope_opener'] ) ) {
+				$scope_open = $tokens[ $next ]['scope_opener'];
+			}
 		}
 
-		if ( isset( $scope_open ) && $tokens[ $scope_open ]['code'] !== T_COLON ) { // Ignore alternative syntax.
+		if ( ! isset( $scope_open ) || $tokens[ $scope_open ]['code'] === T_COLON ) {
+			// No scope opener found or alternative syntax (not our concern).
+			return;
+		}
 
-			$previous = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, $stackPtr, null, false );
+		$previous_scope_closer = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
 
-			if ( $tokens[ $previous ]['line'] === $tokens[ $stackPtr ]['line'] ) {
-				$error = 'else(if) statement must be on a new line';
-				$phpcsFile->addError( $error, $stackPtr, 'NewLine' );
-				$has_errors++;
-				unset( $error );
-			}
+		if ( $tokens[ $previous_scope_closer ]['line'] === $tokens[ $stackPtr ]['line'] ) {
+			$phpcsFile->addError(
+				'%s statement must be on a new line',
+				$stackPtr,
+				'NewLine',
+				array( ucfirst( $tokens[ $stackPtr ]['content'] ) )
+			);
+		}
+		elseif ( $tokens[ $previous_scope_closer ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
+			$phpcsFile->addError(
+				'%s statement not aligned with previous part of the control structure',
+				$stackPtr,
+				'Alignment',
+				array( ucfirst( $tokens[ $stackPtr ]['content'] ) )
+			);
+		}
 
-			$start        = ( $previous + 1 );
-			$other_start  = null;
-			$other_length = 0;
-			for ( $i = $start; $i < $stackPtr; $i++ ) {
-				if ( $tokens[ $i ]['code'] !== T_COMMENT && $tokens[ $i ]['code'] !== T_WHITESPACE ) {
-					if ( ! isset( $other_start ) ) {
-						$other_start = $i;
-					}
-					$other_length++;
-				}
-			}
-			unset( $i );
+		$previous_non_empty = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 
-			if ( isset( $other_start, $other_length ) ) {
-				$error = 'Nothing but whitespace and comments allowed between closing bracket and else(if) statement, found "%s"';
-				$data  = $phpcsFile->getTokensAsString( $other_start, $other_length );
-				$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
-				$has_errors++;
-				unset( $error, $data, $other_start, $other_length );
-
-			}
-
-			if ( $has_errors === 0 ) {
-				if ( $tokens[ $previous ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
-					$error = 'else(if) statement not aligned with previous part of the control structure';
-					$phpcsFile->addError( $error, $stackPtr, 'Alignment' );
-					unset( $error );
-				}
-			}
+		if ( $previous_scope_closer !== $previous_non_empty ) {
+			$error = 'Nothing but whitespace and comments allowed between closing bracket and %s statement, found "%s"';
+			$data  = array(
+				$tokens[ $stackPtr ]['content'],
+				trim( $phpcsFile->getTokensAsString( ( $previous_scope_closer + 1 ), ( $stackPtr - ( $previous_scope_closer + 1 ) ) ) ),
+			);
+			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
 		}
 
 	}//end process()

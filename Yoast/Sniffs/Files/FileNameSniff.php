@@ -102,7 +102,6 @@ class FileNameSniff implements Sniff {
 		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( 'STDIN' === $file ) {
-			$this->echo_status( $phpcsFile, 'STDIN', '', '' );
 			return;
 		}
 

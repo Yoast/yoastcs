@@ -34,6 +34,9 @@
 			"\"vendor/bin/phpcs\" --config-set installed_paths ../../..,../../../vendor/wp-coding-standards/wpcs,../../../vendor/wimg/php-compatibility",
 			"\"vendor/bin/phpcs\" --config-set default_standard Yoast"
 		],
+		"check-cs": [
+			"\"vendor/bin/phpcs\" --runtime-set testVersion 5.4-"
+		],
 		"post-install-cmd": "composer config-set",
 		"post-update-cmd": "composer config-set"
 	},

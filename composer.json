@@ -27,7 +27,7 @@
 		"phpmd/phpmd": "^2.2.3"
 	},
 	"suggest" : {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+		"dealerdirect/phpcodesniffer-composer-installer": "This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
 	},
 	"scripts": {
 		"config-set" : [

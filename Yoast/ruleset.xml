@@ -78,7 +78,9 @@
 	<!-- Whitelist the WP Core mysql_to_rfc3339() function. -->
 	<rule ref="PHPCompatibility.PHP.RemovedExtensions">
 		<properties>
-			<property name="functionWhitelist" type="array" value="mysql_to_rfc3339"/>
+			<property name="functionWhitelist" type="array">
+				<element value="mysql_to_rfc3339"/>
+			</property>
 		</properties>
 	</rule>
 

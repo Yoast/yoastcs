@@ -7,9 +7,6 @@ dist: trusty
 
 cache:
     apt: true
-    directories:
-      - tmp/phpunit
-
 
 php:
     - 5.4
@@ -51,7 +48,6 @@ before_install:
     - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs
     - export WPCS_DIR=/tmp/wpcs
     - export PHPCOMPAT_DIR=/tmp/phpcompatibility
-    - export PHPUNIT_DIR=/tmp/phpunit
     - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
     - $PHPCS_BIN --config-set installed_paths $(pwd)
     # Install WordPress Coding Standards.
@@ -62,22 +58,10 @@ before_install:
     - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR,$PHPCOMPAT_DIR; fi
     # After CodeSniffer install you should refresh your path.
     - phpenv rehash
-    # Download PHPUnit 6.x for builds on PHP 7.2 and nightly in combination with PHPCS 3.2.0
-    # as the PHPCS test suite in PHPCS 3.2.0 is not compatible with PHPUnit 7.x.
-    - if [[ "$TRAVIS_PHP_VERSION" == "7.2" || "$TRAVIS_PHP_VERSION" == "nightly" ]] && [[ "$PHPCS_BRANCH" != "master" ]]; then
-        wget -P $PHPUNIT_DIR https://phar.phpunit.de/phpunit-6.5.7.phar && chmod +x $PHPUNIT_DIR/phpunit-6.5.7.phar;
-      fi
-
 
 script:
     - if [[ "$PHPLINT" == "1" ]]; then if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
-    # Run the unit tests.
-    - if [[ "$TRAVIS_PHP_VERSION" == "7.2" || "$TRAVIS_PHP_VERSION" == "nightly" ]] && [[ "$PHPCS_BRANCH" != "master" ]]; then
-        php $PHPUNIT_DIR/phpunit-6.5.7.phar  --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php;
-      else
-        phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php;
-      fi
-
+    - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
     # Check the codestyle of the files within YoastCS.
     - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --runtime-set ignore_warnings_on_exit 1; fi
     # Validate the xml files.

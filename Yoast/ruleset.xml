@@ -78,7 +78,9 @@
 	<!-- Whitelist the WP Core mysql_to_rfc3339() function. -->
 	<rule ref="PHPCompatibility.PHP.RemovedExtensions">
 		<properties>
-			<property name="functionWhitelist" type="array" value="mysql_to_rfc3339"/>
+			<property name="functionWhitelist" type="array">
+				<element value="mysql_to_rfc3339"/>
+			</property>
 		</properties>
 	</rule>
 
@@ -94,6 +96,11 @@
 
 	<!-- Error prevention: Make sure arithmetics are bracketed -->
 	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
+
+	<!-- CS: PHP type casts and type declarations should be in short form and lowercase. -->
+	<!-- These sniffs will be most likely be added to WPCS 2.0 and can then be removed from this ruleset. -->
+	<rule ref="Generic.PHP.LowerCaseType"/>
+	<rule ref="PSR12.Keywords.ShortFormTypeKeywords"/>
 
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 

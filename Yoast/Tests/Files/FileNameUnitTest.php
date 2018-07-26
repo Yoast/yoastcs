@@ -112,7 +112,6 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		}
 
 		return array( $testFileBase . '.inc' );
-
 	}
 
 	/**

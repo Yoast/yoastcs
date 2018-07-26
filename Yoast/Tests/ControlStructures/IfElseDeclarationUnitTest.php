@@ -38,7 +38,7 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 			84 => 2,
 		);
 
-	} // end getErrorList()
+	}
 
 	/**
 	 * Returns the lines where warnings should occur.
@@ -50,4 +50,4 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 
 	}
 
-} // End class.
+}

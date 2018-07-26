@@ -36,7 +36,7 @@ class IfElseDeclarationSniff implements Sniff {
 			T_ELSEIF,
 		);
 
-	}//end register()
+	}
 
 
 	/**
@@ -97,6 +97,6 @@ class IfElseDeclarationSniff implements Sniff {
 			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
 		}
 
-	}//end process()
+	}
 
-}//end class
+}

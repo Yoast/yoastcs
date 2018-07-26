@@ -6,7 +6,12 @@ language:
 dist: trusty
 
 cache:
-    apt: true
+  apt: true
+  directories:
+    # Cache directory for older Composer versions.
+    - $HOME/.composer/cache/files
+    # Cache directory for more recent Composer versions.
+    - $HOME/.cache/composer/files
 
 php:
     - 5.4
@@ -19,16 +24,16 @@ php:
 
 env:
   # Test against the highest supported PHPCS version.
-  - PHPCS_BRANCH=master PHPLINT=1
+  - PHPCS_BRANCH="dev-master" PHPLINT=1
   # Test against the lowest supported PHPCS version.
-  - PHPCS_BRANCH=3.3.0
+  - PHPCS_BRANCH="3.3.0"
 
 matrix:
   fast_finish: true
   include:
     # Extra build to check for XML codestyle.
     - php: 7.1
-      env: PHPCS_BRANCH=master SNIFF=1
+      env: PHPCS_BRANCH="dev-master" SNIFF=1
       addons:
           apt:
               packages:
@@ -44,23 +49,25 @@ before_install:
     # https://twitter.com/kelunik/status/954242454676475904
     - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
     - export XMLLINT_INDENT="	"
-    - export PHPCS_DIR=/tmp/phpcs
-    - export PHPCS_BIN=$PHPCS_DIR/bin/phpcs
-    - export WPCS_DIR=/tmp/wpcs
-    - export PHPCOMPAT_DIR=/tmp/phpcompatibility
-    - mkdir -p $PHPCS_DIR && git clone --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git -b $PHPCS_BRANCH $PHPCS_DIR
-    - $PHPCS_BIN --config-set installed_paths $(pwd)
-    # Install WordPress Coding Standards.
-    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $WPCS_DIR; fi
-    # Install PHP Compatibility sniffs.
-    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/wimg/PHPCompatibility.git $PHPCOMPAT_DIR; fi
-    # Set install path for PHPCS sniffs.
-    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --config-set installed_paths $(pwd),$WPCS_DIR,$PHPCOMPAT_DIR; fi
-    # After CodeSniffer install you should refresh your path.
-    - phpenv rehash
+    - export PHPCS_DIR=$(pwd)/vendor/squizlabs/php_codesniffer
+    - export PHPCS_BIN=$(pwd)/vendor/bin/phpcs
+    # Set the PHPCS version to test against.
+    - composer require squizlabs/php_codesniffer:${PHPCS_BRANCH} --no-update --no-suggest --no-scripts
+    - |
+      if [[ "$SNIFF" == "1" ]]; then
+          composer install --dev --no-suggest
+          # The post-install-cmd script takes care of the installed_paths.
+      else
+          # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
+          composer remove wp-coding-standards/wpcs wimg/php-compatibility phpmd/phpmd --no-update
+          # This will now only install the version of PHPCS to test against.
+          composer install --no-dev --no-suggest --no-scripts
+          # Set the installed_paths for the test environment.
+          $PHPCS_BIN --config-set installed_paths $(pwd)
+      fi
 
 script:
-    - if [[ "$PHPLINT" == "1" ]]; then if find . -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
+    - if [[ "$PHPLINT" == "1" ]]; then if find . -path ./vendor -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
     - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
     # Check the codestyle of the files within YoastCS.
     - if [[ "$SNIFF" == "1" ]]; then $PHPCS_BIN --runtime-set ignore_warnings_on_exit 1; fi

@@ -80,7 +80,6 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		'FileNameUnitTest.inc'            => 1,
 	);
 
-
 	/**
 	 * Set CLI values before the file is tested.
 	 *
@@ -150,5 +149,4 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 
 		return array();
 	}
-
 }

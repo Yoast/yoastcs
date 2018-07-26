@@ -49,5 +49,4 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 		return array();
 
 	}
-
 }

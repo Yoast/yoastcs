@@ -59,7 +59,7 @@ before_install:
           # The post-install-cmd script takes care of the installed_paths.
       else
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
-          composer remove wp-coding-standards/wpcs wimg/php-compatibility phpmd/phpmd --no-update
+          composer remove wp-coding-standards/wpcs phpcompatibility/phpcompatibility-wp phpmd/phpmd --no-update
           # This will now only install the version of PHPCS to test against.
           composer install --no-dev --no-suggest --no-scripts
           # Set the installed_paths for the test environment.

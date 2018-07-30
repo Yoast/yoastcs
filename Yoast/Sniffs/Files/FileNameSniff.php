@@ -297,4 +297,4 @@ class FileNameSniff implements Sniff {
 		return ltrim( strtr( $path, '\\', '/' ), '/' );
 	}
 
-} // End class.
+}

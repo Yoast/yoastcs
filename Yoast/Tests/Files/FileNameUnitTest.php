@@ -114,7 +114,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 
 		return array( $testFileBase . '.inc' );
 
-	} // End getTestFiles().
+	}
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -151,4 +151,4 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		return array();
 	}
 
-} // End class.
+}

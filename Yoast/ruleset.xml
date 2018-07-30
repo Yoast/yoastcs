@@ -83,6 +83,9 @@
 		</properties>
 	</rule>
 
+	<!-- CS: no blank line between the content of a function and a function close brace.-->
+	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
+
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- Exclude the 'empty' index files from some documentation checks -->

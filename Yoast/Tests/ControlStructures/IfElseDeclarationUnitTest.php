@@ -37,7 +37,6 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 			76 => 1,
 			84 => 2,
 		);
-
 	}
 
 	/**
@@ -47,6 +46,5 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList() {
 		return array();
-
 	}
 }

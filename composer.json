@@ -43,5 +43,5 @@
 		],
 		"post-install-cmd": "composer config-set",
 		"post-update-cmd": "composer config-set"
-	},
+	}
 }

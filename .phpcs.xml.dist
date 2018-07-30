@@ -24,16 +24,6 @@
 
 		<!-- Conflicts with variable names coming from PHPCS itself. -->
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
-
-		<!-- As the YoastCS ruleset is loaded *after* this ruleset, it overrules the
-			 PHPCompatibility testVersion set here, so we have to resort to excluding
-			 some error messages.... -->
-		<exclude name="PHPCompatibility.PHP.NewConstants.t_traitFound"/>
-		<exclude name="PHPCompatibility.PHP.NewKeywords.t_dirFound"/>
-		<exclude name="PHPCompatibility.PHP.NewKeywords.t_namespaceFound"/>
-		<exclude name="PHPCompatibility.PHP.NewKeywords.t_useFound"/>
-		<exclude name="PHPCompatibility.PHP.NewLanguageConstructs.t_ns_separatorFound"/>
-
 	</rule>
 
 	<!-- Enforce PSR1 compatible namespaces. -->

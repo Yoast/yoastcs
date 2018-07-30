@@ -76,7 +76,6 @@ class FileNameSniff implements Sniff {
 		T_TRAIT,
 	);
 
-
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
@@ -85,7 +84,6 @@ class FileNameSniff implements Sniff {
 	public function register() {
 		return array( T_OPEN_TAG );
 	}
-
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -204,7 +202,6 @@ class FileNameSniff implements Sniff {
 		return ( $phpcsFile->numTokens + 1 );
 	}
 
-
 	/**
 	 * Check if the file is on the exclude list.
 	 *
@@ -245,7 +242,6 @@ class FileNameSniff implements Sniff {
 		return false;
 	}
 
-
 	/**
 	 * Clean a custom array property received from a ruleset.
 	 *
@@ -285,7 +281,6 @@ class FileNameSniff implements Sniff {
 		return $property;
 	}
 
-
 	/**
 	 * Normalize all directory separators to be a forward slash and remove prefixed slash.
 	 *
@@ -296,5 +291,4 @@ class FileNameSniff implements Sniff {
 	private function normalize_directory_separators( $path ) {
 		return ltrim( strtr( $path, '\\', '/' ), '/' );
 	}
-
 }

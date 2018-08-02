@@ -71,18 +71,6 @@
 	<rule ref="Generic.PHP.LowerCaseType"/>
 	<rule ref="PSR12.Keywords.ShortFormTypeKeywords"/>
 
-	<!-- CS: standardize the number of blank lines between functions. -->
-	<rule ref="Squiz.WhiteSpace.FunctionSpacing">
-		<properties>
-			<!-- In a class, there should be 1 blank line between functions ... -->
-			<property name="spacing" value="1"/>
-			<!-- and one blank line before the first function ... -->
-			<property name="spacingBeforeFirst" value="1"/>
-			<!-- and no blank line between the last function and the class closing brace. -->
-			<property name="spacingAfterLast" value="0"/>
-		</properties>
-	</rule>
-
 	<!-- CS: no blank line between the content of a function and a function close brace.-->
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
 

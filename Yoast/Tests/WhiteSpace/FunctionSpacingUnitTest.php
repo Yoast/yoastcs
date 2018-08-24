@@ -6,19 +6,18 @@
  * @license https://opensource.org/licenses/MIT MIT
  */
 
-namespace YoastCS\Yoast\Tests\ControlStructures;
+namespace YoastCS\Yoast\Tests\WhiteSpace;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the IfElseDeclaration sniff.
+ * Unit test class for the FunctionSpacing sniff.
  *
  * @package Yoast\YoastCS
  *
- * @since   0.4.1
- * @since   0.5   This class now uses namespaces and is no longer compatible with PHPCS 2.x.
+ * @since   1.0.0
  */
-class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
+class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -27,15 +26,16 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			22 => 1,
-			28 => 1,
-			30 => 1,
-			34 => 1,
-			37 => 1,
-			44 => 1,
-			51 => 1,
-			76 => 1,
-			84 => 2,
+			31 => 1,
+			33 => 1,
+			39 => 1,
+			46 => 1,
+			53 => 2,
+			57 => 1,
+			60 => 1,
+			74 => 1,
+			87 => 2,
+			88 => 1,
 		);
 	}
 

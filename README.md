@@ -66,3 +66,8 @@ All issues are considered informational for code development and maintenance.
 Refer to [Using PHP Mess Detector](https://www.jetbrains.com/phpstorm/help/using-php-mess-detector.html) in PhpStorm documentation.
 
 After installation add `phpmd.xml` file from project as custom ruleset in PHP Mess Detector Validation inspection settings.
+
+
+## Changelog
+
+The changelog for this package can be found in the [CHANGELOG.md](https://github.com/Yoast/yoastcs/blob/develop/CHANGELOG.md) file.

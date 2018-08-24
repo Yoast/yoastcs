@@ -24,7 +24,6 @@ use PHP_CodeSniffer\Util\Tokens;
  */
 class IfElseDeclarationSniff implements Sniff {
 
-
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
@@ -35,9 +34,7 @@ class IfElseDeclarationSniff implements Sniff {
 			T_ELSE,
 			T_ELSEIF,
 		);
-
-	}//end register()
-
+	}
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -96,7 +93,5 @@ class IfElseDeclarationSniff implements Sniff {
 			);
 			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
 		}
-
-	}//end process()
-
-}//end class
+	}
+}

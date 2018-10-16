@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="Yoast Coding Standard">
-	<description>The Coding standard for the Yoast Coding Standard itself.</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="Yoast Coding Standard"
+    xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+	<description>The Coding standard for the YoastCS Coding Standard itself.</description>
 
 	<!-- Scan all files. -->
 	<file>.</file>

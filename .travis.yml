@@ -69,7 +69,7 @@ before_install:
 
 script:
     - if [[ "$PHPLINT" == "1" ]]; then if find . -path ./vendor -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
-    - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
+    - phpunit --filter Yoast $PHPCS_DIR/tests/AllTests.php
     # Check the codestyle of the files within YoastCS.
     - if [[ "$SNIFF" == "1" ]]; then composer check-cs; fi
     # Validate the xml files.

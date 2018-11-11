@@ -35,14 +35,14 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
 	},
 	"scripts": {
-		"config-set" : [
+		"config-yoastcs" : [
 			"Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 			"\"vendor/bin/phpcs\" --config-set default_standard Yoast"
 		],
 		"check-cs": [
 			"\"vendor/bin/phpcs\" --runtime-set testVersion 5.4-"
 		],
-		"post-install-cmd": "composer config-set",
-		"post-update-cmd": "composer config-set"
+		"post-install-cmd": "composer config-yoastcs",
+		"post-update-cmd": "composer config-yoastcs"
 	}
 }

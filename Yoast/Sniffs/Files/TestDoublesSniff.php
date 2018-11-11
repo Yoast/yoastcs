@@ -133,15 +133,23 @@ class TestDoublesSniff implements Sniff {
 		}
 
 		$more_objects_in_file = $phpcsFile->findNext( $this->register(), ( $stackPtr + 1 ) );
-		if ( false !== $more_objects_in_file ) {
+		if ( $more_objects_in_file === false ) {
+			$more_objects_in_file = $phpcsFile->findPrevious( $this->register(), ( $stackPtr - 1 ) );
+		}
+
+		if ( $more_objects_in_file !== false ) {
+			$data = array(
+				$tokens[ $stackPtr ]['content'],
+				$object_name,
+				$tokens[ $more_objects_in_file ]['content'],
+				$phpcsFile->getDeclarationName( $more_objects_in_file ),
+			);
+
 			$phpcsFile->addError(
-				'Double/Mock test helper classes should be in their own file. Found %s: %s',
+				'Double/Mock test helper classes should be in their own file. Found %1$s: %2$s and %3$s: %4$s',
 				$stackPtr,
 				'OneObjectPerFile',
-				array(
-					$tokens[ $stackPtr ]['content'],
-					$object_name,
-				)
+				$data
 			);
 		}
 	}

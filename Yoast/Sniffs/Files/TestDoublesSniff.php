@@ -89,8 +89,10 @@ class TestDoublesSniff implements Sniff {
 		}
 
 		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
+		$base_path = rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
+
 		if ( ! isset( $this->target_path ) || defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
-			$target_path  = $base_path . '/';
+			$target_path  = $base_path;
 			$target_path .= ltrim( $this->normalize_directory_separators( $this->doubles_path ), '/' );
 
 			$this->target_path = false;

@@ -93,7 +93,7 @@ class TestDoublesSniff implements Sniff {
 
 		if ( ! isset( $this->target_path ) || defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
 			$target_path  = $base_path;
-			$target_path .= ltrim( $this->normalize_directory_separators( $this->doubles_path ), '/' );
+			$target_path .= trim( $this->normalize_directory_separators( $this->doubles_path ), '/' ) . '/';
 
 			$this->target_path = false;
 			if ( file_exists( $target_path ) && is_dir( $target_path ) ) {
@@ -114,14 +114,9 @@ class TestDoublesSniff implements Sniff {
 			);
 		}
 
-		$path_info = pathinfo( $file );
-		if ( empty( $path_info['dirname'] ) ) {
-			return;
-		}
-
-		$tokens  = $phpcsFile->getTokens();
-		$dirname = $this->normalize_directory_separators( $path_info['dirname'] );
-		if ( false === $this->target_path || stripos( $dirname, $this->target_path ) === false ) {
+		$tokens       = $phpcsFile->getTokens();
+		$path_to_file = $this->normalize_directory_separators( $file );
+		if ( false === $this->target_path || stripos( $path_to_file, $this->target_path ) === false ) {
 			$phpcsFile->addError(
 				'Double/Mock test helper classes should be placed in the "%s" sub-directory. Found %s: %s',
 				$stackPtr,

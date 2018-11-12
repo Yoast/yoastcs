@@ -102,6 +102,12 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 					5 => 1,
 				);
 
+			// In tests/doubles-not-correct.
+			case 'not-in-correct-subdir.inc':
+				return array(
+					3 => 1,
+				);
+
 			case 'not-double-or-mock.inc': // In tests.
 			case 'correct-dir-double.inc': // In tests/doubles.
 			case 'correct-dir-mock.inc': // In tests/doubles.

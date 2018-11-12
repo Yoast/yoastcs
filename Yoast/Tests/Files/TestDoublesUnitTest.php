@@ -80,9 +80,14 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 					7 => 2,
 				);
 
+			case 'non-existant-doubles-dir.inc':
+				return array(
+					4 => 1,
+				);
+
 			case 'not-in-correct-custom-dir.inc':
 				return array(
-					4 => 2,
+					4 => 1,
 				);
 
 			case 'not-in-correct-dir-double.inc':
@@ -125,12 +130,19 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList( $testFile = '' ) {
-		if ( $testFile === 'no-basepath.inc' ) {
-			return array(
-				1 => 1,
-			);
-		}
+		switch ( $testFile ) {
+			case 'no-basepath.inc':
+				return array(
+					1 => 1,
+				);
 
-		return array();
+			case 'no-doubles-path-property.inc':
+				return array(
+					1 => 1,
+				);
+
+			default:
+				return array();
+		}
 	}
 }

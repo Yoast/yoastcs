@@ -12,8 +12,8 @@ namespace YoastCS\Yoast\Sniffs\WP;
 use WordPress\AbstractFunctionParameterSniff;
 
 /**
- * Sniff that ensures the optional parameter for update_option and set_option
- * are defined because we want developers to be conscious about what is needed.
+ * Sniff that ensures the optional parameter for update_option() and add_option()
+ * are passed because we want developers to be conscious about what is needed.
  *
  * @package Yoast\YoastCS
  * @author  Jip Moors
@@ -38,7 +38,7 @@ class RequiredOptionalParametersSniff extends AbstractFunctionParameterSniff {
 	 *            (int) Target parameter position, 1-based. => array(
 	 *                'name'       => (string)  The name of the argument that should be set.
 	 *                'enforce'    => (boolean) If this should trigger an error or warning.
-	 *                'allow_null' => (boolean) If `null` is seen as setting the optional value, defaults to False.
+	 *                'allow_null' => (boolean) Whether `null` is seen as setting the optional value. Defaults to false.
 	 *            )
 	 *         )
 	 *    );

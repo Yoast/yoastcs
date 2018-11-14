@@ -73,7 +73,7 @@ class RequiredOptionalParametersSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		foreach ( $this->target_functions[ $matched_content ] as $position => $parameter_args ) {
-			// Check that number of parameters defined is not less than the position to check.
+			// Check that a valid parameter value is being passed.
 			if ( $this->has_valid_parameter( $parameters, $position, $parameter_args ) ) {
 				continue;
 			}

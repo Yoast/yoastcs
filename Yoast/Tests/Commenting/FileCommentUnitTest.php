@@ -1,0 +1,56 @@
+<?php
+
+namespace YoastCS\Yoast\Tests\Commenting;
+
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+
+/**
+ * Unit test class for the FileComment sniff.
+ *
+ * @package Yoast\YoastCS
+ *
+ * @since   1.2.0
+ */
+class FileCommentUnitTest extends AbstractSniffUnitTest {
+
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array <int line number> => <int number of errors>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'FileCommentUnitTest.2.inc':
+			case 'FileCommentUnitTest.8.inc':
+			case 'FileCommentUnitTest.10.inc':
+				return array(
+					1 => 1,
+				);
+
+			default:
+				return array();
+		}
+	}
+
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array <int line number> => <int number of warnings>
+	 */
+	public function getWarningList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'FileCommentUnitTest.4.inc':
+			case 'FileCommentUnitTest.6.inc':
+				return array(
+					2 => 1,
+				);
+
+			default:
+				return array();
+		}
+	}
+}

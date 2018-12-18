@@ -22,6 +22,23 @@
 		<!-- Excluded in favour of the YoastCS native Filename sniff. -->
 		<exclude name="WordPress.Files.FileName"/>
 
+		<!-- Excluded in favour of the YoastCS native FileComment sniff (which extends this sniff). -->
+		<exclude name="Squiz.Commenting.FileComment"/>
+		<!-- As the Yoast sniff extends the upstream sniff, we need to exclude the same error codes
+			 as WPCS excludes in the Docs ruleset, but now for the Yoast sniff.
+			 Once WPCS introduces a proper WP standards based FileComment sniff, the Yoast
+			 sniff should extend that sniff instead of the PHPCS Squiz sniff and
+			 these exclusions can then be removed. -->
+		<exclude name="Yoast.Commenting.FileComment.IncorrectAuthor"/>
+		<exclude name="Yoast.Commenting.FileComment.IncorrectCopyright"/>
+		<exclude name="Yoast.Commenting.FileComment.MissingAuthorTag"/>
+		<exclude name="Yoast.Commenting.FileComment.MissingSubpackageTag"/>
+		<exclude name="Yoast.Commenting.FileComment.MissingCopyrightTag"/>
+		<exclude name="Yoast.Commenting.FileComment.PackageTagOrder"/>
+		<exclude name="Yoast.Commenting.FileComment.SubpackageTagOrder"/>
+		<exclude name="Yoast.Commenting.FileComment.AuthorTagOrder"/>
+		<exclude name="Yoast.Commenting.FileComment.CopyrightTagOrder"/>
+
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 
@@ -86,7 +103,7 @@
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- Exclude the 'empty' index files from some documentation checks -->
-	<rule ref="Squiz.Commenting.FileComment">
+	<rule ref="Yoast.Commenting.FileComment">
 		<exclude-pattern>*/index\.php</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.InlineComment.NoSpaceBefore">

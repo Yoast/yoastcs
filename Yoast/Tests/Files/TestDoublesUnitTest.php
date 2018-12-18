@@ -1,11 +1,4 @@
 <?php
-/**
- * Unit test class for Yoast Coding Standard.
- *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- * @license https://opensource.org/licenses/MIT MIT
- */
 
 namespace YoastCS\Yoast\Tests\Files;
 

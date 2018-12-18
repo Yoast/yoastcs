@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 
 This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [1.1.0] - 2018-12-18
+
+#### Added
+* PHPCS: New `Yoast.Commenting.CodeCoverageIgnoreDeprecated` sniff.
+    This sniff verifies that functions which have a `@deprecated` tag in the function docblock, also have a `@codeCoverageIgnore` tag in the same docblock.
+* PHPCS: Added XSD schema tags to the ruleset.
+* Composer: requirement of the [DealerDirect Composer PHPCS plugin] at version `^0.5.0`.
+    This means that - in most cases - projects which `require(-dev)` YoastCS, will no longer need to have the plugin in their own `composer.json` and will still get the benefit of it.
+* Travis: Validation of the ruleset against the PHPCS XSD schema.
+* Travis: Testing of the code against PHP 7.3.
+
+#### Changed
+* PHPCS: The `Yoast.Files.TestDoubles` sniff now allows setting multiple valid paths for test doubles to be placed in.
+    To this end, the public `doubles_path` property has been changed from a `string` to an `array`.
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.3.1` to `^3.3.2`.
+* Composer: Supported version of [WordPressCS] has been changed from `^1.0.0` to `^1.2.0`.
+* Composer: Supported version of [PHPCompatibilityWP] has been changed from `^1.0.0` to `^2.0.0`, which uses [PHPCompatibility] `^9.0.0` under the hood.
+* Composer: The `config-set` script for use with this repo has been renamed to `config-yoastcs` to be in line with the same script in other repos.
+* Minor housekeeping: updated `.gitignore`.
+
+#### Removed
+* PHPCS: Minor housekeeping: removed some unused code.
+* Composer: `suggest` section. The [DealerDirect Composer PHPCS plugin] is now included in the `require` section.
+
+#### Fixed
+* PHPCS: Various fixes to the `Yoast.Files.TestDoubles` sniff.
+    - If the `basepath` contained a trailing slash, the sniff could give incorrect results.
+    - Prevent the sniff from recognizing a path like `/tests/doublesniff` as correct when `/test/doubles` is in the allowed list.
+    - The `OneObjectPerFile` check will now check both code _above_ the detected mock/double class as well as code _below_ it.
 
 ### [1.0.0] - 2018-08-24
 
@@ -189,6 +218,7 @@ Initial public release as a stand-alone package.
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 
+[1.1.0]: https://github.com/Yoast/yoastcs/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/Yoast/yoastcs/compare/0.5.0...1.0.0
 [0.5]: https://github.com/Yoast/yoastcs/compare/0.4.3...0.5
 [0.4.3]: https://github.com/Yoast/yoastcs/compare/0.4.2...0.4.3

@@ -1,0 +1,56 @@
+<?php
+
+class SomeThing {
+
+	/**
+	 * Active (non-deprecated) function.
+	 */
+	function activeFunction() {}
+
+	/**
+	 * @deprecated x.x
+	 * @codeCoverageIgnore
+	 */
+	public /* don't get confused by this */ function correctDocblock() {
+		// Code
+    } // end function
+
+    public function functionWithoutDocblock {}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @deprecated x.x
+	 */
+	private static function correctDocblockReverseOrder() {}
+
+	/**
+	 * @deprecated x.x
+	 *
+	 * @param string $param1 Short desc.
+	 * @param string $param2 Short desc.
+	 *
+	 * @return bool
+	 *
+	 * @codeCoverageIgnore
+	 */
+	protected function correctDocblockOtherTagsIrrelevant() {}
+
+	/**
+	 * @deprecated x.x
+	 *
+	 * @codeCoverageIgnore
+	 */
+	private static function ignoreNotAsTag() {}
+
+	/**
+	 * @deprecated x.x
+	 *
+	 * This is a sentence containing the phrase codeCoverageIgnore, but should not be regarded as the tag.
+	 */
+	static protected function missingCodeCoverageIgnore() {}
+
+	/**
+	 * @deprecated x.x
+	 */
+	public function missingCodeCoverageIgnore() {}
+}

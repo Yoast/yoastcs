@@ -1,10 +1,4 @@
 <?php
-/**
- * Unit test class for the Yoast Coding Standard.
- *
- * @package Yoast\YoastCS
- * @license https://opensource.org/licenses/MIT MIT
- */
 
 namespace YoastCS\Yoast\Tests\ControlStructures;
 

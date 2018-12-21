@@ -1,11 +1,4 @@
 <?php
-/**
- * YoastCS\Yoast\Sniffs\Files\TestDoublesSniff.
- *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- * @license https://opensource.org/licenses/MIT MIT
- */
 
 namespace YoastCS\Yoast\Sniffs\Files;
 

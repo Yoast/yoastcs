@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [1.2.0] - 2018-12-21
+
+#### Added
+* PHPCS: New `Yoast.Commenting.FileComment` sniff.
+    This sniff is a wrapper around the `FileComment` sniff used in WordPressCS and manages the slightly different requirements for file comments set for the Yoast organisation, in particular:
+	- If a file is namespaced, no file comment is needed (and having one is discouraged).
+* PHPCS: New `Yoast.Namespaces.NamespaceDeclaration` sniff.
+    This sniff forbids the use of:
+    - Namespace declarations without a namespace name, i.e. `namespace;` which in effect means "global namespace".
+    - Scoped namespace declarations.
+    - Multiple namespace declarations in one file.
+
 ### [1.1.0] - 2018-12-18
 
 #### Added
@@ -218,6 +230,7 @@ Initial public release as a stand-alone package.
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 
+[1.2.0]: https://github.com/Yoast/yoastcs/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/Yoast/yoastcs/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/Yoast/yoastcs/compare/0.5.0...1.0.0
 [0.5]: https://github.com/Yoast/yoastcs/compare/0.4.3...0.5

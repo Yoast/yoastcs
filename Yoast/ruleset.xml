@@ -86,10 +86,10 @@
 	These may make it into WPCS at some point. If so, they can be removed here.
 	#############################################################################
 	-->
-	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed -->
+	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed. -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 
-	<!-- Error prevention: Make sure arithmetics are bracketed -->
+	<!-- Error prevention: Make sure arithmetics are bracketed. -->
 	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
 
 	<!-- CS: PHP type casts and type declarations should be in short form and lowercase. -->
@@ -99,6 +99,22 @@
 
 	<!-- CS: no blank line between the content of a function and a function close brace.-->
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
+
+	<!-- Error prevention: Ensure no git conflicts make it into the code base. -->
+	<!-- PHPCS 3.4.0: This sniff will be added to WPCS 2.x in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1500 -->
+	<rule ref="Generic.VersionControl.GitMergeConflict"/>
+
+	<!-- CS: no space between an increment/decrement operator and the variable it applies to. -->
+	<!-- PHPCS 3.4.0: This sniff will be added to WPCS 2.x in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1511 -->
+	<rule ref="Generic.WhiteSpace.IncrementDecrementSpacing"/>
+
+	<!-- QA: Function declarations should not contain parameters which will never be used. -->
+	<!-- PHPCS 3.4.0: This sniff will be added to WPCS 2.x in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1510 -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.Found"/>
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
 
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 

@@ -7,6 +7,7 @@
 		"wordpress",
 		"yoast"
 	],
+	"homepage": "https://github.com/Yoast/yoastcs",
 	"license": "MIT",
 	"authors": [
 		{
@@ -17,7 +18,8 @@
 	],
 	"type" : "phpcodesniffer-standard",
 	"support": {
-		"issues": "https://github.com/Yoast/yoastcs/issues"
+		"issues": "https://github.com/Yoast/yoastcs/issues",
+		"source": "https://github.com/Yoast/yoastcs"
 	},
 	"require": {
 		"php": ">=5.4",
@@ -32,6 +34,8 @@
 		"roave/security-advisories": "dev-master",
 		"phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
 	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"scripts": {
 		"config-yoastcs" : [
 			"Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
@@ -39,6 +43,9 @@
 		],
 		"check-cs": [
 			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --runtime-set testVersion 5.4-"
+		],
+		"fix-cs": [
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
 		],
 		"test": [
 			"@php ./vendor/phpunit/phpunit/phpunit --filter Yoast --bootstrap=\"./vendor/squizlabs/php_codesniffer/tests/bootstrap.php\" ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"

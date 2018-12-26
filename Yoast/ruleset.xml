@@ -94,11 +94,6 @@
 	<!-- Error prevention: Make sure arithmetics are bracketed. -->
 	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
 
-	<!-- CS: PHP type casts and type declarations should be in short form and lowercase. -->
-	<!-- These sniffs will be most likely be added to WPCS 2.0 and can then be removed from this ruleset. -->
-	<rule ref="Generic.PHP.LowerCaseType"/>
-	<rule ref="PSR12.Keywords.ShortFormTypeKeywords"/>
-
 	<!-- CS: no blank line between the content of a function and a function close brace.-->
 	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
 

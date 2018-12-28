@@ -48,7 +48,7 @@ class NamespaceDeclarationSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		$found_declaration = array();
+		$statements = array();
 
 		while ( ( $stackPtr = $phpcsFile->findNext( T_NAMESPACE, ( $stackPtr + 1 ) ) ) !== false ) {
 

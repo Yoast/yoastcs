@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [1.2.1] - 2018-12-28
+
+#### Fixed
+* Undefined variable in `Yoast.Namespaces.NamespaceDeclaration` sniff. 
+
 ### [1.2.0] - 2018-12-21
 
 #### Added

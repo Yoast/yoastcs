@@ -57,7 +57,7 @@ before_install:
     - |
       if [[ "$SNIFF" == "1" ]]; then
           composer install --dev --no-suggest
-          # The post-install-cmd script takes care of the installed_paths.
+          # The DealerDirect Composer plugin script takes care of the installed_paths.
       else
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
           composer remove wp-coding-standards/wpcs phpcompatibility/phpcompatibility-wp phpmd/phpmd --no-update

@@ -29,17 +29,19 @@
 	},
 	"require-dev": {
 		"phpcompatibility/php-compatibility": "^9.0.0",
-		"roave/security-advisories": "dev-master"
+		"roave/security-advisories": "dev-master",
+		"phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
 	},
 	"scripts": {
 		"config-yoastcs" : [
 			"Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-			"\"vendor/bin/phpcs\" --config-set default_standard Yoast"
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --config-set default_standard Yoast"
 		],
 		"check-cs": [
-			"\"vendor/bin/phpcs\" --runtime-set testVersion 5.4-"
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --runtime-set testVersion 5.4-"
 		],
-		"post-install-cmd": "composer config-yoastcs",
-		"post-update-cmd": "composer config-yoastcs"
+		"test": [
+			"@php ./vendor/phpunit/phpunit/phpunit --filter Yoast --bootstrap=\"./vendor/squizlabs/php_codesniffer/tests/bootstrap.php\" ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+		]
 	}
 }

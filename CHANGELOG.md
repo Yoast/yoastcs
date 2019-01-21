@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
-### [1.2.2] - 2019-01-18
+### [1.2.2] - 2019-01-21
 
 #### Changed
 * Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.3.2` to `^3.4.0`.

@@ -7,6 +7,6 @@
 	colors="true">
 
 	<php>
-		<env name="PHPCS_IGNORE_TESTS" value="PHPCompatibility,WordPress,WordPress-Core,WordPress-Docs,WordPress-Extra,WordPress-VIP"/>
+		<env name="PHPCS_IGNORE_TESTS" value="PHPCompatibility,WordPress"/>
 	</php>
 </phpunit>

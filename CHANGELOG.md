@@ -4,10 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [1.2.2] - 2019-01-21
+
+#### Changed
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.3.2` to `^3.4.0`.
+* Composer: Supported version of [WordPressCS] has been changed from `^1.2.0` to `^2.0.0`.
+* PHPCS: The PHPCompatibility ruleset will now explicitly only be applied to PHP files.
+
 ### [1.2.1] - 2018-12-28
 
 #### Fixed
-* Undefined variable in `Yoast.Namespaces.NamespaceDeclaration` sniff. 
+* PHPCS: Undefined variable in the `Yoast.Namespaces.NamespaceDeclaration` sniff.
 
 ### [1.2.0] - 2018-12-21
 
@@ -235,6 +242,8 @@ Initial public release as a stand-alone package.
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 
+[1.2.2]: https://github.com/Yoast/yoastcs/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/Yoast/yoastcs/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/Yoast/yoastcs/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/Yoast/yoastcs/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/Yoast/yoastcs/compare/0.5.0...1.0.0

@@ -27,7 +27,7 @@ env:
   # Test against the highest supported PHPCS version.
   - PHPCS_BRANCH="dev-master" PHPLINT=1
   # Test against the lowest supported PHPCS version.
-  - PHPCS_BRANCH="3.3.1"
+  - PHPCS_BRANCH="3.4.0"
 
 matrix:
   fast_finish: true
@@ -57,7 +57,7 @@ before_install:
     - |
       if [[ "$SNIFF" == "1" ]]; then
           composer install --dev --no-suggest
-          # The post-install-cmd script takes care of the installed_paths.
+          # The DealerDirect Composer plugin script takes care of the installed_paths.
       else
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
           composer remove wp-coding-standards/wpcs phpcompatibility/phpcompatibility-wp phpmd/phpmd --no-update

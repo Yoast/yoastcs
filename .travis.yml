@@ -21,7 +21,7 @@ php:
     - 7.1
     - 7.2
     - 7.3
-    - nightly
+    - "7.4snapshot"
 
 env:
   # Test against the highest supported PHPCS version.
@@ -42,7 +42,7 @@ matrix:
 
   allow_failures:
     # Allow failures for unstable builds.
-    - php: nightly
+    - php: "7.4snapshot"
 
 before_install:
     # Speed up build time by disabling Xdebug.

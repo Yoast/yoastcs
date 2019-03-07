@@ -21,7 +21,7 @@ php:
     - 7.1
     - 7.2
     - 7.3
-    - nightly
+    - "7.4snapshot"
 
 env:
   # Test against the highest supported PHPCS version.
@@ -42,7 +42,7 @@ matrix:
 
   allow_failures:
     # Allow failures for unstable builds.
-    - php: nightly
+    - php: "7.4snapshot"
 
 before_install:
     # Speed up build time by disabling Xdebug.
@@ -61,6 +61,8 @@ before_install:
       else
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
           composer remove wp-coding-standards/wpcs phpcompatibility/phpcompatibility-wp phpmd/phpmd --no-update
+          # The Travis images for PHP >= 7.2 ship with PHPUnit 8, but the unit test suite is not compatible with that.
+          if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.1" ]]; then composer require phpunit/phpunit:^7.0 --no-update --no-suggest --no-scripts;fi
           # This will now only install the version of PHPCS to test against.
           composer install --no-dev --no-suggest --no-scripts
           # Set the installed_paths for the test environment.
@@ -69,7 +71,12 @@ before_install:
 
 script:
     - if [[ "$PHPLINT" == "1" ]]; then if find . -path ./vendor -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
-    - phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
+    - |
+      if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.1" ]]; then
+        vendor/bin/phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
+      else
+        phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
+      fi
     # Check the codestyle of the files within YoastCS.
     - if [[ "$SNIFF" == "1" ]]; then composer check-cs; fi
     # Validate the xml files.

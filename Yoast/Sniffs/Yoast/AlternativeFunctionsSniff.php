@@ -50,11 +50,11 @@ class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 			$replacement = $this->groups[ $group_name ]['replacement'];
 		}
 
-		$fixable = true;
-		$error   = $this->groups[ $group_name ]['message'];
-		$type    = ( $this->groups[ $group_name ]['type'] === 'error' );
-		$code    = $this->string_to_errorcode( $group_name . '_' . $matched_content );
-		$data    = array(
+		$fixable    = true;
+		$message    = $this->groups[ $group_name ]['message'];
+		$is_error   = ( $this->groups[ $group_name ]['type'] === 'error' );
+		$error_code = $this->string_to_errorcode( $group_name . '_' . $matched_content );
+		$data       = array(
 			$matched_content,
 			$replacement,
 		);
@@ -70,19 +70,19 @@ class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 				 * when only the first parameter is passed.
 				 */
 				if ( $this->get_function_call_parameter_count( $stackPtr ) !== 1 ) {
-					$fixable = false;
-					$code   .= 'WithAdditionalParams';
+					$fixable     = false;
+					$error_code .= 'WithAdditionalParams';
 				}
 
 				break;
 		}
 
 		if ( $fixable === false ) {
-			$this->addMessage( $error, $stackPtr, $type, $code, $data );
+			$this->addMessage( $message, $stackPtr, $is_error, $error_code, $data );
 			return;
 		}
 
-		$fix = $this->addFixableMessage( $error, $stackPtr, $type, $code, $data );
+		$fix = $this->addFixableMessage( $message, $stackPtr, $is_error, $error_code, $data );
 		if ( $fix === true ) {
 			$namespaced = $this->determine_namespace( $stackPtr );
 

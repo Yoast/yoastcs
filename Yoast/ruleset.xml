@@ -51,6 +51,15 @@
 		<exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
 	</rule>
 
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<properties>
+			<property name="exclude" type="array">
+				<!-- Excluded in favour of the YoastCS native AlternativeFunctions sniff. -->
+				<element value="json_encode"/>
+			</property>
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
 		<properties>
 			<!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->

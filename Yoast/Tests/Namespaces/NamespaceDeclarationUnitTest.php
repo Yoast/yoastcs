@@ -10,6 +10,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @package Yoast\YoastCS
  *
  * @since   1.2.0
+ *
+ * @covers  YoastCS\Yoast\Sniffs\Namespaces\NamespaceDeclarationSniff
  */
 class NamespaceDeclarationUnitTest extends AbstractSniffUnitTest {
 

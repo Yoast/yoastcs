@@ -11,6 +11,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since   0.4.1
  * @since   0.5   This class now uses namespaces and is no longer compatible with PHPCS 2.x.
+ *
+ * @covers  YoastCS\Yoast\Sniffs\ControlStructures\IfElseDeclarationSniff
  */
 class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 

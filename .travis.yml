@@ -63,12 +63,12 @@ before_install:
           # The DealerDirect Composer plugin script takes care of the installed_paths.
       else
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
-          composer remove phpcompatibility/phpcompatibility-wp phpmd/phpmd --no-update
+          composer remove phpcompatibility/phpcompatibility-wp --no-update
           # The Travis images for PHP >= 7.2 ship with PHPUnit 8, but the unit test suite is not compatible with that.
           if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.1" ]]; then composer require phpunit/phpunit:^7.0 --no-update --no-suggest --no-scripts;fi
           # This will now only install the version of PHPCS/WPCS to test against.
           composer install --no-dev --no-suggest
-          # The DealerDirect Composer plugincompos script takes care of the installed_paths.
+          # The DealerDirect PHPCS Composer plugin takes care of the installed_paths.
       fi
     - $PHPCS_BIN -i
 
@@ -85,10 +85,8 @@ script:
     # Validate the xml files.
     # @link http://xmlsoft.org/xmllint.html
     - if [[ "$SNIFF" == "1" ]]; then xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./Yoast/ruleset.xml; fi
-    - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./phpmd.xml; fi
     # Check the code-style consistency of the xml files.
     - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml"); fi
-    - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./phpmd.xml <(xmllint --format "./phpmd.xml"); fi
     # Validate the composer.json file.
     # @link https://getcomposer.org/doc/03-cli.md#validate
     - if [[ "$PHPLINT" == "1" ]]; then composer validate --no-check-all --strict; fi

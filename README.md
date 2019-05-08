@@ -47,27 +47,6 @@ Refer to [Using PHP Code Sniffer Tool](https://www.jetbrains.com/phpstorm/help/u
 
 After installation `Yoast` standard will be available as a choice in PHP Code Sniffer Validation inspection.
 
-## PHP Mess Detector
-
-Set of [PHP Mess Detector](http://phpmd.org/) rules.
-
-Original ruleset, produced for Yoast projects, taking under consideration typical WordPress practices and current state of code base.
-
-All issues are considered informational for code development and maintenance.
-
-### Command line
-
-```bash
-"vendor/bin/phpmd" /path/to/folder/ text phpmd.xml
-```
-
-### PhpStorm
-
-Refer to [Using PHP Mess Detector](https://www.jetbrains.com/phpstorm/help/using-php-mess-detector.html) in PhpStorm documentation.
-
-After installation add `phpmd.xml` file from project as custom ruleset in PHP Mess Detector Validation inspection settings.
-
-
 ## Changelog
 
 The changelog for this package can be found in the [CHANGELOG.md](https://github.com/Yoast/yoastcs/blob/develop/CHANGELOG.md) file.

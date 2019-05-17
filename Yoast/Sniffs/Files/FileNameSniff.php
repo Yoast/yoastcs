@@ -32,7 +32,7 @@ class FileNameSniff implements Sniff {
 	 *
 	 * These prefixes do not need to be reflected in the file name.
 	 *
-	 * @var string[]|string
+	 * @var string[]
 	 */
 	public $prefixes = array();
 
@@ -53,7 +53,7 @@ class FileNameSniff implements Sniff {
 	 * from the root of the repository - , the PHPCS `--basepath` config variable
 	 * needs to be set. If it is not, a warning will be issued.
 	 *
-	 * @var string[]|string
+	 * @var string[]
 	 */
 	public $exclude = array();
 
@@ -238,7 +238,6 @@ class FileNameSniff implements Sniff {
 	 * Clean a custom array property received from a ruleset.
 	 *
 	 * Deals with incorrectly passed custom array properties.
-	 * - If the property was passed as a string, change it to an array.
 	 * - Remove whitespace surrounding values.
 	 * - Remove empty array entries.
 	 *
@@ -251,15 +250,6 @@ class FileNameSniff implements Sniff {
 	 * @return array
 	 */
 	protected function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
-		if ( is_bool( $property ) ) {
-			// Allow for resetting in the unit tests.
-			return array();
-		}
-
-		if ( is_string( $property ) ) {
-			$property = explode( ',', $property );
-		}
-
 		$property = array_filter( array_map( 'trim', $property ) );
 
 		if ( true === $to_lower ) {

@@ -46,7 +46,6 @@ class FileNameSniff implements Sniff {
 	 * File names should be provided including the path to the file relative
 	 * to the "basepath" known to PHPCS.
 	 * File names should not be prefixed with a directory separator.
-	 * File names are compared in a case-sensitive manner!
 	 * The list should be provided as a PHPCS array list.
 	 *
 	 * For this functionality to work with relative file paths - i.e. file paths

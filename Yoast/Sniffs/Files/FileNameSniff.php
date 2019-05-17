@@ -32,6 +32,11 @@ class FileNameSniff implements Sniff {
 	 *
 	 * These prefixes do not need to be reflected in the file name.
 	 *
+	 * Note:
+	 * - Prefixes are matched in a case-insensitive manner.
+	 * - When several overlapping prefixes match, the longest matching prefix
+	 *   will be removed.
+	 *
 	 * @var string[]
 	 */
 	public $prefixes = array();
@@ -125,6 +130,8 @@ class FileNameSniff implements Sniff {
 
 				$prefixes = $this->clean_custom_array_property( $this->prefixes );
 				if ( ! empty( $prefixes ) ) {
+					// Use reverse natural sorting to get the longest of overlapping prefixes first.
+					rsort( $prefixes, ( SORT_NATURAL | SORT_FLAG_CASE ) );
 					foreach ( $prefixes as $prefix ) {
 						if ( $name !== $prefix && stripos( $name, $prefix ) === 0 ) {
 							$name = substr( $name, strlen( $prefix ) );

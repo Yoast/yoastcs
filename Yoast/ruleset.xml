@@ -5,6 +5,22 @@
 
 	<!--
 	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	#############################################################################
+	-->
+
+	<!-- Always exclude all files in version management related directories. -->
+	<exclude-pattern>*/.git/*</exclude-pattern>
+	<exclude-pattern>*/.wordpress-svn/*</exclude-pattern>
+
+	<!-- Always exclude all files in dependency related directories. -->
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor(_prefixed)?/*</exclude-pattern>
+
+
+	<!--
+	#############################################################################
 	SNIFF AGAINST THE WordPress RULESET
 	Exclude a few select sniffs/errorcodes for specific reasons and
 	add configuration for a sniff.

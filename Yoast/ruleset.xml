@@ -27,6 +27,13 @@
 	#############################################################################
 	-->
 	<rule ref="WordPress">
+		<!-- Set the minimum supported WP version for all sniff which use it in one go.
+			 Ref: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
+		-->
+		<properties>
+			<property name="minimum_supported_version" value="4.9"/>
+		</properties>
+
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->

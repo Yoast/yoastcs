@@ -10,6 +10,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @package Yoast\YoastCS
  *
  * @since   1.0.0
+ *
+ * @covers  YoastCS\Yoast\Sniffs\WhiteSpace\FunctionSpacingSniff
  */
 class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 

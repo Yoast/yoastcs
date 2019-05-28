@@ -1,20 +1,19 @@
 <?php
 
-namespace YoastCS\Yoast\Tests\ControlStructures;
+namespace YoastCS\Yoast\Tests\Commenting;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the IfElseDeclaration sniff.
+ * Unit test class for the TestsHaveCoversTag sniff.
  *
  * @package Yoast\YoastCS
  *
- * @since   0.4.1
- * @since   0.5   This class now uses namespaces and is no longer compatible with PHPCS 2.x.
+ * @since   1.3.0
  *
- * @covers  YoastCS\Yoast\Sniffs\ControlStructures\IfElseDeclarationSniff
+ * @covers  YoastCS\Yoast\Sniffs\Commenting\TestsHaveCoversTagSniff
  */
-class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
+class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -23,15 +22,8 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return array(
-			22 => 1,
-			28 => 1,
-			30 => 1,
-			34 => 1,
-			37 => 1,
-			44 => 1,
-			51 => 1,
-			76 => 1,
-			84 => 2,
+			59 => 1,
+			88 => 1,
 		);
 	}
 

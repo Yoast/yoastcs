@@ -6,7 +6,7 @@ $json = WPSEO_Utils:format_json_encode( $thing ); // OK.
 $json = Class_Other_Plugin::json_encode( $thing ); // OK.
 $json = $obj->wp_json_encode( $thing ); // OK.
 $json = MyNamespace\json_encode( $thing ); // OK.
-//$json = namespace\wp_json_encode( $thing );  // OK - this will not (yet) be correctly recognized, but will with WPCS 2.1.0.
+$json = namespace\wp_json_encode( $thing );  // OK.
 
 // The sniff should trigger on these.
 $json = json_encode( $thing ); // Error.

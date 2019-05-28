@@ -74,6 +74,10 @@
 		<exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
 	</rule>
 
+	<rule ref="Generic.Formatting.MultipleStatementAlignment">
+		<type>error</type>
+	</rule>
+
 	<rule ref="WordPress.WP.AlternativeFunctions">
 		<properties>
 			<property name="exclude" type="array">
@@ -84,6 +88,7 @@
 	</rule>
 
 	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<type>error</type>
 		<properties>
 			<!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->
 			<property name="exact" value="false"/>

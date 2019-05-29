@@ -26,16 +26,16 @@ php:
 env:
   # Test against the highest/lowest supported PHPCS and WPCS versions.
   - PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
-  - PHPCS_BRANCH="dev-master" WPCS="2.0.0"
-  - PHPCS_BRANCH="3.4.0" WPCS="dev-develop"
-  - PHPCS_BRANCH="3.4.0" WPCS="2.0.0"
+  - PHPCS_BRANCH="dev-master" WPCS="2.1.1"
+  - PHPCS_BRANCH="3.4.2" WPCS="dev-develop"
+  - PHPCS_BRANCH="3.4.2" WPCS="2.1.1"
 
 matrix:
   fast_finish: true
   include:
     # Extra build to check for XML codestyle.
     - php: 7.1
-      env: PHPCS_BRANCH="dev-master" WPCS="^2.0.0" SNIFF=1
+      env: PHPCS_BRANCH="dev-master" WPCS="^2.1.1" SNIFF=1
       addons:
           apt:
               packages:

@@ -91,7 +91,7 @@ class FileNameSniff implements Sniff {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
 		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
-		if ( 'STDIN' === $file ) {
+		if ( $file === 'STDIN' ) {
 			return;
 		}
 
@@ -119,7 +119,7 @@ class FileNameSniff implements Sniff {
 
 		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
 			$oo_structure = $phpcsFile->findNext( $this->oo_tokens, $stackPtr );
-			if ( false !== $oo_structure ) {
+			if ( $oo_structure !== false ) {
 
 				$tokens = $phpcsFile->getTokens();
 				$name   = $phpcsFile->getDeclarationName( $oo_structure );
@@ -166,7 +166,7 @@ class FileNameSniff implements Sniff {
 			}
 			else {
 				$has_function = $phpcsFile->findNext( T_FUNCTION, $stackPtr );
-				if ( false !== $has_function ) {
+				if ( $has_function !== false ) {
 					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected %s, but found %s.';
 					$error_code = 'InvalidFunctionsFileName';
 
@@ -262,11 +262,11 @@ class FileNameSniff implements Sniff {
 
 		$property = array_filter( array_map( 'trim', $property ) );
 
-		if ( true === $to_lower ) {
+		if ( $to_lower === true ) {
 			$property = array_map( 'strtolower', $property );
 		}
 
-		if ( true === $flip ) {
+		if ( $flip === true ) {
 			$property = array_fill_keys( $property, false );
 		}
 

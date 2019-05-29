@@ -72,7 +72,7 @@ class TestDoublesSniff implements Sniff {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
 		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
-		if ( 'STDIN' === $file ) {
+		if ( $file === 'STDIN' ) {
 			return;
 		}
 

@@ -43,6 +43,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		'class-my-class.inc'              => 1, // Prefix 'class' not needed.
 		'some-class.inc'                  => 0,
 		'wpseo-some-class.inc'            => 1, // Prefix 'wpseo' not necessary.
+		'yoast-plugin-some-class.inc'     => 1, // Prefix 'yoast-plugin' not necessary.
 		'class-wpseo-some-class.inc'      => 1, // Prefixes 'class' and 'wpseo' not necessary.
 		'excluded-CLASS-file.inc'         => 1, // Lowercase expected.
 

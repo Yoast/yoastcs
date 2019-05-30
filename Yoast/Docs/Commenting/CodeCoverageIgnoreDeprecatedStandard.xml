@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<documentation title="Code Coverage Ignore Deprecated">
+    <standard>
+    <![CDATA[
+    Deprecated functions and methods should be ignored for code coverage calculations.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Function marked as deprecated has a @codeCoverageIgnore tag.">
+        <![CDATA[
+/**
+ * <em>@deprecated x.x
+ * @codeCoverageIgnore</em>
+ */
+function deprecated_function() {}
+        ]]>
+        </code>
+        <code title="Invalid: Function marked as deprecated is missing a @codeCoverageIgnore tag.">
+        <![CDATA[
+/**
+ * <em>@deprecated x.x</em>
+ */
+function deprecated_function() {}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

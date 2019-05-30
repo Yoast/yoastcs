@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<documentation title="File Comment">
+    <standard>
+    <![CDATA[
+    A file containing a (named) namespace declaration does not need a file docblock.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Start of a namespaced file without a file docblock.">
+        <![CDATA[
+<?php
+
+<em>namespace Yoast\A\B;</em>
+
+/**
+ * Class docblock.
+ */
+class {
+    ...
+        ]]>
+        </code>
+        <code title="Invalid: Start of a namespaced file with a file docblock.">
+        <![CDATA[
+<?php
+<em>/**
+ * File comment.
+ */
+
+namespace Yoast\A\B;</em>
+
+/**
+ * Class docblock.
+ */
+class {
+    ...
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    A non-namespaced file must have a file docblock.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Start of a non-namespaced file with a file docblock.">
+        <![CDATA[
+<?php
+<em>/**
+ * File comment.
+ */</em>
+
+/**
+ * Class docblock.
+ */
+class {
+    ...
+        ]]>
+        </code>
+        <code title="Invalid: Start of a non-namespaced file missing a file docblock.">
+        <![CDATA[
+<?php
+<em></em>
+/**
+ * Class docblock.
+ */
+class {
+    ...
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    A file comment should be a docblock.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File docblock.">
+        <![CDATA[
+<?php
+<em>/**
+ * File comment.
+ */</em>
+        ]]>
+        </code>
+        <code title="Invalid: File comment is not a docblock.">
+        <![CDATA[
+<?php
+<em>/*</em>
+ * File comment.
+ */
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    There must be no blank lines before the file comment.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: No blank line between the PHP open tag and the file comment.">
+        <![CDATA[
+<?php<em>
+</em>/**
+ * File comment.
+ */
+        ]]>
+        </code>
+        <code title="Invalid: Blank line(s) between the PHP open tag and the file comment.">
+        <![CDATA[
+<?php<em>
+
+
+</em>/**
+ * File comment.
+ */
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    There must be exactly one blank line after the file comment.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: One blank line after file comment.">
+        <![CDATA[
+<?php
+/**
+ * File comment.
+ */<em>
+
+ </em>echo $something;
+        ]]>
+        </code>
+        <code title="Invalid: No blank line or more than one blank line after file comment.">
+        <![CDATA[
+<?php
+/**
+ * File comment.
+ */<em>
+ </em>echo $something;
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    A file comment must contain a @package tag.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File comment containing the @package tag.">
+        <![CDATA[
+<?php
+/**
+ * File comment.
+ *
+ * <em>@package Yoast\Package</em>
+ */
+        ]]>
+        </code>
+        <code title="Invalid: File comment missing the @package tag.">
+        <![CDATA[
+<?php
+/**
+ * File comment.
+ */
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    A file comment @package tag must have a package name.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File comment @package tag with a package name.">
+        <![CDATA[
+<?php
+/**
+ * File comment.
+ *
+ * <em>@package Yoast\Package</em>
+ */
+        ]]>
+        </code>
+        <code title="Invalid: File comment @package tag without a package name.">
+        <![CDATA[
+<?php
+/**
+ * File comment.
+ *
+ * <em>@package</em>
+ */
+        ]]>
+        </code>
+    </code_comparison>
+
+</documentation>

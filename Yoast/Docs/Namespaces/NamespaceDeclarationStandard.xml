@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<documentation title="Namespace Declarations">
+    <standard>
+    <![CDATA[
+    Scoped namespace declarations are not allowed.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Non-scoped namespace declaration.">
+        <![CDATA[
+namespace Yoast\Sub<em>;</em>
+        ]]>
+        </code>
+        <code title="Invalid: Scoped namespace declaration.">
+        <![CDATA[
+namespace Yoast\Scoped <em>{</em>
+    // Code.
+<em>}</em>
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    Namespace declarations without a namespace name are not allowed.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Named namespace declaration.">
+        <![CDATA[
+namespace <em>Yoast\Sub</em>;
+        ]]>
+        </code>
+        <code title="Invalid: Namespace declaration without a name (=global namespace).">
+        <![CDATA[
+namespace<em></em>;
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    There should be only one namespace declaration per file.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: One named namespace declaration in a file.">
+        <![CDATA[
+namespace Yoast\Sub;
+        ]]>
+        </code>
+        <code title="Invalid: Multiple namespace declarations in a file.">
+        <![CDATA[
+namespace Yoast\Sub\A {
+}
+
+<em>namespace Yoast\Sub\B {
+}</em>
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

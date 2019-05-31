@@ -7,8 +7,6 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Common;
 
 /**
- * YoastCS\Yoast\Sniffs\Files\FileNameSniff.
- *
  * Ensures files comply with the Yoast file name rules.
  *
  * Rules:

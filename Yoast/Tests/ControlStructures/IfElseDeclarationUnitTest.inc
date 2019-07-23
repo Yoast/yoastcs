@@ -10,11 +10,11 @@ else {
 
 // Ok.
 if ( false ):
-elseif:
-else if:
+elseif: // Intentional parse error.
+else if: // Intentional parse error.
 else /* comment */
-if:
-else:
+if: // Intentional parse error.
+else: // Intentional parse error.
 endif;
 
 if ( true ) {
@@ -34,7 +34,7 @@ if ( true ) {
 } else // Bad - else if should be on the next line.
 if (2) {
 	// ...
-} else ( 3 ) { // Bad - else should be on the next line.
+} else { // Bad - else should be on the next line.
 	// ...
 }
 

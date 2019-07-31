@@ -1,6 +1,6 @@
 <?php
 
-$json = WPSEO_Utils:format_json_encode( $thing ); // OK.
+$json = WPSEO_Utils::format_json_encode( $thing ); // OK.
 
 // Don't trigger on calls to functions which are not the PHP or WP native functions.
 $json = Class_Other_Plugin::json_encode( $thing ); // OK.
@@ -16,7 +16,7 @@ return function_call(nested_call(json_encode( $thing ))); // Error.
 $json = json_encode ($value, $options); // Error, non-fixable.
 $json = wp_json_encode( $data, $options, $depth ); // Error, non-fixable.
 
-namespace Yoast\CMS\Plugin\Dir;
+namespace Yoast\CMS\Plugin\Dir; // Non-relevant parse error.
 
 $json = json_encode( $thing ); // Error.
 $json = wp_json_encode( $thing ); // Error.

@@ -15,7 +15,7 @@ class SomeThing {
 		// Code
     } // end function
 
-    public function functionWithoutDocblock {}
+    public function functionWithoutDocblock() {}
 
 	/**
 	 * @codeCoverageIgnore
@@ -47,7 +47,7 @@ class SomeThing {
 	 *
 	 * This is a sentence containing the phrase codeCoverageIgnore, but should not be regarded as the tag.
 	 */
-	static protected function missingCodeCoverageIgnore() {}
+	static protected function missingStaticCodeCoverageIgnore() {}
 
 	/**
 	 * @deprecated x.x

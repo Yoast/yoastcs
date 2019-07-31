@@ -32,7 +32,12 @@ class FileNameSniff implements Sniff {
 	 *
 	 * These prefixes do not need to be reflected in the file name.
 	 *
-	 * @var string[]|string
+	 * Note:
+	 * - Prefixes are matched in a case-insensitive manner.
+	 * - When several overlapping prefixes match, the longest matching prefix
+	 *   will be removed.
+	 *
+	 * @var string[]
 	 */
 	public $prefixes = array();
 
@@ -46,14 +51,13 @@ class FileNameSniff implements Sniff {
 	 * File names should be provided including the path to the file relative
 	 * to the "basepath" known to PHPCS.
 	 * File names should not be prefixed with a directory separator.
-	 * File names are compared in a case-sensitive manner!
 	 * The list should be provided as a PHPCS array list.
 	 *
 	 * For this functionality to work with relative file paths - i.e. file paths
 	 * from the root of the repository - , the PHPCS `--basepath` config variable
 	 * needs to be set. If it is not, a warning will be issued.
 	 *
-	 * @var string[]|string
+	 * @var string[]
 	 */
 	public $exclude = array();
 
@@ -91,7 +95,7 @@ class FileNameSniff implements Sniff {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
 		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
-		if ( 'STDIN' === $file ) {
+		if ( $file === 'STDIN' ) {
 			return;
 		}
 
@@ -119,13 +123,15 @@ class FileNameSniff implements Sniff {
 
 		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
 			$oo_structure = $phpcsFile->findNext( $this->oo_tokens, $stackPtr );
-			if ( false !== $oo_structure ) {
+			if ( $oo_structure !== false ) {
 
 				$tokens = $phpcsFile->getTokens();
 				$name   = $phpcsFile->getDeclarationName( $oo_structure );
 
 				$prefixes = $this->clean_custom_array_property( $this->prefixes );
 				if ( ! empty( $prefixes ) ) {
+					// Use reverse natural sorting to get the longest of overlapping prefixes first.
+					rsort( $prefixes, ( SORT_NATURAL | SORT_FLAG_CASE ) );
 					foreach ( $prefixes as $prefix ) {
 						if ( $name !== $prefix && stripos( $name, $prefix ) === 0 ) {
 							$name = substr( $name, strlen( $prefix ) );
@@ -166,7 +172,7 @@ class FileNameSniff implements Sniff {
 			}
 			else {
 				$has_function = $phpcsFile->findNext( T_FUNCTION, $stackPtr );
-				if ( false !== $has_function ) {
+				if ( $has_function !== false ) {
 					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected %s, but found %s.';
 					$error_code = 'InvalidFunctionsFileName';
 
@@ -238,7 +244,6 @@ class FileNameSniff implements Sniff {
 	 * Clean a custom array property received from a ruleset.
 	 *
 	 * Deals with incorrectly passed custom array properties.
-	 * - If the property was passed as a string, change it to an array.
 	 * - Remove whitespace surrounding values.
 	 * - Remove empty array entries.
 	 *
@@ -251,22 +256,13 @@ class FileNameSniff implements Sniff {
 	 * @return array
 	 */
 	protected function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
-		if ( is_bool( $property ) ) {
-			// Allow for resetting in the unit tests.
-			return array();
-		}
-
-		if ( is_string( $property ) ) {
-			$property = explode( ',', $property );
-		}
-
 		$property = array_filter( array_map( 'trim', $property ) );
 
-		if ( true === $to_lower ) {
+		if ( $to_lower === true ) {
 			$property = array_map( 'strtolower', $property );
 		}
 
-		if ( true === $flip ) {
+		if ( $flip === true ) {
 			$property = array_fill_keys( $property, false );
 		}
 

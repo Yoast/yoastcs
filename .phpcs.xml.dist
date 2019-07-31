@@ -8,9 +8,6 @@
 	<!-- Scan all files. -->
 	<file>.</file>
 
-	<!-- Exclude Composer vendor directory. -->
-	<exclude-pattern>*/vendor/*</exclude-pattern>
-
 	<!-- Only check PHP files. -->
 	<arg name="extensions" value="php"/>
 

@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<documentation title="File Name">
+    <standard>
+    <![CDATA[
+    Same as in WP, file names should be lowercase and words should be separated by dashes (not underscores).
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File name lowercase with dashes.">
+        <![CDATA[
+<em>file-name</em>.php
+        ]]>
+        </code>
+        <code title="Invalid: File name mixed case with underscores.">
+        <![CDATA[
+<em>File_Name</em>.php
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    For all class files, the file name should reflect the class name without the plugin specific prefix.
+The plugin specific prefix is configurable.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File named after class without the plugin prefix.">
+        <![CDATA[
+<!-- File name: <em>utils</em>.php -->
+<?php
+class WPSEO_<em>Utils</em> {}
+        ]]>
+        </code>
+        <code title="Invalid: File name contains irrelevant 'class-' and plugin prefix.">
+        <![CDATA[
+<!-- File name: <em>class-wpseo-</em>utils.php -->
+<?php
+class WPSEO_Utils {}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    For all interface and trait files, the file name should reflect the interface/trait name without the plugin specific prefix and with an "-interface" or "-trait" suffix.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File named after interface with '-interface' suffix and without the plugin prefix.">
+        <![CDATA[
+<!-- File name: <em>output-thing-interface</em>.php -->
+<?php
+<em>interface</em> Yoast_<em>Output_Thing</em> {}
+        ]]>
+        </code>
+        <code title="Invalid: File name contains plugin prefix and is missing '-trait' suffix.">
+        <![CDATA[
+<!-- File name: <em>yoast</em>-outline-something.php -->
+<?php
+<em>trait</em> Yoast_Outline_Something {}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    Files which don't contain an object structure, but do contain function declarations should have a "-functions" suffix.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: File containing functions with '-functions' suffix.">
+        <![CDATA[
+<!-- File name: some-<em>functions</em>.php -->
+<?php
+function something() {}
+function something_else() {}
+        ]]>
+        </code>
+        <code title="Invalid: File name missing '-functions' suffix.">
+        <![CDATA[
+<!-- File name: utilities.php -->
+<?php
+function something() {}
+function something_else() {}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

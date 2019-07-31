@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<documentation title="Alternative Functions">
+    <standard>
+    <![CDATA[
+    Discourages the use of certain PHP or WP native functions in favour of Yoast native alternatives.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Using the Yoast native `WPSEO_Utils:format_json_encode()` function.">
+        <![CDATA[
+$json = <em>WPSEO_Utils:format_json_encode</em>( $in );
+        ]]>
+        </code>
+        <code title="Discouraged: Using the WP native `wp_json_encode()` function.">
+        <![CDATA[
+$json = <em>wp_json_encode</em>( $in );
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

@@ -26,7 +26,7 @@ Composer will automatically install dependencies and register the YoastCS and ot
 
 ## PHP Code Sniffer
 
-Set of [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) rules.
+Set of [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) rules.
 
 Severity levels:
 
@@ -38,10 +38,10 @@ Severity levels:
 The `Yoast` standard for PHP_CodeSniffer is comprised of the following:
 * The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://make.wordpress.org/core/handbook/coding-standards/php/), with some select exclusions.
 * The [`PHPCompatibilityWP`](https://github.com/PHPCompatibility/PHPCompatibilityWP) ruleset which checks code for PHP cross-version compatibility while preventing false positives for functionality polyfilled within WordPress.
+* Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/squizlabs/PHP_CodeSniffer).
 * A number of custom Yoast specific sniffs.
-* A number of additional sniffs taken from `PHP_CodeSniffer`.
 
-Files within version management and dependency related directories, such as for instance the Composer `vendor` directory, are not scanned by default.
+Files within version management and dependency related directories, such as the Composer `vendor` directory, are excluded from the scans by default.
 
 #### Sniffs
 
@@ -78,7 +78,7 @@ composer check-cs
 
 #### PhpStorm
 
-Refer to [Using PHP Code Sniffer Tool](https://www.jetbrains.com/phpstorm/help/using-php-code-sniffer-tool.html) in PhpStorm documentation.
+Refer to [Using PHP Code Sniffer Tool](https://www.jetbrains.com/phpstorm/help/using-php-code-sniffer-tool.html) in the PhpStorm documentation.
 
 After installation, the `Yoast` standard will be available as a choice in PHP Code Sniffer Validation inspection.
 

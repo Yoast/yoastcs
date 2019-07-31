@@ -50,6 +50,16 @@ before_install:
     # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
     # https://twitter.com/kelunik/status/954242454676475904
     - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+
+    # On stable PHPCS versions, allow for PHP deprecation notices.
+    # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+    - |
+      if [[ $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
+        echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+      fi
+    - php -r "echo ini_get('error_reporting');"
+
+
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=$(pwd)/vendor/squizlabs/php_codesniffer
     - export PHPCS_BIN=$(pwd)/vendor/bin/phpcs

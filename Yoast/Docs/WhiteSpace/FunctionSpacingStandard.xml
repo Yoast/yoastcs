@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<documentation title="Function Spacing">
+    <standard>
+    <![CDATA[
+    There should be one blank line before the first function in an OO structure.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: One blank line before the first function.">
+        <![CDATA[
+class MyClass {<em>
+
+</em>    /**
+     * Function docblock.
+     */
+    function func1() {
+    }
+}
+        ]]>
+        </code>
+        <code title="Invalid: No blank line before the first function.">
+        <![CDATA[
+class MyClass {<em>
+</em>    /**
+     * Function docblock.
+     */
+    function func1() {
+    }
+}
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    There should be one blank line between functions in an OO structure.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: One blank line between functions.">
+        <![CDATA[
+class MyClass {
+
+    /**
+     * Function docblock.
+     */
+    function func1() {
+    }<em>
+
+<em>    /**
+     * Function docblock.
+     */
+    function func2() {
+    }
+}
+        ]]>
+        </code>
+        <code title="Invalid: No blank lines or more than one blank line between functions.">
+        <![CDATA[
+class MyClass {
+
+    /**
+     * Function docblock.
+     */
+    function func1() {
+    }<em>
+
+
+<em>    /**
+     * Function docblock.
+     */
+    function func2() {
+    }<em>
+<em>    /**
+     * Function docblock.
+     */
+    function func3() {
+    }
+}
+        ]]>
+        </code>
+    </code_comparison>
+
+    <standard>
+    <![CDATA[
+    There should be no blank line after the last function in an OO structure.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: No blank line after the last function.">
+        <![CDATA[
+class MyClass {
+
+    /**
+     * Function docblock.
+     */
+    function func1() {
+    }<em>
+</em>}
+        ]]>
+        </code>
+        <code title="Invalid: Blank line(s) after the last function.">
+        <![CDATA[
+class MyClass {
+
+    /**
+     * Function docblock.
+     */
+    function func1() {
+    }<em>
+
+</em>}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

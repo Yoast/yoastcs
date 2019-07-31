@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<documentation title="If-else Declarations">
+    <standard>
+    <![CDATA[
+    The `else` and `elseif` keywords should be on a new line.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: `elseif` on a new line.">
+        <![CDATA[
+if ($foo) {
+    $var = 1;
+}<em>
+elseif</em> ($bar) {
+    $var = 2;
+}
+        ]]>
+        </code>
+        <code title="Invalid: `elseif` on the same line as the closing curly of the preceding (else)if.">
+        <![CDATA[
+if ($foo) {
+    $var = 1;
+} <em>elseif</em> ($bar) {
+    $var = 2;
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    The indentation for the `else` and `elseif` keywords should be the same as the indentation for the preceding (else)if.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Correct indentation.">
+        <![CDATA[
+if ($foo) {
+    $var = 1;
+}
+<em>elseif</em> ($bar) {
+    $var = 2;
+}
+        ]]>
+        </code>
+        <code title="Invalid: Indentation of the else not aligned with the preceding if.">
+        <![CDATA[
+if ($foo) {
+    $var = 1;
+}
+<em>    else</em> {
+<em>        </em>$var = 2;
+<em>    </em>}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

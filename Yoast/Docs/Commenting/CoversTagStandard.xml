@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<documentation title="PHPUnit Covers Tag">
+    <standard>
+    <![CDATA[
+    The @covers tag used to annotate which code is coverage by a test should follow the specifications of PHPUnit with regards to the supported annotations.
+See:
+* https://phpunit.readthedocs.io/en/7.5/code-coverage-analysis.html#specifying-covered-code-parts
+* https://phpunit.readthedocs.io/en/7.5/annotations.html#covers
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Correct covers tag annotation.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers <em>Class_Name::method_name</em>
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Incorrect covers tag annotation.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers Class_Name::method_name<em>()</em>
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    There should be no duplicate @covers tags for the same test.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Unique @covers tags.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers Name\Space\function_name
+     * @covers Class_Name
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Duplicate @covers tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers Name\Space\function_name
+     * @covers Class_Name
+     * @covers <em>Name\Space\function_name</em>
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    There should be not be both a @covers tag as well as a @coversNothing tag for the same test.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Either one or more @covers tags or a @coversNothing tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * <em>@covers ::globalFunction</em>
+     */
+    function test_something() {}
+
+    /**
+     * Testing...
+     *
+     * <em>@coversNothing</em>
+     */
+    function test_something_else() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Both a @covers tag as well as a @coversNothing tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * <em>@coversNothing
+     * @covers ::globalFunction</em>
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

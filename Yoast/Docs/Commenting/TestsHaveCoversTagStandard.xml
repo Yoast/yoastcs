@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<documentation title="Tests Have Covers tag">
+    <standard>
+    <![CDATA[
+    Each test function should have at least one @covers tag annotating which class/method/function is being tested.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: @covers tag at method level.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers Class_Name::method_name
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Missing @covers tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: @covers tag at class level.">
+        <![CDATA[
+/**
+ * Testing...
+ *
+ * @covers \Name\Space\Class_Name
+ */
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Missing @covers tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: Using a @coversNothing tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @coversNothing Don't record coverage
+     *                as this is an integration
+     *                test, not a unit test.
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Missing @covers tag.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

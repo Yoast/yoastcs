@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<documentation title="Test Doubles">
+    <standard>
+    <![CDATA[
+    Double/Mock test helper classes should be in their own file and placed in a dedicated test doubles sub-directory.
+The name of the dedicated sub-directory is configurable.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Double class in separate file in double sub-directory.">
+        <![CDATA[
+<!-- Doubles file in double sub-directory -->
+<?php
+class Test_Double extends Original_Class {
+    // Code.
+}
+
+<!-- Unit test file -->
+<?php
+class Test_Original_Class extends TestCase {
+    // Test code.
+}
+        ]]>
+        </code>
+        <code title="Invalid: Having both the double class as well as the test class in the same file in the test directory.">
+        <![CDATA[
+<!-- Unit test file -->
+<?php
+class Test_Double extends Original_Class {
+    // Code.
+}
+
+class Test_Original_Class extends TestCase {
+    // Test code.
+}
+        ]]>
+        </code>
+    </code_comparison>
+
+</documentation>

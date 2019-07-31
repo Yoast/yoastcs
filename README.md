@@ -36,7 +36,7 @@ Severity levels:
 ### The YoastCS Standard
 
 The `Yoast` standard for PHP_CodeSniffer is comprised of the following:
-* The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://make.wordpress.org/core/handbook/coding-standards/php/), with some select exclusions.
+* The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://make.wordpress.org/core/handbook/coding-standards/php/), with some [select exclusions](https://github.com/Yoast/yoastcs/blob/develop/Yoast/ruleset.xml#L29-L75).
 * The [`PHPCompatibilityWP`](https://github.com/PHPCompatibility/PHPCompatibilityWP) ruleset which checks code for PHP cross-version compatibility while preventing false positives for functionality polyfilled within WordPress.
 * Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/squizlabs/PHP_CodeSniffer).
 * A number of custom Yoast specific sniffs.

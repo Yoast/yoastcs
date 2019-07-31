@@ -1,8 +1,57 @@
-# Change Log for YoastCS
+# Changelog for YoastCS
 
 All notable changes to this project will be documented in this file.
 
-This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
+This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
+
+### [1.3.0] - 2019-07-31
+
+#### Added
+* PHPCS: New `Yoast.Commenting.CoversTag` sniff.
+    This sniff verifies that:
+    - the contents of a `@covers` annotation is valid based on what's supported by PHPUnit;
+    - there are no duplicate `@covers` or `@coversNothing` tags in a docblock;
+    - a docblock doesn't contain both a `@covers` tag as well as a `@coversNothing` tag;
+    Includes a fixer for common errors.
+* PHPCS: New `Yoast.Commenting.TestsHaveCoversTag` sniff.
+    This sniff verifies that all unit test functions have at least one `@covers` tag - or a `@coversNothing` tag - in the function docblock or in the class docblock.
+* PHPCS: New `Yoast.Yoast.AlternativeFunctions` sniff.
+    This sniff allows for discouraging/forbidding the use of PHP/WP native functions in favor of using Yoast native functions.
+    In this initial version, the sniff checks for the use of the `json_encode()` and `wp_json_encode()` functions and suggests using `WPSEO_Utils::format_json_encode()` instead.
+    Note: this sniff contains an auto-fixer. If for any of the repos, the auto-fixer should not be used, the auto-fixer can be disabled from within the repo specific ruleset using `<rule ref="..." phpcs-only="true"/>`.
+* PHPCS: The `Squiz.WhiteSpace.MemberVarSpacing` sniff.
+    This sniff verifies and auto-fixes the number of blank lines between property declarations within OO-structures.
+* PHPCS: A default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs. The current default is WP `4.9`.
+   Previously this value would have to be set via a `config` directive in custom repo specific rulesets.
+   For those rulesets which use the Yoast default, this `config` directive can now be removed.
+   For more details, see [#131](https://github.com/Yoast/yoastcs/pull/131).
+* PHPCS: All YoastCS native sniffs are now accompanied by documentation which can be viewed from the command-line using `phpcs --generator=Text --standard=Yoast`.
+* Repo/QA: Various templates for typical pull requests to this repo.
+* Composer: `fix-cs` script.
+* Travis: Testing of the code against PHP 7.4 (unstable).
+
+#### Changed
+* PHPCS: Files in the following directories will now be excluded from all scans by default:
+    - `/.git/`
+    - `/.wordpress-svn/`
+    - `/node-modules/`
+    - `/vendor/`
+    - `/vendor_prefixed/`
+    Custom repo specific rulesets which contain excludes to this effect, can now remove them safely.
+* PHPCS: The message type for issues reported by the `Generic.Formatting.MultipleStatementAlignment` and `WordPress.Arrays.MultipleStatementAlignment` sniffs, has been upgraded from `warning` to `error`.
+* PHPCS: The WPCS native check for the `json_encode()` function in the `WordPress.WP.AlternativeFunctions` has been disabled in favor of the new YoastCS native `Yoast.Yoast.AlternativeFunctions` sniff.
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.4.0` to `^3.4.2`.
+* Composer: Supported version of [WordPressCS] has been changed from `^2.0.0` to `^2.1.1`.
+* Travis: As there is now a sniff which extends a WPCS sniff, the unit tests will now run against various combinations of PHPCS and WPCS combined.
+* Minor housekeeping.
+
+#### Removed
+* PHPMD is no longer part of the YoastCS repo.
+    PHPMD was not used as a stand-alone tool by any of the repos, only in combination with CodeClimate.
+* Travis: Testing of the repo against PHP `nightly` (PHP 8, unstable) as no viable PHPUnit version is currently available.
+
+#### Fixed
+* PHPCS: The `Yoast.Files.FileName` sniff will now always suggest removing the longest prefix of the prefixes passed in the configuration.
 
 ### [1.2.2] - 2019-01-21
 
@@ -21,7 +70,7 @@ This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a 
 #### Added
 * PHPCS: New `Yoast.Commenting.FileComment` sniff.
     This sniff is a wrapper around the `FileComment` sniff used in WordPressCS and manages the slightly different requirements for file comments set for the Yoast organisation, in particular:
-	- If a file is namespaced, no file comment is needed (and having one is discouraged).
+    - If a file is namespaced, no file comment is needed (and having one is discouraged).
 * PHPCS: New `Yoast.Namespaces.NamespaceDeclaration` sniff.
     This sniff forbids the use of:
     - Namespace declarations without a namespace name, i.e. `namespace;` which in effect means "global namespace".
@@ -242,6 +291,7 @@ Initial public release as a stand-alone package.
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 
+[1.3.0]: https://github.com/Yoast/yoastcs/compare/1.2.2...1.3.0
 [1.2.2]: https://github.com/Yoast/yoastcs/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/Yoast/yoastcs/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/Yoast/yoastcs/compare/1.1.0...1.2.0

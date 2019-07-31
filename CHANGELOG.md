@@ -1,8 +1,8 @@
-# Change Log for YoastCS
+# Changelog for YoastCS
 
 All notable changes to this project will be documented in this file.
 
-This projects adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
+This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
 ### [1.3.0] - 2019-07-31
 

@@ -1,5 +1,3 @@
-sudo: false
-
 language:
     - php
 
@@ -30,16 +28,55 @@ env:
   - PHPCS_BRANCH="3.4.2" WPCS="dev-develop"
   - PHPCS_BRANCH="3.4.2" WPCS="2.1.1"
 
+# Define the stages used.
+# For non-PRs, only the sniff, ruleset and quicktest stages are run.
+# For pull requests and merges, the full script is run (skipping quicktest).
+# Note: for pull requests, "develop" should be the base branch name.
+# See: https://docs.travis-ci.com/user/conditions-v1
+stages:
+  - name: sniff
+  - name: rulesets
+  - name: quicktest
+    if: type = push AND branch NOT IN (master, develop)
+  - name: test
+    if: branch IN (master, develop)
+
 matrix:
   fast_finish: true
   include:
-    # Extra build to check for XML codestyle.
-    - php: 7.1
-      env: PHPCS_BRANCH="dev-master" WPCS="^2.1.1" SNIFF=1
+    #### SNIFF STAGE ####
+    - stage: sniff
+      php: 7.3
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master"
       addons:
-          apt:
-              packages:
-                - libxml2-utils
+        apt:
+          packages:
+            - libxml2-utils
+      script:
+        # Check the codestyle of the files within YoastCS.
+        - composer check-cs
+
+        # Validate the xml files.
+        # @link http://xmlsoft.org/xmllint.html
+        # For the build to properly error when validating against a scheme, these each have to be in their own condition.
+        - xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./Yoast/ruleset.xml
+        - xmllint --noout ./Yoast/Docs/*/*Standard.xml
+
+        # Check the code-style consistency of the xml files.
+        - diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml")
+
+    #### QUICK TEST STAGE ####
+    # This is a much quicker test which only runs the unit tests and linting against low/high
+    # supported PHP/PHPCS/WPCS combinations.
+    - stage: quicktest
+      php: 7.3
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+    - php: 7.3
+      env: PHPCS_BRANCH="3.3.1" WPCS="2.1.1"
+    - php: 5.4
+      env: PHPCS_BRANCH="dev-master" WPCS="2.1.1" PHPLINT=1
+    - php: 5.4
+      env: PHPCS_BRANCH="3.3.1" WPCS="dev-develop"
 
   allow_failures:
     # Allow failures for unstable builds.
@@ -54,11 +91,9 @@ before_install:
     # On stable PHPCS versions, allow for PHP deprecation notices.
     # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
     - |
-      if [[ $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
+      if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" && $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
         echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
       fi
-    - php -r "echo ini_get('error_reporting');"
-
 
     - export XMLLINT_INDENT="	"
     - export PHPCS_DIR=$(pwd)/vendor/squizlabs/php_codesniffer
@@ -68,7 +103,7 @@ before_install:
     # Set the WPCS version to test against.
     - composer require wp-coding-standards/wpcs:${WPCS} --no-update --no-suggest --no-scripts
     - |
-      if [[ "$SNIFF" == "1" ]]; then
+      if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Sniff" ]]; then
           composer install --dev --no-suggest
           # The DealerDirect Composer plugin script takes care of the installed_paths.
       else
@@ -83,21 +118,17 @@ before_install:
     - $PHPCS_BIN -i
 
 script:
+    # Lint the PHP files against parse errors.
     - if [[ "$PHPLINT" == "1" ]]; then if find . -path ./vendor -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi
+
+    # Run the unit tests.
     - |
       if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.1" ]]; then
         vendor/bin/phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
       else
         phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
       fi
-    # Check the codestyle of the files within YoastCS.
-    - if [[ "$SNIFF" == "1" ]]; then composer check-cs; fi
-    # Validate the xml files.
-    # @link http://xmlsoft.org/xmllint.html
-    - if [[ "$SNIFF" == "1" ]]; then xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./Yoast/ruleset.xml; fi
-    - if [[ "$SNIFF" == "1" ]]; then xmllint --noout ./Yoast/Docs/*/*Standard.xml; fi
-    # Check the code-style consistency of the xml files.
-    - if [[ "$SNIFF" == "1" ]]; then diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml"); fi
+
     # Validate the composer.json file.
     # @link https://getcomposer.org/doc/03-cli.md#validate
     - if [[ "$PHPLINT" == "1" ]]; then composer validate --no-check-all --strict; fi

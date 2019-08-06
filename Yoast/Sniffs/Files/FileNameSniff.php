@@ -39,7 +39,7 @@ class FileNameSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $prefixes = array();
+	public $prefixes = [];
 
 	/**
 	 * List of files to exclude from the strict file name check.
@@ -59,18 +59,18 @@ class FileNameSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $exclude = array();
+	public $exclude = [];
 
 	/**
 	 * Object tokens to search for in a file.
 	 *
 	 * @var array
 	 */
-	private $oo_tokens = array(
+	private $oo_tokens = [
 		T_CLASS,
 		T_INTERFACE,
 		T_TRAIT,
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -78,7 +78,7 @@ class FileNameSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array( T_OPEN_TAG );
+		return [ T_OPEN_TAG ];
 	}
 
 	/**
@@ -189,10 +189,10 @@ class FileNameSniff implements Sniff {
 				$error,
 				0,
 				$error_code,
-				array(
+				[
 					$expected . '.' . $extension,
 					$basename,
-				)
+				]
 			);
 		}
 
@@ -213,7 +213,7 @@ class FileNameSniff implements Sniff {
 		$exclude = $this->clean_custom_array_property( $this->exclude, true, true );
 
 		if ( ! empty( $exclude ) ) {
-			$exclude      = array_map( array( $this, 'normalize_directory_separators' ), $exclude );
+			$exclude      = array_map( [ $this, 'normalize_directory_separators' ], $exclude );
 			$path_to_file = $this->normalize_directory_separators( $path_to_file );
 
 			if ( ! isset( $phpcsFile->config->basepath ) ) {

@@ -25,16 +25,16 @@ class NamespaceDeclarationUnitTest extends AbstractSniffUnitTest {
 	public function getErrorList( $testFile = '' ) {
 		switch ( $testFile ) {
 			case 'NamespaceDeclarationUnitTest.2.inc':
-				return array(
+				return [
 					3  => 1,
 					5  => 3,
 					7  => 2,
 					9  => 3,
 					11 => 2,
-				);
+				];
 
 			default:
-				return array();
+				return [];
 		}
 	}
 
@@ -44,6 +44,6 @@ class NamespaceDeclarationUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 }

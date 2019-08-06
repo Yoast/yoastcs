@@ -20,7 +20,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @var array
 	 */
-	private $expected_results = array(
+	private $expected_results = [
 
 		/*
 		 * In /FileNameUnitTests.
@@ -74,7 +74,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 
 		// Fall-back file in case glob() fails.
 		'FileNameUnitTest.inc'            => 1,
-	);
+	];
 
 	/**
 	 * Set CLI values before the file is tested.
@@ -107,7 +107,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 			return $test_files;
 		}
 
-		return array( $testFileBase . '.inc' );
+		return [ $testFileBase . '.inc' ];
 	}
 
 	/**
@@ -120,12 +120,12 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	public function getErrorList( $testFile = '' ) {
 
 		if ( isset( $this->expected_results[ $testFile ] ) ) {
-			return array(
+			return [
 				1 => $this->expected_results[ $testFile ],
-			);
+			];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -137,11 +137,11 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getWarningList( $testFile = '' ) {
 		if ( $testFile === 'no-basepath.inc' ) {
-			return array(
+			return [
 				1 => 1,
-			);
+			];
 		}
 
-		return array();
+		return [];
 	}
 }

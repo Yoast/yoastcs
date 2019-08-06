@@ -21,7 +21,7 @@ class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			31 => 1,
 			33 => 1,
 			39 => 1,
@@ -32,7 +32,7 @@ class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 			74 => 1,
 			87 => 2,
 			88 => 1,
-		);
+		];
 	}
 
 	/**
@@ -41,6 +41,6 @@ class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 }

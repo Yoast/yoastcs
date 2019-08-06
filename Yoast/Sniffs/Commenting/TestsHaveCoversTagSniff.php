@@ -22,10 +22,10 @@ class TestsHaveCoversTagSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CLASS,
 			T_FUNCTION,
-		);
+		];
 	}
 
 	/**
@@ -182,7 +182,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 			'Each test function should have at least one @covers tag annotating which class/method/function is being tested. Tag missing for function %s()',
 			$stackPtr,
 			'Missing',
-			array( $name )
+			[ $name ]
 		);
 	}
 }

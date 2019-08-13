@@ -63,6 +63,9 @@ matrix:
         # Check the code-style consistency of the xml files.
         - diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml")
 
+        # Check that the sniffs available are feature complete.
+        - composer check-complete
+
     #### QUICK TEST STAGE ####
     # This is a much quicker test which only runs the unit tests and linting against low/high
     # supported PHP/PHPCS/WPCS combinations.

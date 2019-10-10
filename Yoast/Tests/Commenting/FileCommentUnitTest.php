@@ -27,12 +27,12 @@ class FileCommentUnitTest extends AbstractSniffUnitTest {
 			case 'FileCommentUnitTest.2.inc':
 			case 'FileCommentUnitTest.8.inc':
 			case 'FileCommentUnitTest.10.inc':
-				return array(
+				return [
 					1 => 1,
-				);
+				];
 
 			default:
-				return array();
+				return [];
 		}
 	}
 
@@ -47,12 +47,12 @@ class FileCommentUnitTest extends AbstractSniffUnitTest {
 		switch ( $testFile ) {
 			case 'FileCommentUnitTest.4.inc':
 			case 'FileCommentUnitTest.6.inc':
-				return array(
+				return [
 					2 => 1,
-				);
+				];
 
 			default:
-				return array();
+				return [];
 		}
 	}
 }

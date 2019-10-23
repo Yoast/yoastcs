@@ -1,8 +1,8 @@
 <!-- Annotation must be on line 2 as this sniff throws issues on line 1 and PHPCS ignores errors on annotation lines. -->
-phpcs:set Yoast.Files.FileName exclude[] interfaces/excluded-interface-file.inc
+phpcs:set Yoast.Files.FileName excluded_files_strict_check[] interfaces/excluded-interface-file.inc
 
 <?php
 
 interface My_Interface {}
 
-// phpcs:set Yoast.Files.FileName exclude[]
+// phpcs:set Yoast.Files.FileName excluded_files_strict_check[]

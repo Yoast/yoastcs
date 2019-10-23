@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<documentation title="Valid Hook Name">
+    <standard>
+    <![CDATA[
+    Use lowercase letters in action and filter names. Separate words using underscores.
+
+    This only applies to the actual hook name. The Yoast plugin specific prefix is disregarded.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: lowercase hook name.">
+        <![CDATA[
+do_action( <em>'Yoast\WP\Plugin\hook_name'</em>, $var );
+        ]]>
+        </code>
+        <code title="Invalid: mixed case hook name.">
+        <![CDATA[
+do_action( <em>'Yoast\WP\Plugin\Hook_NAME'</em>, $var );
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: words separated by underscores.">
+        <![CDATA[
+apply_filters(
+    <em>'Yoast\WP\Plugin\hook_name'</em>,
+    $var
+);
+        ]]>
+        </code>
+        <code title="Invalid: using non-underscore characters to separate words.">
+        <![CDATA[
+apply_filters(
+    <em>'Yoast\WP\Plugin\some/hook-name'</em>,
+    $var
+);
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    Hook names should consist of the plugin specific prefix in `Yoast\WP\Plugin`-style followed by the actual hook name consisting of a maximum of four words.
+
+    Note: the maximum (error) and the recommended (warning) maximum length are configurable.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: three word hook name.">
+        <![CDATA[
+do_action(
+    <em>'Yoast\WP\Plugin\hook_name'</em>
+);
+        ]]>
+        </code>
+        <code title="Invalid: five word hook name.">
+        <![CDATA[
+apply_filters(
+    <em>'Yoast\WP\Plugin\long_hook_name_too_long'</em>
+);
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

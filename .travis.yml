@@ -35,7 +35,6 @@ env:
 # See: https://docs.travis-ci.com/user/conditions-v1
 stages:
   - name: sniff
-  - name: rulesets
   - name: quicktest
     if: type = push AND branch NOT IN (master, develop)
   - name: test

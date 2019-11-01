@@ -87,7 +87,7 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 
 		$comment_end = $this->phpcsFile->findPrevious( $find, ( $stackPtr - 1 ), null, true );
 		if ( $this->tokens[ $comment_end ]['code'] === T_DOC_COMMENT_CLOSE_TAG ) {
-			// Only check is the class has a docblock.
+			// Only check if the class has a docblock.
 			$comment_start = $this->tokens[ $comment_end ]['comment_opener'];
 			foreach ( $this->tokens[ $comment_start ]['comment_tags'] as $tag ) {
 				if ( $this->tokens[ $tag ]['content'] === '@deprecated' ) {

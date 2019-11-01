@@ -39,7 +39,7 @@ class FileNameSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $prefixes = [];
+	public $oo_prefixes = [];
 
 	/**
 	 * List of files to exclude from the strict file name check.
@@ -59,7 +59,7 @@ class FileNameSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $exclude = [];
+	public $excluded_files_strict_check = [];
 
 	/**
 	 * Object tokens to search for in a file.
@@ -128,7 +128,7 @@ class FileNameSniff implements Sniff {
 				$tokens = $phpcsFile->getTokens();
 				$name   = $phpcsFile->getDeclarationName( $oo_structure );
 
-				$prefixes = $this->clean_custom_array_property( $this->prefixes );
+				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
 				if ( ! empty( $prefixes ) ) {
 					// Use reverse natural sorting to get the longest of overlapping prefixes first.
 					rsort( $prefixes, ( SORT_NATURAL | SORT_FLAG_CASE ) );
@@ -210,7 +210,7 @@ class FileNameSniff implements Sniff {
 	 * @return bool
 	 */
 	protected function is_file_excluded( File $phpcsFile, $path_to_file ) {
-		$exclude = $this->clean_custom_array_property( $this->exclude, true, true );
+		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check, true, true );
 
 		if ( ! empty( $exclude ) ) {
 			$exclude      = array_map( [ $this, 'normalize_directory_separators' ], $exclude );

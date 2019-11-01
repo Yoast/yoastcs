@@ -9,7 +9,7 @@ do_action( $Hook_name ); // OK.
 do_action( "admin_head" ); // OK.
 do_action( 'admin_head_' .  get_ID() . '_action' ); // OK.
 do_action( "admin_head_$Post" ); // OK.
-do_action( 'prefix_block_' . $block['blockname'] ); // OK.
+do_action( 'prefix_block_' . $block['block-Name'] ); // OK.
 
 do_action( "adminHead" ); // Error - use lowercase.
 do_action( 'admin_Head_' . $Type . '_Action' ); // Error - use lowercase.

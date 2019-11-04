@@ -24,8 +24,8 @@ env:
   # Test against the highest/lowest supported PHPCS and WPCS versions.
   - PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
   - PHPCS_BRANCH="dev-master" WPCS="2.2.0"
-  - PHPCS_BRANCH="3.4.2" WPCS="dev-develop"
-  - PHPCS_BRANCH="3.4.2" WPCS="2.2.0"
+  - PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+  - PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
 
 # Define the stages used.
 # For non-PRs, only the sniff, ruleset and quicktest stages are run.
@@ -70,11 +70,11 @@ matrix:
       php: 7.3
       env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
     - php: 7.3
-      env: PHPCS_BRANCH="3.3.1" WPCS="2.2.0"
+      env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
     - php: 5.4
       env: PHPCS_BRANCH="dev-master" WPCS="2.2.0" PHPLINT=1
     - php: 5.4
-      env: PHPCS_BRANCH="3.3.1" WPCS="dev-develop"
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
 
 before_install:
     # Speed up build time by disabling Xdebug.

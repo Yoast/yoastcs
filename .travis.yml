@@ -77,10 +77,6 @@ matrix:
     - php: 5.4
       env: PHPCS_BRANCH="3.3.1" WPCS="dev-develop"
 
-  allow_failures:
-    # Allow failures for unstable builds.
-    - php: "7.4snapshot"
-
 before_install:
     # Speed up build time by disabling Xdebug.
     # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/

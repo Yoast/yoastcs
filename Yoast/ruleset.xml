@@ -62,6 +62,9 @@
 		<exclude name="Yoast.Commenting.FileComment.AuthorTagOrder"/>
 		<exclude name="Yoast.Commenting.FileComment.CopyrightTagOrder"/>
 
+		<!-- WPCS demands long arrays. YoastCS demands short arrays. -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 
@@ -107,6 +110,10 @@
 			</property>
 		</properties>
 	</rule>
+
+	<!-- In contrast to WPCS: demand short arrays. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
 
 	<!--
 	#############################################################################

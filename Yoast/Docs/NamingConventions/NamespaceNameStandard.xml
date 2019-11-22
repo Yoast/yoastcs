@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<documentation title="Namespace Name Depth">
+    <standard>
+    <![CDATA[
+    A namespace name is not allowed to be more than 3 levels deep (excluding the prefix).
+
+    It is recommended for the name to be two levels.
+
+    For unit test files, `Tests\(Doubles\)` will be regarded as part of the prefix for this check.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: two-level namespace name declaration.">
+        <![CDATA[
+namespace Yoast\WP\Plugin\<em>Admin\Forms</em>;
+
+namespace Yoast\WP\Plugin\Tests\<em>Admin\Forms</em>;
+        ]]>
+        </code>
+        <code title="Invalid: four-level namespace name declaration.">
+        <![CDATA[
+namespace Yoast\WP\Plugin\<em>Admin\Forms\Type\Sub</em>;
+
+namespace Yoast\WP\Plugin\Tests\<em>Foo\Bar\Flo\Sub</em>;
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    The levels in a namespace name should reflect the path to the file.
+
+    The plugin specific prefix is disregarded for this check.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: namespace name reflects the path to the file.">
+        <![CDATA[
+<!-- Path to file: <em>admin/forms/</em>file.php -->
+<?php
+namespace Yoast\WP\Plugin\<em>Admin\Forms</em>;
+        ]]>
+        </code>
+        <code title="Invalid: namespace name does not reflect the path to the file.">
+        <![CDATA[
+<!-- Path to file: <em>admin/forms/</em>file.php -->
+<?php
+namespace Yoast\WP\Plugin\<em>Unrelated</em>;
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

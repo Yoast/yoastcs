@@ -40,4 +40,12 @@
 	<!-- Enforce PHP 5.4+ short arrays. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
+	<rule ref="Yoast.NamingConventions.NamespaceName">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="YoastCS\Yoast"/>
+			</property>
+		</properties>
+	</rule>
+
 </ruleset>

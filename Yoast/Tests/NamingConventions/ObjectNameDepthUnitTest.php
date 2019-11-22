@@ -9,7 +9,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @package Yoast\YoastCS
  *
- * @since   1.4.0
+ * @since   2.0.0
  *
  * @covers  YoastCS\Yoast\Sniffs\NamingConventions\ObjectNameDepthSniff
  */
@@ -34,6 +34,10 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 					42 => 1,
 					43 => 1,
 					58 => 1,
+					70 => 1,
+					75 => 1,
+					78 => 1,
+					79 => 1,
 				];
 
 			default:

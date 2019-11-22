@@ -10,7 +10,7 @@ use WordPressCS\WordPress\Sniff as WPCS_Sniff;
  * @package Yoast\YoastCS
  * @author  Juliette Reinders Folmer
  *
- * @since   1.4.0
+ * @since   2.0.0
  */
 class ObjectNameDepthSniff extends WPCS_Sniff {
 
@@ -37,6 +37,20 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 	 * @var int
 	 */
 	public $recommended_max_words = 3;
+
+	/**
+	 * Suffixes commonly used for classes in the test suites.
+	 *
+	 * The key is the suffix. The value indicates whether this suffix is
+	 * only allowed when the class extends a known test class.
+	 *
+	 * @var array
+	 */
+	private $test_suffixes = [
+		'Test'   => true,
+		'Mock'   => false,
+		'Double' => false,
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -73,6 +87,22 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 
 		$parts      = explode( '_', $object_name );
 		$part_count = count( $parts );
+
+		/*
+		 * Allow the class name to be one part longer for confirmed test/mock/double classes.
+		 */
+		$last = array_pop( $parts );
+		if ( isset( $this->test_suffixes[ $last ] ) ) {
+			if ( $this->test_suffixes[ $last ] === true && $this->is_test_class( $stackPtr ) ) {
+				--$part_count;
+			}
+			else {
+				$extends = $this->phpcsFile->findExtendedClassName( $stackPtr );
+				if ( is_string( $extends ) ) {
+					--$part_count;
+				}
+			}
+		}
 
 		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
 			return;

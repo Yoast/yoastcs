@@ -160,6 +160,15 @@
 		</properties>
 	</rule>
 
+	<!-- CS: enforce that boolean operators between conditions in multi-line control structures are
+		 consistently at the start or end of the line, not a mix of both. -->
+	<rule ref="PSR12.ControlStructures.BooleanOperatorPlacement">
+		<properties>
+			<!-- Only allow them at the start of the line. -->
+			<property name="allowOnly" value="first"/>
+		</properties>
+	</rule>
+
 	<!-- Error prevention: Ensure no git conflicts make it into the code base. -->
 	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
 		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1500 -->

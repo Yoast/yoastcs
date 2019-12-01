@@ -150,6 +150,13 @@
 	<!-- CS: don't allow "// end class" comments and the likes. -->
 	<rule ref="PSR12.Classes.ClosingBrace"/>
 
+	<!-- CS: enforce consistent indentation of chained object method calls. -->
+	<rule ref="PEAR.WhiteSpace.ObjectOperatorIndent">
+		<properties>
+			<property name="multilevel" value="true"/>
+		</properties>
+	</rule>
+
 	<!-- Error prevention: Ensure no git conflicts make it into the code base. -->
 	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
 		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1500 -->

@@ -175,6 +175,10 @@
 	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
 	<rule ref="PSR12.Files.ImportStatement"/>
 
+	<!-- CS: Enforces that a PHP open tag is on a line by itself when used at the start of a PHP-only file. -->
+	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="PSR12.Files.OpenTag"/>
+
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- Exclude the 'empty' index files from some documentation checks -->

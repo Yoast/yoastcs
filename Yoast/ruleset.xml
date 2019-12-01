@@ -114,6 +114,9 @@
 	<!-- In contrast to WPCS: demand short arrays. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
+	<!-- In contrast to WPCS: disallow Yoda conditions. (PHPCS 3.5.0) -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
 
 	<!--
 	#############################################################################

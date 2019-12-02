@@ -27,18 +27,10 @@
 
 		<!-- Conflicts with variable names coming from PHPCS itself. -->
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
-
-		<!-- YoastCS will demand short arrays once the minimum PHP version allows it.
-			 The minimum PHP version for YoastCS already does. -->
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
-
 	</rule>
 
 	<!-- Enforce PSR1 compatible namespaces. -->
 	<rule ref="PSR1.Classes.ClassDeclaration"/>
-
-	<!-- Enforce PHP 5.4+ short arrays. -->
-	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
 	<rule ref="Yoast.NamingConventions.NamespaceName">
 		<properties>

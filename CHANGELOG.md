@@ -285,7 +285,7 @@ Initial public release as a stand-alone package.
 
 
 [PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer/releases
-[WordPressCS]: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
+[WordPressCS]: https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
 [PHPCompatibilityWP]: https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
 [PHPCompatibility]: https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG

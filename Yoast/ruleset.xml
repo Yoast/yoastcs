@@ -166,6 +166,11 @@
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.Found"/>
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
 
+	<!-- CS: Ensure consistent whitespace around spread operators. -->
+	<!-- PHPCS 3.5.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1762 -->
+	<rule ref="Generic.WhiteSpace.SpreadOperatorSpacingAfter"/>
+
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- Exclude the 'empty' index files from some documentation checks -->

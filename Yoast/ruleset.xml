@@ -171,6 +171,10 @@
 		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1762 -->
 	<rule ref="Generic.WhiteSpace.SpreadOperatorSpacingAfter"/>
 
+	<!-- CS: Disallow a leading backslash at the start of an import use statement. -->
+	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="PSR12.Files.ImportStatement"/>
+
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 
 	<!-- Exclude the 'empty' index files from some documentation checks -->

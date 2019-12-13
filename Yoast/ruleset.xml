@@ -45,6 +45,9 @@
 		<!-- Excluded in favour of the YoastCS native Filename sniff. -->
 		<exclude name="WordPress.Files.FileName"/>
 
+		<!-- Excluded in favour of the YoastCS ValidHookName sniff which extends the WPCS version. -->
+		<exclude name="WordPress.NamingConventions.ValidHookName"/>
+
 		<!-- Excluded in favour of the YoastCS native FileComment sniff (which extends this sniff). -->
 		<exclude name="Squiz.Commenting.FileComment"/>
 		<!-- As the Yoast sniff extends the upstream sniff, we need to exclude the same error codes

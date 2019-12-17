@@ -4,6 +4,72 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.0.0] - 2019-12-17
+
+#### Added
+* PHPCS: New `Yoast.NamingConventions.ObjectNameDepth` sniff.
+    - For objects _declared within a namespace_, this sniff verifies that an object name consist of maximum three words separated by underscores.
+    - For objects which are part of a unit test suite, a `_Test`, `_Mock` or `_Double` suffix at the end of the object name will be disregarded for the purposes of the word count.
+    - The sniff has two configurable properties `max_words` (error) and `recommended_max_words` (warning). The default for both is `3`.
+* PHPCS: New `Yoast.NamingConventions.NamespaceName` sniff.
+    This sniff verifies that:
+    - Namespace names consist of a maximum of three levels (excluding the plugin specific prefix) and recommends for the name to be maximum two levels deep.
+        For unit test files, `Tests\(Doubles\)` directly after the prefix will be ignored when determining the level depth.
+    - The levels in the namespace name directly translate to the directory path to the file.
+    - The sniff has four configurable properties:
+        - `max_levels` (error) and `recommended_max_levels` (warning) which are by default set to `3` and `2` respectively.
+        - `src_directory` to indicate the project root(s) for the _path-to-name_ translation when the project root is not the repo root directory.
+        - `prefixes` to set the plugin specific prefix(es) to take into account.
+* PHPCS: New `Yoast.NamingConventions.ValidHookName` sniff.
+    This sniff extends and adds to the upstream `WordPress.NamingConventions.ValidHookName` sniff.
+    The sniff will ignore non-prefixed hooks and hooks with a prefix unrelated to the plugin being examined, to prevent errors being thrown about hook names which are outside of our control.
+    This sniff verifies that:
+    - Hook names are in lowercase with words separated by underscores (same as WordPressCS).
+    - Hook names are prefixed with the plugin specific prefix in namespace format, i.e. `Yoast\WP\PluginName`.
+        Note: The prefix is exempt from the _lowercase with words separated by underscores_ rule.
+        If the non-namespace type prefix for a plugin is used, the sniff will throw a `warning`.
+    - The actual hook name (after the prefix) consist of maximum four words separated by underscores.
+        - Note: _The hook_name part should be descriptive for the (dev-)user and does not need to follow the namespace or file path of the file they are in._
+        - Also note: for dynamic hook names where the hook name length can not reliably be determined, the sniff will throw a `warning` at severity `3` suggesting the hook name be inspected manually.
+            As the default `severity` for PHPCS is `5`, this `warning` at severity `3` will normally not be shown.
+            It is there to allow for intermittently checking of the dynamic hook names. To trigger it, `--severity=3` should be passed on the command line.
+    - The sniff has three configurable properties:
+        - `maximum_depth` (error) and `soft_maximum_depth` (warning). The default for both is `4`.
+        - `prefixes` to set the plugin specific prefix(es) to take into account.
+* PHPCS: The `Generic.Arrays.DisallowLongArraySyntax` sniff.
+    WPCS 2.2.0 demands long array syntax. In contrast to that, YoastCS demands short array syntax.
+* PHPCS: The `Generic.ControlStructures.DisallowYodaConditions` sniff.
+    In contrast to WPCS, YoastCS never demanded Yoda conditions. With the addition of this sniff, "normal" (non-Yoda) conditions will now be enforced.
+* PHPCS: The `Generic.WhiteSpace.SpreadOperatorSpacingAfter` sniff.
+    Enforces no space between the `...` spread operator and the variable/function call it applies to.
+* PHPCS: The `PEAR.WhiteSpace.ObjectOperatorIndent` sniff.
+    Enforce consistent indentation of chained method calls to one more or less than the previous call in the chain and always at least one in from the start of the chain.
+* PHPCS: The `PSR12.Classes.ClosingBrace` sniff.
+    This sniff disallows the outdated practice of `// end ...` comments for OO stuctures.
+* PHPCS: The `PSR12.Files.ImportStatement` sniff.
+    Import `use` statements must always be fully qualified, so a leading backslash is redundant (and discouraged by PHP itself).
+    This sniff enforces that no leading backslash is used for import `use` statements.
+* PHPCS: The `PSR12.Files.OpenTag` sniff.
+    Enforces that a PHP open tag is on a line by itself in PHP-only files.
+* PHPCS: A `CustomPrefixesTrait` to handle checking names against a list of custom prefixes.
+* Composer: `lint` script which uses the [Parallel-Lint] package for faster and more readable linting results.
+
+#### Changed
+* :warning: PHPCS: `Yoast.Files.FileName` sniff: the public `$prefixes` property, which can be used to indicate which _prefixes_ should be stripped of a class name when translating it to a file name, has been renamed to `$oo_prefixes`.
+    Custom repo specific rulesets using the property should be updates to reflect this change.
+* :warning: PHPCS: `Yoast.Files.FileName` sniff: the public `$exclude` property, which can be used to indicate which files to exclude from the file name versus object name check, has been renamed to `$excluded_files_strict_check`.
+    Custom repo specific rulesets using the property should be updates to reflect this change.
+* PHPCS: The default setting for the minimum supported PHP version for repos using YoastCS is now PHP 5.6 (was 5.2).
+* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been update to WP `5.2` (was `4.9`).
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.4.2` to `^3.5.0`.
+    Note: this makes the option `--filter=gitstaged` available which can be used in git `pre-commit` hooks to only check staged files.
+* Composer: Supported version of [WordPressCS] has been changed from `^2.1.1` to `^2.2.0`.
+* Composer: Supported version of [PHPCompatibilityWP] has been changed from `^2.0.0` to `^2.1.0`.
+* Travis: the build check is now run in stages.
+* Travis: Tests against PHP 7.4 are no longer allowed to fail.
+* Various housekeeping & code compliance with YoastCS 2.0.0.
+
+
 ### [1.3.0] - 2019-07-31
 
 #### Added
@@ -290,7 +356,9 @@ Initial public release as a stand-alone package.
 [PHPCompatibility]: https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
+[Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
 
+[2.0.0]: https://github.com/Yoast/yoastcs/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/Yoast/yoastcs/compare/1.2.2...1.3.0
 [1.2.2]: https://github.com/Yoast/yoastcs/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/Yoast/yoastcs/compare/1.2.0...1.2.1

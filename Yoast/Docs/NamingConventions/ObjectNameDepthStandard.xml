@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<documentation title="Object Name Depth">
+    <standard>
+    <![CDATA[
+    The name of objects - classes, interfaces, traits - declared within a namespace should consist of a maximum of three words.
+
+    A partial exception is made for test, mock and double classes. These can have a `_Test`, `_Mock` or `_Double` class name suffix, which won't be counted.
+
+    Note: the maximum (error) and the recommended (warning) maximum length are configurable.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: long class name in a file without a namespace.">
+        <![CDATA[
+class <em>Non_Namespaced_Long_Class_Name</em> {}
+        ]]>
+        </code>
+        <code title="Invalid: long class name in a namespaced file.">
+        <![CDATA[
+namespace Yoast\WP\Plugin;
+
+class <em>Namespaced_Long_Class_Name</em> {}
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: short class name in a namespaced file.">
+        <![CDATA[
+namespace Yoast\WP\Plugin;
+
+class <em>Short_Class_Name</em> {}
+        ]]>
+        </code>
+        <code title="Invalid: long class name in a namespaced file.">
+        <![CDATA[
+namespace Yoast\WP\Plugin;
+
+class <em>Namespaced_Too_Long_Class_Name</em> {}
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: test class in a namespaced file.">
+        <![CDATA[
+namespace Yoast\WP\Plugin\Tests;
+
+use PHPUnit\Framework\TestCase;
+
+class <em>Short_Class_Name_Test</em>
+    extends TestCase {}
+        ]]>
+        </code>
+        <code title="Invalid: long test class name in a namespaced file.">
+        <![CDATA[
+namespace Yoast\WP\Plugin\Tests;
+
+use PHPUnit\Framework\TestCase;
+
+class <em>Namespaced_Too_Long_Class_Name_Test</em>
+    extends TestCase {}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

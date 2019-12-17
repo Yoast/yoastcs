@@ -33,9 +33,9 @@ class TestDoublesSniff implements Sniff {
 	 *
 	 * @var array
 	 */
-	public $doubles_path = array(
+	public $doubles_path = [
 		'/tests/doubles',
-	);
+	];
 
 	/**
 	 * Validated absolute target paths for test double/mock classes or an empty array
@@ -51,11 +51,11 @@ class TestDoublesSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CLASS,
 			T_INTERFACE,
 			T_TRAIT,
-		);
+		];
 	}
 
 	/**
@@ -120,7 +120,7 @@ class TestDoublesSniff implements Sniff {
 		$base_path = rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
 
 		if ( ! isset( $this->target_paths ) || defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
-			$this->target_paths = array();
+			$this->target_paths = [];
 
 			foreach ( $this->doubles_path as $doubles_path ) {
 				$target_path  = $base_path;
@@ -134,9 +134,9 @@ class TestDoublesSniff implements Sniff {
 
 		if ( empty( $this->target_paths ) ) {
 			// No valid target paths found.
-			$data = array(
+			$data = [
 				$phpcsFile->config->basepath,
-			);
+			];
 
 			if ( count( $this->doubles_path ) === 1 ) {
 				$data[] = 'directory';
@@ -169,10 +169,10 @@ class TestDoublesSniff implements Sniff {
 			}
 
 			if ( $is_error === true ) {
-				$data = array(
+				$data = [
 					$tokens[ $stackPtr ]['content'],
 					$object_name,
-				);
+				];
 
 				$phpcsFile->addError(
 					'Double/Mock test helper classes should be placed in a dedicated test doubles sub-directory. Found %s: %s',
@@ -189,12 +189,12 @@ class TestDoublesSniff implements Sniff {
 		}
 
 		if ( $more_objects_in_file !== false ) {
-			$data = array(
+			$data = [
 				$tokens[ $stackPtr ]['content'],
 				$object_name,
 				$tokens[ $more_objects_in_file ]['content'],
 				$phpcsFile->getDeclarationName( $more_objects_in_file ),
-			);
+			];
 
 			$phpcsFile->addError(
 				'Double/Mock test helper classes should be in their own file. Found %1$s: %2$s and %3$s: %4$s',

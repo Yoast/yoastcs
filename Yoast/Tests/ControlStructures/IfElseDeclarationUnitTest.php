@@ -22,7 +22,7 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of errors>
 	 */
 	public function getErrorList() {
-		return array(
+		return [
 			22 => 1,
 			28 => 1,
 			30 => 1,
@@ -32,7 +32,7 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 			51 => 1,
 			76 => 1,
 			84 => 2,
-		);
+		];
 	}
 
 	/**
@@ -41,6 +41,6 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest {
 	 * @return array <int line number> => <int number of warnings>
 	 */
 	public function getWarningList() {
-		return array();
+		return [];
 	}
 }

@@ -28,10 +28,10 @@
 	-->
 	<rule ref="WordPress">
 		<!-- Set the minimum supported WP version for all sniff which use it in one go.
-			 Ref: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
+			 Ref: https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
 		-->
 		<properties>
-			<property name="minimum_supported_version" value="4.9"/>
+			<property name="minimum_supported_version" value="5.2"/>
 		</properties>
 
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
@@ -44,6 +44,9 @@
 
 		<!-- Excluded in favour of the YoastCS native Filename sniff. -->
 		<exclude name="WordPress.Files.FileName"/>
+
+		<!-- Excluded in favour of the YoastCS ValidHookName sniff which extends the WPCS version. -->
+		<exclude name="WordPress.NamingConventions.ValidHookName"/>
 
 		<!-- Excluded in favour of the YoastCS native FileComment sniff (which extends this sniff). -->
 		<exclude name="Squiz.Commenting.FileComment"/>
@@ -61,6 +64,9 @@
 		<exclude name="Yoast.Commenting.FileComment.SubpackageTagOrder"/>
 		<exclude name="Yoast.Commenting.FileComment.AuthorTagOrder"/>
 		<exclude name="Yoast.Commenting.FileComment.CopyrightTagOrder"/>
+
+		<!-- WPCS demands long arrays. YoastCS demands short arrays. -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
 
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
@@ -108,12 +114,19 @@
 		</properties>
 	</rule>
 
+	<!-- In contrast to WPCS: demand short arrays. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+	<!-- In contrast to WPCS: disallow Yoda conditions. (PHPCS 3.5.0) -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+
 	<!--
 	#############################################################################
 	SNIFF FOR PHP CROSS-VERSION COMPATIBILITY
 	#############################################################################
 	-->
-	<config name="testVersion" value="5.2-"/>
+	<config name="testVersion" value="5.6-"/>
 	<rule ref="PHPCompatibilityWP">
 		<include-pattern>*\.php$</include-pattern>
 	</rule>
@@ -137,21 +150,44 @@
 	<!-- CS: ensure exactly one blank line before each property declaration. -->
 	<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
 
+	<!-- CS: don't allow "// end class" comments and the likes. -->
+	<rule ref="PSR12.Classes.ClosingBrace"/>
+
+	<!-- CS: enforce consistent indentation of chained object method calls. -->
+	<rule ref="PEAR.WhiteSpace.ObjectOperatorIndent">
+		<properties>
+			<property name="multilevel" value="true"/>
+		</properties>
+	</rule>
+
 	<!-- Error prevention: Ensure no git conflicts make it into the code base. -->
-	<!-- PHPCS 3.4.0: This sniff will be added to WPCS 2.x in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1500 -->
+	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1500 -->
 	<rule ref="Generic.VersionControl.GitMergeConflict"/>
 
 	<!-- CS: no space between an increment/decrement operator and the variable it applies to. -->
-	<!-- PHPCS 3.4.0: This sniff will be added to WPCS 2.x in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1511 -->
+	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1511 -->
 	<rule ref="Generic.WhiteSpace.IncrementDecrementSpacing"/>
 
 	<!-- QA: Function declarations should not contain parameters which will never be used. -->
-	<!-- PHPCS 3.4.0: This sniff will be added to WPCS 2.x in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1510 -->
+	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1510 -->
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.Found"/>
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
+
+	<!-- CS: Ensure consistent whitespace around spread operators. -->
+	<!-- PHPCS 3.5.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
+		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1762 -->
+	<rule ref="Generic.WhiteSpace.SpreadOperatorSpacingAfter"/>
+
+	<!-- CS: Disallow a leading backslash at the start of an import use statement. -->
+	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="PSR12.Files.ImportStatement"/>
+
+	<!-- CS: Enforces that a PHP open tag is on a line by itself when used at the start of a PHP-only file. -->
+	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="PSR12.Files.OpenTag"/>
 
 	<!-- ##### Documentation Sniffs vs empty index files ##### -->
 

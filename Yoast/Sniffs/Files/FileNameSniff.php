@@ -7,8 +7,6 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Common;
 
 /**
- * YoastCS\Yoast\Sniffs\Files\FileNameSniff.
- *
  * Ensures files comply with the Yoast file name rules.
  *
  * Rules:
@@ -39,7 +37,7 @@ class FileNameSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $prefixes = array();
+	public $oo_prefixes = [];
 
 	/**
 	 * List of files to exclude from the strict file name check.
@@ -59,18 +57,18 @@ class FileNameSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $exclude = array();
+	public $excluded_files_strict_check = [];
 
 	/**
 	 * Object tokens to search for in a file.
 	 *
 	 * @var array
 	 */
-	private $oo_tokens = array(
+	private $oo_tokens = [
 		T_CLASS,
 		T_INTERFACE,
 		T_TRAIT,
-	);
+	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -78,7 +76,7 @@ class FileNameSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array( T_OPEN_TAG );
+		return [ T_OPEN_TAG ];
 	}
 
 	/**
@@ -128,7 +126,7 @@ class FileNameSniff implements Sniff {
 				$tokens = $phpcsFile->getTokens();
 				$name   = $phpcsFile->getDeclarationName( $oo_structure );
 
-				$prefixes = $this->clean_custom_array_property( $this->prefixes );
+				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
 				if ( ! empty( $prefixes ) ) {
 					// Use reverse natural sorting to get the longest of overlapping prefixes first.
 					rsort( $prefixes, ( SORT_NATURAL | SORT_FLAG_CASE ) );
@@ -189,10 +187,10 @@ class FileNameSniff implements Sniff {
 				$error,
 				0,
 				$error_code,
-				array(
+				[
 					$expected . '.' . $extension,
 					$basename,
-				)
+				]
 			);
 		}
 
@@ -210,10 +208,10 @@ class FileNameSniff implements Sniff {
 	 * @return bool
 	 */
 	protected function is_file_excluded( File $phpcsFile, $path_to_file ) {
-		$exclude = $this->clean_custom_array_property( $this->exclude, true, true );
+		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check, true, true );
 
 		if ( ! empty( $exclude ) ) {
-			$exclude      = array_map( array( $this, 'normalize_directory_separators' ), $exclude );
+			$exclude      = array_map( [ $this, 'normalize_directory_separators' ], $exclude );
 			$path_to_file = $this->normalize_directory_separators( $path_to_file );
 
 			if ( ! isset( $phpcsFile->config->basepath ) ) {

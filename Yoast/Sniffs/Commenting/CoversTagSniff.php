@@ -45,9 +45,9 @@ class CoversTagSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_DOC_COMMENT_OPEN_TAG,
-		);
+		];
 	}
 
 	/**
@@ -148,17 +148,17 @@ class CoversTagSniff implements Sniff {
 			// Throw a generic error for all other invalid annotations.
 			$error  = self::ERROR_MSG;
 			$error .= ' Check the PHPUnit documentation to see which annotations are supported. Found: %s';
-			$data   = array( $annotation );
+			$data   = [ $annotation ];
 			$phpcsFile->addError( $error, $next, 'Invalid', $data );
 		}
 
 		$coversNothingCount = count( $coversNothingTags );
 		if ( $firstCoversTag !== false && $coversNothingCount > 0 ) {
 			$error = 'A test can\'t both cover something as well as cover nothing. First @coversNothing tag encountered on line %d; first @covers tag encountered on line %d';
-			$data  = array(
+			$data  = [
 				$tokens[ $coversNothingTags[0] ]['line'],
 				$tokens[ $firstCoversTag ]['line'],
-			);
+			];
 
 			$phpcsFile->addError( $error, $tokens[ $stackPtr ]['comment_closer'], 'Contradictory', $data );
 		}
@@ -167,7 +167,7 @@ class CoversTagSniff implements Sniff {
 			$error      = 'Only one @coversNothing tag allowed per test';
 			$code       = 'DuplicateCoversNothing';
 			$fixable    = true;
-			$removeTags = array();
+			$removeTags = [];
 			foreach ( $coversNothingTags as $position => $ptr ) {
 				$next = ( $ptr + 1 );
 				if ( $tokens[ $next ]['code'] === T_DOC_COMMENT_WHITESPACE
@@ -232,7 +232,7 @@ class CoversTagSniff implements Sniff {
 
 						if ( ! isset( $first ) ) {
 							$first = explode( '-', $ptrs );
-							$data  = array( $tokens[ $first[0] ]['line'] );
+							$data  = [ $tokens[ $first[0] ]['line'] ];
 							continue;
 						}
 
@@ -288,10 +288,10 @@ class CoversTagSniff implements Sniff {
 		}
 
 		$error = self::ERROR_MSG . "\nExpected: `%s`\nFound:    `%s`";
-		$data  = array(
+		$data  = [
 			$expected,
 			$annotation,
-		);
+		];
 
 		$fix = $phpcsFile->addFixableError( $error, $stackPtr, $errorCode, $data );
 		if ( $fix === true ) {

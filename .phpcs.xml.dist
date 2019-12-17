@@ -32,4 +32,12 @@
 	<!-- Enforce PSR1 compatible namespaces. -->
 	<rule ref="PSR1.Classes.ClassDeclaration"/>
 
+	<rule ref="Yoast.NamingConventions.NamespaceName">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="YoastCS\Yoast"/>
+			</property>
+		</properties>
+	</rule>
+
 </ruleset>

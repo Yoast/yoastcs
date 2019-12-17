@@ -46,7 +46,7 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 			return $test_files;
 		}
 
-		return array( $testFileBase . '.inc' );
+		return [ $testFileBase . '.inc' ];
 	}
 
 	/**
@@ -61,59 +61,59 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 		switch ( $testFile ) {
 			// In tests/.
 			case 'mock-not-in-correct-dir.inc':
-				return array(
+				return [
 					3 => 1,
-				);
+				];
 
 			case 'multiple-objects-in-file.inc':
-				return array(
+				return [
 					5 => 2,
-				);
+				];
 
 			case 'multiple-objects-in-file-reverse.inc':
-				return array(
+				return [
 					7 => 2,
-				);
+				];
 
 			case 'non-existant-doubles-dir.inc':
-				return array(
+				return [
 					4 => 1,
-				);
+				];
 
 			case 'not-in-correct-custom-dir.inc':
-				return array(
+				return [
 					4 => 1,
-				);
+				];
 
 			case 'not-in-correct-dir-double.inc':
-				return array(
+				return [
 					3 => 1,
-				);
+				];
 
 			case 'not-in-correct-dir-mock.inc':
-				return array(
+				return [
 					3 => 1,
-				);
+				];
 
 			// In tests/doubles.
 			case 'multiple-mocks-in-file.inc':
-				return array(
+				return [
 					3 => 1,
 					5 => 1,
-				);
+				];
 
 			// In tests/doubles-not-correct.
 			case 'not-in-correct-subdir.inc':
-				return array(
+				return [
 					3 => 1,
-				);
+				];
 
 			case 'not-double-or-mock.inc': // In tests.
 			case 'correct-dir-double.inc': // In tests/doubles.
 			case 'correct-dir-mock.inc': // In tests/doubles.
 			case 'correct-custom-dir.inc': // In tests/mocks.
 			default:
-				return array();
+				return [];
 		}
 	}
 
@@ -127,17 +127,17 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	public function getWarningList( $testFile = '' ) {
 		switch ( $testFile ) {
 			case 'no-basepath.inc':
-				return array(
+				return [
 					1 => 1,
-				);
+				];
 
 			case 'no-doubles-path-property.inc':
-				return array(
+				return [
 					1 => 1,
-				);
+				];
 
 			default:
-				return array();
+				return [];
 		}
 	}
 }

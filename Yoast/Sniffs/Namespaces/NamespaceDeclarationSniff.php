@@ -30,9 +30,9 @@ class NamespaceDeclarationSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_OPEN_TAG,
-		);
+		];
 	}
 
 	/**
@@ -48,7 +48,7 @@ class NamespaceDeclarationSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		$statements = array();
+		$statements = [];
 
 		while ( ( $stackPtr = $phpcsFile->findNext( T_NAMESPACE, ( $stackPtr + 1 ) ) ) !== false ) {
 
@@ -91,10 +91,10 @@ class NamespaceDeclarationSniff implements Sniff {
 
 		$count = count( $statements );
 		if ( $count > 1 ) {
-			$data = array(
+			$data = [
 				$count,
 				$tokens[ $statements[0] ]['line'],
-			);
+			];
 
 			for ( $i = 1; $i < $count; $i++ ) {
 				$phpcsFile->addError(

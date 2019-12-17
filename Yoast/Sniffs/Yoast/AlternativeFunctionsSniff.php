@@ -20,17 +20,17 @@ class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 	 * @return array
 	 */
 	public function getGroups() {
-		return array(
-			'json_encode' => array(
+		return [
+			'json_encode' => [
 				'type'        => 'error',
 				'message'     => 'Detected a call to %s(). Use %s() instead.',
-				'functions'   => array(
+				'functions'   => [
 					'json_encode',
 					'wp_json_encode',
-				),
+				],
 				'replacement' => 'WPSEO_Utils::format_json_encode',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -54,10 +54,10 @@ class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 		$message    = $this->groups[ $group_name ]['message'];
 		$is_error   = ( $this->groups[ $group_name ]['type'] === 'error' );
 		$error_code = $this->string_to_errorcode( $group_name . '_' . $matched_content );
-		$data       = array(
+		$data       = [
 			$matched_content,
 			$replacement,
-		);
+		];
 
 		/*
 		 * Deal with specific situations.

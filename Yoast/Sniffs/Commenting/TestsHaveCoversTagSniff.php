@@ -22,10 +22,10 @@ class TestsHaveCoversTagSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return array(
+		return [
 			T_CLASS,
 			T_FUNCTION,
-		);
+		];
 	}
 
 	/**
@@ -60,7 +60,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 	 *                                               in the stack passed in $tokens.
 	 *
 	 * @return void|int If covers annotations were found (or this is not a test class),
-	 *                  will returns the stack pointer to the end of the class.
+	 *                  will return the stack pointer to the end of the class.
 	 */
 	protected function process_class( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
@@ -182,7 +182,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 			'Each test function should have at least one @covers tag annotating which class/method/function is being tested. Tag missing for function %s()',
 			$stackPtr,
 			'Missing',
-			array( $name )
+			[ $name ]
 		);
 	}
 }

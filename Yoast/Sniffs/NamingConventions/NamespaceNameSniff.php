@@ -132,7 +132,7 @@ class NamespaceNameSniff implements Sniff {
 
 		// Get the complete namespace name.
 		$namespace_name = $tokens[ $next_non_empty ]['content'];
-		for ( $i = ( $next_non_empty + 1 ); ; $i++ ) {
+		for ( $i = ( $next_non_empty + 1 ); $i < $phpcsFile->numTokens; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $tokens[ $i ]['code'] ] ) ) {
 				continue;
 			}
@@ -143,6 +143,11 @@ class NamespaceNameSniff implements Sniff {
 			}
 
 			$namespace_name .= $tokens[ $i ]['content'];
+		}
+
+		if ( $i === $phpcsFile->numTokens ) {
+			// Live coding.
+			return;
 		}
 
 		$this->validate_prefixes();

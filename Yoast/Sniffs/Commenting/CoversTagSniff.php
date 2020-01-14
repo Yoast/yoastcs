@@ -166,9 +166,8 @@ class CoversTagSniff implements Sniff {
 		if ( $coversNothingCount > 1 ) {
 			$error      = 'Only one @coversNothing tag allowed per test';
 			$code       = 'DuplicateCoversNothing';
-			$fixable    = true;
 			$removeTags = [];
-			foreach ( $coversNothingTags as $position => $ptr ) {
+			foreach ( $coversNothingTags as $ptr ) {
 				$next = ( $ptr + 1 );
 				if ( $tokens[ $next ]['code'] === T_DOC_COMMENT_WHITESPACE
 					&& $tokens[ $next ]['content'] === $phpcsFile->eolChar

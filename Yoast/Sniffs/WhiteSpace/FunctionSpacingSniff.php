@@ -57,8 +57,6 @@ class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 * @return void|int Optionally returns stack pointer to skip to.
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		$tokens = $phpcsFile->getTokens();
-
 		// Check that the function is nested in an OO structure (class, trait, interface).
 		if ( $phpcsFile->hasCondition( $stackPtr, Tokens::$ooScopeTokens ) === false ) {
 			return;

@@ -263,12 +263,9 @@ class NamespaceNameSniff implements Sniff {
 			return;
 		}
 
-		$expected = '';
+		$expected = '[Plugin\Prefix]';
 		if ( $found_prefix !== '' ) {
 			$expected = $found_prefix;
-		}
-		else {
-			$expected = '[Plugin\Prefix]';
 		}
 
 		if ( $relative_directory !== '' ) {

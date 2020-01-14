@@ -88,7 +88,7 @@ class NamespaceNameSniff implements Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [ T_NAMESPACE ];
@@ -97,9 +97,9 @@ class NamespaceNameSniff implements Sniff {
 	/**
 	 * Filter out all prefixes which don't have namespace separators.
 	 *
-	 * @param array $prefixes The unvalidated prefixes.
+	 * @param string[] $prefixes The unvalidated prefixes.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	protected function filter_prefixes( $prefixes ) {
 		return $this->filter_allow_only_namespace_prefixes( $prefixes );

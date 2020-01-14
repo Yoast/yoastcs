@@ -18,7 +18,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Error files with the expected nr of errors.
 	 *
-	 * @var array
+	 * @var int[]
 	 */
 	private $expected_results = [
 

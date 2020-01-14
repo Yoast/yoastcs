@@ -88,7 +88,7 @@ trait CustomPrefixesTrait {
 		}
 
 		// Use reverse natural sorting to get the longest prefix first.
-		rsort( $validated, ( SORT_NATURAL | SORT_FLAG_CASE ) );
+		rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 
 		// Set the validated prefixes cache.
 		$this->validated_prefixes = $validated;

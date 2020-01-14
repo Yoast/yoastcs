@@ -59,9 +59,9 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 	 */
 	public function register() {
 		return [
-			T_CLASS,
-			T_INTERFACE,
-			T_TRAIT,
+			\T_CLASS,
+			\T_INTERFACE,
+			\T_TRAIT,
 		];
 	}
 
@@ -110,13 +110,13 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 
 		// Check if the class is deprecated.
 		$find = [
-			T_ABSTRACT   => T_ABSTRACT,
-			T_FINAL      => T_FINAL,
-			T_WHITESPACE => T_WHITESPACE,
+			\T_ABSTRACT   => \T_ABSTRACT,
+			\T_FINAL      => \T_FINAL,
+			\T_WHITESPACE => \T_WHITESPACE,
 		];
 
 		$comment_end = $this->phpcsFile->findPrevious( $find, ( $stackPtr - 1 ), null, true );
-		if ( $this->tokens[ $comment_end ]['code'] === T_DOC_COMMENT_CLOSE_TAG ) {
+		if ( $this->tokens[ $comment_end ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Only check if the class has a docblock.
 			$comment_start = $this->tokens[ $comment_end ]['comment_opener'];
 			foreach ( $this->tokens[ $comment_start ]['comment_tags'] as $tag ) {

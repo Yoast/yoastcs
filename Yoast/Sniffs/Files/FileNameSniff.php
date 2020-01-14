@@ -65,9 +65,9 @@ class FileNameSniff implements Sniff {
 	 * @var (int|string)[]
 	 */
 	private $oo_tokens = [
-		T_CLASS,
-		T_INTERFACE,
-		T_TRAIT,
+		\T_CLASS,
+		\T_INTERFACE,
+		\T_TRAIT,
 	];
 
 	/**
@@ -76,7 +76,7 @@ class FileNameSniff implements Sniff {
 	 * @return (int|string)[]
 	 */
 	public function register() {
-		return [ T_OPEN_TAG ];
+		return [ \T_OPEN_TAG ];
 	}
 
 	/**
@@ -129,7 +129,7 @@ class FileNameSniff implements Sniff {
 				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
 				if ( ! empty( $prefixes ) ) {
 					// Use reverse natural sorting to get the longest of overlapping prefixes first.
-					rsort( $prefixes, ( SORT_NATURAL | SORT_FLAG_CASE ) );
+					rsort( $prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 					foreach ( $prefixes as $prefix ) {
 						if ( $name !== $prefix && stripos( $name, $prefix ) === 0 ) {
 							$name = substr( $name, strlen( $prefix ) );
@@ -142,12 +142,12 @@ class FileNameSniff implements Sniff {
 				$expected = strtolower( str_replace( '_', '-', $name ) );
 
 				switch ( $tokens[ $oo_structure ]['code'] ) {
-					case T_CLASS:
+					case \T_CLASS:
 						$error      = 'Class file names should be based on the class name without the plugin prefix. Expected %s, but found %s.';
 						$error_code = 'InvalidClassFileName';
 						break;
 
-					case T_INTERFACE:
+					case \T_INTERFACE:
 						$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected %s, but found %s.';
 						$error_code = 'InvalidInterfaceFileName';
 
@@ -157,7 +157,7 @@ class FileNameSniff implements Sniff {
 						}
 						break;
 
-					case T_TRAIT:
+					case \T_TRAIT:
 						$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected %s, but found %s.';
 						$error_code = 'InvalidTraitFileName';
 
@@ -169,7 +169,7 @@ class FileNameSniff implements Sniff {
 				}
 			}
 			else {
-				$has_function = $phpcsFile->findNext( T_FUNCTION, $stackPtr );
+				$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
 				if ( $has_function !== false ) {
 					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected %s, but found %s.';
 					$error_code = 'InvalidFunctionsFileName';

@@ -24,8 +24,8 @@ class IfElseDeclarationSniff implements Sniff {
 	 */
 	public function register() {
 		return [
-			T_ELSE,
-			T_ELSEIF,
+			\T_ELSE,
+			\T_ELSEIF,
 		];
 	}
 
@@ -47,17 +47,17 @@ class IfElseDeclarationSniff implements Sniff {
 		else {
 			// Deal with "else if".
 			$next = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
-			if ( $tokens[ $next ]['code'] === T_IF && isset( $tokens[ $next ]['scope_opener'] ) ) {
+			if ( $tokens[ $next ]['code'] === \T_IF && isset( $tokens[ $next ]['scope_opener'] ) ) {
 				$scope_open = $tokens[ $next ]['scope_opener'];
 			}
 		}
 
-		if ( ! isset( $scope_open ) || $tokens[ $scope_open ]['code'] === T_COLON ) {
+		if ( ! isset( $scope_open ) || $tokens[ $scope_open ]['code'] === \T_COLON ) {
 			// No scope opener found or alternative syntax (not our concern).
 			return;
 		}
 
-		$previous_scope_closer = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
+		$previous_scope_closer = $phpcsFile->findPrevious( \T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
 
 		if ( $tokens[ $previous_scope_closer ]['line'] === $tokens[ $stackPtr ]['line'] ) {
 			$phpcsFile->addError(

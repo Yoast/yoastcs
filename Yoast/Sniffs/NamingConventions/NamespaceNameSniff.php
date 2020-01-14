@@ -91,7 +91,7 @@ class NamespaceNameSniff implements Sniff {
 	 * @return array
 	 */
 	public function register() {
-		return [ T_NAMESPACE ];
+		return [ \T_NAMESPACE ];
 	}
 
 	/**
@@ -125,7 +125,7 @@ class NamespaceNameSniff implements Sniff {
 		}
 
 		$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
-		if ( $tokens[ $next_non_empty ]['code'] === T_NS_SEPARATOR ) {
+		if ( $tokens[ $next_non_empty ]['code'] === \T_NS_SEPARATOR ) {
 			// Not a namespace declaration.
 			return;
 		}
@@ -137,7 +137,7 @@ class NamespaceNameSniff implements Sniff {
 				continue;
 			}
 
-			if ( $tokens[ $i ]['code'] !== T_STRING && $tokens[ $i ]['code'] !== T_NS_SEPARATOR ) {
+			if ( $tokens[ $i ]['code'] !== \T_STRING && $tokens[ $i ]['code'] !== \T_NS_SEPARATOR ) {
 				// Reached end of the namespace declaration.
 				break;
 			}
@@ -339,7 +339,7 @@ class NamespaceNameSniff implements Sniff {
 		}
 
 		// Use reverse natural sorting to get the longest directory first.
-		rsort( $validated, ( SORT_NATURAL | SORT_FLAG_CASE ) );
+		rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 
 		// Set the validated prefixes cache.
 		$this->validated_src_directory = $validated;

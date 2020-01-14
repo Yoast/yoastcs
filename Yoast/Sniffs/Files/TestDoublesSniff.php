@@ -52,9 +52,9 @@ class TestDoublesSniff implements Sniff {
 	 */
 	public function register() {
 		return [
-			T_CLASS,
-			T_INTERFACE,
-			T_TRAIT,
+			\T_CLASS,
+			\T_INTERFACE,
+			\T_TRAIT,
 		];
 	}
 

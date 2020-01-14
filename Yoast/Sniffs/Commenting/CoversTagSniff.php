@@ -46,7 +46,7 @@ class CoversTagSniff implements Sniff {
 	 */
 	public function register() {
 		return [
-			T_DOC_COMMENT_OPEN_TAG,
+			\T_DOC_COMMENT_OPEN_TAG,
 		];
 	}
 
@@ -80,8 +80,8 @@ class CoversTagSniff implements Sniff {
 			}
 
 			// Found a @covers tag.
-			$next = $phpcsFile->findNext( T_DOC_COMMENT_WHITESPACE, ( $tag + 1 ), null, true );
-			if ( $tokens[ $next ]['code'] !== T_DOC_COMMENT_STRING
+			$next = $phpcsFile->findNext( \T_DOC_COMMENT_WHITESPACE, ( $tag + 1 ), null, true );
+			if ( $tokens[ $next ]['code'] !== \T_DOC_COMMENT_STRING
 				|| $tokens[ $next ]['line'] !== $tokens[ $tag ]['line']
 			) {
 				$phpcsFile->addError(
@@ -170,7 +170,7 @@ class CoversTagSniff implements Sniff {
 			$removeTags = [];
 			foreach ( $coversNothingTags as $position => $ptr ) {
 				$next = ( $ptr + 1 );
-				if ( $tokens[ $next ]['code'] === T_DOC_COMMENT_WHITESPACE
+				if ( $tokens[ $next ]['code'] === \T_DOC_COMMENT_WHITESPACE
 					&& $tokens[ $next ]['content'] === $phpcsFile->eolChar
 				) {
 					// No comment, ok to remove.
@@ -246,7 +246,7 @@ class CoversTagSniff implements Sniff {
 							// Remove the whole line.
 							for ( $i = ( $ptrs[1] ); $i >= 0; $i-- ) {
 								if ( $tokens[ $i ]['line'] !== $tokens[ $ptrs[1] ]['line'] ) {
-									if ( $tokens[ $i ]['code'] === T_DOC_COMMENT_WHITESPACE
+									if ( $tokens[ $i ]['code'] === \T_DOC_COMMENT_WHITESPACE
 										&& $tokens[ $i ]['content'] === $phpcsFile->eolChar
 									) {
 										$phpcsFile->fixer->replaceToken( $i, '' );

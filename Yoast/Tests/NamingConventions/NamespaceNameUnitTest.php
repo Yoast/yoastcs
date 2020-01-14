@@ -29,7 +29,7 @@ class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			return;
 		}
 
-		$config->basepath = __DIR__ . DIRECTORY_SEPARATOR . 'NamespaceNameUnitTests';
+		$config->basepath = __DIR__ . \DIRECTORY_SEPARATOR . 'NamespaceNameUnitTests';
 	}
 
 	/**
@@ -40,8 +40,8 @@ class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 * @return string[]
 	 */
 	protected function getTestFiles( $testFileBase ) {
-		$sep        = DIRECTORY_SEPARATOR;
-		$test_files = glob( dirname( $testFileBase ) . $sep . 'NamespaceNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', GLOB_BRACE );
+		$sep        = \DIRECTORY_SEPARATOR;
+		$test_files = glob( dirname( $testFileBase ) . $sep . 'NamespaceNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;

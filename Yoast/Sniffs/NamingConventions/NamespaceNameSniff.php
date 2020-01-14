@@ -112,8 +112,7 @@ class NamespaceNameSniff implements Sniff {
 	 * @param int                         $stackPtr  The position of the current token
 	 *                                               in the stack passed in $tokens.
 	 *
-	 * @return int StackPtr to the end of the file, this sniff needs to only
-	 *             check each file once.
+	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 

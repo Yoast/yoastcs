@@ -25,7 +25,7 @@ class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 *
 	 * {@internal Upstream sniff defaults to 2.}}
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $spacing = 1;
 
@@ -34,7 +34,7 @@ class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 *
 	 * {@internal Upstream sniff defaults to 2.}}
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $spacingBeforeFirst = 1;
 
@@ -43,7 +43,7 @@ class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 *
 	 * {@internal Upstream sniff defaults to 2.}}
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $spacingAfterLast = 0;
 
@@ -54,7 +54,7 @@ class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 * @param int                         $stackPtr  The position of the current token
 	 *                                               in the stack passed in $tokens.
 	 *
-	 * @return void
+	 * @return void|int Optionally returns stack pointer to skip to.
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();

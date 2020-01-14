@@ -64,7 +64,7 @@ trait CustomPrefixesTrait {
 		$this->previous_prefixes = $this->prefixes;
 
 		$prefixes = (array) $this->prefixes;
-		$prefixes = array_filter( array_map( 'trim', $prefixes ) );
+		$prefixes = \array_filter( \array_map( 'trim', $prefixes ) );
 
 		if ( empty( $prefixes ) ) {
 			$this->validated_prefixes = [];
@@ -76,19 +76,19 @@ trait CustomPrefixesTrait {
 
 		$validated = [];
 		foreach ( $prefixes as $prefix ) {
-			if ( strpos( $prefix, '\\' ) !== false ) {
-				$prefix      = trim( $prefix, '\\' );
+			if ( \strpos( $prefix, '\\' ) !== false ) {
+				$prefix      = \trim( $prefix, '\\' );
 				$validated[] = $prefix . '\\';
 			}
 			else {
 				// Old-style prefix.
-				$prefix      = trim( $prefix, '_' );
+				$prefix      = \trim( $prefix, '_' );
 				$validated[] = $prefix . '_';
 			}
 		}
 
 		// Use reverse natural sorting to get the longest prefix first.
-		rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
+		\rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 
 		// Set the validated prefixes cache.
 		$this->validated_prefixes = $validated;
@@ -115,7 +115,7 @@ trait CustomPrefixesTrait {
 	protected function filter_allow_only_namespace_prefixes( $prefixes ) {
 		$filtered = [];
 		foreach ( $prefixes as $prefix ) {
-			if ( strpos( $prefix, '\\' ) === false ) {
+			if ( \strpos( $prefix, '\\' ) === false ) {
 				continue;
 			}
 
@@ -135,7 +135,7 @@ trait CustomPrefixesTrait {
 	protected function filter_exclude_lowercase_prefixes( $prefixes ) {
 		$filtered = [];
 		foreach ( $prefixes as $prefix ) {
-			if ( strtolower( $prefix ) === $prefix ) {
+			if ( \strtolower( $prefix ) === $prefix ) {
 				continue;
 			}
 

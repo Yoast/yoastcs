@@ -152,9 +152,9 @@ class NamespaceNameSniff implements Sniff {
 		if ( ! empty( $this->validated_prefixes ) ) {
 			$name = $namespace_name . '\\'; // Validated prefixes always have a \ at the end.
 			foreach ( $this->validated_prefixes as $prefix ) {
-				if ( strpos( $name . '\\', $prefix ) === 0 ) {
-					$namespace_name_no_prefix = rtrim( substr( $name, strlen( $prefix ) ), '\\' );
-					$found_prefix             = rtrim( $prefix, '\\' );
+				if ( \strpos( $name . '\\', $prefix ) === 0 ) {
+					$namespace_name_no_prefix = \rtrim( \substr( $name, \strlen( $prefix ) ), '\\' );
+					$found_prefix             = \rtrim( $prefix, '\\' );
 					break;
 				}
 			}
@@ -167,15 +167,15 @@ class NamespaceNameSniff implements Sniff {
 		if ( $namespace_name_no_prefix !== '' ) {
 			$namespace_for_level_check = $namespace_name_no_prefix;
 			// Allow for `Tests\` and `Tests\Doubles\` after the prefix.
-			if ( strpos( $namespace_for_level_check, 'Tests\\' ) === 0 ) {
-				$namespace_for_level_check = substr( $namespace_for_level_check, 6 );
-				if ( strpos( $namespace_for_level_check, 'Doubles\\' ) === 0 ) {
-					$namespace_for_level_check = substr( $namespace_for_level_check, 8 );
+			if ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 ) {
+				$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
+				if ( \strpos( $namespace_for_level_check, 'Doubles\\' ) === 0 ) {
+					$namespace_for_level_check = \substr( $namespace_for_level_check, 8 );
 				}
 			}
 
-			$parts      = explode( '\\', $namespace_for_level_check );
-			$part_count = count( $parts );
+			$parts      = \explode( '\\', $namespace_for_level_check );
+			$part_count = \count( $parts );
 
 			if ( $part_count > $this->max_levels ) {
 				$error = 'A namespace name is not allowed to be more than %d levels deep (excluding the prefix). Level depth found: %d in %s';
@@ -211,13 +211,13 @@ class NamespaceNameSniff implements Sniff {
 		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
 
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
+		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
 			return;
 		}
 
-		$directory          = $this->normalize_directory_separators( dirname( $file ) );
+		$directory          = $this->normalize_directory_separators( \dirname( $file ) );
 		$relative_directory = Common::stripBasepath( $directory, $base_path );
 		if ( $relative_directory === '.' ) {
 			$relative_directory = '';
@@ -240,25 +240,25 @@ class NamespaceNameSniff implements Sniff {
 
 		if ( empty( $this->validated_src_directory ) === false ) {
 			foreach ( $this->validated_src_directory as $subdirectory ) {
-				if ( strpos( $relative_directory, $subdirectory ) !== 0 ) {
+				if ( \strpos( $relative_directory, $subdirectory ) !== 0 ) {
 					continue;
 				}
 
-				$relative_directory = substr( $relative_directory, strlen( $subdirectory ) );
+				$relative_directory = \substr( $relative_directory, \strlen( $subdirectory ) );
 				break;
 			}
 		}
 
 		// Now any potential src directory has been stripped, remove the slashes again.
-		$relative_directory = trim( $relative_directory, '/' );
+		$relative_directory = \trim( $relative_directory, '/' );
 
-		$namespace_name_for_translation = str_replace(
+		$namespace_name_for_translation = \str_replace(
 			[ '_', '\\' ], // Find.
 			[ '-', '/' ],  // Replace with.
 			$namespace_name_no_prefix
 		);
 
-		if ( strcasecmp( $relative_directory, $namespace_name_for_translation ) === 0 ) {
+		if ( \strcasecmp( $relative_directory, $namespace_name_for_translation ) === 0 ) {
 			return;
 		}
 
@@ -268,12 +268,12 @@ class NamespaceNameSniff implements Sniff {
 		}
 
 		if ( $relative_directory !== '' ) {
-			$levels = explode( '/', $relative_directory );
-			$levels = array_filter( $levels ); // Remove empties.
+			$levels = \explode( '/', $relative_directory );
+			$levels = \array_filter( $levels ); // Remove empties.
 			foreach ( $levels as $level ) {
-				$words     = explode( '-', $level );
-				$words     = array_map( 'ucfirst', $words );
-				$expected .= '\\' . implode( '_', $words );
+				$words     = \explode( '-', $level );
+				$words     = \array_map( 'ucfirst', $words );
+				$expected .= '\\' . \implode( '_', $words );
 			}
 		}
 
@@ -302,7 +302,7 @@ class NamespaceNameSniff implements Sniff {
 		$this->previous_src_directory = $this->src_directory;
 
 		$src_directory = (array) $this->src_directory;
-		$src_directory = array_filter( array_map( 'trim', $src_directory ) );
+		$src_directory = \array_filter( \array_map( 'trim', $src_directory ) );
 
 		if ( empty( $src_directory ) ) {
 			$this->validated_src_directory = [];
@@ -311,7 +311,7 @@ class NamespaceNameSniff implements Sniff {
 
 		$validated = [];
 		foreach ( $src_directory as $directory ) {
-			if ( strpos( $directory, '..' ) !== false ) {
+			if ( \strpos( $directory, '..' ) !== false ) {
 				// Do not allow walking up the directory hierarchy.
 				continue;
 			}
@@ -323,8 +323,8 @@ class NamespaceNameSniff implements Sniff {
 				continue;
 			}
 
-			if ( strpos( $directory, './' ) === 0 ) {
-				$directory = substr( $directory, 2 );
+			if ( \strpos( $directory, './' ) === 0 ) {
+				$directory = \substr( $directory, 2 );
 			}
 
 			if ( $directory === '' ) {
@@ -335,7 +335,7 @@ class NamespaceNameSniff implements Sniff {
 		}
 
 		// Use reverse natural sorting to get the longest directory first.
-		rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
+		\rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 
 		// Set the validated prefixes cache.
 		$this->validated_src_directory = $validated;
@@ -349,6 +349,6 @@ class NamespaceNameSniff implements Sniff {
 	 * @return string
 	 */
 	private function normalize_directory_separators( $path ) {
-		return trim( strtr( $path, '\\', '/' ), '/' );
+		return \trim( \strtr( $path, '\\', '/' ), '/' );
 	}
 }

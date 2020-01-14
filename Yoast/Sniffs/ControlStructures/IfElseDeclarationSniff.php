@@ -64,7 +64,7 @@ class IfElseDeclarationSniff implements Sniff {
 				'%s statement must be on a new line',
 				$stackPtr,
 				'NewLine',
-				[ ucfirst( $tokens[ $stackPtr ]['content'] ) ]
+				[ \ucfirst( $tokens[ $stackPtr ]['content'] ) ]
 			);
 		}
 		elseif ( $tokens[ $previous_scope_closer ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
@@ -72,7 +72,7 @@ class IfElseDeclarationSniff implements Sniff {
 				'%s statement not aligned with previous part of the control structure',
 				$stackPtr,
 				'Alignment',
-				[ ucfirst( $tokens[ $stackPtr ]['content'] ) ]
+				[ \ucfirst( $tokens[ $stackPtr ]['content'] ) ]
 			);
 		}
 
@@ -82,7 +82,7 @@ class IfElseDeclarationSniff implements Sniff {
 			$error = 'Nothing but whitespace and comments allowed between closing bracket and %s statement, found "%s"';
 			$data  = [
 				$tokens[ $stackPtr ]['content'],
-				trim( $phpcsFile->getTokensAsString( ( $previous_scope_closer + 1 ), ( $stackPtr - ( $previous_scope_closer + 1 ) ) ) ),
+				\trim( $phpcsFile->getTokensAsString( ( $previous_scope_closer + 1 ), ( $stackPtr - ( $previous_scope_closer + 1 ) ) ) ),
 			];
 			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
 		}

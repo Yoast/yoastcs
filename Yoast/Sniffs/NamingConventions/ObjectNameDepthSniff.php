@@ -85,20 +85,20 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 			return;
 		}
 
-		$parts      = explode( '_', $object_name );
-		$part_count = count( $parts );
+		$parts      = \explode( '_', $object_name );
+		$part_count = \count( $parts );
 
 		/*
 		 * Allow the class name to be one part longer for confirmed test/mock/double classes.
 		 */
-		$last = array_pop( $parts );
+		$last = \array_pop( $parts );
 		if ( isset( $this->test_suffixes[ $last ] ) ) {
 			if ( $this->test_suffixes[ $last ] === true && $this->is_test_class( $stackPtr ) ) {
 				--$part_count;
 			}
 			else {
 				$extends = $this->phpcsFile->findExtendedClassName( $stackPtr );
-				if ( is_string( $extends ) ) {
+				if ( \is_string( $extends ) ) {
 					--$part_count;
 				}
 			}

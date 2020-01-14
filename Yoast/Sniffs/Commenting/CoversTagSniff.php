@@ -96,7 +96,7 @@ class CoversTagSniff implements Sniff {
 			$annotation                 = $tokens[ $next ]['content'];
 			$coversTags[ "$tag-$next" ] = $annotation;
 
-			if ( preg_match( '`^' . self::VALID_CONTENT_REGEX . '$`', $annotation ) === 1 ) {
+			if ( \preg_match( '`^' . self::VALID_CONTENT_REGEX . '$`', $annotation ) === 1 ) {
 				continue;
 			}
 
@@ -107,7 +107,7 @@ class CoversTagSniff implements Sniff {
 			$errorThrown = false;
 
 			// Check for Union/Intersect types.
-			if ( strpos( $annotation, '&' ) !== false ) {
+			if ( \strpos( $annotation, '&' ) !== false ) {
 				if ( $this->fixAnnotationToSplit( $phpcsFile, $next, 'IntersectFound', '&' ) === true ) {
 					continue;
 				}
@@ -115,7 +115,7 @@ class CoversTagSniff implements Sniff {
 				$errorThrown = true;
 			}
 
-			if ( strpos( $annotation, '|' ) !== false ) {
+			if ( \strpos( $annotation, '|' ) !== false ) {
 				if ( $this->fixAnnotationToSplit( $phpcsFile, $next, 'UnionFound', '|' ) === true ) {
 					continue;
 				}
@@ -124,15 +124,15 @@ class CoversTagSniff implements Sniff {
 			}
 
 			// Parentheses/Braces at the end of the annotation.
-			$expected = rtrim( $annotation, '(){} ' );
+			$expected = \rtrim( $annotation, '(){} ' );
 			if ( $this->fixSimpleError( $phpcsFile, $next, $expected, 'InvalidBraces' ) === true ) {
 				$errorThrown = true;
 			}
 
 			// Incorrect `<public|protected|private>` annotation.
-			if ( preg_match( '`::[{(\[]?(!)?(public|protected|private)[})\]]?`', $annotation, $matches ) === 1 ) {
+			if ( \preg_match( '`::[{(\[]?(!)?(public|protected|private)[})\]]?`', $annotation, $matches ) === 1 ) {
 				$replacement = '::<' . $matches[1] . $matches[2] . '>';
-				$expected    = str_replace( $matches[0], $replacement, $annotation );
+				$expected    = \str_replace( $matches[0], $replacement, $annotation );
 
 				if ( $this->fixSimpleError( $phpcsFile, $next, $expected, 'InvalidFunctionGroup' ) === true ) {
 					$errorThrown = true;
@@ -151,7 +151,7 @@ class CoversTagSniff implements Sniff {
 			$phpcsFile->addError( $error, $next, 'Invalid', $data );
 		}
 
-		$coversNothingCount = count( $coversNothingTags );
+		$coversNothingCount = \count( $coversNothingTags );
 		if ( $firstCoversTag !== false && $coversNothingCount > 0 ) {
 			$error = 'A test can\'t both cover something as well as cover nothing. First @coversNothing tag encountered on line %d; first @covers tag encountered on line %d';
 			$data  = [
@@ -176,7 +176,7 @@ class CoversTagSniff implements Sniff {
 				}
 			}
 
-			$removalCount = count( $removeTags );
+			$removalCount = \count( $removeTags );
 			if ( ( $coversNothingCount - $removalCount ) > 1 ) {
 				// More than one tag had a comment.
 				$phpcsFile->addError( $error, $tokens[ $stackPtr ]['comment_closer'], $code );
@@ -210,11 +210,11 @@ class CoversTagSniff implements Sniff {
 			}
 		}
 
-		$coversCount = count( $coversTags );
+		$coversCount = \count( $coversTags );
 		if ( $coversCount > 1 ) {
-			$unique = array_unique( $coversTags );
-			if ( count( $unique ) !== $coversCount ) {
-				$value_count = array_count_values( $coversTags );
+			$unique = \array_unique( $coversTags );
+			if ( \count( $unique ) !== $coversCount ) {
+				$value_count = \array_count_values( $coversTags );
 				$error       = 'Duplicate @covers tag found. First tag with the same annotation encountered on line %d';
 				$code        = 'DuplicateCovers';
 				foreach ( $value_count as $annotation => $count ) {
@@ -229,12 +229,12 @@ class CoversTagSniff implements Sniff {
 						}
 
 						if ( ! isset( $first ) ) {
-							$first = explode( '-', $ptrs );
+							$first = \explode( '-', $ptrs );
 							$data  = [ $tokens[ $first[0] ]['line'] ];
 							continue;
 						}
 
-						$ptrs = explode( '-', $ptrs );
+						$ptrs = \explode( '-', $ptrs );
 
 						$fix = $phpcsFile->addFixableError( $error, $ptrs[0], $code, $data );
 						if ( $fix === true ) {
@@ -280,7 +280,7 @@ class CoversTagSniff implements Sniff {
 		$annotation = $tokens[ $stackPtr ]['content'];
 
 		if ( $expected === $annotation
-			|| preg_match( '`^' . self::VALID_CONTENT_REGEX . '$`', $expected ) !== 1
+			|| \preg_match( '`^' . self::VALID_CONTENT_REGEX . '$`', $expected ) !== 1
 		) {
 			return false;
 		}
@@ -321,9 +321,9 @@ class CoversTagSniff implements Sniff {
 		if ( $fix === true ) {
 			$tokens      = $phpcsFile->getTokens();
 			$annotation  = $tokens[ $stackPtr ]['content'];
-			$annotations = explode( $separator, $annotation );
-			$annotations = array_map( 'trim', $annotations );
-			$annotations = array_filter( $annotations ); // Remove empties.
+			$annotations = \explode( $separator, $annotation );
+			$annotations = \array_map( 'trim', $annotations );
+			$annotations = \array_filter( $annotations ); // Remove empties.
 
 			$phpcsFile->fixer->beginChangeset();
 			$phpcsFile->fixer->replaceToken( $stackPtr, '' );

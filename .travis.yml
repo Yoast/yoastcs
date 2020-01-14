@@ -18,7 +18,7 @@ php:
     - 7.1
     - 7.2
     - 7.3
-    - "7.4snapshot"
+    - 7.4
 
 env:
   # Test against the highest/lowest supported PHPCS and WPCS versions.
@@ -67,9 +67,9 @@ matrix:
     # This is a much quicker test which only runs the unit tests and linting against low/high
     # supported PHP/PHPCS/WPCS combinations.
     - stage: quicktest
-      php: 7.3
+      php: 7.4
       env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
-    - php: 7.3
+    - php: 7.4
       env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
     - php: 5.4
       env: PHPCS_BRANCH="dev-master" WPCS="2.2.0" PHPLINT=1

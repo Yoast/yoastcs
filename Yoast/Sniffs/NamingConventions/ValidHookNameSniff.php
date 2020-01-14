@@ -115,9 +115,9 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			$found_prefix    = '';
 
 			if ( isset( Tokens::$stringTokens[ $this->tokens[ $first_non_empty ]['code'] ] ) ) {
-				$content = trim( $this->strip_quotes( $this->tokens[ $first_non_empty ]['content'] ) );
+				$content = \trim( $this->strip_quotes( $this->tokens[ $first_non_empty ]['content'] ) );
 				foreach ( $this->validated_prefixes as $prefix ) {
-					if ( strpos( $content, $prefix ) === 0 ) {
+					if ( \strpos( $content, $prefix ) === 0 ) {
 						$found_prefix = $prefix;
 						break;
 					}
@@ -177,7 +177,7 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			&& $string === $this->first_string
 		) {
 			if ( $this->found_prefix !== '' ) {
-				$string = substr( $string, strlen( $this->found_prefix ) );
+				$string = \substr( $string, \strlen( $this->found_prefix ) );
 			}
 
 			return $this->found_prefix . parent::transform( $string, $regex, $transform_type );
@@ -188,8 +188,8 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			$this->first_string = $string;
 
 			foreach ( $this->validated_prefixes as $prefix ) {
-				if ( strpos( $string, $prefix ) === 0 ) {
-					$string             = substr( $string, strlen( $prefix ) );
+				if ( \strpos( $string, $prefix ) === 0 ) {
+					$string             = \substr( $string, \strlen( $prefix ) );
 					$this->found_prefix = $prefix;
 
 					/*
@@ -229,14 +229,14 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		/*
 		 * Check that the namespace-like prefix is used for hooks.
 		 */
-		if ( strpos( $this->found_prefix, '\\' ) === false ) {
+		if ( \strpos( $this->found_prefix, '\\' ) === false ) {
 			/*
 			 * Find which namespace-based prefix should have been used.
 			 * Loop till the end as the shortest prefix will be last.
 			 */
 			$namespace_prefix = '';
 			foreach ( $this->validated_prefixes as $prefix ) {
-				if ( strpos( $prefix, '\\' ) !== false ) {
+				if ( \strpos( $prefix, '\\' ) !== false ) {
 					$namespace_prefix = $prefix;
 				}
 			}
@@ -284,10 +284,10 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		 */
 		$hook_ptr  = $first_non_empty; // If no other tokens were found, the first non empty will be the hook name.
 		$hook_name = $this->strip_quotes( $this->tokens[ $hook_ptr ]['content'] );
-		$hook_name = substr( $hook_name, strlen( $this->found_prefix ) );
+		$hook_name = \substr( $hook_name, \strlen( $this->found_prefix ) );
 
-		$parts      = explode( '_', $hook_name );
-		$part_count = count( $parts );
+		$parts      = \explode( '_', $hook_name );
+		$part_count = \count( $parts );
 
 		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
 			return;

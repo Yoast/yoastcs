@@ -66,7 +66,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 		$name   = $phpcsFile->getDeclarationName( $stackPtr );
 
-		if ( substr( $name, -4 ) !== 'Test' ) {
+		if ( \substr( $name, -4 ) !== 'Test' ) {
 			// Not a test class.
 			if ( isset( $tokens[ $stackPtr ]['scope_closer'] ) ) {
 				// No need to examine the methods in this class.
@@ -168,7 +168,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 		}
 
 		$name = $phpcsFile->getDeclarationName( $stackPtr );
-		if ( stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
+		if ( \stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
 			// Not a test method.
 			return;
 		}

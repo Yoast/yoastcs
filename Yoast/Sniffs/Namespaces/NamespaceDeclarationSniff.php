@@ -89,7 +89,7 @@ class NamespaceDeclarationSniff implements Sniff {
 			}
 		}
 
-		$count = count( $statements );
+		$count = \count( $statements );
 		if ( $count > 1 ) {
 			$data = [
 				$count,

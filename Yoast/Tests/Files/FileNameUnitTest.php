@@ -101,7 +101,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	 */
 	protected function getTestFiles( $testFileBase ) {
 		$sep        = \DIRECTORY_SEPARATOR;
-		$test_files = glob( dirname( $testFileBase ) . $sep . 'FileNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
+		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'FileNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;

@@ -62,7 +62,7 @@ class FileNameSniff implements Sniff {
 	/**
 	 * Object tokens to search for in a file.
 	 *
-	 * @var array
+	 * @var (int|string)[]
 	 */
 	private $oo_tokens = [
 		T_CLASS,
@@ -73,7 +73,7 @@ class FileNameSniff implements Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [ T_OPEN_TAG ];
@@ -251,7 +251,7 @@ class FileNameSniff implements Sniff {
 	 * @param bool  $flip     Whether to flip the array values to keys.
 	 * @param bool  $to_lower Whether to lowercase the array values.
 	 *
-	 * @return array
+	 * @return (string|bool)[]
 	 */
 	protected function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
 		$property = array_filter( array_map( 'trim', $property ) );

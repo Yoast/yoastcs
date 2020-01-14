@@ -44,7 +44,7 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 	 * The key is the suffix. The value indicates whether this suffix is
 	 * only allowed when the class extends a known test class.
 	 *
-	 * @var array
+	 * @var bool[]
 	 */
 	private $test_suffixes = [
 		'Test'   => true,
@@ -55,7 +55,7 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [

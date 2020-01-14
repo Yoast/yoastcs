@@ -97,9 +97,9 @@ trait CustomPrefixesTrait {
 	/**
 	 * Overloadable method to do custom prefix filtering prior to validation.
 	 *
-	 * @param array $prefixes The unvalidated prefixes.
+	 * @param string[] $prefixes The unvalidated prefixes.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	protected function filter_prefixes( $prefixes ) {
 		return $prefixes;
@@ -108,9 +108,9 @@ trait CustomPrefixesTrait {
 	/**
 	 * Filter out all prefixes which don't contain a namespace separator.
 	 *
-	 * @param array $prefixes The unvalidated prefixes.
+	 * @param string[] $prefixes The unvalidated prefixes.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	protected function filter_allow_only_namespace_prefixes( $prefixes ) {
 		$filtered = [];
@@ -128,9 +128,9 @@ trait CustomPrefixesTrait {
 	/**
 	 * Filter out all prefixes which only contain lowercase characters.
 	 *
-	 * @param array $prefixes The unvalidated prefixes.
+	 * @param string[] $prefixes The unvalidated prefixes.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	protected function filter_exclude_lowercase_prefixes( $prefixes ) {
 		$filtered = [];

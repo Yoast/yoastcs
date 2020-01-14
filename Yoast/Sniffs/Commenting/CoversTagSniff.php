@@ -127,7 +127,6 @@ class CoversTagSniff implements Sniff {
 			$expected = rtrim( $annotation, '(){} ' );
 			if ( $this->fixSimpleError( $phpcsFile, $next, $expected, 'InvalidBraces' ) === true ) {
 				$errorThrown = true;
-
 			}
 
 			// Incorrect `<public|protected|private>` annotation.

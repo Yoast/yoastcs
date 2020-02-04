@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.0.1] - 2020-02-06
+
+#### Changed
+* Composer: Supported version of the [DealerDirect Composer PHPCS plugin] has been changed from `^0.5.0` to `^0.5 || ^0.6`.
+    Note: this requirement is flexible to prevent conflicts with included standards which may include the plugin as well.
+* Various housekeeping.
+
+#### Fixed
+* `Yoast.NamingConventions.NamespaceName`: fixed a potential "undefined index" notice.
+
+
 ### [2.0.0] - 2019-12-17
 
 #### Added
@@ -358,6 +369,7 @@ Initial public release as a stand-alone package.
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 [Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
 
+[2.0.1]: https://github.com/Yoast/yoastcs/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/Yoast/yoastcs/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/Yoast/yoastcs/compare/1.2.2...1.3.0
 [1.2.2]: https://github.com/Yoast/yoastcs/compare/1.2.1...1.2.2

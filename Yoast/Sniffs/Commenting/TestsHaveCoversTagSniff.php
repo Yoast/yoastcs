@@ -19,12 +19,12 @@ class TestsHaveCoversTagSniff implements Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [
-			T_CLASS,
-			T_FUNCTION,
+			\T_CLASS,
+			\T_FUNCTION,
 		];
 	}
 
@@ -43,11 +43,11 @@ class TestsHaveCoversTagSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		if ( $tokens[ $stackPtr ]['code'] === T_CLASS ) {
+		if ( $tokens[ $stackPtr ]['code'] === \T_CLASS ) {
 			return $this->process_class( $phpcsFile, $stackPtr );
 		}
 
-		if ( $tokens[ $stackPtr ]['code'] === T_FUNCTION ) {
+		if ( $tokens[ $stackPtr ]['code'] === \T_FUNCTION ) {
 			return $this->process_function( $phpcsFile, $stackPtr );
 		}
 	}
@@ -66,7 +66,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 		$name   = $phpcsFile->getDeclarationName( $stackPtr );
 
-		if ( substr( $name, -4 ) !== 'Test' ) {
+		if ( \substr( $name, -4 ) !== 'Test' ) {
 			// Not a test class.
 			if ( isset( $tokens[ $stackPtr ]['scope_closer'] ) ) {
 				// No need to examine the methods in this class.
@@ -78,9 +78,9 @@ class TestsHaveCoversTagSniff implements Sniff {
 
 		// @todo: Once PHPCS 3.5.0 is out, replace with call to new findCommentAboveOOStructure() method.
 		$find = [
-			T_WHITESPACE,
-			T_ABSTRACT,
-			T_FINAL,
+			\T_WHITESPACE,
+			\T_ABSTRACT,
+			\T_FINAL,
 		];
 
 		$commentEnd = $stackPtr;
@@ -88,7 +88,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 			$commentEnd = $phpcsFile->findPrevious( $find, ( $commentEnd - 1 ), null, true );
 		} while ( $tokens[ $commentEnd ]['line'] === $tokens[ $stackPtr ]['line'] );
 
-		if ( $tokens[ $commentEnd ]['code'] !== T_DOC_COMMENT_CLOSE_TAG
+		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
 			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )
 		) {
 			// Class without (proper) docblock. Not our concern.
@@ -131,14 +131,14 @@ class TestsHaveCoversTagSniff implements Sniff {
 
 		// @todo: Once PHPCS 3.5.0 is out, replace with call to new findCommentAboveOOStructure() method.
 		$find   = Tokens::$methodPrefixes;
-		$find[] = T_WHITESPACE;
+		$find[] = \T_WHITESPACE;
 
 		$commentEnd = $stackPtr;
 		do {
 			$commentEnd = $phpcsFile->findPrevious( $find, ( $commentEnd - 1 ), null, true );
 		} while ( $tokens[ $commentEnd ]['line'] === $tokens[ $stackPtr ]['line'] );
 
-		if ( $tokens[ $commentEnd ]['code'] !== T_DOC_COMMENT_CLOSE_TAG
+		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
 			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )
 		) {
 			// Function without (proper) docblock. Not our concern.
@@ -168,7 +168,7 @@ class TestsHaveCoversTagSniff implements Sniff {
 		}
 
 		$name = $phpcsFile->getDeclarationName( $stackPtr );
-		if ( stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
+		if ( \stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
 			// Not a test method.
 			return;
 		}

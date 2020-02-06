@@ -18,7 +18,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Error files with the expected nr of errors.
 	 *
-	 * @var array
+	 * @var int[]
 	 */
 	private $expected_results = [
 
@@ -89,7 +89,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 			return;
 		}
 
-		$config->basepath = __DIR__ . DIRECTORY_SEPARATOR . 'FileNameUnitTests';
+		$config->basepath = __DIR__ . \DIRECTORY_SEPARATOR . 'FileNameUnitTests';
 	}
 
 	/**
@@ -100,8 +100,8 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	 * @return string[]
 	 */
 	protected function getTestFiles( $testFileBase ) {
-		$sep        = DIRECTORY_SEPARATOR;
-		$test_files = glob( dirname( $testFileBase ) . $sep . 'FileNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', GLOB_BRACE );
+		$sep        = \DIRECTORY_SEPARATOR;
+		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'FileNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;

@@ -44,7 +44,7 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 	 * The key is the suffix. The value indicates whether this suffix is
 	 * only allowed when the class extends a known test class.
 	 *
-	 * @var array
+	 * @var bool[]
 	 */
 	private $test_suffixes = [
 		'Test'   => true,
@@ -55,13 +55,13 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [
-			T_CLASS,
-			T_INTERFACE,
-			T_TRAIT,
+			\T_CLASS,
+			\T_INTERFACE,
+			\T_TRAIT,
 		];
 	}
 
@@ -85,20 +85,20 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 			return;
 		}
 
-		$parts      = explode( '_', $object_name );
-		$part_count = count( $parts );
+		$parts      = \explode( '_', $object_name );
+		$part_count = \count( $parts );
 
 		/*
 		 * Allow the class name to be one part longer for confirmed test/mock/double classes.
 		 */
-		$last = array_pop( $parts );
+		$last = \array_pop( $parts );
 		if ( isset( $this->test_suffixes[ $last ] ) ) {
 			if ( $this->test_suffixes[ $last ] === true && $this->is_test_class( $stackPtr ) ) {
 				--$part_count;
 			}
 			else {
 				$extends = $this->phpcsFile->findExtendedClassName( $stackPtr );
-				if ( is_string( $extends ) ) {
+				if ( \is_string( $extends ) ) {
 					--$part_count;
 				}
 			}
@@ -110,13 +110,13 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 
 		// Check if the class is deprecated.
 		$find = [
-			T_ABSTRACT   => T_ABSTRACT,
-			T_FINAL      => T_FINAL,
-			T_WHITESPACE => T_WHITESPACE,
+			\T_ABSTRACT   => \T_ABSTRACT,
+			\T_FINAL      => \T_FINAL,
+			\T_WHITESPACE => \T_WHITESPACE,
 		];
 
 		$comment_end = $this->phpcsFile->findPrevious( $find, ( $stackPtr - 1 ), null, true );
-		if ( $this->tokens[ $comment_end ]['code'] === T_DOC_COMMENT_CLOSE_TAG ) {
+		if ( $this->tokens[ $comment_end ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Only check if the class has a docblock.
 			$comment_start = $this->tokens[ $comment_end ]['comment_opener'];
 			foreach ( $this->tokens[ $comment_start ]['comment_tags'] as $tag ) {

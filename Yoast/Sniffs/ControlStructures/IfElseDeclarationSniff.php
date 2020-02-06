@@ -20,12 +20,12 @@ class IfElseDeclarationSniff implements Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [
-			T_ELSE,
-			T_ELSEIF,
+			\T_ELSE,
+			\T_ELSEIF,
 		];
 	}
 
@@ -47,24 +47,24 @@ class IfElseDeclarationSniff implements Sniff {
 		else {
 			// Deal with "else if".
 			$next = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
-			if ( $tokens[ $next ]['code'] === T_IF && isset( $tokens[ $next ]['scope_opener'] ) ) {
+			if ( $tokens[ $next ]['code'] === \T_IF && isset( $tokens[ $next ]['scope_opener'] ) ) {
 				$scope_open = $tokens[ $next ]['scope_opener'];
 			}
 		}
 
-		if ( ! isset( $scope_open ) || $tokens[ $scope_open ]['code'] === T_COLON ) {
+		if ( ! isset( $scope_open ) || $tokens[ $scope_open ]['code'] === \T_COLON ) {
 			// No scope opener found or alternative syntax (not our concern).
 			return;
 		}
 
-		$previous_scope_closer = $phpcsFile->findPrevious( T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
+		$previous_scope_closer = $phpcsFile->findPrevious( \T_CLOSE_CURLY_BRACKET, ( $stackPtr - 1 ) );
 
 		if ( $tokens[ $previous_scope_closer ]['line'] === $tokens[ $stackPtr ]['line'] ) {
 			$phpcsFile->addError(
 				'%s statement must be on a new line',
 				$stackPtr,
 				'NewLine',
-				[ ucfirst( $tokens[ $stackPtr ]['content'] ) ]
+				[ \ucfirst( $tokens[ $stackPtr ]['content'] ) ]
 			);
 		}
 		elseif ( $tokens[ $previous_scope_closer ]['column'] !== $tokens[ $stackPtr ]['column'] ) {
@@ -72,7 +72,7 @@ class IfElseDeclarationSniff implements Sniff {
 				'%s statement not aligned with previous part of the control structure',
 				$stackPtr,
 				'Alignment',
-				[ ucfirst( $tokens[ $stackPtr ]['content'] ) ]
+				[ \ucfirst( $tokens[ $stackPtr ]['content'] ) ]
 			);
 		}
 
@@ -82,7 +82,7 @@ class IfElseDeclarationSniff implements Sniff {
 			$error = 'Nothing but whitespace and comments allowed between closing bracket and %s statement, found "%s"';
 			$data  = [
 				$tokens[ $stackPtr ]['content'],
-				trim( $phpcsFile->getTokensAsString( ( $previous_scope_closer + 1 ), ( $stackPtr - ( $previous_scope_closer + 1 ) ) ) ),
+				\trim( $phpcsFile->getTokensAsString( ( $previous_scope_closer + 1 ), ( $stackPtr - ( $previous_scope_closer + 1 ) ) ) ),
 			];
 			$phpcsFile->addError( $error, $stackPtr, 'StatementFound', $data );
 		}

@@ -62,21 +62,21 @@ class FileNameSniff implements Sniff {
 	/**
 	 * Object tokens to search for in a file.
 	 *
-	 * @var array
+	 * @var (int|string)[]
 	 */
 	private $oo_tokens = [
-		T_CLASS,
-		T_INTERFACE,
-		T_TRAIT,
+		\T_CLASS,
+		\T_INTERFACE,
+		\T_TRAIT,
 	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
-		return [ T_OPEN_TAG ];
+		return [ \T_OPEN_TAG ];
 	}
 
 	/**
@@ -91,13 +91,13 @@ class FileNameSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
+		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
 			return;
 		}
 
-		$path_info = pathinfo( $file );
+		$path_info = \pathinfo( $file );
 
 		// Basename = filename + extension.
 		$basename = '';
@@ -117,7 +117,7 @@ class FileNameSniff implements Sniff {
 
 		$error      = 'Filenames should be all lowercase with hyphens as word separators. Expected %s, but found %s.';
 		$error_code = 'NotHyphenatedLowercase';
-		$expected   = strtolower( str_replace( '_', '-', $file_name ) );
+		$expected   = \strtolower( \str_replace( '_', '-', $file_name ) );
 
 		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
 			$oo_structure = $phpcsFile->findNext( $this->oo_tokens, $stackPtr );
@@ -129,52 +129,52 @@ class FileNameSniff implements Sniff {
 				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
 				if ( ! empty( $prefixes ) ) {
 					// Use reverse natural sorting to get the longest of overlapping prefixes first.
-					rsort( $prefixes, ( SORT_NATURAL | SORT_FLAG_CASE ) );
+					\rsort( $prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 					foreach ( $prefixes as $prefix ) {
-						if ( $name !== $prefix && stripos( $name, $prefix ) === 0 ) {
-							$name = substr( $name, strlen( $prefix ) );
-							$name = ltrim( $name, '_-' );
+						if ( $name !== $prefix && \stripos( $name, $prefix ) === 0 ) {
+							$name = \substr( $name, \strlen( $prefix ) );
+							$name = \ltrim( $name, '_-' );
 							break;
 						}
 					}
 				}
 
-				$expected = strtolower( str_replace( '_', '-', $name ) );
+				$expected = \strtolower( \str_replace( '_', '-', $name ) );
 
 				switch ( $tokens[ $oo_structure ]['code'] ) {
-					case T_CLASS:
+					case \T_CLASS:
 						$error      = 'Class file names should be based on the class name without the plugin prefix. Expected %s, but found %s.';
 						$error_code = 'InvalidClassFileName';
 						break;
 
-					case T_INTERFACE:
+					case \T_INTERFACE:
 						$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected %s, but found %s.';
 						$error_code = 'InvalidInterfaceFileName';
 
 						// Don't duplicate "interface" in the filename.
-						if ( substr( $expected, -10 ) !== '-interface' ) {
+						if ( \substr( $expected, -10 ) !== '-interface' ) {
 							$expected .= '-interface';
 						}
 						break;
 
-					case T_TRAIT:
+					case \T_TRAIT:
 						$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected %s, but found %s.';
 						$error_code = 'InvalidTraitFileName';
 
 						// Don't duplicate "trait" in the filename.
-						if ( substr( $expected, -6 ) !== '-trait' ) {
+						if ( \substr( $expected, -6 ) !== '-trait' ) {
 							$expected .= '-trait';
 						}
 						break;
 				}
 			}
 			else {
-				$has_function = $phpcsFile->findNext( T_FUNCTION, $stackPtr );
+				$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
 				if ( $has_function !== false ) {
 					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected %s, but found %s.';
 					$error_code = 'InvalidFunctionsFileName';
 
-					if ( substr( $expected, -10 ) !== '-functions' ) {
+					if ( \substr( $expected, -10 ) !== '-functions' ) {
 						$expected .= '-functions';
 					}
 				}
@@ -211,7 +211,7 @@ class FileNameSniff implements Sniff {
 		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check, true, true );
 
 		if ( ! empty( $exclude ) ) {
-			$exclude      = array_map( [ $this, 'normalize_directory_separators' ], $exclude );
+			$exclude      = \array_map( [ $this, 'normalize_directory_separators' ], $exclude );
 			$path_to_file = $this->normalize_directory_separators( $path_to_file );
 
 			if ( ! isset( $phpcsFile->config->basepath ) ) {
@@ -227,7 +227,7 @@ class FileNameSniff implements Sniff {
 			}
 
 			// Lowercase the filename to not interfere with the lowercase/dashes rule.
-			$path_to_file = strtolower( ltrim( $path_to_file, '/' ) );
+			$path_to_file = \strtolower( \ltrim( $path_to_file, '/' ) );
 
 			if ( isset( $exclude[ $path_to_file ] ) ) {
 				// Filename is on the exclude list.
@@ -251,17 +251,17 @@ class FileNameSniff implements Sniff {
 	 * @param bool  $flip     Whether to flip the array values to keys.
 	 * @param bool  $to_lower Whether to lowercase the array values.
 	 *
-	 * @return array
+	 * @return (string|bool)[]
 	 */
 	protected function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
-		$property = array_filter( array_map( 'trim', $property ) );
+		$property = \array_filter( \array_map( 'trim', $property ) );
 
 		if ( $to_lower === true ) {
-			$property = array_map( 'strtolower', $property );
+			$property = \array_map( 'strtolower', $property );
 		}
 
 		if ( $flip === true ) {
-			$property = array_fill_keys( $property, false );
+			$property = \array_fill_keys( $property, false );
 		}
 
 		return $property;
@@ -275,6 +275,6 @@ class FileNameSniff implements Sniff {
 	 * @return string
 	 */
 	private function normalize_directory_separators( $path ) {
-		return ltrim( strtr( $path, '\\', '/' ), '/' );
+		return \ltrim( \strtr( $path, '\\', '/' ), '/' );
 	}
 }

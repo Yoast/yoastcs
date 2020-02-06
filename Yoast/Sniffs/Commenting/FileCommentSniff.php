@@ -40,7 +40,7 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		$namespace_token = $phpcsFile->findNext( T_NAMESPACE, $stackPtr );
+		$namespace_token = $phpcsFile->findNext( \T_NAMESPACE, $stackPtr );
 		if ( $namespace_token === false ) {
 			// No namespace found, fall through to parent sniff.
 			return parent::process( $phpcsFile, $stackPtr );
@@ -50,18 +50,18 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 
 		$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $namespace_token + 1 ), null, true );
 		if ( $next_non_empty === false
-			|| $tokens[ $next_non_empty ]['code'] === T_SEMICOLON
-			|| $tokens[ $next_non_empty ]['code'] === T_OPEN_CURLY_BRACKET
-			|| $tokens[ $next_non_empty ]['code'] === T_NS_SEPARATOR
+			|| $tokens[ $next_non_empty ]['code'] === \T_SEMICOLON
+			|| $tokens[ $next_non_empty ]['code'] === \T_OPEN_CURLY_BRACKET
+			|| $tokens[ $next_non_empty ]['code'] === \T_NS_SEPARATOR
 		) {
 			// Either live coding, global namespace (i.e. not really namespaced) or namespace operator.
 			// Fall through to parent sniff.
 			return parent::process( $phpcsFile, $stackPtr );
 		}
 
-		$comment_start = $phpcsFile->findNext( T_WHITESPACE, ( $stackPtr + 1 ), $namespace_token, true );
+		$comment_start = $phpcsFile->findNext( \T_WHITESPACE, ( $stackPtr + 1 ), $namespace_token, true );
 
-		if ( $tokens[ $comment_start ]['code'] === T_DOC_COMMENT_OPEN_TAG ) {
+		if ( $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
 			$phpcsFile->addWarning(
 				'A file containing a (named) namespace declaration does not need a file docblock',
 				$comment_start,

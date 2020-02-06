@@ -27,11 +27,11 @@ class NamespaceDeclarationSniff implements Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [
-			T_OPEN_TAG,
+			\T_OPEN_TAG,
 		];
 	}
 
@@ -50,7 +50,7 @@ class NamespaceDeclarationSniff implements Sniff {
 
 		$statements = [];
 
-		while ( ( $stackPtr = $phpcsFile->findNext( T_NAMESPACE, ( $stackPtr + 1 ) ) ) !== false ) {
+		while ( ( $stackPtr = $phpcsFile->findNext( \T_NAMESPACE, ( $stackPtr + 1 ) ) ) !== false ) {
 
 			$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 			if ( $next_non_empty === false ) {
@@ -58,7 +58,7 @@ class NamespaceDeclarationSniff implements Sniff {
 				break;
 			}
 
-			if ( $tokens[ $next_non_empty ]['code'] === T_NS_SEPARATOR ) {
+			if ( $tokens[ $next_non_empty ]['code'] === \T_NS_SEPARATOR ) {
 				// Not a namespace declaration, but the use of the namespace keyword as operator.
 				continue;
 			}
@@ -77,8 +77,8 @@ class NamespaceDeclarationSniff implements Sniff {
 				);
 			}
 
-			if ( $tokens[ $next_non_empty ]['code'] === T_SEMICOLON
-				|| $tokens[ $next_non_empty ]['code'] === T_OPEN_CURLY_BRACKET
+			if ( $tokens[ $next_non_empty ]['code'] === \T_SEMICOLON
+				|| $tokens[ $next_non_empty ]['code'] === \T_OPEN_CURLY_BRACKET
 			) {
 				// Namespace declaration without namespace name (= global namespace).
 				$phpcsFile->addError(
@@ -89,7 +89,7 @@ class NamespaceDeclarationSniff implements Sniff {
 			}
 		}
 
-		$count = count( $statements );
+		$count = \count( $statements );
 		if ( $count > 1 ) {
 			$data = [
 				$count,

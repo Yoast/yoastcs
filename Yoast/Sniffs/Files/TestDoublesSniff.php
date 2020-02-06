@@ -31,7 +31,7 @@ class TestDoublesSniff implements Sniff {
 	 * @since 1.1.0 The property type has changed from string to array.
 	 *              Use of this property with a string value has been deprecated.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $doubles_path = [
 		'/tests/doubles',
@@ -41,20 +41,20 @@ class TestDoublesSniff implements Sniff {
 	 * Validated absolute target paths for test double/mock classes or an empty array
 	 * if the intended target directory/directories don't exist.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	protected $target_paths;
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [
-			T_CLASS,
-			T_INTERFACE,
-			T_TRAIT,
+			\T_CLASS,
+			\T_INTERFACE,
+			\T_TRAIT,
 		];
 	}
 
@@ -70,7 +70,7 @@ class TestDoublesSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
+		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
 			return;
@@ -81,7 +81,7 @@ class TestDoublesSniff implements Sniff {
 			return;
 		}
 
-		if ( stripos( $object_name, 'mock' ) === false && stripos( $object_name, 'double' ) === false ) {
+		if ( \stripos( $object_name, 'mock' ) === false && \stripos( $object_name, 'double' ) === false ) {
 			return;
 		}
 
@@ -111,23 +111,23 @@ class TestDoublesSniff implements Sniff {
 		 *
 		 * {@internal This should be removed in YoastCS 2.0.0.}}
 		 */
-		if ( is_string( $this->doubles_path ) ) {
+		if ( \is_string( $this->doubles_path ) ) {
 			$this->doubles_path = (array) $this->doubles_path;
 		}
 
 		$tokens    = $phpcsFile->getTokens();
 		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-		$base_path = rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
+		$base_path = \rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
 
-		if ( ! isset( $this->target_paths ) || defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
+		if ( ! isset( $this->target_paths ) || \defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
 			$this->target_paths = [];
 
 			foreach ( $this->doubles_path as $doubles_path ) {
 				$target_path  = $base_path;
-				$target_path .= trim( $this->normalize_directory_separators( $doubles_path ), '/' ) . '/';
+				$target_path .= \trim( $this->normalize_directory_separators( $doubles_path ), '/' ) . '/';
 
-				if ( file_exists( $target_path ) && is_dir( $target_path ) ) {
-					$this->target_paths[] = strtolower( $target_path );
+				if ( \file_exists( $target_path ) && \is_dir( $target_path ) ) {
+					$this->target_paths[] = \strtolower( $target_path );
 				}
 			}
 		}
@@ -138,13 +138,13 @@ class TestDoublesSniff implements Sniff {
 				$phpcsFile->config->basepath,
 			];
 
-			if ( count( $this->doubles_path ) === 1 ) {
+			if ( \count( $this->doubles_path ) === 1 ) {
 				$data[] = 'directory';
-				$data[] = implode( '', $this->doubles_path );
+				$data[] = \implode( '', $this->doubles_path );
 			}
 			else {
-				$all_paths = implode( '", "', $this->doubles_path );
-				$all_paths = substr_replace( $all_paths, ' and', strrpos( $all_paths, ',' ), 1 );
+				$all_paths = \implode( '", "', $this->doubles_path );
+				$all_paths = \substr_replace( $all_paths, ' and', \strrpos( $all_paths, ',' ), 1 );
 
 				$data[] = 'directories';
 				$data[] = $all_paths;
@@ -162,7 +162,7 @@ class TestDoublesSniff implements Sniff {
 			$is_error     = true;
 
 			foreach ( $this->target_paths as $target_path ) {
-				if ( stripos( $path_to_file, $target_path ) !== false ) {
+				if ( \stripos( $path_to_file, $target_path ) !== false ) {
 					$is_error = false;
 					break;
 				}
@@ -213,6 +213,6 @@ class TestDoublesSniff implements Sniff {
 	 * @return string
 	 */
 	private function normalize_directory_separators( $path ) {
-		return strtr( $path, '\\', '/' );
+		return \strtr( $path, '\\', '/' );
 	}
 }

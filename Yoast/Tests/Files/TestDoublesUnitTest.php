@@ -28,7 +28,7 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 			return;
 		}
 
-		$config->basepath = __DIR__ . DIRECTORY_SEPARATOR . 'TestDoublesUnitTests';
+		$config->basepath = __DIR__ . \DIRECTORY_SEPARATOR . 'TestDoublesUnitTests';
 	}
 
 	/**
@@ -39,8 +39,8 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 * @return string[]
 	 */
 	protected function getTestFiles( $testFileBase ) {
-		$sep        = DIRECTORY_SEPARATOR;
-		$test_files = glob( dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', GLOB_BRACE );
+		$sep        = \DIRECTORY_SEPARATOR;
+		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;

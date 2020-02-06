@@ -20,11 +20,11 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return array
+	 * @return (int|string)[]
 	 */
 	public function register() {
 		return [
-			T_FUNCTION,
+			\T_FUNCTION,
 		];
 	}
 
@@ -41,14 +41,14 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 		$find   = Tokens::$methodPrefixes;
-		$find[] = T_WHITESPACE;
+		$find[] = \T_WHITESPACE;
 
 		$commentEnd = $stackPtr;
 		do {
 			$commentEnd = $phpcsFile->findPrevious( $find, ( $commentEnd - 1 ), null, true );
 		} while ( $tokens[ $commentEnd ]['line'] === $tokens[ $stackPtr ]['line'] );
 
-		if ( $tokens[ $commentEnd ]['code'] !== T_DOC_COMMENT_CLOSE_TAG
+		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
 			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )
 		) {
 			// Function without (proper) docblock. Not our concern.
@@ -83,10 +83,10 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 			return;
 		}
 
-		$hasTagAsString = $phpcsFile->findNext( T_DOC_COMMENT_STRING, ( $commentStart + 1 ), $commentEnd, false, 'codeCoverageIgnore' );
+		$hasTagAsString = $phpcsFile->findNext( \T_DOC_COMMENT_STRING, ( $commentStart + 1 ), $commentEnd, false, 'codeCoverageIgnore' );
 		if ( $hasTagAsString !== false ) {
-			$prev = $phpcsFile->findPrevious( T_DOC_COMMENT_WHITESPACE, ( $hasTagAsString - 1 ), $commentStart, true );
-			if ( $prev !== false && $tokens[ $prev ]['code'] === T_DOC_COMMENT_STAR ) {
+			$prev = $phpcsFile->findPrevious( \T_DOC_COMMENT_WHITESPACE, ( $hasTagAsString - 1 ), $commentStart, true );
+			if ( $prev !== false && $tokens[ $prev ]['code'] === \T_DOC_COMMENT_STAR ) {
 				$fix = $phpcsFile->addFixableError(
 					'The `codeCoverageIgnore` annotation in the function docblock needs to be prefixed with an `@`.',
 					$hasTagAsString,

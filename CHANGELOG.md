@@ -375,6 +375,7 @@ Initial public release as a stand-alone package.
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 [Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
 
+[2.0.2]: https://github.com/Yoast/yoastcs/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/Yoast/yoastcs/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/Yoast/yoastcs/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/Yoast/yoastcs/compare/1.2.2...1.3.0

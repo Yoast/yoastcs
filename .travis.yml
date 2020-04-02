@@ -88,7 +88,7 @@ before_install:
     # On stable PHPCS versions, allow for PHP deprecation notices.
     # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
     - |
-      if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" && $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
+      if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" && $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
         echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
       fi
 
@@ -100,7 +100,7 @@ before_install:
     # Set the WPCS version to test against.
     - composer require wp-coding-standards/wpcs:${WPCS} --no-update --no-suggest --no-scripts
     - |
-      if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" ]]; then
+      if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" ]]; then
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
           composer remove phpcompatibility/phpcompatibility-wp phpcompatibility/php-compatibility --no-update
       fi

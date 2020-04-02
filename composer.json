@@ -33,7 +33,8 @@
 		"roave/security-advisories": "dev-master",
 		"phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0",
 		"jakub-onderka/php-parallel-lint": "^1.0",
-		"jakub-onderka/php-console-highlighter": "^0.4"
+		"jakub-onderka/php-console-highlighter": "^0.4",
+		"phpcsstandards/phpcsdevtools": "^1.0"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
@@ -53,6 +54,9 @@
 		],
 		"test": [
 			"@php ./vendor/phpunit/phpunit/phpunit --filter Yoast --bootstrap=\"./vendor/squizlabs/php_codesniffer/tests/bootstrap.php\" ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+		],
+		"check-complete": [
+			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./Yoast"
 		]
 	}
 }

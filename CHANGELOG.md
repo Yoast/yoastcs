@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.0.2] - 2020-04-02
+
+#### Changed
+* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been updated to WP `5.3` (was `5.2`).
+
+
 ### [2.0.1] - 2020-02-06
 
 #### Changed
@@ -71,7 +77,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * :warning: PHPCS: `Yoast.Files.FileName` sniff: the public `$exclude` property, which can be used to indicate which files to exclude from the file name versus object name check, has been renamed to `$excluded_files_strict_check`.
     Custom repo specific rulesets using the property should be updates to reflect this change.
 * PHPCS: The default setting for the minimum supported PHP version for repos using YoastCS is now PHP 5.6 (was 5.2).
-* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been update to WP `5.2` (was `4.9`).
+* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been updated to WP `5.2` (was `4.9`).
 * Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.4.2` to `^3.5.0`.
     Note: this makes the option `--filter=gitstaged` available which can be used in git `pre-commit` hooks to only check staged files.
 * Composer: Supported version of [WordPressCS] has been changed from `^2.1.1` to `^2.2.0`.
@@ -369,6 +375,7 @@ Initial public release as a stand-alone package.
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 [Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
 
+[2.0.2]: https://github.com/Yoast/yoastcs/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/Yoast/yoastcs/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/Yoast/yoastcs/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/Yoast/yoastcs/compare/1.2.2...1.3.0

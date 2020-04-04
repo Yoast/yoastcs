@@ -5,7 +5,7 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
-use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Namespaces;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 
 /**
@@ -114,36 +114,9 @@ final class NamespaceNameSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		$tokens = $phpcsFile->getTokens();
-
-		if ( empty( $tokens[ $stackPtr ]['conditions'] ) === false ) {
-			// Not a namespace declaration.
-			return;
-		}
-
-		$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
-		if ( $tokens[ $next_non_empty ]['code'] === \T_NS_SEPARATOR ) {
-			// Not a namespace declaration.
-			return;
-		}
-
-		// Get the complete namespace name.
-		$namespace_name = $tokens[ $next_non_empty ]['content'];
-		for ( $i = ( $next_non_empty + 1 ); $i < $phpcsFile->numTokens; $i++ ) {
-			if ( isset( Tokens::$emptyTokens[ $tokens[ $i ]['code'] ] ) ) {
-				continue;
-			}
-
-			if ( $tokens[ $i ]['code'] !== \T_STRING && $tokens[ $i ]['code'] !== \T_NS_SEPARATOR ) {
-				// Reached end of the namespace declaration.
-				break;
-			}
-
-			$namespace_name .= $tokens[ $i ]['content'];
-		}
-
-		if ( $i === $phpcsFile->numTokens ) {
-			// Live coding.
+		$namespace_name = Namespaces::getDeclaredName( $phpcsFile, $stackPtr );
+		if ( empty( $namespace_name ) ) {
+			// Either not a namespace declaration or global namespace.
 			return;
 		}
 

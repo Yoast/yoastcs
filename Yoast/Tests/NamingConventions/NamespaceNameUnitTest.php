@@ -108,7 +108,6 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 					12 => 1,
 					13 => 1,
 					14 => 1,
-					15 => 1,
 				];
 
 			// Path translation with $src_directory set tests.

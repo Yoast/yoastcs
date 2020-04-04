@@ -18,13 +18,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Note: while WPCS 3.0.0 is not (yet) supported by YoastCS, the "highest" release for WPCS should use
-# the last stable WPCS release supported by YoastCS, i.e. `2.3.0`.
-# Once support for WPCS 3.0.0 has been added, the matrix should switch (back) using `dev-develop`.
 env:
   PHPCS_HIGHEST: 'dev-master'
   UTILS_HIGHEST: 'dev-develop'
-  WPCS_HIGHEST: '2.3.0'
+  WPCS_HIGHEST: 'dev-develop'
 
 jobs:
   #### TEST STAGE ####
@@ -92,12 +89,11 @@ jobs:
 
       - name: "Composer: set PHPCS dependencies for tests (dev)"
         if: ${{ matrix.cs_dependencies == 'dev' }}
-        # Note: while WPCS 3.0.0 is not yet supported, WPCS will not be updated for the `dev` builds.
-        # Once YoastCS has been updated for WPCS 3.0.0, WPCS dev-develop should be added to this command.
         run: >
           composer require --no-update --no-scripts --no-interaction --ignore-platform-req=php+
           squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}"
           phpcsstandards/phpcsutils:"${{ env.UTILS_HIGHEST }}"
+          wp-coding-standards/wpcs:"${{ env.WPCS_HIGHEST }}"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -189,12 +185,11 @@ jobs:
 
       - name: "Composer: set PHPCS dependencies for tests (dev)"
         if: ${{ matrix.cs_dependencies == 'dev' }}
-        # Note: while WPCS 3.0.0 is not yet supported, WPCS will not be updated for the `dev` builds.
-        # Once YoastCS has been updated for WPCS 3.0.0, WPCS dev-develop should be added to this command.
         run: >
           composer require --no-update --no-scripts --no-interaction
           squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}"
           phpcsstandards/phpcsutils:"${{ env.UTILS_HIGHEST }}"
+          wp-coding-standards/wpcs:"${{ env.WPCS_HIGHEST }}"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies

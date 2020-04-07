@@ -250,6 +250,11 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 					$this->found_prefix,
 				]
 			);
+
+			$this->phpcsFile->recordMetric( $stackPtr, 'Hook name prefix type', 'old_style' );
+		}
+		else {
+			$this->phpcsFile->recordMetric( $stackPtr, 'Hook name prefix type', 'new\style' );
 		}
 
 		/*
@@ -276,6 +281,8 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 				3
 			);
 
+			$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in hook name', 'undetermined' );
+
 			return;
 		}
 
@@ -288,6 +295,8 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 
 		$parts      = \explode( '_', $hook_name );
 		$part_count = \count( $parts );
+
+		$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in hook name', $part_count );
 
 		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
 			return;

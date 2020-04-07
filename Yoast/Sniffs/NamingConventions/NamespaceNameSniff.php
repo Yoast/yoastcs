@@ -182,6 +182,8 @@ class NamespaceNameSniff implements Sniff {
 			$parts      = \explode( '\\', $namespace_for_level_check );
 			$part_count = \count( $parts );
 
+			$phpcsFile->recordMetric( $stackPtr, 'Nr of levels in namespace name', $part_count );
+
 			if ( $part_count > $this->max_levels ) {
 				$error = 'A namespace name is not allowed to be more than %d levels deep (excluding the prefix). Level depth found: %d in %s';
 				$data  = [

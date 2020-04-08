@@ -61,9 +61,8 @@ class TestDoublesSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void|int Void or $stackPtr to the end of the file if no basepath was set
 	 *                  or no valid doubles_path(s) were found.

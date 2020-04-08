@@ -82,9 +82,8 @@ class FileNameSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return int StackPtr to the end of the file, this sniff needs to only
 	 *             check each file once.
@@ -201,9 +200,8 @@ class FileNameSniff implements Sniff {
 	/**
 	 * Check if the file is on the exclude list.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
-	 * @param string                      $path_to_file The full path to the file
-	 *                                                  currently being examined.
+	 * @param File   $phpcsFile    The file being scanned.
+	 * @param string $path_to_file The full path to the file currently being examined.
 	 *
 	 * @return bool
 	 */

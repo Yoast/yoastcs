@@ -2,6 +2,7 @@
 
 namespace YoastCS\Yoast\Tests\Files;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
@@ -79,8 +80,8 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Set CLI values before the file is tested.
 	 *
-	 * @param string                  $testFile The name of the file being tested.
-	 * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+	 * @param string $testFile The name of the file being tested.
+	 * @param Config $config   The config data for the test run.
 	 *
 	 * @return void
 	 */

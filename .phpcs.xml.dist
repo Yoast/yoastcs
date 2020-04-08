@@ -64,7 +64,9 @@
 			<property name="prefixes" type="array">
 				<element value="YoastCS\Yoast"/>
 			</property>
-			<property name="src_directory" value="Yoast"/>
+			<property name="src_directory" type="array">
+				<element value="Yoast"/>
+			</property>
 		</properties>
 	</rule>
 

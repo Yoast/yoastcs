@@ -2,6 +2,7 @@
 
 namespace YoastCS\Yoast\Tests\NamingConventions;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
@@ -19,8 +20,8 @@ class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Set warnings level to 3 to trigger suggestions as warnings.
 	 *
-	 * @param string                  $filename The name of the file being tested.
-	 * @param \PHP_CodeSniffer\Config $config   The config data for the run.
+	 * @param string $filename The name of the file being tested.
+	 * @param Config $config   The config data for the run.
 	 *
 	 * @return void
 	 */

@@ -105,6 +105,7 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 		}
 
 		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
+			$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
 			return;
 		}
 
@@ -126,6 +127,8 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 				}
 			}
 		}
+
+		$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
 
 		// Active class.
 		$object_type = 'a ' . $this->tokens[ $stackPtr ]['content'];

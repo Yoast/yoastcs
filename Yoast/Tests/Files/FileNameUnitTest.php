@@ -65,6 +65,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		'excluded-trait-file.inc'         => 0,
 
 		// Functions file names.
+		'functions.inc'                   => 0,
 		'some-functions.inc'              => 0,
 		'some-file.inc'                   => 1, // Missing '-functions' suffix.
 		'excluded-functions-file.inc'     => 0,

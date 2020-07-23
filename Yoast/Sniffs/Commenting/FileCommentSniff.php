@@ -2,8 +2,8 @@
 
 namespace YoastCS\Yoast\Sniffs\Commenting;
 
-use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FileCommentSniff as Squiz_FileCommentSniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FileCommentSniff as Squiz_FileCommentSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**

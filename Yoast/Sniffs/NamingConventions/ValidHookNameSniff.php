@@ -2,9 +2,9 @@
 
 namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
+use PHP_CodeSniffer\Util\Tokens;
 use WordPressCS\WordPress\Sniffs\NamingConventions\ValidHookNameSniff as WPCS_ValidHookNameSniff;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
-use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Verify hook names.

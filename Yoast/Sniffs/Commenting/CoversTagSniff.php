@@ -2,8 +2,8 @@
 
 namespace YoastCS\Yoast\Sniffs\Commenting;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Verifies that a @covers tag annotation follows a format supported by PHPUnit.

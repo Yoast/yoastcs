@@ -2,8 +2,8 @@
 
 namespace YoastCS\Yoast\Sniffs\Files;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Check that all mock/doubles classes are in their own file and in a `doubles` directory.

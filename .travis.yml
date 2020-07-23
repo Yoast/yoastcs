@@ -21,9 +21,10 @@ php:
 
 env:
   # Test against the highest/lowest supported PHPCS and WPCS versions.
-  - PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+  # Using WPCS 'master' for the last stable release.
+  - PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
   - PHPCS_BRANCH="dev-master" WPCS="2.2.0"
-  - PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+  - PHPCS_BRANCH="3.5.0" WPCS="dev-master"
   - PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
 
 # Define the stages used.
@@ -70,7 +71,7 @@ jobs:
     # supported PHP/PHPCS/WPCS combinations.
     - stage: quicktest
       php: 7.4
-      env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 7.4
       env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
     - php: 5.4
@@ -78,32 +79,32 @@ jobs:
       env: PHPCS_BRANCH="dev-master" WPCS="2.2.0" PHPLINT=1
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
 
     #### TEST STAGE ####
     # Additional builds against PHP versions which need a different distro.
     - stage: test
       php: 5.5
       dist: trusty
-      env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 5.5
       dist: trusty
       env: PHPCS_BRANCH="dev-master" WPCS="2.2.0"
     - php: 5.5
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
     - php: 5.5
       dist: trusty
       env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 5.4
       dist: trusty
       env: PHPCS_BRANCH="dev-master" WPCS="2.2.0"
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
     - php: 5.4
       dist: trusty
       env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"

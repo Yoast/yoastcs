@@ -148,7 +148,14 @@ before_install:
           # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
           composer remove phpcompatibility/phpcompatibility-wp phpcompatibility/php-compatibility --no-update
       fi
-    - composer install --dev --no-suggest
+
+    - |
+      if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+        composer install --prefer-dist --no-interaction --ignore-platform-reqs
+      else
+        composer install --prefer-dist --no-interaction
+      fi
+
     # The DealerDirect Composer plugin script takes care of the installed_paths.
     - $PHPCS_BIN -i
 

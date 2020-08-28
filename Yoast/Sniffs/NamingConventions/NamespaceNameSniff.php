@@ -170,12 +170,19 @@ class NamespaceNameSniff implements Sniff {
 		 */
 		if ( $namespace_name_no_prefix !== '' ) {
 			$namespace_for_level_check = $namespace_name_no_prefix;
+
 			// Allow for `Tests\` and `Tests\Doubles\` after the prefix.
-			if ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 ) {
+			$starts_with_tests = ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 );
+			if ( $starts_with_tests === true ) {
 				$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
-				if ( \strpos( $namespace_for_level_check, 'Doubles\\' ) === 0 ) {
-					$namespace_for_level_check = \substr( $namespace_for_level_check, 8 );
-				}
+			}
+
+			if ( ( $starts_with_tests === true
+				// Allow for non-conventional test directory layout, like in YoastSEO Free.
+				|| \strpos( $found_prefix, '\\Tests\\' ) !== false )
+				&& \strpos( $namespace_for_level_check, 'Doubles\\' ) === 0
+			) {
+				$namespace_for_level_check = \substr( $namespace_for_level_check, 8 );
 			}
 
 			$parts      = \explode( '\\', $namespace_for_level_check );

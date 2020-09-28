@@ -2,8 +2,8 @@
 
 namespace YoastCS\Yoast\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\FunctionSpacingSniff as Squiz_FunctionSpacingSniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\FunctionSpacingSniff as Squiz_FunctionSpacingSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**

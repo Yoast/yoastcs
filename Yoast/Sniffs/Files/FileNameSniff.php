@@ -169,7 +169,7 @@ class FileNameSniff implements Sniff {
 			}
 			else {
 				$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
-				if ( $has_function !== false ) {
+				if ( $has_function !== false && $file_name !== 'functions' ) {
 					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected %s, but found %s.';
 					$error_code = 'InvalidFunctionsFileName';
 

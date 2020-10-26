@@ -36,5 +36,25 @@ class Test_Original_Class extends TestCase {
         ]]>
         </code>
     </code_comparison>
-
+    <standard>
+    <![CDATA[
+    Double/Mock test helper classes should have "Double" or "Mock" in their class name.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Test double suffixed with 'Double'.">
+        <![CDATA[
+class <em>Test_Double</em> extends Original_Class {
+    // Code.
+}
+        ]]>
+        </code>
+        <code title="Invalid: Test double without 'Double' or 'Mock' in the class name.">
+        <![CDATA[
+class <em>Foo_Class<em> extends Original_Foo_Class {
+    // Code.
+}
+        ]]>
+        </code>
+    </code_comparison>
 </documentation>

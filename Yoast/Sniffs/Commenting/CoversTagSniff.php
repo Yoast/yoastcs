@@ -2,8 +2,8 @@
 
 namespace YoastCS\Yoast\Sniffs\Commenting;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Verifies that a @covers tag annotation follows a format supported by PHPUnit.
@@ -53,9 +53,8 @@ class CoversTagSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
@@ -266,12 +265,11 @@ class CoversTagSniff implements Sniff {
 	/**
 	 * Add a fixable error if a suitable alternative is available.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
-	 * @param string                      $expected  The expected alternative annotation.
-	 *                                               This annotation might not be valid itself.
-	 * @param string                      $errorCode The error code.
+	 * @param File   $phpcsFile The file being scanned.
+	 * @param int    $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param string $expected  The expected alternative annotation.
+	 *                          This annotation might not be valid itself.
+	 * @param string $errorCode The error code.
 	 *
 	 * @return bool Whether an error has been thrown or not.
 	 */
@@ -302,12 +300,10 @@ class CoversTagSniff implements Sniff {
 	/**
 	 * Add a fixable error for a union/intersect @covers annotation.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
-	 * @param string                      $errorCode The error code.
-	 * @param string                      $separator The separator to split the
-	 *                                               annotation on.
+	 * @param File   $phpcsFile The file being scanned.
+	 * @param int    $stackPtr  The position of the current token in the stack passed in $tokens.
+	 * @param string $errorCode The error code.
+	 * @param string $separator The separator to split the annotation on.
 	 *
 	 * @return bool Whether to skip the rest of the annotation examination or not.
 	 */

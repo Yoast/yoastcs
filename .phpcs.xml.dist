@@ -27,6 +27,9 @@
 	<!-- Check up to 8 files simultaneously. -->
 	<arg name="parallel" value="8"/>
 
+	<!-- Cache the results between runs. -->
+	<arg name="cache" value="./.cache/phpcs.cache"/>
+
 
 	<!--
 	#############################################################################
@@ -64,7 +67,9 @@
 			<property name="prefixes" type="array">
 				<element value="YoastCS\Yoast"/>
 			</property>
-			<property name="src_directory" value="Yoast"/>
+			<property name="src_directory" type="array">
+				<element value="Yoast"/>
+			</property>
 		</properties>
 	</rule>
 

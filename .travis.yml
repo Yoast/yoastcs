@@ -1,18 +1,17 @@
-language: php
+os: linux
 
-dist: trusty
+language: php
 
 cache:
   apt: true
   directories:
+    - .cache
     # Cache directory for older Composer versions.
     - $HOME/.composer/cache/files
     # Cache directory for more recent Composer versions.
     - $HOME/.cache/composer/files
 
 php:
-    - 5.4
-    - 5.5
     - 5.6
     - 7.0
     - 7.1
@@ -22,9 +21,10 @@ php:
 
 env:
   # Test against the highest/lowest supported PHPCS and WPCS versions.
-  - PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+  # Using WPCS 'master' for the last stable release.
+  - PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
   - PHPCS_BRANCH="dev-master" WPCS="2.2.0"
-  - PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+  - PHPCS_BRANCH="3.5.0" WPCS="dev-master"
   - PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
 
 # Define the stages used.
@@ -39,12 +39,12 @@ stages:
   - name: test
     if: branch IN (master, develop)
 
-matrix:
+jobs:
   fast_finish: true
   include:
     #### SNIFF STAGE ####
     - stage: sniff
-      php: 7.3
+      php: 7.4
       env: PHPCS_BRANCH="dev-master" WPCS="dev-master"
       addons:
         apt:
@@ -71,13 +71,57 @@ matrix:
     # supported PHP/PHPCS/WPCS combinations.
     - stage: quicktest
       php: 7.4
-      env: PHPCS_BRANCH="dev-master" WPCS="dev-develop" PHPLINT=1
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 7.4
       env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
     - php: 5.4
+      dist: trusty
       env: PHPCS_BRANCH="dev-master" WPCS="2.2.0" PHPLINT=1
     - php: 5.4
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-develop"
+      dist: trusty
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
+
+    #### TEST STAGE ####
+    # Additional builds against PHP versions which need a different distro.
+    - stage: test
+      php: 5.5
+      dist: trusty
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
+    - php: 5.5
+      dist: trusty
+      env: PHPCS_BRANCH="dev-master" WPCS="2.2.0"
+    - php: 5.5
+      dist: trusty
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
+    - php: 5.5
+      dist: trusty
+      env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
+    - php: 5.4
+      dist: trusty
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
+    - php: 5.4
+      dist: trusty
+      env: PHPCS_BRANCH="dev-master" WPCS="2.2.0"
+    - php: 5.4
+      dist: trusty
+      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
+    - php: 5.4
+      dist: trusty
+      env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
+
+    # Test against WPCS unstable.
+    - php: 7.4
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-develop"
+
+    # Test against PHP nightly.
+    - php: "nightly"
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
+
+  allow_failures:
+    # Allow failures for unstable builds.
+    - php: "nightly"
+    - env: PHPCS_BRANCH="dev-master" WPCS="dev-develop"
+
 
 before_install:
     # Speed up build time by disabling Xdebug.
@@ -96,15 +140,22 @@ before_install:
     - export PHPCS_DIR=$(pwd)/vendor/squizlabs/php_codesniffer
     - export PHPCS_BIN=$(pwd)/vendor/bin/phpcs
     # Set the PHPCS version to test against.
-    - composer require squizlabs/php_codesniffer:${PHPCS_BRANCH} --no-update --no-suggest --no-scripts
+    - travis_retry composer require squizlabs/php_codesniffer:${PHPCS_BRANCH} --no-update --no-suggest --no-scripts
     # Set the WPCS version to test against.
-    - composer require wp-coding-standards/wpcs:${WPCS} --no-update --no-suggest --no-scripts
+    - travis_retry composer require wp-coding-standards/wpcs:${WPCS} --no-update --no-suggest --no-scripts
     - |
       if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" ]]; then
-          # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
-          composer remove phpcompatibility/phpcompatibility-wp phpcompatibility/php-compatibility --no-update
+        # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
+        travis_retry composer remove phpcompatibility/phpcompatibility-wp phpcompatibility/php-compatibility --no-update
       fi
-    - composer install --dev --no-suggest
+
+    - |
+      if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+        travis_retry composer install --prefer-dist --no-interaction --ignore-platform-reqs
+      else
+        travis_retry composer install --prefer-dist --no-interaction
+      fi
+
     # The DealerDirect Composer plugin script takes care of the installed_paths.
     - $PHPCS_BIN -i
 

@@ -2,11 +2,14 @@
 
 namespace YoastCS\Yoast\Sniffs\Files;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Check that all mock/doubles classes are in their own file and in a `doubles` directory.
+ *
+ * Additionally, checks that all classes in the `doubles` directory/directories
+ * have `Double` or `Mock` in the class name.
  *
  * @package Yoast\YoastCS
  *
@@ -61,9 +64,8 @@ class TestDoublesSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void|int Void or $stackPtr to the end of the file if no basepath was set
 	 *                  or no valid doubles_path(s) were found.
@@ -73,15 +75,6 @@ class TestDoublesSniff implements Sniff {
 		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return;
-		}
-
-		$object_name = $phpcsFile->getDeclarationName( $stackPtr );
-		if ( empty( $object_name ) ) {
-			return;
-		}
-
-		if ( \stripos( $object_name, 'mock' ) === false && \stripos( $object_name, 'double' ) === false ) {
 			return;
 		}
 
@@ -132,48 +125,61 @@ class TestDoublesSniff implements Sniff {
 			}
 		}
 
-		if ( empty( $this->target_paths ) ) {
-			// No valid target paths found.
-			$data = [
-				$phpcsFile->config->basepath,
-			];
+		$object_name = $phpcsFile->getDeclarationName( $stackPtr );
+		if ( empty( $object_name ) ) {
+			return;
+		}
 
-			if ( \count( $this->doubles_path ) === 1 ) {
-				$data[] = 'directory';
-				$data[] = \implode( '', $this->doubles_path );
+		$name_contains_double_or_mock = false;
+		if ( \stripos( $object_name, 'mock' ) !== false || \stripos( $object_name, 'double' ) !== false ) {
+			$name_contains_double_or_mock = true;
+		}
+
+
+		if ( empty( $this->target_paths ) === true ) {
+			if ( $name_contains_double_or_mock === true ) {
+				// No valid target paths found.
+				$data = [
+					$phpcsFile->config->basepath,
+				];
+
+				if ( \count( $this->doubles_path ) === 1 ) {
+					$data[] = 'directory';
+					$data[] = \implode( '', $this->doubles_path );
+				}
+				else {
+					$all_paths = \implode( '", "', $this->doubles_path );
+					$all_paths = \substr_replace( $all_paths, ' and', \strrpos( $all_paths, ',' ), 1 );
+
+					$data[] = 'directories';
+					$data[] = $all_paths;
+				}
+
+				$phpcsFile->addError(
+					'Double/Mock test helper class detected, but no test doubles sub-%2$s found in "%1$s". Expected: "%3$s". Please create the sub-%2$s.',
+					$stackPtr,
+					'NoDoublesDirectory',
+					$data
+				);
 			}
-			else {
-				$all_paths = \implode( '", "', $this->doubles_path );
-				$all_paths = \substr_replace( $all_paths, ' and', \strrpos( $all_paths, ',' ), 1 );
-
-				$data[] = 'directories';
-				$data[] = $all_paths;
-			}
-
-			$phpcsFile->addError(
-				'Double/Mock test helper class detected, but no test doubles sub-%2$s found in "%1$s". Expected: "%3$s". Please create the sub-%2$s.',
-				$stackPtr,
-				'NoDoublesDirectory',
-				$data
-			);
 		}
 		else {
-			$path_to_file = $this->normalize_directory_separators( $file );
-			$is_error     = true;
+			$path_to_file  = $this->normalize_directory_separators( $file );
+			$is_double_dir = false;
 
 			foreach ( $this->target_paths as $target_path ) {
 				if ( \stripos( $path_to_file, $target_path ) !== false ) {
-					$is_error = false;
+					$is_double_dir = true;
 					break;
 				}
 			}
 
-			if ( $is_error === true ) {
-				$data = [
-					$tokens[ $stackPtr ]['content'],
-					$object_name,
-				];
+			$data = [
+				$tokens[ $stackPtr ]['content'],
+				$object_name,
+			];
 
+			if ( $name_contains_double_or_mock === true && $is_double_dir === false ) {
 				$phpcsFile->addError(
 					'Double/Mock test helper classes should be placed in a dedicated test doubles sub-directory. Found %s: %s',
 					$stackPtr,
@@ -181,27 +187,37 @@ class TestDoublesSniff implements Sniff {
 					$data
 				);
 			}
+			elseif ( $name_contains_double_or_mock === false && $is_double_dir === true ) {
+				$phpcsFile->addError(
+					'Double/Mock test helper classes should contain "Double" or "Mock" in the class name. Found %s: %s',
+					$stackPtr,
+					'InvalidClassName',
+					$data
+				);
+			}
 		}
 
-		$more_objects_in_file = $phpcsFile->findNext( $this->register(), ( $stackPtr + 1 ) );
-		if ( $more_objects_in_file === false ) {
-			$more_objects_in_file = $phpcsFile->findPrevious( $this->register(), ( $stackPtr - 1 ) );
-		}
+		if ( $name_contains_double_or_mock === true ) {
+			$more_objects_in_file = $phpcsFile->findNext( $this->register(), ( $stackPtr + 1 ) );
+			if ( $more_objects_in_file === false ) {
+				$more_objects_in_file = $phpcsFile->findPrevious( $this->register(), ( $stackPtr - 1 ) );
+			}
 
-		if ( $more_objects_in_file !== false ) {
-			$data = [
-				$tokens[ $stackPtr ]['content'],
-				$object_name,
-				$tokens[ $more_objects_in_file ]['content'],
-				$phpcsFile->getDeclarationName( $more_objects_in_file ),
-			];
+			if ( $more_objects_in_file !== false ) {
+				$data = [
+					$tokens[ $stackPtr ]['content'],
+					$object_name,
+					$tokens[ $more_objects_in_file ]['content'],
+					$phpcsFile->getDeclarationName( $more_objects_in_file ),
+				];
 
-			$phpcsFile->addError(
-				'Double/Mock test helper classes should be in their own file. Found %1$s: %2$s and %3$s: %4$s',
-				$stackPtr,
-				'OneObjectPerFile',
-				$data
-			);
+				$phpcsFile->addError(
+					'Double/Mock test helper classes should be in their own file. Found %1$s: %2$s and %3$s: %4$s',
+					$stackPtr,
+					'OneObjectPerFile',
+					$data
+				);
+			}
 		}
 	}
 

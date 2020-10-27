@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.1.0] - 2020-10-27
+
+#### Added
+* PHPCS: A new check to the `Yoast.Files.TestDoubles` sniff to verify that all double/mock classes have either `Double` or `Mock` in the class name.
+* PHPCS: Metrics to the `Yoast.NamingConventions.NamespaceName` sniff to see the breakdown of the number of levels used in namespace names across a code base.
+    To see the metrics, run PHPCS with the `--report=info` option.
+* PHPCS: Metrics to the `Yoast.NamingConventions.ObjectNameDepth` sniff to see the breakdown of the number of words used in object names across a code base.
+    To see the metrics, run PHPCS with the `--report=info` option.
+* PHPCS: Metrics to the `Yoast.NamingConventions.ValidHookName` sniff to see the breakdown of the number of words used in hook names across a code base, as well as a break down of old-style versus new-style hook name usage.
+    To see the metrics, run PHPCS with the `--report=info` option.
+
+#### Changed
+* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been updated to WP `5.4` (was `5.3`).
+* Composer: Supported version of the [DealerDirect Composer PHPCS plugin] has been changed to allow for the newly released `0.7.0` version which adds support for Composer 2.0.
+    Note: this requirement is flexible to prevent conflicts with included standards which may include the plugin as well.
+* Travis: improved testing against the upcoming PHP 8.0.
+* Various housekeeping.
+
+#### Fixed
+* PHPCS: The `Yoast.Files.FileName` sniff expects a `-functions` suffix for a function-only file. The sniff has been updated to also allow such a file to be called `functions.php` without further specification.
+    _This widening is specifically intended for namespaced function-only files._
+* PHPCS: The `Yoast.NamingConventions.NamespaceName` sniff has improved handling of the allowance for an extra namespace level for test double directories for non-conventional test directory set-ups (like YoastSEO).
+
+
 ### [2.0.2] - 2020-04-02
 
 #### Changed
@@ -375,6 +399,7 @@ Initial public release as a stand-alone package.
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 [Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
 
+[2.1.0]: https://github.com/Yoast/yoastcs/compare/2.0.2...2.1.0
 [2.0.2]: https://github.com/Yoast/yoastcs/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/Yoast/yoastcs/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/Yoast/yoastcs/compare/1.3.0...2.0.0

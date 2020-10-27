@@ -2,6 +2,7 @@
 
 namespace YoastCS\Yoast\Tests\Files;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
@@ -64,6 +65,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		'excluded-trait-file.inc'         => 0,
 
 		// Functions file names.
+		'functions.inc'                   => 0,
 		'some-functions.inc'              => 0,
 		'some-file.inc'                   => 1, // Missing '-functions' suffix.
 		'excluded-functions-file.inc'     => 0,
@@ -79,8 +81,8 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Set CLI values before the file is tested.
 	 *
-	 * @param string                  $testFile The name of the file being tested.
-	 * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+	 * @param string $testFile The name of the file being tested.
+	 * @param Config $config   The config data for the test run.
 	 *
 	 * @return void
 	 */

@@ -2,8 +2,8 @@
 
 namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Util\Tokens;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
@@ -108,9 +108,8 @@ class NamespaceNameSniff implements Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-	 * @param int                         $stackPtr  The position of the current token
-	 *                                               in the stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
 	 * @return void
 	 */
@@ -171,16 +170,25 @@ class NamespaceNameSniff implements Sniff {
 		 */
 		if ( $namespace_name_no_prefix !== '' ) {
 			$namespace_for_level_check = $namespace_name_no_prefix;
+
 			// Allow for `Tests\` and `Tests\Doubles\` after the prefix.
-			if ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 ) {
+			$starts_with_tests = ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 );
+			if ( $starts_with_tests === true ) {
 				$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
-				if ( \strpos( $namespace_for_level_check, 'Doubles\\' ) === 0 ) {
-					$namespace_for_level_check = \substr( $namespace_for_level_check, 8 );
-				}
+			}
+
+			if ( ( $starts_with_tests === true
+				// Allow for non-conventional test directory layout, like in YoastSEO Free.
+				|| \strpos( $found_prefix, '\\Tests\\' ) !== false )
+				&& \strpos( $namespace_for_level_check, 'Doubles\\' ) === 0
+			) {
+				$namespace_for_level_check = \substr( $namespace_for_level_check, 8 );
 			}
 
 			$parts      = \explode( '\\', $namespace_for_level_check );
 			$part_count = \count( $parts );
+
+			$phpcsFile->recordMetric( $stackPtr, 'Nr of levels in namespace name', $part_count );
 
 			if ( $part_count > $this->max_levels ) {
 				$error = 'A namespace name is not allowed to be more than %d levels deep (excluding the prefix). Level depth found: %d in %s';

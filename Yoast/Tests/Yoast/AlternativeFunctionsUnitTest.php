@@ -10,6 +10,8 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @package Yoast\YoastCS
  *
  * @since   1.3.0
+ *
+ * @covers  YoastCS\Yoast\Sniffs\Yoast\AlternativeFunctionsSniff
  */
 class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 

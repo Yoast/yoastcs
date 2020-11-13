@@ -4,7 +4,21 @@
 	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
 	backupGlobals="true"
 	beStrictAboutTestsThatDoNotTestAnything="false"
-	colors="true">
+	colors="true"
+	forceCoversAnnotation="true"
+	>
+
+	<testsuites>
+		<testsuite name="YoastCS">
+			<directory suffix="UnitTest.php">./Yoast/Tests/</directory>
+		</testsuite>
+	</testsuites>
+
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
+			<directory suffix=".php">Yoast/Sniffs/</directory>
+		</whitelist>
+	</filter>
 
 	<php>
 		<env name="PHPCS_IGNORE_TESTS" value="PHPCompatibility,WordPress"/>

@@ -7,7 +7,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Verifies functions which are marked as `@deprecated` have a `@codeCoverageIgnore` tag
+ * Verifies functions which are marked as `deprecated` have a `codeCoverageIgnore` tag
  * in their docblock.
  *
  * @package Yoast\YoastCS

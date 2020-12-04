@@ -84,7 +84,12 @@ jobs:
     #### TEST STAGE ####
     # Additional builds against PHP versions which need a different distro.
     - stage: test
-      php: 5.5
+      php: 8.0
+      env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
+    - php: 8.0
+      # PHPCS is only compatible with PHP 8.0 as of version 3.5.7.
+      env: PHPCS_BRANCH="3.5.7" WPCS="2.2.0"
+    - php: 5.5
       dist: trusty
       env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 5.5
@@ -150,7 +155,7 @@ before_install:
       fi
 
     - |
-      if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+      if [[ $TRAVIS_PHP_VERSION == "nightly" || $TRAVIS_PHP_VERSION == "8.0" ]]; then
         travis_retry composer install --prefer-dist --no-interaction --ignore-platform-reqs
       else
         travis_retry composer install --prefer-dist --no-interaction

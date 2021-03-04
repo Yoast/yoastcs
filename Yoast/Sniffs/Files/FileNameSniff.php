@@ -147,7 +147,7 @@ class FileNameSniff implements Sniff {
 						break;
 
 					case \T_INTERFACE:
-						$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected %s, but found %s.';
+						$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected "%s", but found "%s".';
 						$error_code = 'InvalidInterfaceFileName';
 
 						// Don't duplicate "interface" in the filename.
@@ -157,7 +157,7 @@ class FileNameSniff implements Sniff {
 						break;
 
 					case \T_TRAIT:
-						$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected %s, but found %s.';
+						$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected "%s", but found "%s".';
 						$error_code = 'InvalidTraitFileName';
 
 						// Don't duplicate "trait" in the filename.
@@ -170,7 +170,7 @@ class FileNameSniff implements Sniff {
 			else {
 				$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
 				if ( $has_function !== false && $file_name !== 'functions' ) {
-					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected %s, but found %s.';
+					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected "%s", but found "%s".';
 					$error_code = 'InvalidFunctionsFileName';
 
 					if ( \substr( $expected, -10 ) !== '-functions' ) {
@@ -181,7 +181,7 @@ class FileNameSniff implements Sniff {
 		}
 
 		// Throw the error.
-		if ( $file_name !== $expected ) {
+		if ( $expected !== '' && $file_name !== $expected ) {
 			$phpcsFile->addError(
 				$error,
 				0,

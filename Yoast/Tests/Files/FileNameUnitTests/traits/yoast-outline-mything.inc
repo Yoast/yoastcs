@@ -3,6 +3,6 @@ phpcs:set Yoast.Files.FileName oo_prefixes[] wpseo,yoast
 
 <?php
 
-trait Yoast_Outline_Something {}
+trait Yoast_Outline_MyThing {}
 
 // phpcs:set Yoast.Files.FileName oo_prefixes[]

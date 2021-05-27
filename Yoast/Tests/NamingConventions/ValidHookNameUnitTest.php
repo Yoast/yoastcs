@@ -78,6 +78,9 @@ class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 			107 => 1,
 			110 => 2,
 			111 => 1,
+			136 => 1, // Severity: 3.
+			140 => 1,
+			141 => 2, // Severity: 3 + 5.
 		];
 	}
 }

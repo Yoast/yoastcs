@@ -23,9 +23,9 @@ env:
   # Test against the highest/lowest supported PHPCS and WPCS versions.
   # Using WPCS 'master' for the last stable release.
   - PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
-  - PHPCS_BRANCH="dev-master" WPCS="2.2.0"
-  - PHPCS_BRANCH="3.5.0" WPCS="dev-master"
-  - PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
+  - PHPCS_BRANCH="dev-master" WPCS="2.3.0"
+  - PHPCS_BRANCH="3.6.0" WPCS="dev-master"
+  - PHPCS_BRANCH="3.6.0" WPCS="2.3.0"
 
 # Define the stages used.
 # For non-PRs, only the sniff, ruleset and quicktest stages are run.
@@ -73,13 +73,13 @@ jobs:
       php: 7.4
       env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 7.4
-      env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
+      env: PHPCS_BRANCH="3.6.0" WPCS="2.3.0"
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="dev-master" WPCS="2.2.0" PHPLINT=1
+      env: PHPCS_BRANCH="dev-master" WPCS="2.3.0" PHPLINT=1
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
+      env: PHPCS_BRANCH="3.6.0" WPCS="dev-master"
 
     #### TEST STAGE ####
     # Additional builds against PHP versions which need a different distro.
@@ -87,32 +87,32 @@ jobs:
       php: 8.0
       env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 8.0
-      # PHPCS is only compatible with PHP 8.0 as of version 3.5.7.
-      env: PHPCS_BRANCH="3.5.7" WPCS="2.2.0"
+      # PHPCS is only compatible with PHP 8.0 as of version 3.6.0.
+      env: PHPCS_BRANCH="3.6.0" WPCS="2.3.0"
     - php: 5.5
       dist: trusty
       env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 5.5
       dist: trusty
-      env: PHPCS_BRANCH="dev-master" WPCS="2.2.0"
+      env: PHPCS_BRANCH="dev-master" WPCS="2.3.0"
     - php: 5.5
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
+      env: PHPCS_BRANCH="3.6.0" WPCS="dev-master"
     - php: 5.5
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
+      env: PHPCS_BRANCH="3.6.0" WPCS="2.3.0"
     - php: 5.4
       dist: trusty
       env: PHPCS_BRANCH="dev-master" WPCS="dev-master" PHPLINT=1
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="dev-master" WPCS="2.2.0"
+      env: PHPCS_BRANCH="dev-master" WPCS="2.3.0"
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="dev-master"
+      env: PHPCS_BRANCH="3.6.0" WPCS="dev-master"
     - php: 5.4
       dist: trusty
-      env: PHPCS_BRANCH="3.5.0" WPCS="2.2.0"
+      env: PHPCS_BRANCH="3.6.0" WPCS="2.3.0"
 
     # Test against WPCS unstable.
     - php: 7.4

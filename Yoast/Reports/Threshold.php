@@ -23,6 +23,41 @@ use PHP_CodeSniffer\Reports\Report;
 class Threshold implements Report {
 
 	/**
+	 * Escape sequence for making text white on the command-line.
+	 *
+	 * @var string
+	 */
+	const WHITE = "\033[1m";
+
+	/**
+	 * Escape sequence for making text red on the command-line.
+	 *
+	 * @var string
+	 */
+	const RED = "\033[31m";
+
+	/**
+	 * Escape sequence for making text green on the command-line.
+	 *
+	 * @var string
+	 */
+	const GREEN = "\033[32m";
+
+	/**
+	 * Escape sequence for making text orange/yellow on the command-line.
+	 *
+	 * @var string
+	 */
+	const YELLOW = "\033[33m";
+
+	/**
+	 * Escape sequence for resetting the text colour.
+	 *
+	 * @var string
+	 */
+	const RESET = "\033[0m";
+
+	/**
 	 * Generate a partial report for a single processed file.
 	 *
 	 * Function should return TRUE if it printed or stored data about the file
@@ -78,45 +113,45 @@ class Threshold implements Report {
 		$error_threshold   = (int) \getenv( 'YOASTCS_THRESHOLD_ERRORS' );
 		$warning_threshold = (int) \getenv( 'YOASTCS_THRESHOLD_WARNINGS' );
 
-		echo \PHP_EOL . "\033[1m" . 'PHP CODE SNIFFER THRESHOLD COMPARISON' . "\033[0m" . \PHP_EOL;
-		echo \str_repeat( '-', $width ) . \PHP_EOL;
+		echo \PHP_EOL, self::WHITE, 'PHP CODE SNIFFER THRESHOLD COMPARISON', self::RESET, \PHP_EOL;
+		echo \str_repeat( '-', $width ), \PHP_EOL;
 
-		$color = "\033[32m"; // Green.
+		$color = self::GREEN;
 		if ( $totalErrors > $error_threshold ) {
-			$color = "\033[31m"; // Red.
+			$color = self::RED;
 		}
-		echo "{$color}Coding standards ERRORS: $totalErrors/$error_threshold.\033[0m" . \PHP_EOL;
+		echo "{$color}Coding standards ERRORS: $totalErrors/$error_threshold.", self::RESET, \PHP_EOL;
 
-		$color = "\033[32m";
+		$color = self::GREEN;
 		if ( $totalWarnings > $warning_threshold ) {
-			$color = "\033[33m"; // Orange.
+			$color = self::YELLOW;
 		}
-		echo "{$color}Coding standards WARNINGS: $totalWarnings/$warning_threshold.\033[0m" . \PHP_EOL;
+		echo "{$color}Coding standards WARNINGS: $totalWarnings/$warning_threshold.", self::RESET, \PHP_EOL;
 		echo \PHP_EOL;
 
 		$above_threshold = false;
 
 		if ( $totalErrors > $error_threshold ) {
-			echo "\033[31mPlease fix any errors introduced in your code and run PHPCS again to verify.\033[0m" . \PHP_EOL;
+			echo self::RED, 'Please fix any errors introduced in your code and run PHPCS again to verify.', self::RESET, \PHP_EOL;
 			$above_threshold = true;
 		}
 		elseif ( $totalErrors < $error_threshold ) {
-			echo "\033[32mFound less errors than the threshold, great job!\033[0m" . \PHP_EOL;
-			echo "Please update the ERRORS threshold in the composer.json file to \033[32m$totalErrors\033[0m." . \PHP_EOL;
+			echo self::GREEN, 'Found less errors than the threshold, great job!', self::RESET, \PHP_EOL;
+			echo 'Please update the ERRORS threshold in the composer.json file to ', self::GREEN, $totalErrors, '.', self::RESET, \PHP_EOL;
 		}
 
 		if ( $totalWarnings > $warning_threshold ) {
-			echo "\033[33mPlease fix any warnings introduced in your code and run PHPCS again to verify.\033[0m" . \PHP_EOL;
+			echo self::YELLOW, 'Please fix any warnings introduced in your code and run PHPCS again to verify.', self::RESET, \PHP_EOL;
 			$above_threshold = true;
 		}
 		elseif ( $totalWarnings < $warning_threshold ) {
-			echo "\033[32mFound less warnings than the threshold, great job!\033[0m" . \PHP_EOL;
-			echo "Please update the WARNINGS threshold in the composer.json file to \033[32m$totalWarnings\033[0m." . \PHP_EOL;
+			echo self::GREEN, 'Found less warnings than the threshold, great job!', self::RESET, \PHP_EOL;
+			echo 'Please update the WARNINGS threshold in the composer.json file to ', self::GREEN, $totalWarnings, '.', self::RESET, \PHP_EOL;
 		}
 
 		if ( $above_threshold === false ) {
 			echo \PHP_EOL;
-			echo 'Coding standards checks have passed!' . \PHP_EOL;
+			echo 'Coding standards checks have passed!', \PHP_EOL;
 		}
 
 		// Make the threshold comparison outcome available to the calling script.

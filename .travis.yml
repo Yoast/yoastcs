@@ -33,7 +33,6 @@ env:
 # Note: for pull requests, "develop" should be the base branch name.
 # See: https://docs.travis-ci.com/user/conditions-v1
 stages:
-  - name: sniff
   - name: quicktest
     if: type = push AND branch NOT IN (master, develop)
   - name: test
@@ -42,30 +41,6 @@ stages:
 jobs:
   fast_finish: true
   include:
-    #### SNIFF STAGE ####
-    - stage: sniff
-      php: 7.4
-      env: PHPCS_BRANCH="dev-master" WPCS="dev-master"
-      addons:
-        apt:
-          packages:
-            - libxml2-utils
-      script:
-        # Check the codestyle of the files within YoastCS.
-        - composer check-cs
-
-        # Validate the xml files.
-        # @link http://xmlsoft.org/xmllint.html
-        # For the build to properly error when validating against a scheme, these each have to be in their own condition.
-        - xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./Yoast/ruleset.xml
-        - xmllint --noout ./Yoast/Docs/*/*Standard.xml
-
-        # Check the code-style consistency of the xml files.
-        - diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml")
-
-        # Check that the sniffs available are feature complete.
-        - composer check-complete
-
     #### QUICK TEST STAGE ####
     # This is a much quicker test which only runs the unit tests and linting against low/high
     # supported PHP/PHPCS/WPCS combinations.
@@ -137,7 +112,7 @@ before_install:
     # On stable PHPCS versions, allow for PHP deprecation notices.
     # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
     - |
-      if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" && $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
+      if [[ $PHPCS_BRANCH != "dev-master" && $WPCS != "dev-develop" ]]; then
         echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
       fi
 
@@ -148,11 +123,8 @@ before_install:
     - travis_retry composer require squizlabs/php_codesniffer:${PHPCS_BRANCH} --no-update --no-suggest --no-scripts
     # Set the WPCS version to test against.
     - travis_retry composer require wp-coding-standards/wpcs:${WPCS} --no-update --no-suggest --no-scripts
-    - |
-      if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" ]]; then
-        # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
-        travis_retry composer remove phpcompatibility/phpcompatibility-wp phpcompatibility/php-compatibility --no-update
-      fi
+    # For testing the YoastCS native sniffs, the rest of the packages aren't needed.
+    - travis_retry composer remove phpcompatibility/phpcompatibility-wp phpcompatibility/php-compatibility --no-update
 
     - |
       if [[ $TRAVIS_PHP_VERSION == "nightly" || $TRAVIS_PHP_VERSION == "8.0" ]]; then
@@ -170,7 +142,3 @@ script:
 
     # Run the unit tests.
     - vendor/bin/phpunit --filter Yoast --bootstrap="$PHPCS_DIR/tests/bootstrap.php" $PHPCS_DIR/tests/AllTests.php
-
-    # Validate the composer.json file.
-    # @link https://getcomposer.org/doc/03-cli.md#validate
-    - if [[ "$PHPLINT" == "1" ]]; then composer validate --no-check-all --strict; fi

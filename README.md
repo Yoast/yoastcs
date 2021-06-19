@@ -54,7 +54,7 @@ To obtain a list of all sniffs used within YoastCS:
 
 Not all sniffs have documentation available about what they sniff for, but for those which do, this documentation can be viewed from the command-line:
 ```bash
-"vendor/bin/phpcs" --standard=Yoast --generator=text
+"vendor/bin/phpcs" --standard=Yoast --generator=Text
 ```
 
 ### Running the sniffs
@@ -69,7 +69,7 @@ For more command-line options, please have a read through the [PHP_CodeSniffer d
 
 #### Yoast plugin repositories
 
-All Yoast plugin repositories contain a `[.]phpcs.xml.dist` file contain the repository specific configuration.
+All Yoast plugin repositories contain a `[.]phpcs.xml.dist` file which contains the repository specific configuration.
 
 From the root of these repositories, you can run PHPCS by using:
 ```bash

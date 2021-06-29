@@ -71,6 +71,8 @@ jobs:
         run: diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml")
 
       # Check the codestyle of the files within YoastCS.
+      # The results of the CS check will be shown inline in the PR via the CS2PR tool.
+      # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
       - name: Check PHP code style
         continue-on-error: true
         run: composer check-cs -- --report-full --report-checkstyle=./phpcs-report.xml

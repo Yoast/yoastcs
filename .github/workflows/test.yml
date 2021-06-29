@@ -118,6 +118,8 @@ jobs:
       - name: Verify installed standards
         run: vendor/bin/phpcs -i
 
+      # The results of the linting will be shown inline in the PR via the CS2PR tool.
+      # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
       - name: Lint against parse errors
         if: ${{ matrix.phpcs_version == 'dev-master' && matrix.wpcs_version == 'dev-master' }}
         run: composer lint -- --checkstyle | cs2pr

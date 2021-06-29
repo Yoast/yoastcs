@@ -28,7 +28,7 @@ jobs:
         # Note: while WPCS 3.0.0 is under development, the matrix will use `dev-master`.
         # Once it has been released and YoastCS has been made compatible, the matrix should switch (back)
         # WPCS `dev-master` to `dev-develop`.
-        php: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
+        php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
         phpcs_version: ['3.6.0', 'dev-master']
         wpcs_version: ['2.3.0', 'dev-master']
         experimental: [false]
@@ -37,23 +37,23 @@ jobs:
           # Experimental builds. These are allowed to fail.
 
           # PHP nightly
-          - php: '8.1'
+          - php_version: '8.1'
             phpcs_version: 'dev-master'
             wpcs_version: 'dev-master'
             experimental: true
           # Test against WPCS unstable. Re-enable when WPCS is not in dev for the next major.
-          #- php: '8.0'
+          #- php_version: '8.0'
           #  phpcs_version: 'dev-master'
           #  wpcs_version: 'dev-develop'
           #  experimental: true
 
           # Test against the next major of PHPCS. Temporarily disabled due to upstream bugs.
-          #- php: '7.4'
+          #- php_version: '7.4'
           #  phpcs_version: '4.0.x-dev'
           #  wpcs_version: 'dev-develop'
           #  experimental: true
 
-    name: "Test${{ matrix.phpcs_version == 'dev-master' && matrix.wpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
+    name: "Test${{ matrix.phpcs_version == 'dev-master' && matrix.wpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
 
     continue-on-error: ${{ matrix.experimental }}
 
@@ -75,7 +75,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: ${{ matrix.php_version }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
           tools: cs2pr
@@ -105,12 +105,12 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
-        if: ${{ startsWith( matrix.php, '8' ) == false }}
+        if: ${{ startsWith( matrix.php_version, '8' ) == false }}
         uses: ramsey/composer-install@v1
 
       # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
-        if: ${{ startsWith( matrix.php, '8' ) }}
+        if: ${{ startsWith( matrix.php_version, '8' ) }}
         uses: ramsey/composer-install@v1
         with:
           composer-options: --ignore-platform-reqs
@@ -123,11 +123,11 @@ jobs:
         run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests - PHP 5.4 - 8.0
-        if: ${{ matrix.php != '8.1' }}
+        if: ${{ matrix.php_version != '8.1' }}
         run: composer test
 
       - name: Run the unit tests - PHP 8.1
-        if: ${{ matrix.php == '8.1' }}
+        if: ${{ matrix.php_version == '8.1' }}
         run: composer test -- --no-configuration --dont-report-useless-tests
         env:
           PHPCS_IGNORE_TESTS: 'PHPCompatibility,WordPress'

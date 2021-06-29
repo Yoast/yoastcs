@@ -29,6 +29,11 @@ jobs:
           coverage: none
           tools: cs2pr
 
+      # Validate the composer.json file.
+      # @link https://getcomposer.org/doc/03-cli.md#validate
+      - name: Validate Composer installation
+        run: composer validate --no-check-all --strict
+
       - name: 'Composer: adjust dependencies'
         run: |
           # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
@@ -37,11 +42,6 @@ jobs:
           composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master"
           # Using WPCS `master` (=stable). This can be changed back to `dev-develop` after the WPCS 3.0.0 release.
           composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-master"
-
-      # Validate the composer.json file.
-      # @link https://getcomposer.org/doc/03-cli.md#validate
-      - name: Validate Composer installation
-        run: composer validate --no-check-all --strict
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies

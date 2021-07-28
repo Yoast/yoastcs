@@ -29,13 +29,13 @@ class ClassNameTest {
 	 * @covers \Class_name::method_name
 	 * @covers Name\Space\Class_Name::method_name
 	 * @covers \Name\Space\Class_name::method_name
+	 * @covers global_function
+	 * @covers self::method_name
 	 *
 	 * Incorrect:
-	 * @covers global_function
 	 * @covers ::global_func
 	 * @covers Name\Space\func_name
 	 * @covers My_Class
-	 * @covers self::method_name
 	 * @covers My_Class::another_method_name
 	 * @covers Name\Space\My_Class::another_method_name
 	 */
@@ -152,4 +152,15 @@ class ClassNameTest {
 	 * @param int $int Description.
 	 */
 	public function testDuplicateCoversTagFixable($int) {}
+
+	/**
+	 * Docblock.
+	 *
+	 * Correct:
+	 * @covers ::GlobalFunction
+	 * @covers ClassName::MethodName
+	 * @covers \Classname::MethodName
+	 * @covers \Name\Space\ClassName::MethodName
+	 */
+	public function testRecognizingNamesNotFollowingWPNamingConventions() {}
 }

@@ -64,6 +64,23 @@ class Active_Class_With_Too_Long_Class_Name {} // Error.
  */
 class Deprecated_Class_With_Too_Long_Class_Name {} // OK.
 
+/**
+ * Class description, no @deprecated tag.
+ *
+ * @since x.x.x
+ */
+#[Some_Attribute]
+class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
+
+/**
+ * Class description.
+ *
+ * @deprecated x.x.x
+ */
+#[Attribute_One]
+#[Attribute_Two]
+class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
+
 /*
  * Allow for a `_Test` suffix in classes within the unit test suite.
  */

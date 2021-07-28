@@ -34,10 +34,11 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 					42 => 1,
 					43 => 1,
 					58 => 1,
-					70 => 1,
-					75 => 1,
-					78 => 1,
-					79 => 1,
+					73 => 1,
+					87 => 1,
+					92 => 1,
+					95 => 1,
+					96 => 1,
 				];
 
 			default:

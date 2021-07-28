@@ -82,7 +82,7 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 
 		$comment_start = $phpcsFile->findNext( \T_WHITESPACE, ( $stackPtr + 1 ), $namespace_token, true );
 
-		if ( $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
+		if ( $comment_start !== false && $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
 			$phpcsFile->addWarning(
 				'A file containing a (named) namespace declaration does not need a file docblock',
 				$comment_start,

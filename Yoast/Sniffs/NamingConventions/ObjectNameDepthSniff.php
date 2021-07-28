@@ -85,6 +85,8 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 			return;
 		}
 
+		$object_name = \ltrim( $object_name, '_' );
+
 		$parts      = \explode( '_', $object_name );
 		$part_count = \count( $parts );
 

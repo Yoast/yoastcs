@@ -97,3 +97,9 @@ class Three_Word_Name_Mock {} // Error.
 
 class Three_Word_Name_Double extends Three_Word_Name {} // OK.
 class Three_Word_Name_Mock extends Some_Class {} // OK.
+
+/*
+ * Make sure underscore prefixed names have a correct count.
+ */
+class __Three_Word_Name {} // OK.
+class __Four_Four_Word_Name {} // Error.

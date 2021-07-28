@@ -26,6 +26,8 @@ class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 			59  => 1,
 			88  => 1,
 			126 => 1,
+			142 => 1,
+			150 => 1,
 		];
 	}
 

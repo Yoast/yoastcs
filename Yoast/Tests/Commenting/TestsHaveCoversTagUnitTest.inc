@@ -133,3 +133,19 @@ class ClassWithMethodsWithAttributesTest {
 	#[AttributeA]
 	public function testHasCoversTag() {}
 }
+
+class TestPrefixNotSuffix {
+
+	/**
+	 * Docblock.
+	 */
+	function testSomething() {}
+}
+
+abstract class ContainsTestMethodsTestCase {
+
+	/**
+	 * Docblock - this concrete test should have a covers tag.
+	 */
+	function testSomething() {}
+}

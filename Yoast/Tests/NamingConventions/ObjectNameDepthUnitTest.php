@@ -40,6 +40,10 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 					95  => 1,
 					96  => 1,
 					105 => 1,
+					112 => 1, // False positive due to acronym.
+					114 => 1,
+					115 => 1,
+					116 => 1,
 				];
 
 			default:

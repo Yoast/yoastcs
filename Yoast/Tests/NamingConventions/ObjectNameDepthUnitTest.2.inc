@@ -103,3 +103,14 @@ class Three_Word_Name_Mock extends Some_Class {} // OK.
  */
 class __Three_Word_Name {} // OK.
 class __Four_Four_Word_Name {} // Error.
+
+/*
+ * Make sure CamelCaps class names are also handled by this sniff.
+ */
+class ThreePartName {}
+interface MyInterfaceName {}
+trait SomeACRONYMName {} // Error - false positive, this will be fixed in a later iteration on this sniff.
+
+class TooLongClassName {} // Error.
+interface ThisInterfaceNameIsTooLong {} // Error.
+trait TraitNameIsTooLong {} // Error.

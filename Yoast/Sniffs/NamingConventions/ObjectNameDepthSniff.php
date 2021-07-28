@@ -85,9 +85,14 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 			return;
 		}
 
-		$object_name = \ltrim( $object_name, '_' );
+		$snakecase_object_name = \ltrim( $object_name, '_' );
 
-		$parts      = \explode( '_', $object_name );
+		// Handle names which are potentially in CamelCaps.
+		if ( \strpos( $snakecase_object_name, '_' ) === false ) {
+			$snakecase_object_name = self::get_snake_case_name_suggestion( $snakecase_object_name );
+		}
+
+		$parts      = \explode( '_', $snakecase_object_name );
 		$part_count = \count( $parts );
 
 		/*

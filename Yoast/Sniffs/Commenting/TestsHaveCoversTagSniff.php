@@ -189,6 +189,12 @@ class TestsHaveCoversTagSniff implements Sniff {
 			return;
 		}
 
+		$method_props = $phpcsFile->getMethodProperties( $stackPtr );
+		if ( $method_props['is_abstract'] === true ) {
+			// Abstract test method, not implemented.
+			return;
+		}
+
 		if ( $foundCovers === true || $foundCoversNothing === true ) {
 			// Docblock contains one or more @covers tags.
 			return;

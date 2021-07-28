@@ -148,4 +148,9 @@ abstract class ContainsTestMethodsTestCase {
 	 * Docblock - this concrete test should have a covers tag.
 	 */
 	function testSomething() {}
+
+	/**
+	 * Docblock - this abstract method can be ignored.
+	 */
+	abstract function testToBeImplementedInChildClass();
 }

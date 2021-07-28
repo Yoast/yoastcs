@@ -103,3 +103,33 @@ class ClassNameTest {
 	 */
 	public function annotatedTestHasCoversTag() {}
 }
+
+/**
+ * @covers ClassName
+ */
+#[Some_Attribute]
+class ClassLevelCoversWithAttributeTest {
+
+	/**
+	 * Docblock.
+	 */
+	public function testMissingCoversTag() {}
+}
+
+class ClassWithMethodsWithAttributesTest {
+
+	/**
+	 * Docblock.
+	 */
+	#[AttributeA]
+	#[AttributeB]
+	public function testMissingCoversTag() {}
+
+	/**
+	 * Docblock.
+	 *
+	 * @covers ::globalFunction
+	 */
+	#[AttributeA]
+	public function testHasCoversTag() {}
+}

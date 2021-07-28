@@ -74,21 +74,30 @@ class TestsHaveCoversTagSniff implements Sniff {
 			return;
 		}
 
-		// @todo: Once PHPCS 3.5.0 is out, replace with call to new findCommentAboveOOStructure() method.
-		$find = [
-			\T_WHITESPACE,
-			\T_ABSTRACT,
-			\T_FINAL,
+		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveOOStructure() method.
+		$ignore = [
+			\T_WHITESPACE => \T_WHITESPACE,
+			\T_ABSTRACT   => \T_ABSTRACT,
+			\T_FINAL      => \T_FINAL,
 		];
 
 		$commentEnd = $stackPtr;
-		do {
-			$commentEnd = $phpcsFile->findPrevious( $find, ( $commentEnd - 1 ), null, true );
-		} while ( $tokens[ $commentEnd ]['line'] === $tokens[ $stackPtr ]['line'] );
+		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {
+			if ( isset( $ignore[ $tokens[ $commentEnd ]['code'] ] ) === true ) {
+				continue;
+			}
 
-		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
-			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )
-		) {
+			if ( $tokens[ $commentEnd ]['code'] === \T_ATTRIBUTE_END
+				&& isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true
+			) {
+				$commentEnd = $tokens[ $commentEnd ]['attribute_opener'];
+				continue;
+			}
+
+			break;
+		}
+
+		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Class without (proper) docblock. Not our concern.
 			return;
 		}
@@ -126,14 +135,25 @@ class TestsHaveCoversTagSniff implements Sniff {
 	protected function process_function( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// @todo: Once PHPCS 3.5.0 is out, replace with call to new findCommentAboveOOStructure() method.
-		$find   = Tokens::$methodPrefixes;
-		$find[] = \T_WHITESPACE;
+		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveFunction() method.
+		$ignore                  = Tokens::$methodPrefixes;
+		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
 		$commentEnd = $stackPtr;
-		do {
-			$commentEnd = $phpcsFile->findPrevious( $find, ( $commentEnd - 1 ), null, true );
-		} while ( $tokens[ $commentEnd ]['line'] === $tokens[ $stackPtr ]['line'] );
+		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {
+			if ( isset( $ignore[ $tokens[ $commentEnd ]['code'] ] ) === true ) {
+				continue;
+			}
+
+			if ( $tokens[ $commentEnd ]['code'] === \T_ATTRIBUTE_END
+				&& isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true
+			) {
+				$commentEnd = $tokens[ $commentEnd ]['attribute_opener'];
+				continue;
+			}
+
+			break;
+		}
 
 		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
 			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )

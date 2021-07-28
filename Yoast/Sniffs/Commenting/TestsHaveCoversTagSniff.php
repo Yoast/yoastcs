@@ -155,32 +155,28 @@ class TestsHaveCoversTagSniff implements Sniff {
 			break;
 		}
 
-		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
-			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )
-		) {
-			// Function without (proper) docblock. Not our concern.
-			return;
-		}
-
-		$commentStart = $tokens[ $commentEnd ]['comment_opener'];
-
 		$foundTest          = false;
 		$foundCovers        = false;
 		$foundCoversNothing = false;
-		foreach ( $tokens[ $commentStart ]['comment_tags'] as $tag ) {
-			if ( $tokens[ $tag ]['content'] === '@test' ) {
-				$foundTest = true;
-				continue;
-			}
 
-			if ( $tokens[ $tag ]['content'] === '@covers' ) {
-				$foundCovers = true;
-				continue;
-			}
+		if ( $tokens[ $commentEnd ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
+			$commentStart = $tokens[ $commentEnd ]['comment_opener'];
 
-			if ( $tokens[ $tag ]['content'] === '@coversNothing' ) {
-				$foundCoversNothing = true;
-				continue;
+			foreach ( $tokens[ $commentStart ]['comment_tags'] as $tag ) {
+				if ( $tokens[ $tag ]['content'] === '@test' ) {
+					$foundTest = true;
+					continue;
+				}
+
+				if ( $tokens[ $tag ]['content'] === '@covers' ) {
+					$foundCovers = true;
+					continue;
+				}
+
+				if ( $tokens[ $tag ]['content'] === '@coversNothing' ) {
+					$foundCoversNothing = true;
+					continue;
+				}
 			}
 		}
 
@@ -195,11 +191,20 @@ class TestsHaveCoversTagSniff implements Sniff {
 			return;
 		}
 
-		$phpcsFile->addError(
-			'Each test function should have at least one @covers tag annotating which class/method/function is being tested. Tag missing for function %s()',
-			$stackPtr,
-			'Missing',
-			[ $name ]
-		);
+		$msg  = 'Each test function should have at least one @covers tag annotating which class/method/function is being tested.';
+		$data = [ $name ];
+
+		if ( $tokens[ $commentEnd ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
+			$msg .= ' Tag missing for function %s().';
+			$code = 'Missing';
+			$data = [ $name ];
+		}
+		else {
+			$msg .= ' Test function %s() does not have a docblock with a @covers tag.';
+			$code = 'NoDocblock';
+			$data = [ $name ];
+		}
+
+		$phpcsFile->addError( $msg, $stackPtr, $code, $data );
 	}
 }

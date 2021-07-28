@@ -53,4 +53,18 @@ class SomeThing {
 	 * @deprecated x.x
 	 */
 	public function missingCodeCoverageIgnore() {}
+
+	/**
+	 * @deprecated x.x
+	 * @codeCoverageIgnore
+	 */
+	#[ReturnTypeWillChange]
+	private static function withAttributeCorrectDocblock() {}
+
+	/**
+	 * @deprecated x.x
+	 */
+	#[ReturnTypeWillChange]
+	#[AnotherAttribute]
+	public function withAttributesMissingCodeCoverageIgnore() {}
 }

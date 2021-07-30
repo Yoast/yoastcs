@@ -45,7 +45,7 @@ do_action( 'Yoast\WP\Plugin\hook_' . $type . 'Yoast\WP\Plugin\hook' ); // Error 
 apply_filters( 'Yoast\WP\Plugin\\' . $type . '_' . $sub, $var ); // Warning at severity 3 compound name.
 
 // Test handling of escaped slash in double quotes string.
-$var = apply_filters( "Yoast\WP\Plugin\\{$obj->prop['type']}_details", $var ); // Warning at severity 3 compound name.
+$var = apply_filters( "Yoast\\WP\\Plugin\\{$obj->prop['type']}_details", $var ); // Warning at severity 3 compound name.
 
 // phpcs:enable
 
@@ -69,7 +69,7 @@ do_action(
  */
 // phpcs:set Yoast.NamingConventions.ValidHookName prefixes[] Yoast\WP\Plugin,yoast_plugin
 
-do_action( "Yoast\WP\Plugin\some_{$variable}_hook_name"); // Warning at severity 3.
+do_action( "Yoast\\WP\\Plugin\\some_{$variable}_hook_name"); // Warning at severity 3.
 do_action( 'yoast_plugin_some_' . 'hook_' . 'name' ); // Warning at severity 3 + warning wrong prefix.
 
 /*
@@ -118,7 +118,27 @@ do_action_ref_array( 'yoast_plugin_some_hook_name_which_is_too_long', $var ); //
 
 do_action( 'Yoast\WP\Plugin\some_hook_name', $var ); // Error.
 
-// Reset to default settings.
-// phpcs:set Yoast.NamingConventions.ValidHookName prefixes[]
+// Reset word maximums.
 // phpcs:set Yoast.NamingConventions.ValidHookName max_words 4
 // phpcs:set Yoast.NamingConventions.ValidHookName recommended_max_words 4
+
+/*
+ * Test handling of double slashes in prefixes.
+ * - Double slashes in single quoted strings are generally not needed, but will not cause problems.
+ * - Single slashed in double quoted strings could be problematic, so escaping the slashes is recommended.
+ */
+
+// Correct (single quoted).
+apply_filters( 'Yoast\WP\Plugin\hookname', $var); // OK.
+apply_filters( 'Yoast\\WP\\Plugin\\hookname', $var); // OK.
+
+// Correct (double quoted).
+apply_filters( "Yoast\\WP\\Plugin\\hook{$name}", $var); // OK, warning at severity 3 for word count.
+apply_filters( "Yoast\\WP\\Plugin\\hookname", $var); // OK.
+
+// Incorrect (double quoted - the `\` needs to be escaped).
+apply_filters( "Yoast\WP\Plugin\hookname", $var); // Warning, missing escaping x 3.
+apply_filters( "Yoast\WP\\Plugin\hook{$name}", $var); // Warning, missing escaping x 2 + warning at severity 3 for word count.
+
+// Reset to default settings.
+// phpcs:set Yoast.NamingConventions.ValidHookName prefixes[]

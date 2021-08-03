@@ -39,13 +39,35 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
-		$namespace_token = $phpcsFile->findNext( \T_NAMESPACE, $stackPtr );
-		if ( $namespace_token === false ) {
-			// No namespace found, fall through to parent sniff.
-			return parent::process( $phpcsFile, $stackPtr );
-		}
-
 		$tokens = $phpcsFile->getTokens();
+
+		$namespace_token = $stackPtr;
+		do {
+			$namespace_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $namespace_token + 1 ), null, true );
+			if ( $namespace_token === false ) {
+				// No non-empty token found, fall through to parent sniff.
+				return parent::process( $phpcsFile, $stackPtr );
+			}
+
+			if ( $tokens[ $namespace_token ]['code'] === \T_DECLARE ) {
+				// Declare statement found. Find the end of it and skip over it.
+				$end = $phpcsFile->findNext( [ \T_SEMICOLON, \T_OPEN_CURLY_BRACKET ], ( $namespace_token + 1 ), null, false, null, true );
+
+				if ( $end !== false ) {
+					$namespace_token = $end;
+				}
+
+				continue;
+			}
+
+			if ( $tokens[ $namespace_token ]['code'] !== \T_NAMESPACE ) {
+				// No namespace found, fall through to parent sniff.
+				return parent::process( $phpcsFile, $stackPtr );
+			}
+
+			// Stop searching if the next non-empty token wasn't a namespace token.
+			break;
+		} while ( true );
 
 		$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $namespace_token + 1 ), null, true );
 		if ( $next_non_empty === false
@@ -60,7 +82,7 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 
 		$comment_start = $phpcsFile->findNext( \T_WHITESPACE, ( $stackPtr + 1 ), $namespace_token, true );
 
-		if ( $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
+		if ( $comment_start !== false && $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
 			$phpcsFile->addWarning(
 				'A file containing a (named) namespace declaration does not need a file docblock',
 				$comment_start,

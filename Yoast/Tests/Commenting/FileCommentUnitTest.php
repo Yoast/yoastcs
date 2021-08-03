@@ -27,6 +27,7 @@ class FileCommentUnitTest extends AbstractSniffUnitTest {
 			case 'FileCommentUnitTest.2.inc':
 			case 'FileCommentUnitTest.8.inc':
 			case 'FileCommentUnitTest.10.inc':
+			case 'FileCommentUnitTest.12.inc':
 				return [
 					1 => 1,
 				];
@@ -47,6 +48,7 @@ class FileCommentUnitTest extends AbstractSniffUnitTest {
 		switch ( $testFile ) {
 			case 'FileCommentUnitTest.4.inc':
 			case 'FileCommentUnitTest.6.inc':
+			case 'FileCommentUnitTest.14.inc':
 				return [
 					2 => 1,
 				];

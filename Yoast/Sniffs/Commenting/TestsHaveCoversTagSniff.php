@@ -206,12 +206,10 @@ class TestsHaveCoversTagSniff implements Sniff {
 		if ( $tokens[ $commentEnd ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
 			$msg .= ' Tag missing for function %s().';
 			$code = 'Missing';
-			$data = [ $name ];
 		}
 		else {
 			$msg .= ' Test function %s() does not have a docblock with a @covers tag.';
 			$code = 'NoDocblock';
-			$data = [ $name ];
 		}
 
 		$phpcsFile->addError( $msg, $stackPtr, $code, $data );

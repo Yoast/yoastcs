@@ -48,6 +48,9 @@
 		<!-- This sniff is irrelevant for a PHPCS standard which follows the PHPCS directory structure. -->
 		<exclude name="Yoast.Files.TestDoubles"/>
 
+		<!-- Conflicts with PHPCS autoloading of sniffs. -->
+		<exclude name="Yoast.NamingConventions.ObjectNameDepth"/>
+
 		<!-- Conflicts with variable names coming from PHPCS itself. -->
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
 

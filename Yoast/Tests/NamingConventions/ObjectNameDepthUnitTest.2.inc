@@ -64,6 +64,23 @@ class Active_Class_With_Too_Long_Class_Name {} // Error.
  */
 class Deprecated_Class_With_Too_Long_Class_Name {} // OK.
 
+/**
+ * Class description, no @deprecated tag.
+ *
+ * @since x.x.x
+ */
+#[Some_Attribute]
+class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
+
+/**
+ * Class description.
+ *
+ * @deprecated x.x.x
+ */
+#[Attribute_One]
+#[Attribute_Two]
+class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
+
 /*
  * Allow for a `_Test` suffix in classes within the unit test suite.
  */
@@ -80,3 +97,20 @@ class Three_Word_Name_Mock {} // Error.
 
 class Three_Word_Name_Double extends Three_Word_Name {} // OK.
 class Three_Word_Name_Mock extends Some_Class {} // OK.
+
+/*
+ * Make sure underscore prefixed names have a correct count.
+ */
+class __Three_Word_Name {} // OK.
+class __Four_Four_Word_Name {} // Error.
+
+/*
+ * Make sure CamelCaps class names are also handled by this sniff.
+ */
+class ThreePartName {}
+interface MyInterfaceName {}
+trait SomeACRONYMName {} // Error - false positive, this will be fixed in a later iteration on this sniff.
+
+class TooLongClassName {} // Error.
+interface ThisInterfaceNameIsTooLong {} // Error.
+trait TraitNameIsTooLong {} // Error.

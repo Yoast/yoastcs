@@ -50,7 +50,7 @@ class NamespaceNameSniff implements Sniff {
 	 *
 	 * @var int
 	 */
-	public $max_levels = 3;
+	public $max_levels = 4;
 
 	/**
 	 * Recommended maximum number of levels.

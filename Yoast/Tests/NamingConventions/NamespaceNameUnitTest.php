@@ -78,7 +78,7 @@ class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 
 			case 'no-basepath-scoped.inc':
 				return [
-					14 => 1,
+					15 => 1,
 					24 => 1,
 				];
 

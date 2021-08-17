@@ -11,7 +11,8 @@ declare(strict_types=1);
 
 namespace Foo\Bar {} // OK.
 namespace Foo\Bar\Baz {} // Warning.
-namespace Foo\Bar\Baz\Fro {} // Error.
+namespace Foo\Bar\Baz\Exception {} // Ok.
+namespace Foo\Bar\Baz\Exception\Fro {} // Error.
 
 /*
  * Testing with (correct) prefix and custom level settings.

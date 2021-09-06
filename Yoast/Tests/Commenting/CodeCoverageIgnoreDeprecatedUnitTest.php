@@ -26,6 +26,7 @@ class CodeCoverageIgnoreDeprecatedUnitTest extends AbstractSniffUnitTest {
 			50 => 1,
 			55 => 1,
 			69 => 1,
+			90 => 1,
 		];
 	}
 

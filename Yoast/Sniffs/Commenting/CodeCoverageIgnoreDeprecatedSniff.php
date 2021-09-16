@@ -39,17 +39,27 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 
 		$tokens = $phpcsFile->getTokens();
-		$find   = Tokens::$methodPrefixes;
-		$find[] = \T_WHITESPACE;
 
-		$commentEnd = $stackPtr;
-		do {
-			$commentEnd = $phpcsFile->findPrevious( $find, ( $commentEnd - 1 ), null, true );
-		} while ( $tokens[ $commentEnd ]['line'] === $tokens[ $stackPtr ]['line'] );
+		$ignore                  = Tokens::$methodPrefixes;
+		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
-		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG
-			|| $tokens[ $commentEnd ]['line'] !== ( $tokens[ $stackPtr ]['line'] - 1 )
-		) {
+		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {
+			if ( isset( $ignore[ $tokens[ $commentEnd ]['code'] ] ) === true ) {
+				continue;
+			}
+
+			if ( $tokens[ $commentEnd ]['code'] === \T_ATTRIBUTE_END
+				&& isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true
+			) {
+				$commentEnd = $tokens[ $commentEnd ]['attribute_opener'];
+				continue;
+			}
+
+			break;
+		}
+
+
+		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Function without (proper) docblock. Not our concern.
 			return;
 		}

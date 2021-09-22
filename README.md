@@ -24,6 +24,30 @@ composer require --dev yoast/yoastcs:^2.0
 
 Composer will automatically install dependencies and register the YoastCS and other external standards with PHP_CodeSniffer.
 
+## Tools provided via YoastCS
+
+* PHP Parallel Lint
+* PHP_CodeSniffer and select standards for PHP_CodeSniffer, including a number of Yoast native sniffs.
+
+
+## PHP Parallel Lint
+
+[PHP Parallel Lint](https://github.com/php-parallel-lint/PHP-Parallel-Lint/) is a tool to lint PHP files against parse errors.
+
+PHP Parallel Lint does not use a configuration file, so [command-line options](https://github.com/php-parallel-lint/PHP-Parallel-Lint/#command-line-options) need to be passed to configure what files to scan.
+
+It is best practice within the Yoast projects, to add a script to the `composer.json` file which encapsules the command with the appropriate command-line options to ensure that running the tool will yield the same results each time.
+
+Typically, (a variation on) the following snippet would be added to the `composer.json` file for a project:
+```json
+    "scripts" : {
+        "lint": [
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+        ]
+    }
+```
+
+
 ## PHP Code Sniffer
 
 Set of [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) rules.
@@ -54,7 +78,7 @@ To obtain a list of all sniffs used within YoastCS:
 
 Not all sniffs have documentation available about what they sniff for, but for those which do, this documentation can be viewed from the command-line:
 ```bash
-"vendor/bin/phpcs" --standard=Yoast --generator=text
+"vendor/bin/phpcs" --standard=Yoast --generator=Text
 ```
 
 ### Running the sniffs
@@ -69,7 +93,7 @@ For more command-line options, please have a read through the [PHP_CodeSniffer d
 
 #### Yoast plugin repositories
 
-All Yoast plugin repositories contain a `[.]phpcs.xml.dist` file contain the repository specific configuration.
+All Yoast plugin repositories contain a `[.]phpcs.xml.dist` file which contains the repository specific configuration.
 
 From the root of these repositories, you can run PHPCS by using:
 ```bash

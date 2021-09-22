@@ -45,6 +45,7 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		'some-class.inc'                  => 0,
 		'wpseo-some-class.inc'            => 1, // Prefix 'wpseo' not necessary.
 		'yoast-plugin-some-class.inc'     => 1, // Prefix 'yoast-plugin' not necessary.
+		'yoast.inc'                       => 0, // Class name = prefix, so there would be nothing left otherwise.
 		'class-wpseo-some-class.inc'      => 1, // Prefixes 'class' and 'wpseo' not necessary.
 		'excluded-CLASS-file.inc'         => 1, // Lowercase expected.
 
@@ -57,10 +58,10 @@ class FileNameUnitTest extends AbstractSniffUnitTest {
 		'excluded-interface-file.inc'     => 0,
 
 		// Trait file names.
-		'outline-something-trait.inc'     => 0,
+		'outline-mything-trait.inc'       => 0,
 		'different-trait.inc'             => 1, // Filename not in line with trait name.
-		'outline-something.inc'           => 1, // Missing '-trait' suffix.
-		'yoast-outline-something.inc'     => 1, // Prefix 'yoast' not needed.
+		'outline-mything.inc'             => 1, // Missing '-trait' suffix.
+		'yoast-outline-mything.inc'       => 1, // Prefix 'yoast' not needed.
 		'no-duplicate-trait.inc'          => 0, // Check that 'Trait' in trait name does not cause duplication in filename.
 		'excluded-trait-file.inc'         => 0,
 

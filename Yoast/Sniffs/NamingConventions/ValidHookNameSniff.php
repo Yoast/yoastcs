@@ -61,14 +61,6 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	public $recommended_max_words = 4;
 
 	/**
-	 * Whether this is the first text string passed to the `transform()`
-	 * method, i.e. the text string which should have the prefix.
-	 *
-	 * @var bool
-	 */
-	private $remove_prefix = false;
-
-	/**
 	 * The prefix found (if any).
 	 *
 	 * @var string
@@ -82,6 +74,17 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * @var bool
 	 */
 	private $first_string = '';
+
+	/**
+	 * The quote style used for the prefix part of the hook name.
+	 *
+	 * A double quoted string without variable interpolation will be tokenized as
+	 * `T_CONSTANT_ENCAPSED_STRING`, but due to the double quotes, will still need
+	 * for namespace separators to be escaped, i.e. double-slashed.
+	 *
+	 * @var string
+	 */
+	private $prefix_quote_style = '';
 
 	/**
 	 * Process the parameters of a matched function.
@@ -101,9 +104,9 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		 * Reset the properties which help manage this each time a new function call
 		 * is encountered.
 		 */
-		$this->remove_prefix = true;
-		$this->found_prefix  = '';
-		$this->first_string  = '';
+		$this->found_prefix       = '';
+		$this->first_string       = '';
+		$this->prefix_quote_style = '';
 		$this->validate_prefixes();
 
 		/*
@@ -115,10 +118,20 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			$found_prefix    = '';
 
 			if ( isset( Tokens::$stringTokens[ $this->tokens[ $first_non_empty ]['code'] ] ) ) {
-				$content = \trim( $this->strip_quotes( $this->tokens[ $first_non_empty ]['content'] ) );
+				$this->prefix_quote_style = $this->tokens[ $first_non_empty ]['content'][0];
+				$content                  = \trim( $this->strip_quotes( $this->tokens[ $first_non_empty ]['content'] ) );
+
 				foreach ( $this->validated_prefixes as $prefix ) {
-					if ( \strpos( $content, $prefix ) === 0 ) {
+					if ( \strpos( $prefix, '\\' ) === false
+						&& \strpos( $content, $prefix ) === 0
+					) {
 						$found_prefix = $prefix;
+						break;
+					}
+
+					$prefix = \str_replace( '\\\\', '[\\\\]+', \preg_quote( $prefix, '`' ) );
+					if ( \preg_match( '`^' . $prefix . '`', $content, $matches ) === 1 ) {
+						$found_prefix = $matches[0];
 						break;
 					}
 				}
@@ -132,6 +145,8 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 				 */
 				return;
 			}
+
+			$this->found_prefix = $found_prefix;
 		}
 
 		// Do the WPCS native hook name check.
@@ -154,60 +169,28 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 *
 	 * @param string $string         The target string.
 	 * @param string $regex          The punctuation regular expression to use.
-	 * @param string $transform_type Whether to a partial or complete transform.
+	 * @param string $transform_type Whether to do a partial or complete transform.
 	 *                               Valid values are: 'full', 'case', 'punctuation'.
 	 * @return string
 	 */
 	protected function transform( $string, $regex, $transform_type = 'full' ) {
 
 		if ( empty( $this->validated_prefixes ) ) {
-			$this->remove_prefix = false;
 			return parent::transform( $string, $regex, $transform_type );
 		}
 
+		if ( $this->first_string === '' ) {
+			$this->first_string = $string;
+		}
+
 		// Not the first text string.
-		if ( $this->remove_prefix === false
-			&& $string !== $this->first_string
-		) {
+		if ( $string !== $this->first_string ) {
 			return parent::transform( $string, $regex, $transform_type );
 		}
 
 		// Repeated call for the first text string.
-		if ( $this->remove_prefix === false
-			&& $string === $this->first_string
-		) {
-			if ( $this->found_prefix !== '' ) {
-				$string = \substr( $string, \strlen( $this->found_prefix ) );
-			}
-
-			return $this->found_prefix . parent::transform( $string, $regex, $transform_type );
-		}
-
-		// First call for first text string.
-		if ( $this->remove_prefix === true ) {
-			$this->first_string = $string;
-
-			foreach ( $this->validated_prefixes as $prefix ) {
-				if ( \strpos( $string, $prefix ) === 0 ) {
-					$string             = \substr( $string, \strlen( $prefix ) );
-					$this->found_prefix = $prefix;
-
-					/*
-					 * Handle case where the prefix is the only content in a single quoted string,
-					 * which would necessitate an extra backslash to escape the end backslash.
-					 * I.e. 'Yoast\WP\Plugin\\'.
-					 */
-					if ( $string === '\\' ) {
-						$string              = '';
-						$this->found_prefix .= '\\';
-					}
-
-					break;
-				}
-			}
-
-			// Don't do this again until the next time the sniff gets triggered.
-			$this->remove_prefix = false;
+		if ( $this->found_prefix !== '' ) {
+			$string = \substr( $string, \strlen( $this->found_prefix ) );
 		}
 
 		return $this->found_prefix . parent::transform( $string, $regex, $transform_type );
@@ -255,6 +238,30 @@ class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		}
 		else {
 			$this->phpcsFile->recordMetric( $stackPtr, 'Hook name prefix type', 'new\style' );
+
+			/*
+			 * Check whether the namespace separator slashes are correctly escaped.
+			 */
+			if ( $this->prefix_quote_style === '"' ) {
+				\preg_match_all( '`[\\\\]+`', $this->found_prefix, $matches );
+				if ( empty( $matches ) === false ) {
+					$counter = 0;
+					foreach ( $matches[0] as $match ) {
+						if ( $match === '\\' ) {
+							++$counter;
+						}
+					}
+
+					if ( $counter > 0 ) {
+						$this->phpcsFile->addWarning(
+							'When using a double quoted string for the hook name, it is strongly recommended to escape the backslashes in the hook name (prefix). Found %s unescaped backslashes.',
+							$first_non_empty,
+							'EscapeSlashes',
+							[ $counter ]
+						);
+					}
+				}
+			}
 		}
 
 		/*

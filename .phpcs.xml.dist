@@ -48,8 +48,23 @@
 		<!-- This sniff is irrelevant for a PHPCS standard which follows the PHPCS directory structure. -->
 		<exclude name="Yoast.Files.TestDoubles"/>
 
+		<!-- Conflicts with PHPCS autoloading of sniffs. -->
+		<exclude name="Yoast.NamingConventions.ObjectNameDepth"/>
+
 		<!-- Conflicts with variable names coming from PHPCS itself. -->
 		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
+
+		<!-- Sniffs are not run in the context of WordPress. -->
+		<exclude name="WordPress.Security"/>
+		<exclude name="WordPress.WP"/>
+	</rule>
+
+	<!-- While PHPCompatibility is already included in the Yoast ruleset, it uses
+		 the PHPCompatibilityWP ruleset, which excludes rules polyfilled by WP.
+		 Setting the severity for all PHPCompatibility rules to 5 prevents WP
+		 polyfilled functionality from not being flagged in this repo. -->
+	<rule ref="PHPCompatibility">
+		<severity>5</severity>
 	</rule>
 
 	<!-- Enforce PSR1 compatible namespaces. -->

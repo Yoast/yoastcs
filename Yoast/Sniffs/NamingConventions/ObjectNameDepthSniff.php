@@ -85,7 +85,14 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 			return;
 		}
 
-		$parts      = \explode( '_', $object_name );
+		$snakecase_object_name = \ltrim( $object_name, '_' );
+
+		// Handle names which are potentially in CamelCaps.
+		if ( \strpos( $snakecase_object_name, '_' ) === false ) {
+			$snakecase_object_name = self::get_snake_case_name_suggestion( $snakecase_object_name );
+		}
+
+		$parts      = \explode( '_', $snakecase_object_name );
 		$part_count = \count( $parts );
 
 		/*
@@ -110,13 +117,28 @@ class ObjectNameDepthSniff extends WPCS_Sniff {
 		}
 
 		// Check if the class is deprecated.
-		$find = [
+		$ignore = [
 			\T_ABSTRACT   => \T_ABSTRACT,
 			\T_FINAL      => \T_FINAL,
 			\T_WHITESPACE => \T_WHITESPACE,
 		];
 
-		$comment_end = $this->phpcsFile->findPrevious( $find, ( $stackPtr - 1 ), null, true );
+		$comment_end = $stackPtr;
+		for ( $comment_end = ( $stackPtr - 1 ); $comment_end >= 0; $comment_end-- ) {
+			if ( isset( $ignore[ $this->tokens[ $comment_end ]['code'] ] ) === true ) {
+				continue;
+			}
+
+			if ( $this->tokens[ $comment_end ]['code'] === \T_ATTRIBUTE_END
+				&& isset( $this->tokens[ $comment_end ]['attribute_opener'] ) === true
+			) {
+				$comment_end = $this->tokens[ $comment_end ]['attribute_opener'];
+				continue;
+			}
+
+			break;
+		}
+
 		if ( $this->tokens[ $comment_end ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Only check if the class has a docblock.
 			$comment_start = $this->tokens[ $comment_end ]['comment_opener'];

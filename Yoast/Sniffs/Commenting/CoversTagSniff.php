@@ -24,11 +24,9 @@ class CoversTagSniff implements Sniff {
 	/**
 	 * Regex to check for valid content of a @covers tags.
 	 *
-	 * Takes the WP naming conventions into account (up to a point).
-	 *
 	 * @var string
 	 */
-	const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[A-Z][a-zA-Z0-9_\x7f-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)[a-z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*))?|::(?P>functionName)|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
+	const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)(?P>OOName)))?|::(?P>functionName)|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
 
 	/**
 	 * Base error message.

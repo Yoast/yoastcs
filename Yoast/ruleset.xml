@@ -31,7 +31,7 @@
 			 Ref: https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
 		-->
 		<properties>
-			<property name="minimum_supported_version" value="5.4"/>
+			<property name="minimum_supported_version" value="5.7"/>
 		</properties>
 
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
@@ -157,6 +157,15 @@
 	<rule ref="PEAR.WhiteSpace.ObjectOperatorIndent">
 		<properties>
 			<property name="multilevel" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- CS: enforce that boolean operators between conditions in multi-line control structures are
+		 consistently at the start or end of the line, not a mix of both. -->
+	<rule ref="PSR12.ControlStructures.BooleanOperatorPlacement">
+		<properties>
+			<!-- Only allow them at the start of the line. -->
+			<property name="allowOnly" value="first"/>
 		</properties>
 	</rule>
 

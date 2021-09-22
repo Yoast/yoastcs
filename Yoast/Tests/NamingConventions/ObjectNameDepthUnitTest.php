@@ -27,17 +27,23 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 		switch ( $testFile ) {
 			case 'ObjectNameDepthUnitTest.2.inc':
 				return [
-					21 => 1,
-					22 => 1,
-					23 => 1,
-					33 => 1,
-					42 => 1,
-					43 => 1,
-					58 => 1,
-					70 => 1,
-					75 => 1,
-					78 => 1,
-					79 => 1,
+					21  => 1,
+					22  => 1,
+					23  => 1,
+					33  => 1,
+					42  => 1,
+					43  => 1,
+					58  => 1,
+					73  => 1,
+					87  => 1,
+					92  => 1,
+					95  => 1,
+					96  => 1,
+					105 => 1,
+					112 => 1, // False positive due to acronym.
+					114 => 1,
+					115 => 1,
+					116 => 1,
 				];
 
 			default:

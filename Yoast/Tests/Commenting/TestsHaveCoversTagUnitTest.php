@@ -22,8 +22,12 @@ class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList() {
 		return [
-			59 => 1,
-			88 => 1,
+			49  => 1,
+			59  => 1,
+			88  => 1,
+			126 => 1,
+			142 => 1,
+			150 => 1,
 		];
 	}
 

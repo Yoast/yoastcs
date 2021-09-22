@@ -24,6 +24,30 @@ composer require --dev yoast/yoastcs:^2.0
 
 Composer will automatically install dependencies and register the YoastCS and other external standards with PHP_CodeSniffer.
 
+## Tools provided via YoastCS
+
+* PHP Parallel Lint
+* PHP_CodeSniffer and select standards for PHP_CodeSniffer, including a number of Yoast native sniffs.
+
+
+## PHP Parallel Lint
+
+[PHP Parallel Lint](https://github.com/php-parallel-lint/PHP-Parallel-Lint/) is a tool to lint PHP files against parse errors.
+
+PHP Parallel Lint does not use a configuration file, so [command-line options](https://github.com/php-parallel-lint/PHP-Parallel-Lint/#command-line-options) need to be passed to configure what files to scan.
+
+It is best practice within the Yoast projects, to add a script to the `composer.json` file which encapsules the command with the appropriate command-line options to ensure that running the tool will yield the same results each time.
+
+Typically, (a variation on) the following snippet would be added to the `composer.json` file for a project:
+```json
+    "scripts" : {
+        "lint": [
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+        ]
+    }
+```
+
+
 ## PHP Code Sniffer
 
 Set of [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) rules.

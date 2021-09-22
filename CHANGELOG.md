@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.2.0] - 2021-09-22
+
+#### Added
+* [PHP Parallel Lint] will now be provided via YoastCS.
+    If `php-parallel-lint/php-parallel-lint` and `php-parallel-lint/php-console-highlighter` are included in the `require-dev` of your `composer.json` file, you can remove these after updating the version constraint for YoastCS to `"yoast/yoastcs": "^2.2.0"`.
+* PHPCS: A custom `YoastCS\Yoast\Reports\Threshold` report.
+    This commit adds a custom report for use with PHPCS to compare the run results with "threshold" settings.
+    - The report will look in the runtime environment for the following two environment variables and will take the values of those as the thresholds to compare the PHPCS run results against:
+        * `YOASTCS_THRESHOLD_ERRORS`
+        * `YOASTCS_THRESHOLD_WARNINGS`
+    - If the environment variables are not set, they will default to 0 for both, i.e. no errors or warnings allowed.
+    - After the report has run, a global `YOASTCS_ABOVE_THRESHOLD` constant (boolean) will be available which can be used in calling scripts.
+    - To use this report, run PHPCS with the following command-line argument: `--report=YoastCS\Yoast\Reports\Threshold`.
+        Note: depending on the OS the command is run on, the backslashes in the report name may need to be escaped (doubled).
+* PHPCS: The `PSR12.ControlStructures.BooleanOperatorPlacement` sniff.
+    Enforces that boolean operators in multi-line control structures are always placed at the start of a line.
+* PHPCS: `Yoast.Commenting.CodeCoverageIgnoreDeprecated`: Support for attributes (PHP 8.0+) placed between a function or class declaration and the associated docblock.
+* PHPCS: `Yoast.Commenting.TestHaveCoversTag`: Support for attributes (PHP 8.0+) placed between a function or class declaration and the associated docblock.
+* PHPCS: `Yoast.NamingConventions.ObjectNameDepth`: Support for attributes (PHP 8.0+) placed between a function or class declaration and the associated docblock.
+* PHPCS: `Yoast.NamingConventions.ObjectNameDepth`: Support for examining the word count in CamelCaps class names.
+* PHPCS: `Yoast.NamingConventions.ValidHookName`: Verification that backslashes in namespace-like prefixes in double quoted strings are slash-escaped.
+* An initial CONTRIBUTING file with guidelines on acceptance testing changes to the sniffs in this repository.
+
+#### Changed
+* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been updated to WP `5.7` (was `5.4`).
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.5.0` to `^3.6.0`.
+* Composer: Supported version of [WordPressCS] has been changed from `^2.2.0` to `^2.3.0`.
+* Composer: Updated the supported versions of dev dependencies.
+* Readme: Minor documentation improvements.
+* Continuous Integration: CI has been moved from Travis to GitHub Actions.
+* Various housekeeping.
+
+#### Fixed
+* PHPCS: `Yoast.Commenting.CoversTag`: `@covers` tags refering to classes and functions which don't follow the WordPressCS naming conventions will now be regarded as valid.
+* PHPCS: `Yoast.Commenting.TestsHaveCoversTag`: the sniff will now also report missing `@covers` tags for test methods without docblock.
+* PHPCS: `Yoast.Commenting.TestsHaveCoversTag`: the determination whether a class or method is a test class or method has been made more flexible to allow for different test naming conventions.
+* PHPCS: `Yoast.Commenting.TestsHaveCoversTag`: will no longer expect a `@covers` tag for abstract test methods.
+* PHPCS: `Yoast.Files.FileComment`: fixed performance issue.
+* PHPCS: `Yoast.Files.FileName`: will no longer throw an error when a class names is an exact match for one of the "removable" prefixes (as there would be nothing left to name the file as).
+* PHPCS: `Yoast.NamingConventions.ObjectNameDepth`: the object name depth for underscore prefixed class names will now be calculated correctly.
+* PHPCS: `Yoast.NamingConventions.ValidHookName`: will now recognize slash-escaped backslashes in namespace-like prefixes correctly when in a double quoted string.
+
+
 ### [2.1.0] - 2020-10-27
 
 #### Added
@@ -42,7 +85,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * Various housekeeping.
 
 #### Fixed
-* `Yoast.NamingConventions.NamespaceName`: fixed a potential "undefined index" notice.
+* PHPCS: `Yoast.NamingConventions.NamespaceName`: fixed a potential "undefined index" notice.
 
 
 ### [2.0.0] - 2019-12-17
@@ -398,7 +441,9 @@ Initial public release as a stand-alone package.
 [PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
 [DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
 [Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
+[PHP Parallel Lint]: https://github.com/php-parallel-lint/PHP-Parallel-Lint/
 
+[2.2.0]: https://github.com/Yoast/yoastcs/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Yoast/yoastcs/compare/2.0.2...2.1.0
 [2.0.2]: https://github.com/Yoast/yoastcs/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/Yoast/yoastcs/compare/2.0.0...2.0.1

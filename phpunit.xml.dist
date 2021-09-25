@@ -5,6 +5,10 @@
 	backupGlobals="true"
 	beStrictAboutTestsThatDoNotTestAnything="false"
 	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	convertDeprecationsToExceptions="true"
 	forceCoversAnnotation="true"
 	>
 

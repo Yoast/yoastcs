@@ -6,6 +6,8 @@ on:
   push:
     paths-ignore:
       - '**.md'
+    branches-ignore:
+      - 'main'
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:

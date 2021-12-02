@@ -84,5 +84,12 @@ jobs:
         if: matrix.phpcs_version == 'dev-master'
         run: composer lint
 
-      - name: Run the unit tests
+      - name: Run the unit tests - PHP 5.4 - 8.0
+        if: ${{ matrix.php_version < '8.1' && matrix.php_version != 'latest' }}
         run: composer test
+
+      - name: Run the unit tests - PHP 8.1+
+        if: ${{ matrix.php_version >= '8.1' || matrix.php_version == 'latest'}}
+        run: composer test -- --no-configuration --dont-report-useless-tests
+        env:
+          PHPCS_IGNORE_TESTS: 'PHPCompatibility,WordPress'

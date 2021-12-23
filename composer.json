@@ -36,6 +36,11 @@
 		"phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0",
 		"phpcsstandards/phpcsdevtools": "^1.0"
 	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"scripts": {

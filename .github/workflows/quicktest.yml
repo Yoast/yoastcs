@@ -74,12 +74,12 @@ jobs:
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php_version, '8' ) == false && matrix.php_version != 'latest' }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       # For the PHP 8.0 and higher, we need to install with ignore platform reqs as not all dependencies allow it.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php_version, '8' ) || matrix.php_version == 'latest' }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           composer-options: --ignore-platform-reqs
 

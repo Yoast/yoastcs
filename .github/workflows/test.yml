@@ -99,25 +99,25 @@ jobs:
       - name: 'Composer: adjust dependencies'
         run: |
           # Set the PHPCS version to test against.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
           # Set the WPCS version to test against.
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}"
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-interaction
 
       - name: 'Composer: conditionally remove PHPCSDevtools'
         if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
         # Remove devtools as it will not (yet) install on PHPCS 4.x.
-        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools
+        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php_version, '8' ) == false }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php_version, '8' ) }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           composer-options: --ignore-platform-reqs
 

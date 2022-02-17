@@ -19,6 +19,7 @@ Composer will automatically install dependencies, register standards paths, and 
 To include standards as part of a project require them as development dependencies:
 
 ```bash
+composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 composer require --dev yoast/yoastcs:"^2.0"
 ```
 

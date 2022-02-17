@@ -43,7 +43,7 @@ Typically, (a variation on) the following snippet would be added to the `compose
 ```json
     "scripts" : {
         "lint": [
-            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --show-deprecated --exclude vendor --exclude .git"
         ]
     }
 ```

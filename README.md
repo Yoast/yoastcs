@@ -19,6 +19,7 @@ Composer will automatically install dependencies, register standards paths, and 
 To include standards as part of a project require them as development dependencies:
 
 ```bash
+composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 composer require --dev yoast/yoastcs:"^2.0"
 ```
 
@@ -42,7 +43,7 @@ Typically, (a variation on) the following snippet would be added to the `compose
 ```json
     "scripts" : {
         "lint": [
-            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --show-deprecated --exclude vendor --exclude .git"
         ]
     }
 ```

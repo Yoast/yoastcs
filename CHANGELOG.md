@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.2.1] - 2022-02-22
+
+#### Changed
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.6.0` to `^3.6.2`.
+* Composer: Supported version of [PHPCompatibilityWP] has been changed from `^2.1.0` to `^2.1.3`.
+* Composer: Supported version of [PHP Parallel Lint] has been changed from `^1.3.1` to `^1.3.2`.
+* Composer: Supported version of [PHP Console Highlighter] has been changed from `^0.5.0` to `^1.0.0`.
+* Readme: Updated installation instructions for compatibility with Composer 2.2+ and other minor improvements.
+* Various housekeeping.
+
+
 ### [2.2.0] - 2021-09-22
 
 #### Added
@@ -60,7 +71,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 
 #### Changed
 * PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been updated to WP `5.4` (was `5.3`).
-* Composer: Supported version of the [DealerDirect Composer PHPCS plugin] has been changed to allow for the newly released `0.7.0` version which adds support for Composer 2.0.
+* Composer: Supported version of the [Composer PHPCS plugin] has been changed to allow for the newly released `0.7.0` version which adds support for Composer 2.0.
     Note: this requirement is flexible to prevent conflicts with included standards which may include the plugin as well.
 * Travis: improved testing against the upcoming PHP 8.0.
 * Various housekeeping.
@@ -80,7 +91,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 ### [2.0.1] - 2020-02-06
 
 #### Changed
-* Composer: Supported version of the [DealerDirect Composer PHPCS plugin] has been changed from `^0.5.0` to `^0.5 || ^0.6`.
+* Composer: Supported version of the [Composer PHPCS plugin] has been changed from `^0.5.0` to `^0.5 || ^0.6`.
     Note: this requirement is flexible to prevent conflicts with included standards which may include the plugin as well.
 * Various housekeeping.
 
@@ -136,7 +147,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * PHPCS: The `PSR12.Files.OpenTag` sniff.
     Enforces that a PHP open tag is on a line by itself in PHP-only files.
 * PHPCS: A `CustomPrefixesTrait` to handle checking names against a list of custom prefixes.
-* Composer: `lint` script which uses the [Parallel-Lint] package for faster and more readable linting results.
+* Composer: `lint` script which uses the [PHP Parallel Lint] package for faster and more readable linting results.
 
 #### Changed
 * :warning: PHPCS: `Yoast.Files.FileName` sniff: the public `$prefixes` property, which can be used to indicate which _prefixes_ should be stripped of a class name when translating it to a file name, has been renamed to `$oo_prefixes`.
@@ -233,7 +244,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * PHPCS: New `Yoast.Commenting.CodeCoverageIgnoreDeprecated` sniff.
     This sniff verifies that functions which have a `@deprecated` tag in the function docblock, also have a `@codeCoverageIgnore` tag in the same docblock.
 * PHPCS: Added XSD schema tags to the ruleset.
-* Composer: requirement of the [DealerDirect Composer PHPCS plugin] at version `^0.5.0`.
+* Composer: requirement of the [Composer PHPCS plugin] at version `^0.5.0`.
     This means that - in most cases - projects which `require(-dev)` YoastCS, will no longer need to have the plugin in their own `composer.json` and will still get the benefit of it.
 * Travis: Validation of the ruleset against the PHPCS XSD schema.
 * Travis: Testing of the code against PHP 7.3.
@@ -249,7 +260,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 
 #### Removed
 * PHPCS: Minor housekeeping: removed some unused code.
-* Composer: `suggest` section. The [DealerDirect Composer PHPCS plugin] is now included in the `require` section.
+* Composer: `suggest` section. The [Composer PHPCS plugin] is now included in the `require` section.
 
 #### Fixed
 * PHPCS: Various fixes to the `Yoast.Files.TestDoubles` sniff.
@@ -268,7 +279,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * PHPCS: The `PSR2.Methods.FunctionClosingBrace` sniff to the YoastCS ruleset.
 * PHPCS: The `PSR12.Keywords.ShortFormTypeKeywords` sniff, as introduced in PHP_CodeSniffer 3.3.0, to the YoastCS ruleset.
 * Composer: `roave/security-advisories` dependency to prevent dependencies with known security issues from being installed.
-* Composer: An explanation about the [DealerDirect Composer PHPCS plugin] dependency suggestion this package makes.
+* Composer: An explanation about the [Composer PHPCS plugin] dependency suggestion this package makes.
 * Composer: `--dev` requirement of the [PHPCompatibility] library at version `^8.2.0`.
 
 #### Changed
@@ -305,7 +316,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * PHPCS: An exclusion for the `WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition` error code.
 * PHPCS: An exclusion for the `WordPress.PHP.StrictInArray.FoundNonStrictFalse` error code.
 * Composer: Repository `type` indicator for compatibility with Composer plugins which handle the setting of the PHP_CodeSniffer `installed_paths` directive.
-* Composer: Suggest requiring the [DealerDirect Composer PHPCS plugin], i.e. `dealerdirect/phpcodesniffer-composer-installer`, for handling the PHP_CodeSniffer `installed_paths` directive at version `^0.4.3`.
+* Composer: Suggest requiring the [Composer PHPCS plugin], i.e. `dealerdirect/phpcodesniffer-composer-installer`, for handling the PHP_CodeSniffer `installed_paths` directive at version `^0.4.3`.
 * Travis: Validation and CS check of the XML files.
 * Travis: Testing of the repo against PHP 7.2.
 * Travis: Checking of the code style of the YoastCS native PHP files.
@@ -434,15 +445,16 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 Initial public release as a stand-alone package.
 
 
-[PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer/releases
-[WordPressCS]: https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
-[PHPCompatibilityWP]: https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
-[PHPCompatibility]: https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
-[PHP Mess Detector]: https://github.com/phpmd/phpmd/blob/master/CHANGELOG
-[DealerDirect Composer PHPCS plugin]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
-[Parallel-Lint]: https://packagist.org/packages/jakub-onderka/php-parallel-lint
-[PHP Parallel Lint]: https://github.com/php-parallel-lint/PHP-Parallel-Lint/
+[PHP_CodeSniffer]:         https://github.com/squizlabs/PHP_CodeSniffer/releases
+[WordPressCS]:             https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
+[PHPCompatibilityWP]:      https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
+[PHPCompatibility]:        https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
+[PHP Mess Detector]:       https://github.com/phpmd/phpmd/blob/master/CHANGELOG
+[Composer PHPCS plugin]:   https://github.com/PHPCSStandards/composer-installer/releases
+[PHP Parallel Lint]:       https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
+[PHP Console Highlighter]: https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[2.2.1]: https://github.com/Yoast/yoastcs/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/Yoast/yoastcs/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Yoast/yoastcs/compare/2.0.2...2.1.0
 [2.0.2]: https://github.com/Yoast/yoastcs/compare/2.0.1...2.0.2

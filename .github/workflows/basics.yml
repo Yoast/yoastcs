@@ -10,6 +10,12 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   checkcs:
     name: 'Basic CS and QA checks'
@@ -37,16 +43,16 @@ jobs:
       - name: 'Composer: adjust dependencies'
         run: |
           # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
-          composer remove --no-update --dev phpunit/phpunit --no-scripts
+          composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
           # Using PHPCS `master` as an early detection system for bugs upstream.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master"
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
           # Using WPCS `master` (=stable). This can be changed back to `dev-develop` after the WPCS 3.0.0 release.
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-master"
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-master" --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       - name: Install xmllint
         run: sudo apt-get install --no-install-recommends -y libxml2-utils

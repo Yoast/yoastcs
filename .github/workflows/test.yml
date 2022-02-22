@@ -11,6 +11,12 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   #### TEST STAGE ####
   test:
@@ -28,8 +34,8 @@ jobs:
         # Note: while WPCS 3.0.0 is under development, the matrix will use `dev-master`.
         # Once it has been released and YoastCS has been made compatible, the matrix should switch (back)
         # WPCS `dev-master` to `dev-develop`.
-        php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
-        phpcs_version: ['3.6.0', 'dev-master']
+        php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+        phpcs_version: ['3.6.2', 'dev-master']
         wpcs_version: ['2.3.0', 'dev-master']
         experimental: [false]
 
@@ -37,7 +43,7 @@ jobs:
           # Experimental builds. These are allowed to fail.
 
           # PHP nightly
-          - php_version: '8.1'
+          - php_version: '8.2'
             phpcs_version: 'dev-master'
             wpcs_version: 'dev-master'
             experimental: true
@@ -69,7 +75,7 @@ jobs:
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
             echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On'
           else
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL, display_errors=On'
+            echo '::set-output name=PHP_INI::error_reporting=-1, display_errors=On'
           fi
 
       - name: Install PHP
@@ -93,25 +99,25 @@ jobs:
       - name: 'Composer: adjust dependencies'
         run: |
           # Set the PHPCS version to test against.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
           # Set the WPCS version to test against.
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}"
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-interaction
 
       - name: 'Composer: conditionally remove PHPCSDevtools'
         if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
         # Remove devtools as it will not (yet) install on PHPCS 4.x.
-        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools
+        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php_version, '8' ) == false }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php_version, '8' ) }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           composer-options: --ignore-platform-reqs
 
@@ -125,11 +131,11 @@ jobs:
         run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests - PHP 5.4 - 8.0
-        if: ${{ matrix.php_version != '8.1' }}
+        if: ${{ matrix.php_version < '8.1' }}
         run: composer test
 
       - name: Run the unit tests - PHP 8.1
-        if: ${{ matrix.php_version == '8.1' }}
+        if: ${{ matrix.php_version >= '8.1' }}
         run: composer test -- --no-configuration --dont-report-useless-tests
         env:
           PHPCS_IGNORE_TESTS: 'PHPCompatibility,WordPress'

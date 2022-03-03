@@ -31,7 +31,7 @@
 			 Ref: https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
 		-->
 		<properties>
-			<property name="minimum_supported_version" value="5.7"/>
+			<property name="minimum_supported_version" value="5.8"/>
 		</properties>
 
 		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>

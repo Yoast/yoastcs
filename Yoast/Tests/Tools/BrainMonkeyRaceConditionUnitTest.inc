@@ -102,7 +102,7 @@ class BrainMonkeyBasedTest extends TestCase {
 	}
 
 	public function test_filter_race_condition() {
-		Functions\expect  ("apply_filters")->once();
+		Functions\expect  ("apply_filters")->twice();
 
 		Filters\ExpectApplied  ( 'filter_name' )
 			->with( true );
@@ -123,7 +123,7 @@ class BrainMonkeyBasedTest extends TestCase {
 		expectApplied( /*comment*/ 'filter_name' )
 			->with( true );
 
-		Monkey\Functions\expect( 'apply_filters' /*comment*/)->once();
+		Monkey\Functions\expect( 'apply_filters' /*comment*/)->times(10);
 
 		// Do something to satisfy expectations.
 	}
@@ -133,6 +133,23 @@ class BrainMonkeyBasedTest extends TestCase {
 			->with( $param );
 
 		Monkey\Functions\expect( 'do_action' )->once();
+
+		// Do something to satisfy expectations.
+	}
+
+	public function test_NOT_race_condition_filter_vs_action() {
+		Functions\expect  ("apply_filters")->times(5);
+
+		Filters\ExpectDone  ( 'filter_name' );
+
+		// Do something to satisfy expectations.
+	}
+
+	public function test_NOT_race_condition_action_vs_filter() {
+		Expect( 'do_action' /*comment*/)->twice();
+
+		Actions\expectApplied( 'yoast\filter_name' )
+			->with( $param );
 
 		// Do something to satisfy expectations.
 	}

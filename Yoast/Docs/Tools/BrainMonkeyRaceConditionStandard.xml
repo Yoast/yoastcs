@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<documentation title="BrainMonkey Race Condition">
+    <standard>
+    <![CDATA[
+    When writing tests using the BrainMonkey test utilities, either mock and set an expectation for calls to WP hook functions using `Monkey\Functions\expect()` or set the expectation using `Monkey\Filters\expectApplied()` or `Monkey\Actions\expectDone()`.
+    
+    Do not mix the use of these two types of setting expectations within the same test method as that will cause the tests to fail.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: using either of the function, but not mixing them in the same test.">
+        <![CDATA[
+class MyTest extends TestCase {
+  public function test_using_only_expect() {
+    expect( 'apply_filters' )->once();
+    Functions\expect( "apply_filters" )
+      ->once();
+    Monkey\Functions\expect( 'do_action' )
+      ->once();
+
+    // Do something to satisfy expectations.
+  }
+
+  public function test_expectApplied_Done() {
+    Monkey\Filters\expectApplied( 'filter' )
+      ->with( true );
+
+    Actions\expectDone( "yoast\action_name" )
+      ->with( $param );
+
+    expectDone( 'yoast\action_name' )
+      ->with( $param );
+
+    // Do something to satisfy expectations.
+  }
+}
+        ]]>
+        </code>
+        <code title="Invalid: mixing the functions in the same test.">
+        <![CDATA[
+class MyTest extends TestCase {
+  public function test_mixing_filter_expects() {
+    Functions\expect( "apply_filters" )->once();
+
+    Filters\ExpectApplied( 'filter_name' )
+      ->with( true );
+
+    // Do something to satisfy expectations.
+  }
+
+  public function test_mixing_action_expects() {
+     Expect( 'do_action' /*comment*/)->once();
+
+     Actions\expectDone( 'yoast\action_name' )
+       ->with( $param );
+
+     // Do something to satisfy expectations.
+  }
+}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

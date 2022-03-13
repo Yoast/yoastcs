@@ -83,11 +83,34 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 		$comment_start = $phpcsFile->findNext( \T_WHITESPACE, ( $stackPtr + 1 ), $namespace_token, true );
 
 		if ( $comment_start !== false && $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
-			$phpcsFile->addWarning(
-				'A file containing a (named) namespace declaration does not need a file docblock',
-				$comment_start,
-				'Unnecessary'
-			);
+
+			// Respect phpcs:disable comments in the file docblock.
+			$ignore = false;
+			if ( $phpcsFile->config->annotations === true && isset( $tokens[ $comment_start ]['comment_closer'] ) ) {
+				for ( $i = ( $comment_start + 1 ); $i < $tokens[ $comment_start ]['comment_closer']; $i++ ) {
+					if ( $tokens[ $i ]['code'] !== \T_PHPCS_DISABLE ) {
+						continue;
+					}
+
+					if ( empty( $tokens[ $i ]['sniffCodes'] ) === true
+						|| isset( $tokens[ $i ]['sniffCodes']['Yoast'] ) === true
+						|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting'] ) === true
+						|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment'] ) === true
+						|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment.Unnecessary'] ) === true
+					) {
+						$ignore = true;
+						break;
+					}
+				}
+			}
+
+			if ( $ignore === false ) {
+				$phpcsFile->addWarning(
+					'A file containing a (named) namespace declaration does not need a file docblock',
+					$comment_start,
+					'Unnecessary'
+				);
+			}
 		}
 
 		return ( $phpcsFile->numTokens + 1 );

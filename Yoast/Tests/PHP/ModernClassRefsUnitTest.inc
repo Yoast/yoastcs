@@ -37,6 +37,9 @@ final class FinalClass extends Baz {
 
 
 // Prevent false positives.
+$var = get_class( wrongParamName: $this ); // Wrong param.
+$var = get_class( $obj, $this ); // Wrong param.
+
 $var = get_class( $obj );
 $var = get_class( object: $obj );
 

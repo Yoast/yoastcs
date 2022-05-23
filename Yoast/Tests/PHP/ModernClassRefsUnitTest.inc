@@ -24,7 +24,8 @@ function &  get_class() {}
 echo $this  ->    /*comment*/ get_class();
 echo self::get_class();
 echo Class_Name::get_class();
-echo $object?->get_class();
+echo $object /* phpcs:ignore Standard.Category.SniffName-- for reasons */
+    ?->get_class();
 echo My\Prefix\get_class();
 echo \My\Prefix\get_class();
 echo namespace\get_class(); // Should NOT be flagged in a namespaced file.

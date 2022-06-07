@@ -56,3 +56,5 @@ echo $object /* phpcs:ignore Standard.Category.SniffName-- for reasons */
 echo My\Prefix\get_class();
 echo \My\Prefix\get_class();
 echo namespace\get_class(); // Should NOT be flagged in a namespaced file.
+
+$var = get_class( object: $this->property['array_key'] );

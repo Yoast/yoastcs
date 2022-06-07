@@ -4,6 +4,8 @@ echo __CLASS__; // self::class
 
 echo get_class(); // self::class
 
+echo GET_CLASS(); // self::class
+
 echo \get_class(); // self::class
 echo namespace\get_class(); // Should be flagged in a non-namespaced file.
 

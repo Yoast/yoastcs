@@ -92,3 +92,98 @@ jobs:
       # Check that the sniffs available are feature complete.
       - name: Check sniff feature completeness
         run: composer check-complete
+
+  temp-test-docs:
+    name: 'DocsXSD validation'
+    runs-on: ubuntu-latest
+
+    env:
+      XMLLINT_INDENT: '	'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+          tools: cs2pr
+
+      - name: 'Composer: adjust dependencies'
+        run: |
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-develop" --no-interaction
+          composer require --no-update --no-scripts phpcsstandards/phpcsextra:"dev-develop" --no-interaction
+          composer require --no-update --no-scripts phpcompatibility/php-compatibility:"dev-develop as 9.9.99" --no-interaction
+          composer require --no-update --no-scripts phpcsstandards/phpcsdevtools:"dev-xsd-docs-schema" --no-interaction
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+
+      - name: Install xmllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libxml2-utils
+
+      # Validate the docs XML files.
+      - name: Validate the PHPCS native Generic docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/Generic/Docs/*/*.xml
+
+      - name: Validate the PHPCS native PEAR docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/PEAR/Docs/*/*.xml
+
+      - name: Validate the PHPCS native PSR1 docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/PSR1/Docs/*/*.xml
+
+      - name: Validate the PHPCS native PSR2 docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/PSR2/Docs/*/*.xml
+
+      - name: Validate the PHPCS native PSR12 docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/PSR12/Docs/*/*.xml
+
+      - name: Validate the PHPCS native Squiz docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/Squiz/Docs/*/*.xml
+
+      - name: Validate the PHPCS native Zend docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/squizlabs/php_codesniffer/src/Standards/Zend/Docs/*/*.xml
+
+      - name: Validate the PHPCompatibility docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/phpcompatibility/php-compatibility/PHPCompatibility/Docs/*/*.xml
+
+      - name: Validate the WPCS docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/wp-coding-standards/wpcs/WordPress/Docs/*/*.xml
+
+      - name: Validate the PHPCSExtra NormalizedArrays docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/phpcsstandards/phpcsextra/NormalizedArrays/Docs/*/*.xml
+
+      - name: Validate the PHPCSExtra Universal docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/phpcsstandards/phpcsextra/Universal/Docs/*/*.xml
+
+      - name: Validate the PHPCSDevTools PHPCSDebug docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./vendor/phpcsstandards/phpcsdevtools/PHPCSDebug/Docs/*/*.xml
+
+      - name: Validate the YoastCS docs against the schema
+        continue-on-error: true
+        run: xmllint --noout --schema ./vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./Yoast/Docs/*/*.xml
+
+      # Validate the Docs XML files.
+      # @link http://xmlsoft.org/xmllint.html
+      # For the build to properly error when validating against a scheme, these each have to be in their own condition.
+      - name: Lint the XML sniff docs
+        run: xmllint --noout ./Yoast/Docs/*/*Standard.xml

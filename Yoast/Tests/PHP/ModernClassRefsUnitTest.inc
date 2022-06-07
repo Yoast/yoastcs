@@ -57,4 +57,8 @@ echo My\Prefix\get_class();
 echo \My\Prefix\get_class();
 echo namespace\get_class(); // Should NOT be flagged in a namespaced file.
 
+
+$var = get_class( object: $this->property );
 $var = get_class( object: $this->property['array_key'] );
+$var = get_class( object: $this->method_call() );
+

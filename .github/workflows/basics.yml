@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   checkcs:
+    if: ${{ false }}
     name: 'Basic CS and QA checks'
     runs-on: ubuntu-latest
 

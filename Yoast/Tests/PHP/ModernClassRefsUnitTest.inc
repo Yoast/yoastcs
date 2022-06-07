@@ -45,6 +45,7 @@ $var = get_class( object: $obj );
 
 function get_class() {}
 function &  get_class() {}
+echo $this->get_class();
 echo $this  ->    /*comment*/ get_class();
 echo self::get_class();
 echo Class_Name::get_class();

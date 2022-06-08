@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Yoast-Vendor" namespace="YoastCS\Yoast_Vendor" xsi:noNamespaceSchemaLocation="../vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+	<description>Yoast Vendor Coding Standards</description>
+
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	#############################################################################
+	-->
+
+	<!-- Always exclude all files in version management related directories. -->
+	<exclude-pattern>*/.git/*</exclude-pattern>
+	<exclude-pattern>*/.wordpress-svn/*</exclude-pattern>
+
+	<!-- Always exclude all files in dependency related directories. -->
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+
+	<rule ref="WordPress.Security"/>
+	<rule ref="PHPCompatibility"/>
+	<rule ref="WordPress.DB">
+		<exclude name="WordPress.DB.DirectDatabaseQuery"/>
+		<exclude name="WordPress.DB.SlowDBQuery"/>
+	</rule>
+
+	<rule ref="Squiz.PHP.Eval"/>
+	<rule ref="Generic.PHP.BacktickOperator"/>
+	
+	<!-- Investigate -->
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions"/>
+	<rule ref="WordPress.PHP.POSIXFunctions"/> 
+	<rule ref="WordPress.PHP.RestrictedPHPFunctions"/>
+</ruleset>

@@ -71,8 +71,8 @@ jobs:
       # Validate the Docs XML files.
       # @link http://xmlsoft.org/xmllint.html
       # For the build to properly error when validating against a scheme, these each have to be in their own condition.
-      - name: Lint the XML sniff docs
-        run: xmllint --noout ./Yoast/Docs/*/*Standard.xml
+      - name: Validate the XML sniff docs against schema
+        run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./Yoast/Docs/*/*Standard.xml
 
       # Check the code-style consistency of the XML ruleset files.
       - name: Check XML ruleset code style

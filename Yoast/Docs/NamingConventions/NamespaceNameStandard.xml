@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Namespace Name Depth">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Namespace Name Depth"
+    >
     <standard>
     <![CDATA[
     A namespace name is not allowed to be more than 3 levels deep (excluding the prefix).

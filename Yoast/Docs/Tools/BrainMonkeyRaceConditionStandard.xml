@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="BrainMonkey Race Condition">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="BrainMonkey Race Condition"
+    >
     <standard>
     <![CDATA[
     When writing tests using the BrainMonkey test utilities, either mock and set an expectation for calls to WP hook functions using `Monkey\Functions\expect()` or set the expectation using `Monkey\Filters\expectApplied()` or `Monkey\Actions\expectDone()`.

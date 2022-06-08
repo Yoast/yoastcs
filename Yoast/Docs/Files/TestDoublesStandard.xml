@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Test Doubles">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Test Doubles"
+    >
     <standard>
     <![CDATA[
     Double/Mock test helper classes should be in their own file and placed in a dedicated test doubles sub-directory.

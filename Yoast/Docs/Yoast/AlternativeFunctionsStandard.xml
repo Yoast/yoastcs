@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Alternative Functions">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Alternative Functions"
+    >
     <standard>
     <![CDATA[
     Discourages the use of certain PHP or WP native functions in favour of Yoast native alternatives.

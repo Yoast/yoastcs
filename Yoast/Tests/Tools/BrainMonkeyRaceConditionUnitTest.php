@@ -11,7 +11,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers  YoastCS\Yoast\Sniffs\Tools\BrainMonkeyRaceConditionSniff
  */
-class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
+final class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

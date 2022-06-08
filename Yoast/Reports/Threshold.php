@@ -20,7 +20,7 @@ use PHP_CodeSniffer\Reports\Report;
  *
  * @since 2.2.0
  */
-class Threshold implements Report {
+final class Threshold implements Report {
 
 	/**
 	 * Escape sequence for making text white on the command-line.

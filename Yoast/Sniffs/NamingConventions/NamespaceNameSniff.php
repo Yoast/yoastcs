@@ -24,7 +24,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  *
  * @since   2.0.0
  */
-class NamespaceNameSniff implements Sniff {
+final class NamespaceNameSniff implements Sniff {
 
 	use CustomPrefixesTrait;
 

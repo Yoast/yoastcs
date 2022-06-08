@@ -12,7 +12,7 @@ use WordPressCS\WordPress\Sniff as WPCS_Sniff;
  *
  * @since   2.0.0
  */
-class ObjectNameDepthSniff extends WPCS_Sniff {
+final class ObjectNameDepthSniff extends WPCS_Sniff {
 
 	/**
 	 * Maximum number of words.

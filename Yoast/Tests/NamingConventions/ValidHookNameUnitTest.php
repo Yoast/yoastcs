@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @covers  YoastCS\Yoast\Sniffs\NamingConventions\ValidHookNameSniff
  * @covers  YoastCS\Yoast\Utils\CustomPrefixesTrait
  */
-class ValidHookNameUnitTest extends AbstractSniffUnitTest {
+final class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Set warnings level to 3 to trigger suggestions as warnings.

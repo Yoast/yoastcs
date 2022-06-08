@@ -13,7 +13,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers  YoastCS\Yoast\Sniffs\Commenting\CodeCoverageIgnoreDeprecatedSniff
  */
-class CodeCoverageIgnoreDeprecatedUnitTest extends AbstractSniffUnitTest {
+final class CodeCoverageIgnoreDeprecatedUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

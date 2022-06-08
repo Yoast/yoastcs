@@ -15,7 +15,7 @@ use WordPressCS\WordPress\Sniff;
  * @package Yoast\YoastCS
  * @author  Juliette Reinders Folmer
  */
-class BrainMonkeyRaceConditionSniff extends Sniff {
+final class BrainMonkeyRaceConditionSniff extends Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

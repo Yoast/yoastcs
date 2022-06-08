@@ -94,6 +94,7 @@ jobs:
         run: composer check-complete
 
   temp-test-docs:
+    if: ${{ false }}
     name: 'DocsXSD validation'
     runs-on: ubuntu-latest
 
@@ -187,3 +188,98 @@ jobs:
       # For the build to properly error when validating against a scheme, these each have to be in their own condition.
       - name: Lint the XML sniff docs
         run: xmllint --noout ./Yoast/Docs/*/*Standard.xml
+
+  temp-test-feature-complete:
+    name: 'FeatureComplete check'
+    runs-on: ubuntu-latest
+
+    env:
+      XMLLINT_INDENT: ' '
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+          tools: cs2pr
+
+      - name: 'Composer: adjust dependencies'
+        run: |
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-develop" --no-interaction
+          composer require --no-update --no-scripts phpcsstandards/phpcsextra:"dev-develop" --no-interaction
+          composer require --no-update --no-scripts phpcompatibility/php-compatibility:"dev-develop as 9.9.99" --no-interaction
+          composer require --no-update --no-scripts phpcsstandards/phpcsdevtools:"dev-feature-complete/fix-msg-display-order-jumbling" --no-interaction
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+
+      - name: Check feature complete PHPCS Generic
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/Generic
+
+      - name: Check feature complete PHPCS PEAR
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/PEAR
+
+      - name: Check feature complete PHPCS PSR1
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/PSR1
+
+      - name: Check feature complete PHPCS PSR2
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/PSR2
+
+      - name: Check feature complete PHPCS PSR12
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/PSR12
+
+      - name: Check feature complete PHPCS Squiz
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/Squiz
+
+      - name: Check feature complete PHPCS Zend
+        continue-on-error: true
+        run: ./../../../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/squizlabs/php_codesniffer/src/Standards/Zend
+
+      - name: Check feature complete PHPCompatibility
+        continue-on-error: true
+        run: ./../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/phpcompatibility/php-compatibility/PHPCompatibility
+
+      - name: Check feature complete WPCS
+        continue-on-error: true
+        run: ./../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/wp-coding-standards/wpcs/WordPress
+
+      - name: Check feature complete PHPCSExtra NormalizedArrays
+        continue-on-error: true
+        run: ./../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/phpcsstandards/phpcsextra/NormalizedArrays
+
+      - name: Check feature complete PHPCSExtra Universal
+        continue-on-error: true
+        run: ./../../../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/phpcsstandards/phpcsextra/Universal
+
+      - name: Check feature complete PHPCSDevTools PHPCSDebug
+        continue-on-error: true
+        run: ./../bin/phpcs-check-feature-completeness -v --exclude=
+        working-directory: ./vendor/phpcsstandards/phpcsdevtools/PHPCSDebug
+
+      - name: Check feature complete YoastCS
+        continue-on-error: true
+        run: ./vendor/bin/phpcs-check-feature-completeness -v ./Yoast

@@ -87,7 +87,7 @@ jobs:
           tools: cs2pr
         env:
           # Token is needed for the PHPCS 4.x run against source.
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Set Composer up to download only PHPCS from source for PHPCS 4.x.
       # The source is needed to get the base testcase from PHPCS.

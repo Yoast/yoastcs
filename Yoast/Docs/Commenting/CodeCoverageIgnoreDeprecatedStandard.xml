@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Code Coverage Ignore Deprecated">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Code Coverage Ignore Deprecated"
+    >
     <standard>
     <![CDATA[
     Deprecated functions and methods should be ignored for code coverage calculations.

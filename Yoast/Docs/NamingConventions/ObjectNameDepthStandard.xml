@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Object Name Depth">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Object Name Depth"
+    >
     <standard>
     <![CDATA[
     The name of objects - classes, interfaces, traits - declared within a namespace should consist of a maximum of three words.

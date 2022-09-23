@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="File Name">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="File Name"
+    >
     <standard>
     <![CDATA[
     Same as in WP, file names should be lowercase and words should be separated by dashes (not underscores).

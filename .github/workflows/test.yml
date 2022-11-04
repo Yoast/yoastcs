@@ -34,19 +34,19 @@ jobs:
         # Note: while WPCS 3.0.0 is under development, the matrix will use `dev-master`.
         # Once it has been released and YoastCS has been made compatible, the matrix should switch (back)
         # WPCS `dev-master` to `dev-develop`.
-        php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+        php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
         phpcs_version: ['3.7.1', 'dev-master']
         wpcs_version: ['2.3.0', 'dev-master']
         experimental: [false]
 
-        include:
+        #include:
           # Experimental builds. These are allowed to fail.
 
           # PHP nightly
-          - php_version: '8.2'
-            phpcs_version: 'dev-master'
-            wpcs_version: 'dev-master'
-            experimental: true
+          #- php_version: '8.3'
+          #  phpcs_version: 'dev-master'
+          #  wpcs_version: 'dev-master'
+          #  experimental: true
           # Test against WPCS unstable. Re-enable when WPCS is not in dev for the next major.
           #- php_version: '8.0'
           #  phpcs_version: 'dev-master'
@@ -73,9 +73,9 @@ jobs:
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On'
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=PHP_INI::error_reporting=-1, display_errors=On'
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
           fi
 
       - name: Install PHP
@@ -134,7 +134,7 @@ jobs:
         if: ${{ matrix.php_version < '8.1' }}
         run: composer test
 
-      - name: Run the unit tests - PHP 8.1
+      - name: Run the unit tests - PHP 8.1+
         if: ${{ matrix.php_version >= '8.1' }}
         run: composer test -- --no-configuration --dont-report-useless-tests
         env:

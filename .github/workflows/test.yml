@@ -39,14 +39,14 @@ jobs:
         wpcs_version: ['2.3.0', 'dev-master']
         experimental: [false]
 
-        #include:
+        include:
           # Experimental builds. These are allowed to fail.
 
           # PHP nightly
-          #- php_version: '8.3'
-          #  phpcs_version: 'dev-master'
-          #  wpcs_version: 'dev-master'
-          #  experimental: true
+          - php_version: '8.3'
+            phpcs_version: 'dev-master'
+            wpcs_version: 'dev-master'
+            experimental: true
           # Test against WPCS unstable. Re-enable when WPCS is not in dev for the next major.
           #- php_version: '8.0'
           #  phpcs_version: 'dev-master'
@@ -122,7 +122,7 @@ jobs:
         if: ${{ startsWith( matrix.php_version, '8' ) }}
         uses: ramsey/composer-install@v2
         with:
-          composer-options: --ignore-platform-reqs
+          composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Verify installed standards

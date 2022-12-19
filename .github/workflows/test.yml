@@ -114,8 +114,8 @@ jobs:
         if: ${{ startsWith( matrix.php_version, '8' ) == false }}
         uses: ramsey/composer-install@v2
         with:
-          # Bust the cache at least once a month - output format: YYYY-MM-DD.
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
@@ -123,7 +123,7 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           composer-options: --ignore-platform-reqs
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Verify installed standards
         run: vendor/bin/phpcs -i

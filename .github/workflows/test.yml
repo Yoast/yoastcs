@@ -39,14 +39,14 @@ jobs:
         wpcs_version: ['2.3.0', 'dev-master']
         experimental: [false]
 
-        #include:
+        include:
           # Experimental builds. These are allowed to fail.
 
           # PHP nightly
-          #- php_version: '8.3'
-          #  phpcs_version: 'dev-master'
-          #  wpcs_version: 'dev-master'
-          #  experimental: true
+          - php_version: '8.3'
+            phpcs_version: 'dev-master'
+            wpcs_version: 'dev-master'
+            experimental: true
           # Test against WPCS unstable. Re-enable when WPCS is not in dev for the next major.
           #- php_version: '8.0'
           #  phpcs_version: 'dev-master'
@@ -114,16 +114,16 @@ jobs:
         if: ${{ startsWith( matrix.php_version, '8' ) == false }}
         uses: ramsey/composer-install@v2
         with:
-          # Bust the cache at least once a month - output format: YYYY-MM-DD.
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php_version, '8' ) }}
         uses: ramsey/composer-install@v2
         with:
-          composer-options: --ignore-platform-reqs
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          composer-options: --ignore-platform-req=php+
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Verify installed standards
         run: vendor/bin/phpcs -i

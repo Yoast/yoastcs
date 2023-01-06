@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.3.0] - 2023-01-09
+
+#### Added
+* PHPCS: New `Yoast.Tools.BrainMonkeyRaceCondition` sniff.
+    This sniff will flag test code which is likely to run into a particular race condition when using BrainMonkey to set expectations for WP hook functions.
+
+#### Changed
+* PHPCS: The default value for the `minimum_supported_wp_version` property which is used by various WPCS sniffs has been updated to WP `6.0` (was `5.7`).
+* Composer: The package will now identify itself as a static analysis tool. Thanks [@GaryJones]!
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.6.2` to `^3.7.1`.
+* Composer: Supported version of [PHPCompatibilityWP] has been changed from `^2.1.3` to `^2.1.4`.
+* Composer: Supported version of the [Composer PHPCS plugin] has been changed from `^0.5 || ^0.6.2 || ^0.7` to `^0.6.2 || ^0.7 || ^1.0`.
+* Various housekeeping.
+
+#### Fixed
+* PHPCS: `Yoast.Files.FileComment`: the sniff will now allow for and respect `phpcs:disable` comments for this sniff when found in a file docblock.
+
 ### [2.2.1] - 2022-02-22
 
 #### Changed
@@ -454,6 +471,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:       https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]: https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[2.3.0]: https://github.com/Yoast/yoastcs/compare/2.2.1...2.3.0
 [2.2.1]: https://github.com/Yoast/yoastcs/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/Yoast/yoastcs/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Yoast/yoastcs/compare/2.0.2...2.1.0
@@ -473,3 +491,5 @@ Initial public release as a stand-alone package.
 [0.4]: https://github.com/Yoast/yoastcs/compare/0.3...0.4
 [0.3]: https://github.com/Yoast/yoastcs/compare/0.2...0.3
 [0.2]: https://github.com/Yoast/yoastcs/compare/0.1...0.2
+
+[@GaryJones]: https://github.com/GaryJones

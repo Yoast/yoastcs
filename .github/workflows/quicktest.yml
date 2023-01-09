@@ -1,10 +1,10 @@
 name: Quicktest
 
 on:
-  # Run on pushes, including merges, to all branches except `master`.
+  # Run on pushes, including merges, to all branches except `main`.
   push:
     branches-ignore:
-      - master
+      - main
     paths-ignore:
       - '**.md'
   # Allow manually triggering the workflow.
@@ -30,20 +30,20 @@ jobs:
             phpcs_version: 'dev-master'
             wpcs_version: 'dev-master'
           - php_version: 'latest'
-            phpcs_version: '3.6.2'
+            phpcs_version: '3.7.1'
             wpcs_version: '2.3.0'
           - php_version: '5.4'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.0'
           - php_version: '5.4'
-            phpcs_version: '3.6.2'
+            phpcs_version: '3.7.1'
             wpcs_version: 'dev-master'
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
@@ -51,9 +51,9 @@ jobs:
         id: set_ini
         run: |
           if [ "${{ matrix.phpcs_version }}" != "dev-master" ]; then
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On'
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=PHP_INI::error_reporting=-1, display_errors=On'
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
           fi
 
       - name: Install PHP
@@ -75,13 +75,17 @@ jobs:
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php_version, '8' ) == false && matrix.php_version != 'latest' }}
         uses: ramsey/composer-install@v2
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # For the PHP 8.0 and higher, we need to install with ignore platform reqs as not all dependencies allow it.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php_version, '8' ) || matrix.php_version == 'latest' }}
         uses: ramsey/composer-install@v2
         with:
-          composer-options: --ignore-platform-reqs
+          composer-options: --ignore-platform-req=php+
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Verify installed standards
         run: vendor/bin/phpcs -i

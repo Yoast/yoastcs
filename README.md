@@ -9,7 +9,7 @@ Yoast Coding Standards (YoastCS) is a project with rulesets for code style and q
 Standards are provided as a [Composer](https://getcomposer.org/) package and can be installed with:
 
 ```bash
-composer create-project yoast/yoastcs:dev-main
+composer create-project yoast/yoastcs:"dev-main"
 ```
 
 Composer will automatically install dependencies, register standards paths, and set default PHP Code Sniffer standard to `Yoast`.

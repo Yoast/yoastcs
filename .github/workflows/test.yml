@@ -35,7 +35,7 @@ jobs:
         # Once it has been released and YoastCS has been made compatible, the matrix should switch (back)
         # WPCS `dev-master` to `dev-develop`.
         php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
-        phpcs_version: ['3.7.1', 'dev-master']
+        phpcs_version: ['3.7.2', 'dev-master']
         wpcs_version: ['2.3.0', 'dev-master']
         experimental: [false]
 

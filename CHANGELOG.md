@@ -477,6 +477,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:       https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]: https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[2.3.1]: https://github.com/Yoast/yoastcs/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Yoast/yoastcs/compare/2.2.1...2.3.0
 [2.2.1]: https://github.com/Yoast/yoastcs/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/Yoast/yoastcs/compare/2.1.0...2.2.0

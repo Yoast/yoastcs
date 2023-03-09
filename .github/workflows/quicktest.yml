@@ -30,13 +30,13 @@ jobs:
             phpcs_version: 'dev-master'
             wpcs_version: 'dev-master'
           - php_version: 'latest'
-            phpcs_version: '3.7.1'
+            phpcs_version: '3.7.2'
             wpcs_version: '2.3.0'
           - php_version: '5.4'
             phpcs_version: 'dev-master'
             wpcs_version: '2.3.0'
           - php_version: '5.4'
-            phpcs_version: '3.7.1'
+            phpcs_version: '3.7.2'
             wpcs_version: 'dev-master'
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"

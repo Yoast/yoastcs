@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [2.3.1] - 2023-03-09
+
+#### Changed
+* PHPCS: The default setting for the minimum supported PHP version for repos using YoastCS is now PHP 7.2 (was 5.6).
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.7.1` to `^3.7.2`.
+
 ### [2.3.0] - 2023-01-09
 
 #### Added

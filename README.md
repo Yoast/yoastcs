@@ -107,6 +107,33 @@ Refer to [Using PHP Code Sniffer Tool](https://www.jetbrains.com/phpstorm/help/u
 
 After installation, the `Yoast` standard will be available as a choice in PHP Code Sniffer Validation inspection.
 
+### The YoastCS "Threshold" report
+
+The YoastCS package includes a custom `YoastCS\Yoast\Reports\Threshold` report for PHP_CodeSniffer to compare the current PHPCS run results with predefined "threshold" settings.
+
+The report will look in the runtime environment for the following two environment variables and will take the values of those as the thresholds to compare the PHPCS run results against:
+* `YOASTCS_THRESHOLD_ERRORS`
+* `YOASTCS_THRESHOLD_WARNINGS`
+
+If the environment variables are not set, they will default to 0 for both, i.e. no errors or warnings allowed.
+
+The report will not print any details about the issues found, it just shows a summary based on the thresholds:
+```
+PHP CODE SNIFFER THRESHOLD COMPARISON
+------------------------------------------------------------------------------------------------------------------------
+Coding standards ERRORS: 148/130.
+Coding standards WARNINGS: 539/539.
+
+Please fix any errors introduced in your code and run PHPCS again to verify.
+Please fix any warnings introduced in your code and run PHPCS again to verify.
+```
+
+After the report has run, a global `YOASTCS_ABOVE_THRESHOLD` constant (boolean) will be available which can be used in calling scripts.
+
+To use this report, run PHPCS with the following command-line argument: `--report=YoastCS\Yoast\Reports\Threshold`.
+_Note: depending on the OS the command is run on, the backslashes in the report name may need to be escaped (doubled)._
+
+
 ## Changelog
 
 The changelog for this package can be found in the [CHANGELOG.md](https://github.com/Yoast/yoastcs/blob/develop/CHANGELOG.md) file.

@@ -21,8 +21,14 @@
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">Yoast/Sniffs/</directory>
+			<directory suffix=".php">Yoast/Utils/</directory>
 		</whitelist>
 	</filter>
+
+	<logging>
+		<log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+		<log type="coverage-clover" target="build/logs/clover.xml"/>
+	</logging>
 
 	<php>
 		<env name="PHPCS_IGNORE_TESTS" value="PHPCompatibility,WordPress"/>

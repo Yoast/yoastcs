@@ -59,6 +59,9 @@
 			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
 		],
 		"test": [
+			"@php ./vendor/phpunit/phpunit/phpunit --filter Yoast --bootstrap=\"./vendor/squizlabs/php_codesniffer/tests/bootstrap.php\" ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --no-coverage"
+		],
+		"coverage": [
 			"@php ./vendor/phpunit/phpunit/phpunit --filter Yoast --bootstrap=\"./vendor/squizlabs/php_codesniffer/tests/bootstrap.php\" ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
 		],
 		"check-complete": [

@@ -4,3 +4,4 @@ composer.lock
 .cache/phpcs.cache
 phpcs.xml
 phpunit.xml
+build/

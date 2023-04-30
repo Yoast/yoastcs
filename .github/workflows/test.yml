@@ -17,6 +17,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Note: while WPCS 3.0.0 is under development, the "highest" release for WPCS should use `dev-master`.
+# Once WPCS 3.0.0 has been released and YoastCS has been made compatible, the matrix should switch (back)
+# WPCS `dev-master` to `dev-develop`.
+env:
+  PHPCS_HIGHEST: 'dev-master'
+  WPCS_HIGHEST: 'dev-master'
+
 jobs:
   #### TEST STAGE ####
   test:
@@ -30,13 +37,8 @@ jobs:
         # You can define jobs here and then augment them with extra variables in `include`,
         # as well as add extra jobs in `include`.
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
-        #
-        # Note: while WPCS 3.0.0 is under development, the matrix will use `dev-master`.
-        # Once it has been released and YoastCS has been made compatible, the matrix should switch (back)
-        # WPCS `dev-master` to `dev-develop`.
         php_version: ['5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
-        phpcs_version: ['3.7.2', 'dev-master']
-        wpcs_version: ['2.3.0', 'dev-master']
+        cs_dependencies: ['lowest', 'highest']
         experimental: [false]
 
         include:
@@ -44,22 +46,20 @@ jobs:
 
           # PHP nightly
           - php_version: '8.3'
-            phpcs_version: 'dev-master'
-            wpcs_version: 'dev-master'
+            cs_dependencies: 'highest'
             experimental: true
           # Test against WPCS unstable. Re-enable when WPCS is not in dev for the next major.
           #- php_version: '8.0'
-          #  phpcs_version: 'dev-master'
-          #  wpcs_version: 'dev-develop'
+          #  cs_dependencies: 'highest'
           #  experimental: true
 
           # Test against the next major of PHPCS. Temporarily disabled due to upstream bugs.
           #- php_version: '7.4'
+          #  cs_dependencies: 'highest'
           #  phpcs_version: '4.0.x-dev'
-          #  wpcs_version: 'dev-develop'
           #  experimental: true
 
-    name: "Test${{ matrix.phpcs_version == 'dev-master' && matrix.wpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
+    name: "Test${{ matrix.cs_dependencies == 'highest' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
     continue-on-error: ${{ matrix.experimental }}
 
@@ -72,7 +72,7 @@ jobs:
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.phpcs_version }}" != "dev-master" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
+          if [[ "${{ matrix.cs_dependencies }}" != "highest" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
@@ -92,18 +92,22 @@ jobs:
       # Set Composer up to download only PHPCS from source for PHPCS 4.x.
       # The source is needed to get the base testcase from PHPCS.
       # All other jobs can use `auto`, which is Composer's default value.
-      - name: 'Composer: conditionally prefer source for PHPCS'
+      - name: 'Composer: conditionally prefer source for PHPCS 4.x'
         if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
         run: composer config preferred-install.squizlabs/php_codesniffer source
 
-      - name: 'Composer: adjust dependencies'
+      - name: 'Composer: adjust CS dependencies (high)'
+        if: ${{ matrix.cs_dependencies == 'highest' }}
         run: |
-          # Set the PHPCS version to test against.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
-          # Set the WPCS version to test against.
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-interaction
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}" --no-interaction
+          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ env.WPCS_HIGHEST }}" --no-interaction
 
-      - name: 'Composer: conditionally remove PHPCSDevtools'
+      - name: 'Composer: adjust CS dependencies (4.x)'
+        if: ${{ matrix.phpcs_version }}
+        run: |
+          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
+
+      - name: 'Composer: conditionally remove PHPCSDevtools for PHPCS 4.x'
         if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
         # Remove devtools as it will not (yet) install on PHPCS 4.x.
         run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
@@ -125,13 +129,20 @@ jobs:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
+      - name: "Composer: set PHPCS version for tests (low)"
+        if: ${{ matrix.cs_dependencies == 'lowest' }}
+        run: composer update squizlabs/php_codesniffer wp-coding-standards/wpcs --with-dependencies --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+
+      - name: Verify installed versions
+        run: composer info --no-dev
+
       - name: Verify installed standards
         run: vendor/bin/phpcs -i
 
       # The results of the linting will be shown inline in the PR via the CS2PR tool.
       # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
       - name: Lint against parse errors
-        if: ${{ matrix.phpcs_version == 'dev-master' && matrix.wpcs_version == 'dev-master' }}
+        if: ${{ matrix.cs_dependencies == 'highest' }}
         run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests - PHP 5.4 - 8.0

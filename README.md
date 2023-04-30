@@ -1,5 +1,7 @@
 # Yoast Coding Standards
 
+[![Coverage Status](https://coveralls.io/repos/github/Yoast/yoastcs/badge.svg?branch=develop)](https://coveralls.io/github/Yoast/yoastcs?branch=develop)
+
 Yoast Coding Standards (YoastCS) is a project with rulesets for code style and quality tools to be used in Yoast projects.
 
 ## Installation

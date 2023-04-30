@@ -35,7 +35,7 @@
 		"phpcompatibility/php-compatibility": "^9.3.5",
 		"roave/security-advisories": "dev-master",
 		"phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0",
-		"phpcsstandards/phpcsdevtools": "^1.2.0"
+		"phpcsstandards/phpcsdevtools": "^1.2.1"
 	},
 	"config": {
 		"allow-plugins": {

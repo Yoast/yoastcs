@@ -2,20 +2,22 @@
 
 namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use WordPressCS\WordPress\Helpers\IsUnitTestTrait;
 use WordPressCS\WordPress\Helpers\SnakeCaseHelper;
-use WordPressCS\WordPress\Sniff as WPCS_Sniff;
 
 /**
  * Check the number of words in object names declared within a namespace.
  *
  * @since 2.0.0
+ * @since 3.0.0 This sniff no longer extends the WPCS abstract Sniff class.
  *
  * @uses \WordPressCS\WordPress\Helpers\IsUnitTestTrait::$custom_test_classes
  */
-final class ObjectNameDepthSniff extends WPCS_Sniff {
+final class ObjectNameDepthSniff implements Sniff {
 
 	use IsUnitTestTrait;
 
@@ -73,19 +75,19 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param int $stackPtr The position of the current token
-	 *                      in the stack passed in $tokens.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void
+	 * @return void|int Optionally returns stack pointer to skip to.
 	 */
-	public function process_token( $stackPtr ) {
+	public function process( File $phpcsFile, $stackPtr ) {
 
 		// Check whether we are in a namespace or not.
-		if ( Namespaces::determineNamespace( $this->phpcsFile, $stackPtr ) === '' ) {
+		if ( Namespaces::determineNamespace( $phpcsFile, $stackPtr ) === '' ) {
 			return;
 		}
 
-		$object_name = ObjectDeclarations::getName( $this->phpcsFile, $stackPtr );
+		$object_name = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 		if ( empty( $object_name ) ) {
 			return;
 		}
@@ -105,11 +107,11 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 		 */
 		$last = \array_pop( $parts );
 		if ( isset( self::TEST_SUFFIXES[ $last ] ) ) {
-			if ( self::TEST_SUFFIXES[ $last ] === true && $this->is_test_class( $this->phpcsFile, $stackPtr ) ) {
+			if ( self::TEST_SUFFIXES[ $last ] === true && $this->is_test_class( $phpcsFile, $stackPtr ) ) {
 				--$part_count;
 			}
 			else {
-				$extends = ObjectDeclarations::findExtendedClassName( $this->phpcsFile, $stackPtr );
+				$extends = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
 				if ( \is_string( $extends ) ) {
 					--$part_count;
 				}
@@ -117,7 +119,7 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 		}
 
 		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
-			$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
+			$phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
 			return;
 		}
 
@@ -128,39 +130,41 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 			\T_WHITESPACE => \T_WHITESPACE,
 		];
 
+		$tokens = $phpcsFile->getTokens();
+
 		$comment_end = $stackPtr;
 		for ( $comment_end = ( $stackPtr - 1 ); $comment_end >= 0; $comment_end-- ) {
-			if ( isset( $ignore[ $this->tokens[ $comment_end ]['code'] ] ) === true ) {
+			if ( isset( $ignore[ $tokens[ $comment_end ]['code'] ] ) === true ) {
 				continue;
 			}
 
-			if ( $this->tokens[ $comment_end ]['code'] === \T_ATTRIBUTE_END
-				&& isset( $this->tokens[ $comment_end ]['attribute_opener'] ) === true
+			if ( $tokens[ $comment_end ]['code'] === \T_ATTRIBUTE_END
+				&& isset( $tokens[ $comment_end ]['attribute_opener'] ) === true
 			) {
-				$comment_end = $this->tokens[ $comment_end ]['attribute_opener'];
+				$comment_end = $tokens[ $comment_end ]['attribute_opener'];
 				continue;
 			}
 
 			break;
 		}
 
-		if ( $this->tokens[ $comment_end ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
+		if ( $tokens[ $comment_end ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Only check if the class has a docblock.
-			$comment_start = $this->tokens[ $comment_end ]['comment_opener'];
-			foreach ( $this->tokens[ $comment_start ]['comment_tags'] as $tag ) {
-				if ( $this->tokens[ $tag ]['content'] === '@deprecated' ) {
+			$comment_start = $tokens[ $comment_end ]['comment_opener'];
+			foreach ( $tokens[ $comment_start ]['comment_tags'] as $tag ) {
+				if ( $tokens[ $tag ]['content'] === '@deprecated' ) {
 					// Deprecated class, ignore.
 					return;
 				}
 			}
 		}
 
-		$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
+		$phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
 
 		// Active class.
-		$object_type = 'a ' . $this->tokens[ $stackPtr ]['content'];
-		if ( $this->tokens[ $stackPtr ]['code'] === \T_INTERFACE ) {
-			$object_type = 'an ' . $this->tokens[ $stackPtr ]['content'];
+		$object_type = 'a ' . $tokens[ $stackPtr ]['content'];
+		if ( $tokens[ $stackPtr ]['code'] === \T_INTERFACE ) {
+			$object_type = 'an ' . $tokens[ $stackPtr ]['content'];
 		}
 
 		if ( $part_count > $this->max_words ) {
@@ -172,7 +176,7 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 				$object_name,
 			];
 
-			$this->phpcsFile->addError( $error, $stackPtr, 'MaxExceeded', $data );
+			$phpcsFile->addError( $error, $stackPtr, 'MaxExceeded', $data );
 		}
 		elseif ( $part_count > $this->recommended_max_words ) {
 			$error = 'The name of %s should not consist of more than %d words. Words found: %d in %s';
@@ -183,7 +187,7 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 				$object_name,
 			];
 
-			$this->phpcsFile->addWarning( $error, $stackPtr, 'TooLong', $data );
+			$phpcsFile->addWarning( $error, $stackPtr, 'TooLong', $data );
 		}
 	}
 }

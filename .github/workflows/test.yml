@@ -37,19 +37,17 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php_version: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2']
+        php_version: ['7.3', '8.0', '8.1', '8.2']
         cs_dependencies: ['lowest', 'stable']
 
         include:
           # Make the matrix complete (when combined with the code coverage builds).
-          - php_version: '5.4'
+          - php_version: '7.2'
             cs_dependencies: 'stable'
           - php_version: '7.4'
             cs_dependencies: 'stable'
 
           # Test against dev versions of all CS dependencies with select PHP versions for early detection of issues.
-          - php_version: '7.0'
-            cs_dependencies: 'dev'
           - php_version: '8.0'
             cs_dependencies: 'dev'
           - php_version: '8.2'
@@ -132,7 +130,7 @@ jobs:
         if: ${{ matrix.cs_dependencies == 'stable' }}
         run: composer lint -- --checkstyle | cs2pr
 
-      - name: Run the unit tests - PHP 5.4 - 8.0
+      - name: Run the unit tests - PHP 7.2 - 8.0
         if: ${{ matrix.php_version < '8.1' }}
         run: composer test
 
@@ -155,7 +153,7 @@ jobs:
     strategy:
       matrix:
         # 7.4 should be updated to 8.x when higher PHPUnit versions can be supported.
-        php_version: ['5.4', '7.4']
+        php_version: ['7.2', '7.4']
         cs_dependencies: ['lowest', 'dev']
 
     name: "Coverage${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"

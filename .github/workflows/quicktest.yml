@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        php_version: ['5.4', 'latest']
+        php_version: ['7.2', 'latest']
         cs_dependencies: ['lowest', 'stable']
 
         include:
@@ -96,7 +96,7 @@ jobs:
         if: matrix.cs_dependencies == 'stable'
         run: composer lint
 
-      - name: Run the unit tests - PHP 5.4 - 8.0
+      - name: Run the unit tests - PHP 7.2 - 8.0
         if: ${{ matrix.php_version < '8.1' && matrix.php_version != 'latest' }}
         run: composer test
 

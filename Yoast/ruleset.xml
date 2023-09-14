@@ -142,6 +142,15 @@
 	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
 	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
 
+	<!-- Disallow namespace declarations without a namespace name. -->
+	<rule ref="Universal.Namespaces.DisallowDeclarationWithoutName"/>
+
+	<!-- Disallow namespace declarations using the curly brace syntax. -->
+	<rule ref="Universal.Namespaces.DisallowCurlyBraceSyntax"/>
+
+	<!-- Disallow declaring multiple namespaces within one file. -->
+	<rule ref="Universal.Namespaces.OneDeclarationPerFile"/>
+
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed. -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 

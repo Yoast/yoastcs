@@ -3,8 +3,11 @@
 namespace YoastCS\Yoast\Sniffs\Tools;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Conditions;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\PassedParameters;
+use PHPCSUtils\Utils\Scopes;
 use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\Sniff;
 
@@ -46,41 +49,19 @@ final class BrainMonkeyRaceConditionSniff extends Sniff {
 
 		$prevNonEmpty = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 		if ( $prevNonEmpty === false
-			|| $this->tokens[ $prevNonEmpty ]['code'] === \T_DOUBLE_COLON
-			|| $this->tokens[ $prevNonEmpty ]['code'] === \T_OBJECT_OPERATOR
-			|| $this->tokens[ $prevNonEmpty ]['type'] === 'T_NULLSAFE_OBJECT_OPERATOR'
+			|| isset( Collections::objectOperators()[ $this->tokens[ $prevNonEmpty ]['code'] ] )
 			|| $this->tokens[ $prevNonEmpty ]['code'] === \T_FUNCTION
 		) {
 			// Method call or function declaration, not a function call.
 			return;
 		}
 
-		// Make sure the token is in a class method.
-		if ( empty( $this->tokens[ $stackPtr ]['conditions'] ) ) {
+		$functionToken = Conditions::getLastCondition( $this->phpcsFile, $stackPtr, [ \T_FUNCTION ] );
+		if ( $functionToken === false ) {
 			return;
 		}
 
-		$conditions = $this->tokens[ $stackPtr ]['conditions'];
-		$conditions = \array_reverse( $conditions, true );
-
-		$seenOO        = false;
-		$seenFn        = false;
-		$functionToken = false;
-
-		foreach ( $conditions as $token => $condition ) {
-			if ( $seenFn === true ) {
-				// First condition after the function condition MUST be OO, otherwise it's not a method.
-				$seenOO = isset( Tokens::$ooScopeTokens[ $condition ] );
-				break;
-			}
-
-			if ( $condition === \T_FUNCTION ) {
-				$functionToken = $token;
-				$seenFn        = true;
-			}
-		}
-
-		if ( $seenFn === false || $seenOO === false || $functionToken === false ) {
+		if ( Scopes::isOOMethod( $this->phpcsFile, $functionToken ) === false ) {
 			return;
 		}
 

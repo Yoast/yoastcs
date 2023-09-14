@@ -138,6 +138,10 @@
 	These may make it into WPCS at some point. If so, they can be removed here.
 	#############################################################################
 	-->
+
+	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
+	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
+
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed. -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 

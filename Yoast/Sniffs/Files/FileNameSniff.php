@@ -19,9 +19,7 @@ use PHP_CodeSniffer\Util\Common;
  * - Files which don't contain an object structure, but do contain function declarations should
  *   have a "-functions" suffix.
  *
- * @package Yoast\YoastCS
- *
- * @since   0.5
+ * @since 0.5
  */
 class FileNameSniff implements Sniff {
 

@@ -8,12 +8,10 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the NamespaceName sniff.
  *
- * @package Yoast\YoastCS
+ * @since 2.0.0
  *
- * @since   2.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\NamingConventions\NamespaceNameSniff
- * @covers  YoastCS\Yoast\Utils\CustomPrefixesTrait
+ * @covers YoastCS\Yoast\Sniffs\NamingConventions\NamespaceNameSniff
+ * @covers YoastCS\Yoast\Utils\CustomPrefixesTrait
  */
 class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 

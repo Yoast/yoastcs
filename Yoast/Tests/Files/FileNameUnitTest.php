@@ -8,11 +8,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the FileName sniff.
  *
- * @package Yoast\YoastCS
+ * @since 0.5
  *
- * @since   0.5
- *
- * @covers  YoastCS\Yoast\Sniffs\Files\FileNameSniff
+ * @covers YoastCS\Yoast\Sniffs\Files\FileNameSniff
  */
 class FileNameUnitTest extends AbstractSniffUnitTest {
 

@@ -7,9 +7,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the BrainMonkeyRaceCondition sniff.
  *
- * @package Yoast\YoastCS
+ * @since 2.3.0
  *
- * @covers  YoastCS\Yoast\Sniffs\Tools\BrainMonkeyRaceConditionSniff
+ * @covers YoastCS\Yoast\Sniffs\Tools\BrainMonkeyRaceConditionSniff
  */
 class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
 

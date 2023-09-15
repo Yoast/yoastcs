@@ -10,10 +10,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * Verifies functions which are marked as `deprecated` have a `codeCoverageIgnore` tag
  * in their docblock.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.1.0
+ * @since 1.1.0
  */
 class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 

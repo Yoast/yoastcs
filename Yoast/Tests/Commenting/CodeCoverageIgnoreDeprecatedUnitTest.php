@@ -7,11 +7,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the CodeCoverageIgnoreDeprecated sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.1.0
  *
- * @since   1.1.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Commenting\CodeCoverageIgnoreDeprecatedSniff
+ * @covers YoastCS\Yoast\Sniffs\Commenting\CodeCoverageIgnoreDeprecatedSniff
  */
 class CodeCoverageIgnoreDeprecatedUnitTest extends AbstractSniffUnitTest {
 

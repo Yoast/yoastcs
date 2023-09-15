@@ -8,11 +8,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the TestDoubles sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.0.0
  *
- * @since   1.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Files\TestDoublesSniff
+ * @covers YoastCS\Yoast\Sniffs\Files\TestDoublesSniff
  */
 class TestDoublesUnitTest extends AbstractSniffUnitTest {
 

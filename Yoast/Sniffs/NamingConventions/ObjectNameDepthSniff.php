@@ -7,10 +7,7 @@ use WordPressCS\WordPress\Sniff as WPCS_Sniff;
 /**
  * Check the number of words in object names declared within a namespace.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   2.0.0
+ * @since 2.0.0
  */
 class ObjectNameDepthSniff extends WPCS_Sniff {
 

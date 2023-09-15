@@ -27,10 +27,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  *            namespace-like prefix for hooks, the `WrongPrefix` warning should be
  *            changed to an error and only namespace-like prefixes should be allowed.}
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   2.0.0
+ * @since 2.0.0
  */
 class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 

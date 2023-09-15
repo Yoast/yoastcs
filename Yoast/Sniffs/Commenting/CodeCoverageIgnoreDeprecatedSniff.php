@@ -55,7 +55,6 @@ final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 			break;
 		}
 
-
 		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Function without (proper) docblock. Not our concern.
 			return;

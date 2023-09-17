@@ -52,11 +52,6 @@ jobs:
           #- php_version: '8.0'
           #  cs_dependencies: 'highest'
 
-          # Test against the next major of PHPCS. Temporarily disabled due to upstream bugs.
-          #- php_version: '7.4'
-          #  cs_dependencies: 'highest'
-          #  phpcs_version: '4.0.x-dev'
-
     name: "Test${{ matrix.cs_dependencies == 'highest' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
     continue-on-error: ${{ matrix.php == '8.3' }}
@@ -70,7 +65,7 @@ jobs:
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.cs_dependencies }}" != "highest" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
+          if [[ "${{ matrix.cs_dependencies }}" != "highest" ]]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
@@ -83,32 +78,12 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
           tools: cs2pr
-        env:
-          # Token is needed for the PHPCS 4.x run against source.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Set Composer up to download only PHPCS from source for PHPCS 4.x.
-      # The source is needed to get the base testcase from PHPCS.
-      # All other jobs can use `auto`, which is Composer's default value.
-      - name: 'Composer: conditionally prefer source for PHPCS 4.x'
-        if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
-        run: composer config preferred-install.squizlabs/php_codesniffer source
 
       - name: 'Composer: adjust CS dependencies (high)'
         if: ${{ matrix.cs_dependencies == 'highest' }}
         run: |
           composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}" --no-interaction
           composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ env.WPCS_HIGHEST }}" --no-interaction
-
-      - name: 'Composer: adjust CS dependencies (4.x)'
-        if: ${{ matrix.phpcs_version }}
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
-
-      - name: 'Composer: conditionally remove PHPCSDevtools for PHPCS 4.x'
-        if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
-        # Remove devtools as it will not (yet) install on PHPCS 4.x.
-        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -180,7 +155,7 @@ jobs:
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.cs_dependencies }}" != "highest" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
+          if [[ "${{ matrix.cs_dependencies }}" != "highest" ]]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT

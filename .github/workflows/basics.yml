@@ -42,14 +42,18 @@ jobs:
       - name: Validate Composer installation
         run: composer validate --no-check-all --strict
 
-      - name: 'Composer: adjust dependencies'
-        run: |
-          # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
-          composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
-          # Using PHPCS `master` as an early detection system for bugs upstream.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
-          # Using WPCS `main` (=stable). This can be changed back to `dev-develop` after the WPCS 3.0.0 release.
-          # composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-main" --no-interaction
+      # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
+      - name: 'Composer: adjust dependencies - remove PHPUnit'
+        run: composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
+
+      # Use the WIP/develop branches of all CS dependencies as an early detection system for bugs upstream.
+      - name: 'Composer: adjust dependencies - use dev versions of CS dependencies'
+        # Note: while WPCS 3.0.0 is not yet supported, WPCS will not be updated.
+        # Once YoastCS has been updated for WPCS 3.0.0, WPCS dev-develop should be added (back) to this command.
+        # wp-coding-standards/wpcs:"dev-develop"
+        run: >
+          composer require --no-update --no-scripts --no-interaction
+          squizlabs/php_codesniffer:"dev-master"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -66,7 +70,8 @@ jobs:
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - uses: korelstar/xmllint-problem-matcher@v1
+      - name: Show XML issues inline
+        uses: korelstar/xmllint-problem-matcher@v1
 
       # Validate the ruleset XML file.
       # @link http://xmlsoft.org/xmllint.html
@@ -75,7 +80,6 @@ jobs:
 
       # Validate the Docs XML files.
       # @link http://xmlsoft.org/xmllint.html
-      # For the build to properly error when validating against a scheme, these each have to be in their own condition.
       - name: Validate the XML sniff docs against schema
         run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./Yoast/Docs/*/*Standard.xml
 

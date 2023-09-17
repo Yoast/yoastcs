@@ -4,6 +4,7 @@ namespace YoastCS\Yoast\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\Utils\GetTokensAsString;
 
 /**
  * Verifies that a @covers tag annotation follows a format supported by PHPUnit.
@@ -327,7 +328,7 @@ final class CoversTagSniff implements Sniff {
 				$phpcsFile->fixer->replaceToken( $i, '' );
 			}
 
-			$stub        = $phpcsFile->getTokensAsString( $i, ( $stackPtr - $i ), true );
+			$stub        = GetTokensAsString::origContent( $phpcsFile, $i, ( $stackPtr - 1 ) );
 			$replacement = '';
 			foreach ( $annotations as $annotation ) {
 				$replacement .= $stub . $annotation;

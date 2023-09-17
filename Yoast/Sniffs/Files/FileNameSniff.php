@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\Files;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Ensures files comply with the Yoast file name rules.
@@ -121,7 +122,7 @@ final class FileNameSniff implements Sniff {
 			if ( $oo_structure !== false ) {
 
 				$tokens = $phpcsFile->getTokens();
-				$name   = $phpcsFile->getDeclarationName( $oo_structure );
+				$name   = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
 				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
 				if ( ! empty( $prefixes ) ) {

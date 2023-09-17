@@ -4,6 +4,7 @@ namespace YoastCS\Yoast\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Check that all mock/doubles classes are in their own file and in a `doubles` directory.
@@ -123,7 +124,7 @@ final class TestDoublesSniff implements Sniff {
 			}
 		}
 
-		$object_name = $phpcsFile->getDeclarationName( $stackPtr );
+		$object_name = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 		if ( empty( $object_name ) ) {
 			return;
 		}
@@ -206,7 +207,7 @@ final class TestDoublesSniff implements Sniff {
 					$tokens[ $stackPtr ]['content'],
 					$object_name,
 					$tokens[ $more_objects_in_file ]['content'],
-					$phpcsFile->getDeclarationName( $more_objects_in_file ),
+					ObjectDeclarations::getName( $phpcsFile, $more_objects_in_file ),
 				];
 
 				$phpcsFile->addError(

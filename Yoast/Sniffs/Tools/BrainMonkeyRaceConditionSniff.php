@@ -3,6 +3,7 @@
 namespace YoastCS\Yoast\Sniffs\Tools;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FunctionDeclarations;
 use WordPressCS\WordPress\Sniff;
 
 /**
@@ -133,7 +134,7 @@ final class BrainMonkeyRaceConditionSniff extends Sniff {
 			// Okay, we have found the race condition. Throw error.
 			$message = 'The %s() test method contains both a call to Monkey\Functions\expect( %s ), as well as a call to %s(). This causes a race condition which will cause the tests to fail. Only use one of these in a test.';
 			$data    = [
-				$this->phpcsFile->getDeclarationName( $functionToken ),
+				FunctionDeclarations::getName( $this->phpcsFile, $functionToken ),
 				$this->tokens[ $text ]['content'],
 				( $targetContent === 'expectdone' ) ? 'Monkey\Actions\expectDone' : 'Monkey\Filters\expectApplied',
 			];

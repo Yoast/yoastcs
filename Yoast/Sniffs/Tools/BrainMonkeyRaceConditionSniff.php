@@ -4,6 +4,8 @@ namespace YoastCS\Yoast\Sniffs\Tools;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\FunctionDeclarations;
+use PHPCSUtils\Utils\PassedParameters;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\Sniff;
 
 /**
@@ -83,21 +85,21 @@ final class BrainMonkeyRaceConditionSniff extends Sniff {
 		}
 
 		// Check that this is an expect() for one of the hook functions.
-		$params = $this->get_function_call_parameters( $stackPtr );
-		if ( empty( $params ) ) {
+		$param = PassedParameters::getParameter( $this->phpcsFile, $stackPtr, 1, 'function_name' );
+		if ( empty( $param ) ) {
 			return;
 		}
 
 		$expected   = Tokens::$emptyTokens;
 		$expected[] = \T_CONSTANT_ENCAPSED_STRING;
 
-		$hasUnexpected = $this->phpcsFile->findNext( $expected, $params[1]['start'], ( $params[1]['end'] + 1 ), true );
+		$hasUnexpected = $this->phpcsFile->findNext( $expected, $param['start'], ( $param['end'] + 1 ), true );
 		if ( $hasUnexpected !== false ) {
 			return;
 		}
 
-		$text        = $this->phpcsFile->findNext( Tokens::$emptyTokens, $params[1]['start'], ( $params[1]['end'] + 1 ), true );
-		$textContent = $this->strip_quotes( $this->tokens[ $text ]['content'] );
+		$text        = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
+		$textContent = TextStrings::stripQuotes( $this->tokens[ $text ]['content'] );
 		if ( $textContent !== 'apply_filters' && $textContent !== 'do_action' ) {
 			return;
 		}

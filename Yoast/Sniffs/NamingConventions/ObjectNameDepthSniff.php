@@ -2,6 +2,7 @@
 
 namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
+use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use WordPressCS\WordPress\Sniff as WPCS_Sniff;
 
@@ -74,7 +75,7 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 	public function process_token( $stackPtr ) {
 
 		// Check whether we are in a namespace or not.
-		if ( $this->determine_namespace( $stackPtr ) === '' ) {
+		if ( Namespaces::determineNamespace( $this->phpcsFile, $stackPtr ) === '' ) {
 			return;
 		}
 

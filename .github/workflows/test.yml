@@ -18,12 +18,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Note: while WPCS 3.0.0 is under development, the "highest" release for WPCS should use `dev-master`.
-# Once WPCS 3.0.0 has been released and YoastCS has been made compatible, the matrix should switch (back)
-# WPCS `dev-master` to `dev-develop`.
+# Note: while WPCS 3.0.0 is not (yet) supported by YoastCS, the "highest" release for WPCS should use
+# the last stable WPCS release supported by YoastCS, i.e. `2.3.0`.
+# Once support for WPCS 3.0.0 has been added, the matrix should switch (back) using `dev-develop`.
 env:
   PHPCS_HIGHEST: 'dev-master'
-  WPCS_HIGHEST: 'dev-master'
+  WPCS_HIGHEST: '2.3.0'
 
 jobs:
   #### TEST STAGE ####
@@ -125,7 +125,7 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
+      # For PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php_version, '8' ) }}
         uses: ramsey/composer-install@v2

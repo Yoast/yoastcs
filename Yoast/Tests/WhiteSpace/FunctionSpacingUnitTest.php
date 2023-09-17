@@ -20,16 +20,19 @@ final class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList(): array {
 		return [
-			31 => 1,
-			33 => 1,
-			39 => 1,
-			46 => 1,
-			53 => 2,
-			57 => 1,
-			60 => 1,
-			74 => 1,
-			87 => 2,
-			88 => 1,
+			31  => 1,
+			33  => 1,
+			39  => 1,
+			46  => 1,
+			53  => 2,
+			57  => 1,
+			60  => 1,
+			74  => 1,
+			87  => 2,
+			88  => 1,
+			94  => 1,
+			96  => 1,
+			102 => 1,
 		];
 	}
 

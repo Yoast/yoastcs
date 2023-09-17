@@ -88,3 +88,17 @@ $util->setLogger(new class {
 	private function b(){}
 	protected function c(){}
 });
+
+enum MyTrait: int
+{
+	function func1() {
+
+	}//end func1()
+
+
+
+	function func3() {
+
+	}
+
+}

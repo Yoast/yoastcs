@@ -24,7 +24,7 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @var string
 	 */
-	const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)(?P>OOName)))?|::(?P>functionName)|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
+	private const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)(?P>OOName)))?|::(?P>functionName)|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
 
 	/**
 	 * Base error message.
@@ -33,7 +33,7 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @var string
 	 */
-	const ERROR_MSG = 'Invalid @covers annotation found.';
+	private const ERROR_MSG = 'Invalid @covers annotation found.';
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

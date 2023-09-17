@@ -27,35 +27,35 @@ final class Threshold implements Report {
 	 *
 	 * @var string
 	 */
-	const WHITE = "\033[1m";
+	private const WHITE = "\033[1m";
 
 	/**
 	 * Escape sequence for making text red on the command-line.
 	 *
 	 * @var string
 	 */
-	const RED = "\033[31m";
+	private const RED = "\033[31m";
 
 	/**
 	 * Escape sequence for making text green on the command-line.
 	 *
 	 * @var string
 	 */
-	const GREEN = "\033[32m";
+	private const GREEN = "\033[32m";
 
 	/**
 	 * Escape sequence for making text orange/yellow on the command-line.
 	 *
 	 * @var string
 	 */
-	const YELLOW = "\033[33m";
+	private const YELLOW = "\033[33m";
 
 	/**
 	 * Escape sequence for resetting the text colour.
 	 *
 	 * @var string
 	 */
-	const RESET = "\033[0m";
+	private const RESET = "\033[0m";
 
 	/**
 	 * Generate a partial report for a single processed file.

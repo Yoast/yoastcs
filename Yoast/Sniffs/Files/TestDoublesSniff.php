@@ -98,15 +98,6 @@ final class TestDoublesSniff implements Sniff {
 			return ( $phpcsFile->numTokens + 1 );
 		}
 
-		/*
-		 * BC-compatibility for when the property was still a string.
-		 *
-		 * {@internal This should be removed in YoastCS 2.0.0.}}
-		 */
-		if ( \is_string( $this->doubles_path ) ) {
-			$this->doubles_path = (array) $this->doubles_path;
-		}
-
 		$tokens    = $phpcsFile->getTokens();
 		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
 		$base_path = \rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.

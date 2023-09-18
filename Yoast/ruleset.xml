@@ -444,4 +444,7 @@
 		<severity>5</severity>
 	</rule>
 
+	<!-- Modernize: Enforce visibility declarations for class constants (PHP 7.1+). -->
+	<rule ref="PSR12.Properties.ConstantVisibility"/>
+
 </ruleset>

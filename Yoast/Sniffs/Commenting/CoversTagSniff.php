@@ -57,6 +57,9 @@ final class CoversTagSniff implements Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
+		/*
+		 * Find all relevant tags and check for common mistakes in the tag format.
+		 */
 		$firstCoversTag    = false;
 		$coversTags        = [];
 		$coversNothingTags = [];
@@ -76,7 +79,8 @@ final class CoversTagSniff implements Sniff {
 
 			// Found a @covers tag.
 			$next = $phpcsFile->findNext( \T_DOC_COMMENT_WHITESPACE, ( $tag + 1 ), null, true );
-			if ( $tokens[ $next ]['code'] !== \T_DOC_COMMENT_STRING
+			if ( $next === false // Shouldn't be possible.
+				|| $tokens[ $next ]['code'] !== \T_DOC_COMMENT_STRING
 				|| $tokens[ $next ]['line'] !== $tokens[ $tag ]['line']
 			) {
 				$phpcsFile->addError(
@@ -146,6 +150,9 @@ final class CoversTagSniff implements Sniff {
 			$phpcsFile->addError( $error, $next, 'Invalid', $data );
 		}
 
+		/*
+		 * Check that a docblock doesn't contain both `@covers` tags as well as `@coversNothing` tag(s).
+		 */
 		$coversNothingCount = \count( $coversNothingTags );
 		if ( $firstCoversTag !== false && $coversNothingCount > 0 ) {
 			$error = 'A test can\'t both cover something as well as cover nothing. First @coversNothing tag encountered on line %d; first @covers tag encountered on line %d';
@@ -157,6 +164,9 @@ final class CoversTagSniff implements Sniff {
 			$phpcsFile->addError( $error, $tokens[ $stackPtr ]['comment_closer'], 'Contradictory', $data );
 		}
 
+		/*
+		 * Check for duplicate `@coversNothing` tags.
+		 */
 		if ( $coversNothingCount > 1 ) {
 			$error      = 'Only one @coversNothing tag allowed per test';
 			$code       = 'DuplicateCoversNothing';
@@ -177,7 +187,6 @@ final class CoversTagSniff implements Sniff {
 				$phpcsFile->addError( $error, $tokens[ $stackPtr ]['comment_closer'], $code );
 			}
 			else {
-
 				$fix = $phpcsFile->addFixableError( $error, $tokens[ $stackPtr ]['comment_closer'], $code );
 				if ( $fix === true ) {
 					$skipFirst = ( $coversNothingCount === $removalCount );
@@ -205,6 +214,9 @@ final class CoversTagSniff implements Sniff {
 			}
 		}
 
+		/*
+		 * Check for duplicate `@covers ...` tags.
+		 */
 		$coversCount = \count( $coversTags );
 		if ( $coversCount > 1 ) {
 			$unique = \array_unique( $coversTags );
@@ -218,6 +230,7 @@ final class CoversTagSniff implements Sniff {
 					}
 
 					$first = null;
+					$data  = [];
 					foreach ( $coversTags as $ptrs => $annot ) {
 						if ( $annotation !== $annot ) {
 							continue;
@@ -231,13 +244,12 @@ final class CoversTagSniff implements Sniff {
 
 						$ptrs = \explode( '-', $ptrs );
 
-						$fix = $phpcsFile->addFixableError( $error, $ptrs[0], $code, $data );
+						$fix = $phpcsFile->addFixableError( $error, (int) $ptrs[0], $code, $data );
 						if ( $fix === true ) {
-
 							$phpcsFile->fixer->beginChangeset();
 
 							// Remove the whole line.
-							for ( $i = ( $ptrs[1] ); $i >= 0; $i-- ) {
+							for ( $i = (int) $ptrs[1]; $i >= 0; $i-- ) {
 								if ( $tokens[ $i ]['line'] !== $tokens[ $ptrs[1] ]['line'] ) {
 									if ( $tokens[ $i ]['code'] === \T_DOC_COMMENT_WHITESPACE
 										&& $tokens[ $i ]['content'] === $phpcsFile->eolChar

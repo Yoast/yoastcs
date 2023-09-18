@@ -292,6 +292,14 @@
 		</properties>
 	</rule>
 
+	<!-- CS/QA: Disallow unused import use statements. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+		<properties>
+			<!-- Allow import use statements for classes only referenced in documentation. -->
+			<property name="searchAnnotations" value="true"/>
+		</properties>
+	</rule>
+
 
 	<!--
 	#############################################################################

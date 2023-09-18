@@ -176,6 +176,13 @@
 	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
 	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
 
+	<!-- CS: Forbid the use of alternative control structure syntax, except in combination with inline HTML. -->
+	<rule ref="Universal.ControlStructures.DisallowAlternativeSyntax">
+		<properties>
+			<property name="allowWithInlineHTML" value="true"/>
+		</properties>
+	</rule>
+
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed. -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 

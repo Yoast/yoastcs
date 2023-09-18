@@ -17,7 +17,7 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Error files with the expected nr of errors.
 	 *
-	 * @var int[]
+	 * @var array<string, int>
 	 */
 	private $expected_results = [
 
@@ -98,7 +98,7 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFileBase The base path that the unit tests files will have.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;

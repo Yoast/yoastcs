@@ -45,7 +45,7 @@ final class FileNameSniff implements Sniff {
 	 * - When several overlapping prefixes match, the longest matching prefix
 	 *   will be removed.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public $oo_prefixes = [];
 
@@ -65,7 +65,7 @@ final class FileNameSniff implements Sniff {
 	 * from the root of the repository - , the PHPCS `--basepath` config variable
 	 * needs to be set. If it is not, a warning will be issued.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public $excluded_files_strict_check = [];
 
@@ -244,11 +244,11 @@ final class FileNameSniff implements Sniff {
 	 *
 	 * Optionally flips the array to allow for using `isset` instead of `in_array`.
 	 *
-	 * @param mixed $property The current property value.
-	 * @param bool  $flip     Whether to flip the array values to keys.
-	 * @param bool  $to_lower Whether to lowercase the array values.
+	 * @param array<string> $property The current property value.
+	 * @param bool          $flip     Whether to flip the array values to keys.
+	 * @param bool          $to_lower Whether to lowercase the array values.
 	 *
-	 * @return (string|bool)[]
+	 * @return array<string>|array<string, false>
 	 */
 	protected function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
 		$property = \array_filter( \array_map( 'trim', $property ) );

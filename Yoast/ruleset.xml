@@ -303,6 +303,10 @@
 	<!-- CS/QA: Disallow import use statements for structures in the same namespace. -->
 	<rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
 
+	<!-- CS: For namespaced functions/constants: import the namespace, not the function/constant. -->
+	<rule ref="Universal.UseStatements.DisallowUseConst"/>
+	<rule ref="Universal.UseStatements.DisallowUseFunction"/>
+
 
 	<!--
 	#############################################################################

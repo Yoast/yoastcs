@@ -284,6 +284,14 @@
 		</properties>
 	</rule>
 
+	<!-- CS: Enforce alphabetically ordered import use statements. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
+		<properties>
+			<property name="psr12Compatible" value="true"/>
+			<property name="caseSensitive" value="false"/>
+		</properties>
+	</rule>
+
 
 	<!--
 	#############################################################################

@@ -24,6 +24,19 @@
 
 	<!--
 	#############################################################################
+	AUTOLOADING
+	PHPCS handles the sniff autoloading, but the Slevomat standard uses an external
+	dependency which is not managed via the PHPCS autoloader.
+	When using YoastCS stand-alone, that means the Composer autoload needs to be
+	loaded (conditionally, which is why there is a bootstrap file).
+	#############################################################################
+	-->
+
+	<autoload>./../autoload-bootstrap.php</autoload>
+
+
+	<!--
+	#############################################################################
 	SNIFF AGAINST THE WordPress RULESET
 	Exclude a few select sniffs/errorcodes for specific reasons and
 	add configuration for a sniff.

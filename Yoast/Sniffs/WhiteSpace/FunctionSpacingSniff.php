@@ -51,7 +51,7 @@ final class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 * @param File $phpcsFile The file being scanned.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void|int Optionally returns stack pointer to skip to.
+	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Check that the function is nested in an OO structure (class, trait, interface, enum).
@@ -59,6 +59,6 @@ final class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 			return;
 		}
 
-		return parent::process( $phpcsFile, $stackPtr );
+		parent::process( $phpcsFile, $stackPtr );
 	}
 }

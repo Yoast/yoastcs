@@ -215,6 +215,9 @@
 		 consistently at the start of the line. -->
 	<rule ref="Universal.Operators.ConcatPosition"/>
 
+	<!-- CS/QA: Disallow implicit array creation. -->
+	<rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
+
 
 	<!--
 	#############################################################################

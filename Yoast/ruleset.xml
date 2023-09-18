@@ -218,6 +218,9 @@
 	<!-- CS/QA: Disallow implicit array creation. -->
 	<rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
 
+	<!-- CS/QA: Enforce static closures when a closure doesn't access $this. -->
+	<rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
+
 
 	<!--
 	#############################################################################

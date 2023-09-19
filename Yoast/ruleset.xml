@@ -307,6 +307,10 @@
 	<rule ref="Universal.UseStatements.DisallowUseConst"/>
 	<rule ref="Universal.UseStatements.DisallowUseFunction"/>
 
+	<!-- CS: For global functions/constants: use fully qualified inline names. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions"/>
+
 
 	<!--
 	#############################################################################

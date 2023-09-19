@@ -300,6 +300,9 @@
 		</properties>
 	</rule>
 
+	<!-- CS/QA: Disallow import use statements for structures in the same namespace. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+
 
 	<!--
 	#############################################################################

@@ -21,7 +21,7 @@ concurrency:
 env:
   PHPCS_HIGHEST: 'dev-master'
   UTILS_HIGHEST: 'dev-develop'
-  WPCS_HIGHEST: 'dev-develop'
+  WPCS_HIGHEST: 'dev-develop as 3.99' # Alias needed to prevent composer conflict with VIPCS.
 
 jobs:
   #### TEST STAGE ####

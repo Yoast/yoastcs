@@ -49,9 +49,10 @@ jobs:
           squizlabs/php_codesniffer:"dev-master"
           phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
-          wp-coding-standards/wpcs:"dev-develop"
+          wp-coding-standards/wpcs:"dev-develop as 3.99" # Alias needed to prevent composer conflict with VIPCS.
           slevomat/coding-standard:"dev-master"
           sirbrillig/phpcs-variable-analysis:"2.x"
+          automattic/vipwpcs:"dev-develop"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer

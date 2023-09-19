@@ -21,6 +21,7 @@ use PHP_CodeSniffer\Reports\Report;
  * @since 2.2.0
  *
  * @phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Flags unused params which are required via the interface. Invalid.
+ * @phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint -- Type is too complex to document properly.
  */
 final class Threshold implements Report {
 

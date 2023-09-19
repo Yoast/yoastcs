@@ -430,6 +430,15 @@
 	SNIFFS TO ENFORCE CODE MODERNIZATION
 	#############################################################################
 	-->
+	<!-- Modernize: Enforce the use of ClassName::class (PHP 5.5+). -->
+	<!-- A better version of this sniff is expected in PHPCSExtra at some point in the future. -->
+	<rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference">
+		<properties>
+			<!-- Prevent unsolvable issues as use with variables is PHP 8.0+. -->
+			<property name="enableOnObjects" value="false"/>
+		</properties>
+	</rule>
+
 	<!-- Undo the WPCS-Extra silencing of the "no nested dirnames, use $levels" notice (PHP 7.0+). -->
 	<rule ref="Modernize.FunctionCalls.Dirname.Nested">
 		<severity>5</severity>

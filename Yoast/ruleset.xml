@@ -407,6 +407,26 @@
 
 	<!--
 	#############################################################################
+	SNIFFS TO PREVENT SOME WP COMPATIBILITY ISSUES
+	Some of these sniffs are expected to end up in WordPressCS in the future.
+	#############################################################################
+	-->
+	<!-- Verify method signatures for compatibility with a few typical WP parent classes. -->
+	<rule ref="WordPressVIPMinimum.Classes.DeclarationCompatibility"/>
+
+	<!-- Verify that all functions which are hooked into a filter always return a value. -->
+	<rule ref="WordPressVIPMinimum.Hooks.AlwaysReturnInFilter"/>
+
+	<!-- Verify that some typical functions with mixed return types are not nested.
+		 This can prevent some TypeErrors and related deprecation notices. -->
+	<rule ref="WordPressVIPMinimum.Security.EscapingVoidReturnFunctions"/>
+
+	<!-- Verify that the correct escaping function is used based on the context. -->
+	<rule ref="WordPressVIPMinimum.Security.ProperEscapingFunction"/>
+
+
+	<!--
+	#############################################################################
 	SNIFFS TO ENFORCE CODE MODERNIZATION
 	#############################################################################
 	-->

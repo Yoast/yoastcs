@@ -336,6 +336,9 @@
 	<!-- Enforces using shorthand scalar typehint variants. -->
 	<rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
 
+	<!-- Enforces null type hint on last position. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition"/>
+
 	<!-- CS: don't allow "// end class" comments and the likes. -->
 	<rule ref="PSR12.Classes.ClosingBrace"/>
 

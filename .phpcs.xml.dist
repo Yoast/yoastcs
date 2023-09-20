@@ -62,7 +62,10 @@
 	</rule>
 
 	<!-- Enforce PSR1 compatible namespaces. -->
-	<rule ref="PSR1.Classes.ClassDeclaration"/>
+	<rule ref="PSR1.Classes.ClassDeclaration">
+		<!-- YoastCS only applies this rule to test files. Overrule it to apply to all files. -->
+		<include-pattern>*\.php$</include-pattern>
+	</rule>
 
 	<!-- Enforce Final classes to prevent issues with the PHPCS autoloader. -->
 	<rule ref="Universal.Classes.RequireFinalClass"/>

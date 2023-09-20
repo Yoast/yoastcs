@@ -475,4 +475,12 @@
 		<exclude-pattern>*/tests(/*)?/Doubles/*\.php$</exclude-pattern>
 	</rule>
 
+	<!-- Enforce that all test code is namespaced. -->
+	<rule ref="PSR1.Classes.ClassDeclaration">
+		<include-pattern>*/tests/*\.php$</include-pattern>
+
+		<!-- "One object per file" is already enforced by another sniff, so don't report. -->
+		<exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/>
+	</rule>
+
 </ruleset>

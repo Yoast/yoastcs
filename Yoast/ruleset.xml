@@ -450,4 +450,18 @@
 	<!-- Modernize: Enforce a nullable type declaration when the param has a null default value (PHP 7.1+). -->
 	<rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
 
+
+	<!--
+	#############################################################################
+	RULES SPECIFICALLY FOR THE AUTOMATED TESTS
+	A few rules never need to be applied to test files.
+	Other rules should _only_ be applied to test files.
+	#############################################################################
+	-->
+	<!-- Tests are not run within the context of a WP install, so overwriting WP globals is fine
+		 (as long as they're reset after). -->
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>

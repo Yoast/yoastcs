@@ -483,4 +483,11 @@
 		<exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/>
 	</rule>
 
+	<!-- Enforce that all test classes are either final or abstract. -->
+	<rule ref="Universal.Classes.RequireFinalClass">
+		<include-pattern>*/tests/*\.php$</include-pattern>
+		<!-- But don't enforce this for Mock/Double classes. -->
+		<exclude-pattern>*/tests(/*)?/Doubles/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>

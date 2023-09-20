@@ -68,7 +68,10 @@
 	</rule>
 
 	<!-- Enforce Final classes to prevent issues with the PHPCS autoloader. -->
-	<rule ref="Universal.Classes.RequireFinalClass"/>
+	<rule ref="Universal.Classes.RequireFinalClass">
+		<!-- YoastCS only applies this rule to test files. Overrule it to apply to all files. -->
+		<include-pattern>*\.php$</include-pattern>
+	</rule>
 
 
 	<!--

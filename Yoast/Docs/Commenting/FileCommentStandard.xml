@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-    A file containing a (named) namespace declaration does not need a file docblock.
+    A file containing a (named) namespace declaration and an OO declaration does not need a file docblock.
     ]]>
     </standard>
     <code_comparison>

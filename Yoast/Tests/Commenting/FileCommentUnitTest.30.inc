@@ -8,6 +8,6 @@
 namespace Yoast\Plugin\Sub;
 
 /**
- * Class docblock.
+ * Trait docblock.
  */
-class Testing {}
+trait Testing {}

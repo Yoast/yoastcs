@@ -3,7 +3,7 @@
 namespace Yoast\Plugin\Sub {
 
 	/**
-	 * Class docblock. A file docblock is not needed in a namespaced file, even when it contains scoped namespaces.
+	 * Class docblock. A file docblock is not needed in a namespaced file containing an OO structure, even when it contains scoped namespaces.
 	 */
 	class Testing {}
 }

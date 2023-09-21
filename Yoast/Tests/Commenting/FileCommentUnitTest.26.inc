@@ -8,6 +8,8 @@
 namespace Yoast\Plugin\Sub;
 
 /**
- * Class docblock.
+ * Interface docblock.
  */
-class Testing {}
+interface Testing {
+	public function test();
+}

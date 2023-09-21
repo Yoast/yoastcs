@@ -20,7 +20,8 @@
 	"homepage": "https://github.com/Yoast/yoastcs",
 	"support": {
 		"issues": "https://github.com/Yoast/yoastcs/issues",
-		"source": "https://github.com/Yoast/yoastcs"
+		"source": "https://github.com/Yoast/yoastcs",
+		"security": "https://github.com/Yoast/yoastcs/security/policy"
 	},
 	"require": {
 		"php": ">=7.2",

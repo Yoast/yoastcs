@@ -63,5 +63,13 @@
 		"check-complete": [
 			"@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./Yoast"
 		]
+	},
+	"scripts-descriptions": {
+		"lint": "Check the PHP files for parse errors.",
+		"check-cs": "Check the PHP files for code style violations and best practices.",
+		"fix-cs": "Auto-fix code style violations in the PHP files.",
+		"test": "Run the unit tests without code coverage.",
+		"coverage": "Run the unit tests with code coverage.",
+		"check-complete": "Check if all the sniffs have tests and XML documentation."
 	}
 }

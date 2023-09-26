@@ -1,7 +1,7 @@
 vendor/
 composer.lock
-.phpcs.xml
 .cache/phpcs.cache
+.phpcs.xml
 phpcs.xml
 phpunit.xml
 build/

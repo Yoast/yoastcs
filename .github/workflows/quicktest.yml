@@ -100,6 +100,4 @@ jobs:
 
       - name: Run the unit tests - PHP 8.1+
         if: ${{ matrix.php_version >= '8.1' || matrix.php_version == 'latest'}}
-        run: composer test -- --no-configuration --dont-report-useless-tests
-        env:
-          PHPCS_IGNORE_TESTS: 'PHPCompatibility,WordPress'
+        run: composer test -- --no-configuration --bootstrap=./phpunit-bootstrap.php --dont-report-useless-tests

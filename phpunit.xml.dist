@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
 	backupGlobals="true"
+	bootstrap="./phpunit-bootstrap.php"
 	beStrictAboutTestsThatDoNotTestAnything="false"
 	colors="true"
 	convertErrorsToExceptions="true"
@@ -29,8 +30,4 @@
 		<log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>
 	</logging>
-
-	<php>
-		<env name="PHPCS_IGNORE_TESTS" value="PHPCompatibility,WordPress"/>
-	</php>
 </phpunit>

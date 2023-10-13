@@ -1,6 +1,6 @@
 <?php
 
-class SomeThing {
+abstract class SomeThing {
 
 	/**
 	 * Active (non-deprecated) function.
@@ -47,12 +47,12 @@ class SomeThing {
 	 *
 	 * This is a sentence containing the phrase codeCoverageIgnore, but should not be regarded as the tag.
 	 */
-	static protected function missingStaticCodeCoverageIgnore() {}
+	final static protected function missingStaticCodeCoverageIgnore() {}
 
 	/**
 	 * @deprecated x.x
 	 */
-	public function missingCodeCoverageIgnore() {}
+	public abstract function missingCodeCoverageIgnore();
 
 	/**
 	 * @deprecated x.x

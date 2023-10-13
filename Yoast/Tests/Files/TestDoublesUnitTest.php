@@ -17,13 +17,13 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Set CLI values before the file is tested.
 	 *
-	 * @param string $testFile The name of the file being tested.
+	 * @param string $filename The name of the file being tested.
 	 * @param Config $config   The config data for the test run.
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $testFile, $config ): void {
-		if ( $testFile === 'no-basepath.inc' ) {
+	public function setCliValues( $filename, $config ): void {
+		if ( $filename === 'no-basepath.inc' ) {
 			return;
 		}
 

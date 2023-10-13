@@ -20,11 +20,11 @@ final class CoversTagUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList(): array {
 		return [
-			36  => 1,
-			37  => 1,
-			38  => 1,
-			39  => 1,
-			40  => 1,
+			20  => 1,
+			21  => 1,
+			22  => 1,
+			23  => 1,
+			24  => 1,
 			47  => 1,
 			48  => 1,
 			49  => 1,
@@ -58,6 +58,27 @@ final class CoversTagUnitTest extends AbstractSniffUnitTest {
 	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
 	public function getWarningList(): array {
-		return [];
+		return [
+			29  => 1,
+			30  => 1,
+			31  => 1,
+			32  => 1,
+			33  => 1,
+			34  => 1,
+			35  => 1,
+			36  => 1,
+			37  => 1,
+			38  => 1,
+			39  => 1,
+			40  => 1,
+			41  => 1,
+			42  => 1,
+			190 => 1,
+			191 => 1,
+			192 => 1,
+			193 => 1,
+			194 => 1,
+			195 => 1,
+		];
 	}
 }

@@ -1,30 +1,14 @@
 <?php
 
 class ClassNameTest {
-
 	/**
-	 * Docblock.
-	 *
 	 * Correct:
 	 * @covers ::global_function
 	 * @covers Name\Space\function_name
 	 * @covers \Name\Space\function_name
 	 * @covers Class_Name
-	 * @covers Class_Name<extended>
-	 * @covers Class_Name::<public>
-	 * @covers Class_Name::<protected>
-	 * @covers Class_Name::<private>
-	 * @covers Class_Name::<!public>
-	 * @covers Class_Name::<!protected>
-	 * @covers Class_Name::<!private>
 	 * @covers Name\Space\Class_Name
 	 * @covers \Name\Space\Class_Name
-	 * @covers Name\Space\Class_Name::<public>
-	 * @covers Name\Space\Class_Name::<protected>
-	 * @covers Name\Space\Class_Name::<private>
-	 * @covers Name\Space\Class_Name::<!public>
-	 * @covers Name\Space\Class_Name::<!protected>
-	 * @covers Name\Space\Class_Name::<!private>
 	 * @covers Class_Name::method_name
 	 * @covers \Class_name::method_name
 	 * @covers Name\Space\Class_Name::method_name
@@ -42,8 +26,24 @@ class ClassNameTest {
 	public function testCoversTag() {}
 
 	/**
-	 * Docblock.
-	 *
+	 * @covers Class_Name<extended>
+	 * @covers Class_Name::<public>
+	 * @covers Class_Name::<protected>
+	 * @covers Class_Name::<private>
+	 * @covers Class_Name::<!public>
+	 * @covers Class_Name::<!protected>
+	 * @covers Class_Name::<!private>
+	 * @covers \Name\Space\Class_Name<extended>
+	 * @covers \Name\Space\Class_Name::<public>
+	 * @covers Name\Space\Class_Name::<protected>
+	 * @covers Name\Space\Class_Name::<private>
+	 * @covers \Name\Space\Class_Name::<!public>
+	 * @covers Name\Space\Class_Name::<!protected>
+	 * @covers \Name\Space\Class_Name::<!private>
+	 */
+	public function testDeprecatedRemovedTagTypes() {}
+
+	/**
 	 * @covers ::global_functionA && ::other_functionA
 	 * @covers ::global_functionB & ::other_functionB
 	 * @covers ::global_functionC|::other_functionC

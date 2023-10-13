@@ -13,7 +13,8 @@ use PHPCSUtils\Utils\GetTokensAsString;
  * - each @covers tag has an annotation;
  * - there are no duplicate @covers tags;
  * - there are no duplicate @coversNothing tags;
- * - a method does not have both a @covers as well as a @coversNothing tag.
+ * - a method does not have both a @covers as well as a @coversNothing tag;
+ * - deprecated @covers tag formats are flagged. (since 3.0.0)
  *
  * @since 1.3.0
  */
@@ -25,6 +26,26 @@ final class CoversTagSniff implements Sniff {
 	 * @var string
 	 */
 	private const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)(?P>OOName)))?|::(?P>functionName)|::<[!]?(?:public|protected|private)>|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
+
+	/**
+	 * Regex to check for deprecated `@covers ClassName<extended>` tag format.
+	 *
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3630 PHPUnit 9.0 deprecation.
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3631 PHPUnit 10.0 removal.
+	 *
+	 * @var string
+	 */
+	private const DEPRECATED_FORMAT_EXTENDED = '`^(?:\\\\)?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)<extended>$`';
+
+	/**
+	 * Regex to check for deprecated `@covers *::<[!]public|protected|private>` tag format.
+	 *
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3630 PHPUnit 9.0 deprecation.
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3631 PHPUnit 10.0 removal.
+	 *
+	 * @var string
+	 */
+	private const DEPRECATED_FORMAT_VISIBILITY = '`::<[!]?(?:public|protected|private)>$`';
 
 	/**
 	 * Base error message.
@@ -94,6 +115,16 @@ final class CoversTagSniff implements Sniff {
 
 			$annotation                 = $tokens[ $next ]['content'];
 			$coversTags[ "$tag-$next" ] = $annotation;
+
+			// Check for deprecated/removed @covers formats.
+			if ( \preg_match( self::DEPRECATED_FORMAT_EXTENDED, $annotation ) === 1
+				|| \preg_match( self::DEPRECATED_FORMAT_VISIBILITY, $annotation ) === 1
+			) {
+				$warning  = 'Use of the "ClassName<*>" type values for @covers annotations has been deprecated in PHPUnit 9.0';
+				$warning .= ' and support has been removed in PHPUnit 10.0. Found: %s';
+				$data     = [ $annotation ];
+				$phpcsFile->addWarning( $warning, $next, 'RemovedFormat', $data );
+			}
 
 			if ( \preg_match( '`^' . self::VALID_CONTENT_REGEX . '$`', $annotation ) === 1 ) {
 				continue;

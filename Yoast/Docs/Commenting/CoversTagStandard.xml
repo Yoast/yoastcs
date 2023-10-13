@@ -5,10 +5,11 @@
     >
     <standard>
     <![CDATA[
-    The @covers tag used to annotate which code is coverage by a test should follow the specifications of PHPUnit with regards to the supported annotations.
-See:
-* https://phpunit.readthedocs.io/en/7.5/code-coverage-analysis.html#specifying-covered-code-parts
-* https://phpunit.readthedocs.io/en/7.5/annotations.html#covers
+    The @covers tag used to annotate which code is covered by a test should follow the specifications of PHPUnit with regards to the supported annotations.
+
+    See:
+    * https://docs.phpunit.de/en/9.6/code-coverage-analysis.html#specifying-covered-code-parts
+    * https://docs.phpunit.de/en/9.6/annotations.html#covers
     ]]>
     </standard>
     <code_comparison>
@@ -24,7 +25,7 @@ class Some_Test extends TestCase {
 }
         ]]>
         </code>
-        <code title="Invalid: Incorrect covers tag annotation.">
+        <code title="Invalid: Incorrect covers tag annotation (superfluous parentheses).">
         <![CDATA[
 class Some_Test extends TestCase {
     /**
@@ -73,7 +74,7 @@ class Some_Test extends TestCase {
     </code_comparison>
     <standard>
     <![CDATA[
-    There should be not be both a @covers tag as well as a @coversNothing tag for the same test.
+    The @covers tag and the @coversNothing tag are mutually exclusive and should never both occur in the same docblock.
     ]]>
     </standard>
     <code_comparison>

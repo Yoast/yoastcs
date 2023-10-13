@@ -18,7 +18,7 @@ final class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 		return [
 			49  => 1,
 			59  => 1,
@@ -34,7 +34,7 @@ final class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [];
 	}
 }

@@ -18,7 +18,7 @@ final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 		return [
 			12 => 1,
 			13 => 1,
@@ -35,7 +35,7 @@ final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [];
 	}
 }

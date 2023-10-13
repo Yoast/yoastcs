@@ -23,7 +23,7 @@ final class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $filename, $config ) {
+	public function setCliValues( $filename, $config ): void {
 		$config->warningSeverity = 3;
 	}
 
@@ -32,7 +32,7 @@ final class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 
 		return [
 			14  => 1,
@@ -58,7 +58,7 @@ final class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [
 			16  => 1,
 			19  => 1,

@@ -20,7 +20,7 @@ final class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList( $testFile = '' ) {
+	public function getErrorList( string $testFile = '' ): array {
 
 		switch ( $testFile ) {
 			case 'ObjectNameDepthUnitTest.2.inc':
@@ -56,7 +56,7 @@ final class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList( $testFile = '' ) {
+	public function getWarningList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			case 'ObjectNameDepthUnitTest.2.inc':
 				return [

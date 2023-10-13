@@ -18,7 +18,7 @@ final class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 		return [
 			104 => 1,
 			113 => 1,
@@ -32,7 +32,7 @@ final class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [];
 	}
 }

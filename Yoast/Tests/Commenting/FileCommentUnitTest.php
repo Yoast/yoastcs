@@ -20,7 +20,7 @@ final class FileCommentUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList( $testFile = '' ) {
+	public function getErrorList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			case 'FileCommentUnitTest.2.inc':
 			case 'FileCommentUnitTest.8.inc':
@@ -42,7 +42,7 @@ final class FileCommentUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList( $testFile = '' ) {
+	public function getWarningList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			case 'FileCommentUnitTest.4.inc':
 			case 'FileCommentUnitTest.6.inc':

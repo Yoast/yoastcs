@@ -46,6 +46,9 @@ final class CoversTagUnitTest extends AbstractSniffUnitTest {
 			140 => 1,
 			150 => 1,
 			151 => 1,
+			176 => 1,
+			177 => 1,
+			178 => 1,
 		];
 	}
 

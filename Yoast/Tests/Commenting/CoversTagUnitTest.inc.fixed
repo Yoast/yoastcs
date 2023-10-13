@@ -163,4 +163,18 @@ class ClassNameTest {
 	 * @covers \Name\Space\ClassName::MethodName
 	 */
 	public function testRecognizingNamesNotFollowingWPNamingConventions() {}
+
+	/**
+	 * Docblock.
+	 */
+	public function testDocblockWithoutTags() {}
+
+	/**
+	 * Docblock.
+	 *
+	 * @covers This is not a valid annotation.
+	 * @covers \
+	 * @covers <public>
+	 */
+	public function testCompletelyInvalidAnnotations() {}
 }

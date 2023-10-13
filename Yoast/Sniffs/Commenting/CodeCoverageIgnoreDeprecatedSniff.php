@@ -45,9 +45,7 @@ final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 				continue;
 			}
 
-			if ( $tokens[ $commentEnd ]['code'] === \T_ATTRIBUTE_END
-				&& isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true
-			) {
+			if ( isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true ) {
 				$commentEnd = $tokens[ $commentEnd ]['attribute_opener'];
 				continue;
 			}
@@ -91,7 +89,7 @@ final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 		$hasTagAsString = $phpcsFile->findNext( \T_DOC_COMMENT_STRING, ( $commentStart + 1 ), $commentEnd, false, 'codeCoverageIgnore' );
 		if ( $hasTagAsString !== false ) {
 			$prev = $phpcsFile->findPrevious( \T_DOC_COMMENT_WHITESPACE, ( $hasTagAsString - 1 ), $commentStart, true );
-			if ( $prev !== false && $tokens[ $prev ]['code'] === \T_DOC_COMMENT_STAR ) {
+			if ( $tokens[ $prev ]['code'] === \T_DOC_COMMENT_STAR ) {
 				$fix = $phpcsFile->addFixableError(
 					'The `codeCoverageIgnore` annotation in the function docblock needs to be prefixed with an `@`.',
 					$hasTagAsString,

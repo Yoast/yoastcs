@@ -179,3 +179,20 @@ class ClassNameTest {
 	 */
 	public function testCompletelyInvalidAnnotations() {}
 }
+
+/**
+ * The <*> formats can also be used in combination with a `@coversDefaultClass` tag.
+ *
+ * @coversDefaultClass Class_Name
+ */
+class BracketedPartialsTest {
+	/**
+	 * @covers ::<public>
+	 * @covers ::<protected>
+	 * @covers ::<private>
+	 * @covers ::<!public>
+	 * @covers ::<!protected>
+	 * @covers ::<!private>
+	 */
+	public function testPartialTagTypes() {}
+}

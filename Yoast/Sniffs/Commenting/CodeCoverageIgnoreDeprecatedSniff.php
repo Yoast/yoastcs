@@ -5,12 +5,14 @@ namespace YoastCS\Yoast\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 
 /**
- * Verifies functions which are marked as `deprecated` have a `codeCoverageIgnore` tag
+ * Verifies functions/OO structures which are marked as `deprecated` have a `codeCoverageIgnore` tag
  * in their docblock.
  *
  * @since 1.1.0
+ * @since 3.0.0 Not just checks function docblocks, but also class/OO docblocks.
  */
 final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 
@@ -20,9 +22,13 @@ final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			\T_FUNCTION,
-		];
+		$targets = Tokens::$ooScopeTokens;
+		// Ignore interfaces as they can't contain code. Ignore anon classes as they are normally nested in another construct.
+		unset( $targets[ \T_ANON_CLASS ], $targets[ \T_INTERFACE ] );
+
+		$targets[ \T_FUNCTION ] = \T_FUNCTION;
+
+		return $targets;
 	}
 
 	/**
@@ -37,7 +43,12 @@ final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		$ignore                  = Tokens::$methodPrefixes;
+		if ( $tokens[ $stackPtr ]['code'] === \T_FUNCTION ) {
+			$ignore = Tokens::$methodPrefixes;
+		}
+		else {
+			$ignore = Collections::classModifierKeywords();
+		}
 		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
 		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {
@@ -69,7 +80,7 @@ final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 		}
 
 		if ( $deprecated === false ) {
-			// Not a deprecated function.
+			// Not a deprecated function/OO structure.
 			return;
 		}
 

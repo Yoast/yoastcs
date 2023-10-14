@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\Scopes;
@@ -78,11 +79,8 @@ final class TestsHaveCoversTagSniff implements Sniff {
 		}
 
 		// @todo: Once PHPCSUtils 1.2.0 (?) is out, replace with call to new findCommentAboveOOStructure() method.
-		$ignore = [
-			\T_WHITESPACE => \T_WHITESPACE,
-			\T_ABSTRACT   => \T_ABSTRACT,
-			\T_FINAL      => \T_FINAL,
-		];
+		$ignore                  = Collections::classModifierKeywords();
+		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
 		$commentEnd = $stackPtr;
 		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {

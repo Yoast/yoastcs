@@ -178,3 +178,20 @@ class DoesNotHaveOurTargetTagsTest {
  */
 function testMe() {}
 
+/**
+ * Docblocks above PHP 8.2 readonly test classes should be recognized correctly.
+ *
+ * @covers \Some\Class::methodName
+ */
+readonly class ReadonlyTest {
+	public function testMe() {}
+}
+
+/**
+ * Docblocks above PHP 8.2 readonly test classes should be recognized correctly.
+ *
+ * @covers \Some\Class::methodName
+ */
+final readonly class FinalReadonlyTest {
+	public function testMe() {}
+}

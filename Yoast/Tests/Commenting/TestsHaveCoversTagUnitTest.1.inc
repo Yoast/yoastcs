@@ -172,3 +172,9 @@ class DoesNotHaveOurTargetTagsTest {
 	 */
 	final public function testSomething($input, $expected) {}
 }
+
+/**
+ * Global functions should be ignored as PHPUnit tests should always be in a class.
+ */
+function testMe() {}
+

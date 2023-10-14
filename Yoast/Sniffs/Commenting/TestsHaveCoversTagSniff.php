@@ -7,6 +7,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\ObjectDeclarations;
+use PHPCSUtils\Utils\Scopes;
 
 /**
  * Verifies that all test functions have at least one @covers tag.
@@ -137,6 +138,11 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 */
 	private function process_function( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
+
+		if ( Scopes::isOOMethod( $phpcsFile, $stackPtr ) === false ) {
+			// This is a global function, not a method in a test class.
+			return;
+		}
 
 		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveFunction() method.
 		$ignore                  = Tokens::$methodPrefixes;

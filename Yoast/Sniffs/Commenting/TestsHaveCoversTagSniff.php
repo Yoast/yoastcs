@@ -184,6 +184,11 @@ final class TestsHaveCoversTagSniff implements Sniff {
 		}
 
 		$name = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
+		if ( empty( $name ) ) {
+			// Parse error. Ignore this method as it will never be run as a test.
+			return;
+		}
+
 		if ( \stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
 			// Not a test method.
 			return;

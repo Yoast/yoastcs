@@ -26,8 +26,14 @@ final class FileCommentUnitTest extends AbstractSniffUnitTest {
 			case 'FileCommentUnitTest.8.inc':
 			case 'FileCommentUnitTest.10.inc':
 			case 'FileCommentUnitTest.12.inc':
+			case 'FileCommentUnitTest.22.inc':
 				return [
 					1 => 1,
+				];
+
+			case 'FileCommentUnitTest.21.inc':
+				return [
+					2 => 1,
 				];
 
 			default:

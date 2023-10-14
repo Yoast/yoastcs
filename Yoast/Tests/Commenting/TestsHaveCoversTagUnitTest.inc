@@ -29,7 +29,7 @@ class ClassLevelCoversTest {
 /**
  * @coversNothing
  */
-class ClassLevelCoversNothingTest {
+final class ClassLevelCoversNothingTest {
 
 	/**
 	 * Docblock.
@@ -85,7 +85,7 @@ class ClassNameTest {
 	 *
 	 * @test
 	 */
-	public function annotatedTestMissingCoversTag() {}
+	public static function annotatedTestMissingCoversTag() {}
 
 	/**
 	 * Docblock.
@@ -101,14 +101,14 @@ class ClassNameTest {
 	 * @test
 	 * @covers ::globalFunction
 	 */
-	public function annotatedTestHasCoversTag() {}
+	final public function annotatedTestHasCoversTag() {}
 }
 
 /**
  * @covers ClassName
  */
 #[Some_Attribute]
-class ClassLevelCoversWithAttributeTest {
+final class ClassLevelCoversWithAttributeTest {
 
 	/**
 	 * Docblock.

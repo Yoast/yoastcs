@@ -154,3 +154,21 @@ abstract class ContainsTestMethodsTestCase {
 	 */
 	abstract function testToBeImplementedInChildClass();
 }
+
+/**
+ * Docblock.
+ *
+ * @sometag
+ * @anothertag
+ */
+class DoesNotHaveOurTargetTagsTest {
+	/**
+	 * Docblock with tags, but not any of the tags we're looking for.
+	 *
+	 * @param mixed  $input
+	 * @param string $expected
+	 *
+	 * @return void
+	 */
+	final public function testSomething($input, $expected) {}
+}

@@ -31,6 +31,7 @@ final class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 					126 => 1,
 					142 => 1,
 					150 => 1,
+					173 => 1,
 				];
 
 			default:

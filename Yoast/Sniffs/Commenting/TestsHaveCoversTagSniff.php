@@ -63,9 +63,10 @@ final class TestsHaveCoversTagSniff implements Sniff {
 		$tokens = $phpcsFile->getTokens();
 		$name   = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 
-		if ( \substr( $name, -4 ) !== 'Test'
-			&& \substr( $name, -8 ) !== 'TestCase'
-			&& \substr( $name, 0, 4 ) !== 'Test'
+		if ( empty( $name )
+			|| ( \substr( $name, -4 ) !== 'Test'
+				&& \substr( $name, -8 ) !== 'TestCase'
+				&& \substr( $name, 0, 4 ) !== 'Test' )
 		) {
 			// Not a test class.
 			if ( isset( $tokens[ $stackPtr ]['scope_closer'] ) ) {

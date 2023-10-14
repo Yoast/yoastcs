@@ -46,9 +46,8 @@ final class TestsHaveCoversTagSniff implements Sniff {
 			return $this->process_class( $phpcsFile, $stackPtr );
 		}
 
-		if ( $tokens[ $stackPtr ]['code'] === \T_FUNCTION ) {
-			return $this->process_function( $phpcsFile, $stackPtr );
-		}
+		// This must be a T_FUNCTION token.
+		$this->process_function( $phpcsFile, $stackPtr );
 	}
 
 	/**
@@ -78,7 +77,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 			return;
 		}
 
-		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveOOStructure() method.
+		// @todo: Once PHPCSUtils 1.2.0 (?) is out, replace with call to new findCommentAboveOOStructure() method.
 		$ignore = [
 			\T_WHITESPACE => \T_WHITESPACE,
 			\T_ABSTRACT   => \T_ABSTRACT,
@@ -113,10 +112,12 @@ final class TestsHaveCoversTagSniff implements Sniff {
 		foreach ( $tokens[ $commentStart ]['comment_tags'] as $tag ) {
 			if ( $tokens[ $tag ]['content'] === '@covers' ) {
 				$foundCovers = true;
+				break;
 			}
 
 			if ( $tokens[ $tag ]['content'] === '@coversNothing' ) {
 				$foundCoversNothing = true;
+				break;
 			}
 		}
 
@@ -144,7 +145,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 			return;
 		}
 
-		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveFunction() method.
+		// @todo: Once PHPCSUtils 1.2.0 (?) is out, replace with call to new findCommentAboveFunction() method.
 		$ignore                  = Tokens::$methodPrefixes;
 		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 

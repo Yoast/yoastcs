@@ -20,13 +20,13 @@ final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList(): array {
 		return [
-			12 => 1,
 			13 => 1,
 			14 => 1,
-			16 => 1,
+			15 => 1,
 			17 => 1,
-			21 => 1,
+			18 => 1,
 			22 => 1,
+			23 => 1,
 		];
 	}
 

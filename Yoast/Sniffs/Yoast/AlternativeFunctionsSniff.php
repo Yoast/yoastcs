@@ -2,6 +2,7 @@
 
 namespace YoastCS\Yoast\Sniffs\Yoast;
 
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\MessageHelper;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\PassedParameters;
@@ -80,14 +81,24 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 
 		$fix = MessageHelper::addFixableMessage( $this->phpcsFile, $message, $stackPtr, $is_error, $error_code, $data );
 		if ( $fix === true ) {
-			$namespaced = Namespaces::determineNamespace( $this->phpcsFile, $stackPtr );
+			$this->phpcsFile->fixer->beginChangeset();
 
+			// Remove potential leading namespace separator for fully qualified function call.
+			$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
+			if ( $this->tokens[ $prev ]['code'] === \T_NS_SEPARATOR ) {
+				$this->phpcsFile->fixer->replaceToken( $prev, '' );
+			}
+
+			// Replace the function call with a, potentially fully qualified, call to the replacement.
+			$namespaced = Namespaces::determineNamespace( $this->phpcsFile, $stackPtr );
 			if ( empty( $namespaced ) || empty( $replacement ) ) {
 				$this->phpcsFile->fixer->replaceToken( $stackPtr, $replacement );
 			}
 			else {
 				$this->phpcsFile->fixer->replaceToken( $stackPtr, '\\' . $replacement );
 			}
+
+			$this->phpcsFile->fixer->endChangeset();
 		}
 	}
 }

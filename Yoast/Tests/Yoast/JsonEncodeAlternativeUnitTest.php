@@ -5,13 +5,13 @@ namespace YoastCS\Yoast\Tests\Yoast;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the AlternativeFunctions sniff.
+ * Unit test class for the JsonEncodeAlternative sniff.
  *
  * @since 1.3.0
  *
- * @covers YoastCS\Yoast\Sniffs\Yoast\AlternativeFunctionsSniff
+ * @covers YoastCS\Yoast\Sniffs\Yoast\JsonEncodeAlternativeSniff
  */
-final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
+final class JsonEncodeAlternativeUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.

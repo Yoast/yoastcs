@@ -12,8 +12,9 @@ use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
  * Discourages the use of various functions and suggests (Yoast) alternatives.
  *
  * @since 1.3.0
+ * @since 3.0.0 Renamed from `AlternativeFunctionsSniff` to `JsonEncodeAlternativeSniff`.
  */
-final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
+final class JsonEncodeAlternativeSniff extends AbstractFunctionRestrictionsSniff {
 
 	/**
 	 * Groups of functions to restrict.

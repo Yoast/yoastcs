@@ -464,4 +464,10 @@
 		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
 	</rule>
 
+	<!-- It is fine to use the PHP json_encode() function for mocking the WP/Yoast alternative
+		 or for setting up the "expected" value. -->
+	<rule ref="Yoast.Yoast.JsonEncodeAlternative">
+		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>

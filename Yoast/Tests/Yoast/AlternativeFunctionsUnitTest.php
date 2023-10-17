@@ -29,6 +29,9 @@ final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 			23 => 1,
 			26 => 1,
 			27 => 1,
+			30 => 1,
+			31 => 1,
+			35 => 1,
 		];
 	}
 

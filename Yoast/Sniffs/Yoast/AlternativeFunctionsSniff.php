@@ -71,6 +71,18 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 					$error_code .= 'WithAdditionalParams';
 				}
 
+				/*
+				 * When the function call uses parameter unpacking, the parameter count is unreliable.
+				 */
+				$ignore                        = Tokens::$emptyTokens;
+				$ignore[ \T_OPEN_PARENTHESIS ] = \T_OPEN_PARENTHESIS;
+
+				$first_in_call = $this->phpcsFile->findNext( $ignore, ( $stackPtr + 1 ), null, true );
+				if ( $first_in_call !== false && $this->tokens[ $first_in_call ]['code'] === \T_ELLIPSIS ) {
+					$fixable     = false;
+					$error_code .= 'WithAdditionalParams';
+				}
+
 				break;
 		}
 

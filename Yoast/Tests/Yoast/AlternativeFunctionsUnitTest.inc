@@ -25,3 +25,11 @@ $json = wp_json_encode( $thing ); // Error.
 // Safeguard that the leading \ does not get doubled.
 $json = \json_encode( $thing ); // Error.
 $json = \wp_json_encode( $thing ); // Error.
+
+// Safeguard that parameter unpacking gets recognized and makes the error non-fixable.
+$json = json_encode (...$params); // Error, non-fixable.
+$json = wp_json_encode( ...$params ); // Error, non-fixable.
+
+// Live coding/parse error test.
+// This must be the last test in the file.
+$json = wp_json_encode(

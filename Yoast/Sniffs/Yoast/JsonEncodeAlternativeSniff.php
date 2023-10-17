@@ -86,6 +86,19 @@ final class JsonEncodeAlternativeSniff extends AbstractFunctionRestrictionsSniff
 		 * this sniff).
 		 */
 		if ( empty( $params ) ) {
+			/*
+			 * Make sure this is not a PHP 8.1+ first class callable. If it is, throw the error, but don't autofix.
+			 */
+			$ignore                        = Tokens::$emptyTokens;
+			$ignore[ \T_OPEN_PARENTHESIS ] = \T_OPEN_PARENTHESIS;
+
+			$first_in_call = $this->phpcsFile->findNext( $ignore, ( $stackPtr + 1 ), null, true );
+			if ( $first_in_call !== false && $this->tokens[ $first_in_call ]['code'] === \T_ELLIPSIS ) {
+				$error_code .= 'InFirstClassCallable';
+				$this->phpcsFile->addError( $error, $stackPtr, $error_code, $data );
+				return;
+			}
+
 			$fix = $this->phpcsFile->addFixableError( $error, $stackPtr, $error_code, $data );
 			if ( $fix === true ) {
 				$this->fix_it( $stackPtr );

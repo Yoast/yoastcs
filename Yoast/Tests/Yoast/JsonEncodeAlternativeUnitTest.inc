@@ -43,6 +43,10 @@ $json = wp_json_encode( data: $thing ); // Error.
 $json = json_encode( flags: 0, depth: 256, value: $thing ); // Error, non-fixable.
 $json = wp_json_encode( depth: 256, options: 0, data: $thing ); // Error, non-fixable.
 
+// Safeguard handling of the functions when used as PHP 8.1+ first class callables.
+call_user_func(json_encode(...), $something); // Error, non-fixable.
+\call_user_func(\wp_json_encode(...), $something); // Error, non-fixable.
+
 // Live coding/parse error test.
 // This must be the last test in the file.
 $json = wp_json_encode(

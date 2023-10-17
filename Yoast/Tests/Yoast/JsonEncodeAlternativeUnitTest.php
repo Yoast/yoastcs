@@ -40,7 +40,9 @@ final class JsonEncodeAlternativeUnitTest extends AbstractSniffUnitTest {
 			41 => 1,
 			43 => 1,
 			44 => 1,
+			47 => 1,
 			48 => 1,
+			52 => 1,
 		];
 	}
 

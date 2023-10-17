@@ -30,6 +30,19 @@ $json = \wp_json_encode( $thing ); // Error.
 $json = json_encode (...$params); // Error, non-fixable.
 $json = wp_json_encode( ...$params ); // Error, non-fixable.
 
+// Safeguard support for PHP 8.0+ function calls using named parameters.
+$json = wp_json_encode(); // Error - not useful as required param is missing, but that's not the concern of this sniff.
+$json = json_encode( something: $thing ); // Error, non-fixable - not useful as required param is missing, but that's not the concern of this sniff.
+$json = \wp_json_encode( depth: 256, options: 0 ); // Error, non-fixable - not useful as required param is missing, but that's not the concern of this sniff.
+$json = json_encode( depths: 256, value: $thing ); // Error, non-fixable - typo in optional param, but that's not the concern of this sniff.
+$json = json_encode( value: ); // Error, - missing the actual parameter value, but that's not the concern of this sniff.
+
+$json = \json_encode( value: $thing ); // Error.
+$json = wp_json_encode( data: $thing ); // Error.
+
+$json = json_encode( flags: 0, depth: 256, value: $thing ); // Error, non-fixable.
+$json = wp_json_encode( depth: 256, options: 0, data: $thing ); // Error, non-fixable.
+
 // Live coding/parse error test.
 // This must be the last test in the file.
 $json = wp_json_encode(

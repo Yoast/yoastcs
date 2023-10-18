@@ -6,6 +6,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
 use PHPCSUtils\Utils\ObjectDeclarations;
+use PHPCSUtils\Utils\TextStrings;
 
 /**
  * Ensures files comply with the Yoast file name rules.
@@ -89,7 +90,7 @@ final class FileNameSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
+		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
 			return ( $phpcsFile->numTokens + 1 ); // @codeCoverageIgnore

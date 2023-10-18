@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\Files;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\ObjectDeclarations;
+use PHPCSUtils\Utils\TextStrings;
 
 /**
  * Check that all mock/doubles classes are in a `doubles` directory.
@@ -72,7 +73,7 @@ final class TestDoublesSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
+		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
 			return; // @codeCoverageIgnore

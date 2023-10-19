@@ -13,18 +13,18 @@
 
 use PHP_CodeSniffer\Util\Standards;
 
-if ( \defined( 'PHP_CODESNIFFER_IN_TESTS' ) === false ) {
-	\define( 'PHP_CODESNIFFER_IN_TESTS', true );
+if ( defined( 'PHP_CODESNIFFER_IN_TESTS' ) === false ) {
+	define( 'PHP_CODESNIFFER_IN_TESTS', true );
 }
 
 /*
  * Load the necessary PHPCS files.
  */
 // Get the PHPCS dir from an environment variable.
-$phpcs_dir           = \getenv( 'PHPCS_DIR' );
+$phpcs_dir           = getenv( 'PHPCS_DIR' );
 $composer_phpcs_path = __DIR__ . '/vendor/squizlabs/php_codesniffer';
 
-if ( $phpcs_dir === false && \is_dir( $composer_phpcs_path ) ) {
+if ( $phpcs_dir === false && is_dir( $composer_phpcs_path ) ) {
 	// PHPCS installed via Composer.
 	$phpcs_dir = $composer_phpcs_path;
 }
@@ -33,13 +33,13 @@ elseif ( $phpcs_dir !== false ) {
 	 * PHPCS in a custom directory.
 	 * For this to work, the `PHPCS_DIR` needs to be set in a custom `phpunit.xml` file.
 	 */
-	$phpcs_dir = \realpath( $phpcs_dir );
+	$phpcs_dir = realpath( $phpcs_dir );
 }
 
 // Try and load the PHPCS autoloader.
 if ( $phpcs_dir !== false
-	&& \file_exists( $phpcs_dir . '/autoload.php' )
-	&& \file_exists( $phpcs_dir . '/tests/bootstrap.php' )
+	&& file_exists( $phpcs_dir . '/autoload.php' )
+	&& file_exists( $phpcs_dir . '/tests/bootstrap.php' )
 ) {
 	require_once $phpcs_dir . '/autoload.php';
 	require_once $phpcs_dir . '/tests/bootstrap.php'; // PHPUnit 6.x+ support.
@@ -74,10 +74,10 @@ foreach ( $all_standards as $standard ) {
 	$standards_to_ignore[] = $standard;
 }
 
-$standards_to_ignore_string = \implode( ',', $standards_to_ignore );
+$standards_to_ignore_string = implode( ',', $standards_to_ignore );
 
 // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv -- This is not production, but test code.
-\putenv( "PHPCS_IGNORE_TESTS={$standards_to_ignore_string}" );
+putenv( "PHPCS_IGNORE_TESTS={$standards_to_ignore_string}" );
 
 // Clean up.
 unset( $phpcs_dir, $composer_phpcs_path, $all_standards, $standards_to_ignore, $standard, $standards_to_ignore_string );

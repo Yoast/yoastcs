@@ -42,7 +42,15 @@ class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 */
 	protected function getTestFiles( $testFileBase ) {
 		$sep        = \DIRECTORY_SEPARATOR;
-		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'NamespaceNameUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
+		$test_files = \glob(
+			\dirname( $testFileBase ) . $sep . 'NamespaceNameUnitTests{'
+				. $sep . ','                                  // Files in the "NamespaceNameUnitTests" directory.
+				. $sep . '*' . $sep . ','                     // Files in first-level subdirectories.
+				. $sep . '*' . $sep . '*' . $sep . ','        // Files in second-level subdirectories.
+				. $sep . '*' . $sep . '*' . $sep . '*' . $sep // Files in third-level subdirectories.
+			. '}*.inc',
+			\GLOB_BRACE
+		);
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;

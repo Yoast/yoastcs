@@ -1,4 +1,4 @@
-phpcs:set Yoast.Files.TestDoubles doubles_path[] /tests/doesnotexist
+phpcs:set Yoast.Files.TestDoubles doubles_path[] /tests/lowercase/
 <?php
 
 class Prefix_ClassName {}

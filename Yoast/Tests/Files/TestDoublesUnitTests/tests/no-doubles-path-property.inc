@@ -3,4 +3,4 @@
 
 class Prefix_NoDoublesPathProperty_Double {}
 
-// phpcs:set Yoast.Files.TestDoubles doubles_path[] /tests/doubles
+// phpcs:set Yoast.Files.TestDoubles doubles_path[] /tests/Doubles

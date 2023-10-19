@@ -6,6 +6,8 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\TextStrings;
+use YoastCS\Yoast\Utils\PathHelper;
+use YoastCS\Yoast\Utils\PathValidationHelper;
 
 /**
  * Check that all mock/doubles classes are in a `doubles` directory.
@@ -38,14 +40,14 @@ final class TestDoublesSniff implements Sniff {
 	 * @var array<string>
 	 */
 	public $doubles_path = [
-		'/tests/doubles',
+		'/tests/Doubles',
 	];
 
 	/**
 	 * Validated absolute target paths for test fixture directories or an empty array
 	 * if the intended target directory/directories don't exist.
 	 *
-	 * @var array<string>
+	 * @var array<string, string>
 	 */
 	private $target_paths;
 
@@ -101,19 +103,9 @@ final class TestDoublesSniff implements Sniff {
 		}
 
 		if ( ! isset( $this->target_paths ) || \defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
-			$this->target_paths = [];
-
-			$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-			$base_path = \rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
-
-			foreach ( $this->doubles_path as $doubles_path ) {
-				$target_path  = $base_path;
-				$target_path .= \trim( $this->normalize_directory_separators( $doubles_path ), '/' ) . '/';
-
-				if ( \file_exists( $target_path ) && \is_dir( $target_path ) ) {
-					$this->target_paths[] = \strtolower( $target_path );
-				}
-			}
+			$this->target_paths = PathValidationHelper::relative_to_absolute( $phpcsFile, $this->doubles_path );
+			$this->target_paths = \array_filter( $this->target_paths, 'file_exists' );
+			$this->target_paths = \array_filter( $this->target_paths, 'is_dir' );
 		}
 
 		$object_name = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
@@ -158,11 +150,11 @@ final class TestDoublesSniff implements Sniff {
 			return;
 		}
 
-		$path_to_file  = $this->normalize_directory_separators( $file );
+		$path_to_file  = PathHelper::normalize_absolute_path( $file );
 		$is_double_dir = false;
 
 		foreach ( $this->target_paths as $target_path ) {
-			if ( \stripos( $path_to_file, $target_path ) !== false ) {
+			if ( PathHelper::path_starts_with( $path_to_file, $target_path ) === true ) {
 				$is_double_dir = true;
 				break;
 			}
@@ -192,16 +184,5 @@ final class TestDoublesSniff implements Sniff {
 				$data
 			);
 		}
-	}
-
-	/**
-	 * Normalize all directory separators to be a forward slash.
-	 *
-	 * @param string $path Path to normalize.
-	 *
-	 * @return string
-	 */
-	private function normalize_directory_separators( $path ) {
-		return \strtr( $path, '\\', '/' );
 	}
 }

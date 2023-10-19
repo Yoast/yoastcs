@@ -4,12 +4,12 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Common;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\NamingConventions;
 use PHPCSUtils\Utils\TextStrings;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 use YoastCS\Yoast\Utils\PathHelper;
+use YoastCS\Yoast\Utils\PathValidationHelper;
 
 /**
  * Check namespace name declarations.
@@ -81,14 +81,14 @@ final class NamespaceNameSniff implements Sniff {
 	/**
 	 * Project roots after validation.
 	 *
-	 * Validated src_directories will look like `src/`, i.e.:
-	 * - have linux slashes;
-	 * - not be prefixed with a slash;
-	 * - have a trailing slash.
+	 * Validated src_directories will look like "$basepath/src/", i.e.:
+	 * - absolute paths;
+	 * - with linux slashes;
+	 * - and a trailing slash.
 	 *
 	 * @var array<string>
 	 */
-	private $validated_src_directory = [];
+	private $validated_src_directory;
 
 	/**
 	 * Cache of previously set project roots.
@@ -97,7 +97,7 @@ final class NamespaceNameSniff implements Sniff {
 	 *
 	 * @var array<string>
 	 */
-	private $previous_src_directory = [];
+	private $previous_src_directory;
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -237,48 +237,32 @@ final class NamespaceNameSniff implements Sniff {
 			return;
 		}
 
-		$base_path = trim( PathHelper::normalize_directory_separators( $phpcsFile->config->basepath ), '//' );
-
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
 		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
-
 		if ( $file === 'STDIN' ) {
 			return; // @codeCoverageIgnore
 		}
 
-		$directory          = trim( PathHelper::normalize_directory_separators( \dirname( $file ) ), '//' );
-		$relative_directory = Common::stripBasepath( $directory, $base_path );
-		if ( $relative_directory === '.' ) {
-			$relative_directory = '';
-		}
-		else {
-			if ( $relative_directory[0] !== '/' ) {
-				/*
-				 * Basepath stripping appears to work differently depending on OS.
-				 * On Windows there still is a slash at the start, on Unix/Mac there isn't.
-				 * Normalize to allow comparison.
-				 */
-				$relative_directory = '/' . $relative_directory;
-			}
+		$directory          = PathHelper::normalize_absolute_path( \dirname( $file ) );
+		$relative_directory = '';
 
-			// Add trailing slash to prevent matching '/sub' to '/sub-directory'.
-			$relative_directory .= '/';
-		}
-
-		$this->validate_src_directory();
+		$this->validate_src_directory( $phpcsFile );
 
 		if ( empty( $this->validated_src_directory ) === false ) {
-			foreach ( $this->validated_src_directory as $subdirectory ) {
-				if ( \strpos( $relative_directory, $subdirectory ) !== 0 ) {
+			foreach ( $this->validated_src_directory as $absolute_src_path ) {
+				if ( PathHelper::path_starts_with( $directory, $absolute_src_path ) === false ) {
 					continue;
 				}
 
-				$relative_directory = \substr( $relative_directory, \strlen( $subdirectory ) );
+				$relative_directory = PathHelper::strip_basepath( $directory, $absolute_src_path );
+				if ( $relative_directory === '.' ) {
+					$relative_directory = '';
+				}
 				break;
 			}
 		}
 
-		// Now any potential src directory has been stripped, remove the slashes again.
+		// Now any potential src directory has been stripped, remove surrounding slashes.
 		$relative_directory = \trim( $relative_directory, '/' );
 
 		$expected = '[Plugin\Prefix]';
@@ -342,9 +326,11 @@ final class NamespaceNameSniff implements Sniff {
 	/**
 	 * Validate a $src_directory property when set in a custom ruleset.
 	 *
+	 * @param File $phpcsFile The file being scanned.
+	 *
 	 * @return void
 	 */
-	private function validate_src_directory() {
+	private function validate_src_directory( File $phpcsFile ) {
 		if ( $this->previous_src_directory === $this->src_directory ) {
 			return;
 		}
@@ -352,43 +338,23 @@ final class NamespaceNameSniff implements Sniff {
 		// Set the cache *before* validation so as to not break the above compare.
 		$this->previous_src_directory = $this->src_directory;
 
-		$src_directory = (array) $this->src_directory;
-		$src_directory = \array_filter( \array_map( 'trim', $src_directory ) );
+		// Clear out previously validated src directories.
+		$this->validated_src_directory = [];
 
-		if ( empty( $src_directory ) ) {
-			$this->validated_src_directory = [];
-			return;
+		// Note: the check whether a basepath is available is done in the main `process()` routine.
+		$base_path = PathHelper::normalize_absolute_path( $phpcsFile->config->basepath );
+
+		// Add any src directories.
+		$absolute_paths = PathValidationHelper::relative_to_absolute( $phpcsFile, $this->src_directory );
+
+		// The base path is always a valid src directory.
+		if ( isset( $absolute_paths['.'] ) === false ) {
+			$absolute_paths['.'] = $base_path;
 		}
 
-		$validated = [];
-		foreach ( $src_directory as $directory ) {
-			if ( \strpos( $directory, '..' ) !== false ) {
-				// Do not allow walking up the directory hierarchy.
-				continue;
-			}
-
-			$directory = trim( PathHelper::normalize_directory_separators( $directory ), '//' );
-
-			if ( $directory === '.' ) {
-				// The basepath/root directory is the default, so ignore.
-				continue;
-			}
-
-			if ( \strpos( $directory, './' ) === 0 ) {
-				$directory = \substr( $directory, 2 );
-			}
-
-			if ( $directory === '' ) {
-				continue;
-			}
-
-			$validated[] = '/' . $directory . '/';
-		}
+		$this->validated_src_directory = \array_unique( $absolute_paths );
 
 		// Use reverse natural sorting to get the longest directory first.
-		\rsort( $validated, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
-
-		// Set the validated prefixes cache.
-		$this->validated_src_directory = $validated;
+		\rsort( $this->validated_src_directory, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 	}
 }

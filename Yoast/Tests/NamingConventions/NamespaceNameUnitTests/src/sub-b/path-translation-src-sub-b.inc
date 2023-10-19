@@ -6,7 +6,7 @@
  * Includes testing of matching the longest directory first.
  *
  * @phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin
- * @phpcs:set Yoast.NamingConventions.NamespaceName src_directory[] ./src , ./src/sub-b
+ * @phpcs:set Yoast.NamingConventions.NamespaceName src_directory[] ./src , ./src/sub-b,src/sub-b,/src
  */
 
 namespace Yoast\WP\Plugin; // OK.

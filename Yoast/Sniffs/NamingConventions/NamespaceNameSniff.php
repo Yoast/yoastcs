@@ -35,7 +35,7 @@ final class NamespaceNameSniff implements Sniff {
 	 * one or more sub-directories of the project root can be indicated
 	 * as starting points for the translation.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public $src_directory = [];
 
@@ -71,7 +71,7 @@ final class NamespaceNameSniff implements Sniff {
 	 * - not be prefixed with a slash;
 	 * - have a trailing slash.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	private $validated_src_directory = [];
 
@@ -80,7 +80,7 @@ final class NamespaceNameSniff implements Sniff {
 	 *
 	 * Prevents having to do the same validation over and over again.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	private $previous_src_directory = [];
 
@@ -96,9 +96,9 @@ final class NamespaceNameSniff implements Sniff {
 	/**
 	 * Filter out all prefixes which don't have namespace separators.
 	 *
-	 * @param string[] $prefixes The unvalidated prefixes.
+	 * @param array<string> $prefixes The unvalidated prefixes.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function filter_prefixes( $prefixes ) {
 		return $this->filter_allow_only_namespace_prefixes( $prefixes );
@@ -149,7 +149,7 @@ final class NamespaceNameSniff implements Sniff {
 
 		$this->validate_prefixes();
 
-		// Strip off the plugin prefix.
+		// Strip off the (longest) plugin prefix.
 		$namespace_name_no_prefix = $namespace_name;
 		$found_prefix             = '';
 		if ( ! empty( $this->validated_prefixes ) ) {

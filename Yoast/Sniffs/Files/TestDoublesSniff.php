@@ -34,17 +34,17 @@ final class TestDoublesSniff implements Sniff {
 	 * @since 1.1.0 The property type has changed from string to array.
 	 *              Use of this property with a string value has been deprecated.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public $doubles_path = [
 		'/tests/doubles',
 	];
 
 	/**
-	 * Validated absolute target paths for test double/mock classes or an empty array
+	 * Validated absolute target paths for test fixture directories or an empty array
 	 * if the intended target directory/directories don't exist.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	private $target_paths;
 

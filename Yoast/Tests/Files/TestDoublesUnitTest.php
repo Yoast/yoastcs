@@ -41,7 +41,7 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 */
 	protected function getTestFiles( $testFileBase ) {
 		$sep        = \DIRECTORY_SEPARATOR;
-		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
+		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests' . $sep . 'tests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;
@@ -117,7 +117,7 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 			// In tests/mocks.
 			case 'correct-custom-dir-not-mock.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
 			case 'not-double-or-mock.inc': // In tests.

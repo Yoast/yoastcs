@@ -9,6 +9,7 @@ use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\NamingConventions;
 use PHPCSUtils\Utils\TextStrings;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
+use YoastCS\Yoast\Utils\PathHelper;
 
 /**
  * Check namespace name declarations.
@@ -236,7 +237,7 @@ final class NamespaceNameSniff implements Sniff {
 			return;
 		}
 
-		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
+		$base_path = trim( PathHelper::normalize_directory_separators( $phpcsFile->config->basepath ), '//' );
 
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
 		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
@@ -245,7 +246,7 @@ final class NamespaceNameSniff implements Sniff {
 			return; // @codeCoverageIgnore
 		}
 
-		$directory          = $this->normalize_directory_separators( \dirname( $file ) );
+		$directory          = trim( PathHelper::normalize_directory_separators( \dirname( $file ) ), '//' );
 		$relative_directory = Common::stripBasepath( $directory, $base_path );
 		if ( $relative_directory === '.' ) {
 			$relative_directory = '';
@@ -366,7 +367,7 @@ final class NamespaceNameSniff implements Sniff {
 				continue;
 			}
 
-			$directory = $this->normalize_directory_separators( $directory );
+			$directory = trim( PathHelper::normalize_directory_separators( $directory ), '//' );
 
 			if ( $directory === '.' ) {
 				// The basepath/root directory is the default, so ignore.
@@ -389,16 +390,5 @@ final class NamespaceNameSniff implements Sniff {
 
 		// Set the validated prefixes cache.
 		$this->validated_src_directory = $validated;
-	}
-
-	/**
-	 * Normalize all directory separators to be a forward slash and remove prefixed and suffixed slashes.
-	 *
-	 * @param string $path Path to normalize.
-	 *
-	 * @return string
-	 */
-	private function normalize_directory_separators( $path ) {
-		return \trim( \strtr( $path, '\\', '/' ), '/' );
 	}
 }

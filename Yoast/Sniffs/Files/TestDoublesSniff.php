@@ -75,7 +75,7 @@ final class TestDoublesSniff implements Sniff {
 		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return;
+			return; // @codeCoverageIgnore
 		}
 
 		if ( ! isset( $phpcsFile->config->basepath ) ) {

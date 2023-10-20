@@ -65,6 +65,7 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 				];
 
 			case 'non-existant-doubles-dir.inc':
+			case 'non-existant-doubles-dirs.inc':
 				return [
 					4 => 1,
 				];
@@ -75,11 +76,9 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 				];
 
 			case 'not-in-correct-dir-double.inc':
-				return [
-					3 => 1,
-				];
-
 			case 'not-in-correct-dir-mock.inc':
+			case 'not-in-correct-dir-interface-double.inc':
+			case 'not-in-correct-dir-trait-double.inc':
 				return [
 					3 => 1,
 				];
@@ -102,9 +101,13 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 					4 => 1,
 				];
 
+			case 'live-coding.inc': // In tests.
 			case 'not-double-or-mock.inc': // In tests.
+			case 'non-existant-doubles-dir-not-double.inc': // In tests.
 			case 'correct-dir-double.inc': // In tests/doubles.
 			case 'correct-dir-mock.inc': // In tests/doubles.
+			case 'correct-dir-interface.inc': // In tests/doubles.
+			case 'correct-dir-trait-double.inc': // In tests/doubles.
 			case 'correct-custom-dir.inc': // In tests/mocks.
 			default:
 				return [];

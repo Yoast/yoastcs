@@ -111,6 +111,7 @@ final class TestDoublesSniff implements Sniff {
 			$name_contains_double_or_mock = true;
 		}
 
+		$tokens = $phpcsFile->getTokens();
 		if ( empty( $this->target_paths ) === true ) {
 			if ( $name_contains_double_or_mock === false ) {
 				return;
@@ -118,6 +119,7 @@ final class TestDoublesSniff implements Sniff {
 
 			// Mock/Double class found, but no valid target paths found.
 			$data = [
+				$tokens[ $stackPtr ]['content'],
 				$phpcsFile->config->basepath,
 			];
 
@@ -134,7 +136,7 @@ final class TestDoublesSniff implements Sniff {
 			}
 
 			$phpcsFile->addError(
-				'Double/Mock test helper class detected, but no test doubles sub-%2$s found in "%1$s". Expected: "%3$s". Please create the sub-%2$s.',
+				'Double/Mock test helper %1$s detected, but no test fixtures sub-%3$s found in "%2$s". Expected: "%4$s". Please create the sub-%3$s.',
 				$stackPtr,
 				'NoDoublesDirectory',
 				$data
@@ -153,15 +155,14 @@ final class TestDoublesSniff implements Sniff {
 			}
 		}
 
-		$tokens = $phpcsFile->getTokens();
-		$data   = [
+		$data = [
 			$tokens[ $stackPtr ]['content'],
 			$object_name,
 		];
 
 		if ( $name_contains_double_or_mock === true && $is_double_dir === false ) {
 			$phpcsFile->addError(
-				'Double/Mock test helper classes should be placed in a dedicated test doubles sub-directory. Found %s: %s',
+				'Double/Mock test helpers should be placed in a dedicated test fixtures sub-directory. Found %s: %s',
 				$stackPtr,
 				'WrongDirectory',
 				$data
@@ -171,7 +172,7 @@ final class TestDoublesSniff implements Sniff {
 
 		if ( $name_contains_double_or_mock === false && $is_double_dir === true ) {
 			$phpcsFile->addError(
-				'Double/Mock test helper classes should contain "Double" or "Mock" in the class name. Found %s: %s',
+				'Double/Mock test helpers should contain "Double" or "Mock" in the class name. Found %s: %s',
 				$stackPtr,
 				'InvalidClassName',
 				$data

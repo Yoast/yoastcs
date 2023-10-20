@@ -3,4 +3,4 @@ phpcs:set Yoast.Files.TestDoubles doubles_path[] /tests/Mocks,/tests/Assets
 
 class Prefix_ClassName_Double {}
 
-// phpcs:set Yoast.Files.TestDoubles doubles_path[] /tests/Doubles
+// phpcs:set Yoast.Files.TestDoubles doubles_path[]

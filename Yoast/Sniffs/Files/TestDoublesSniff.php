@@ -10,9 +10,9 @@ use YoastCS\Yoast\Utils\PathHelper;
 use YoastCS\Yoast\Utils\PathValidationHelper;
 
 /**
- * Check that all mock/doubles classes are in a `doubles` directory.
+ * Check that all mock/doubles classes are in a dedicated directory for test fixtures.
  *
- * Additionally, checks that all classes in the `doubles` directory/directories
+ * Additionally, checks that all classes in this fixtures directory/directories
  * have `Double` or `Mock` in the class name.
  *
  * @since 1.0.0
@@ -26,22 +26,15 @@ final class TestDoublesSniff implements Sniff {
 	 * The paths should be relative to the root/basepath of the project and can be
 	 * customized from within a custom ruleset.
 	 *
-	 * Preferably only one path is provided per project, but in exceptional circumstances
-	 * multiple paths can be allowed.
-	 *
-	 * The new PHPCS 3.4.0 array `extend` feature can be used to add to this list.
-	 * To overrule the list, just set the property.
-	 * {@link https://github.com/squizlabs/PHP_CodeSniffer/pull/2154}
-	 *
 	 * @since 1.0.0
 	 * @since 1.1.0 The property type has changed from string to array.
 	 *              Use of this property with a string value has been deprecated.
+	 * @since 3.0.0 The default value has changed to an empty array.
+	 *              This property will now always need to be set from within a ruleset.
 	 *
 	 * @var array<string>
 	 */
-	public $doubles_path = [
-		'/tests/Doubles',
-	];
+	public $doubles_path = [];
 
 	/**
 	 * Validated absolute target paths for test fixture directories or an empty array

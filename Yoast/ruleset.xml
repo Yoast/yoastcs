@@ -115,7 +115,6 @@
 		</properties>
 	</rule>
 
-	<!-- Temporary work-around for upstream bug: squizlabs/PHP_CodeSniffer#2228 -->
 	<rule ref="Yoast.Files.TestDoubles">
 		<properties>
 			<property name="doubles_path" type="array">

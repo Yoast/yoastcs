@@ -5,8 +5,9 @@
     >
     <standard>
     <![CDATA[
-    Double/Mock test helper classes should be in their own file and placed in a dedicated test doubles sub-directory.
-The name of the dedicated sub-directory is configurable.
+    Double/Mock test helper OO structures (classes/interfaces/traits/enums) should be in their own file and placed in a dedicated test fixtures sub-directory.
+
+    The name of the dedicated sub-directory is configurable.
     ]]>
     </standard>
     <standard>

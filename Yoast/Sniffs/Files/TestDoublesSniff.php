@@ -4,16 +4,17 @@ namespace YoastCS\Yoast\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\TextStrings;
 use YoastCS\Yoast\Utils\PathHelper;
 use YoastCS\Yoast\Utils\PathValidationHelper;
 
 /**
- * Check that all mock/doubles classes are in a dedicated directory for test fixtures.
+ * Check that all mock/doubles OO structures are in a dedicated directory for test fixtures.
  *
- * Additionally, checks that all classes in this fixtures directory/directories
- * have `Double` or `Mock` in the class name.
+ * Additionally, checks that all OO structures in this fixtures directory/directories
+ * have `Double` or `Mock` in their name.
  *
  * @since 1.0.0
  * @since 3.0.0 This sniff will no longer check for multiple OO object declarations within one file.
@@ -50,11 +51,10 @@ final class TestDoublesSniff implements Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			\T_CLASS,
-			\T_INTERFACE,
-			\T_TRAIT,
-		];
+		$targets = Tokens::$ooScopeTokens;
+		unset( $targets[ \T_ANON_CLASS ] );
+
+		return $targets;
 	}
 
 	/**

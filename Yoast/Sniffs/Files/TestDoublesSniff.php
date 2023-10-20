@@ -7,12 +7,13 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
- * Check that all mock/doubles classes are in their own file and in a `doubles` directory.
+ * Check that all mock/doubles classes are in a `doubles` directory.
  *
  * Additionally, checks that all classes in the `doubles` directory/directories
  * have `Double` or `Mock` in the class name.
  *
  * @since 1.0.0
+ * @since 3.0.0 This sniff will no longer check for multiple OO object declarations within one file.
  */
 final class TestDoublesSniff implements Sniff {
 
@@ -181,29 +182,6 @@ final class TestDoublesSniff implements Sniff {
 					'Double/Mock test helper classes should contain "Double" or "Mock" in the class name. Found %s: %s',
 					$stackPtr,
 					'InvalidClassName',
-					$data
-				);
-			}
-		}
-
-		if ( $name_contains_double_or_mock === true ) {
-			$more_objects_in_file = $phpcsFile->findNext( $this->register(), ( $stackPtr + 1 ) );
-			if ( $more_objects_in_file === false ) {
-				$more_objects_in_file = $phpcsFile->findPrevious( $this->register(), ( $stackPtr - 1 ) );
-			}
-
-			if ( $more_objects_in_file !== false ) {
-				$data = [
-					$tokens[ $stackPtr ]['content'],
-					$object_name,
-					$tokens[ $more_objects_in_file ]['content'],
-					ObjectDeclarations::getName( $phpcsFile, $more_objects_in_file ),
-				];
-
-				$phpcsFile->addError(
-					'Double/Mock test helper classes should be in their own file. Found %1$s: %2$s and %3$s: %4$s',
-					$stackPtr,
-					'OneObjectPerFile',
 					$data
 				);
 			}

@@ -64,16 +64,6 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 					3 => 1,
 				];
 
-			case 'multiple-objects-in-file.inc':
-				return [
-					5 => 2,
-				];
-
-			case 'multiple-objects-in-file-reverse.inc':
-				return [
-					7 => 2,
-				];
-
 			case 'non-existant-doubles-dir.inc':
 				return [
 					4 => 1,
@@ -98,12 +88,6 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 			case 'correct-dir-not-double-or-mock.inc':
 				return [
 					3 => 1,
-				];
-
-			case 'multiple-mocks-in-file.inc':
-				return [
-					3 => 1,
-					5 => 1,
 				];
 
 			// In tests/doubles-not-correct.

@@ -226,7 +226,7 @@ final class NamespaceNameSniff implements Sniff {
 		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return;
+			return; // @codeCoverageIgnore
 		}
 
 		$directory          = $this->normalize_directory_separators( \dirname( $file ) );

@@ -208,32 +208,29 @@ final class FileNameSniff implements Sniff {
 	private function is_file_excluded( File $phpcsFile, $path_to_file ) {
 		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check, true, true );
 
-		if ( ! empty( $exclude ) ) {
-			$exclude      = \array_map( [ $this, 'normalize_directory_separators' ], $exclude );
-			$path_to_file = $this->normalize_directory_separators( $path_to_file );
-
-			if ( ! isset( $phpcsFile->config->basepath ) ) {
-				$phpcsFile->addWarning(
-					'For the exclude property to work with relative file path files, the --basepath needs to be set.',
-					0,
-					'MissingBasePath'
-				);
-			}
-			else {
-				$base_path    = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-				$path_to_file = Common::stripBasepath( $path_to_file, $base_path );
-			}
-
-			// Lowercase the filename to not interfere with the lowercase/dashes rule.
-			$path_to_file = \strtolower( \ltrim( $path_to_file, '/' ) );
-
-			if ( isset( $exclude[ $path_to_file ] ) ) {
-				// Filename is on the exclude list.
-				return true;
-			}
+		if ( empty( $exclude ) ) {
+			return false;
 		}
 
-		return false;
+		$exclude      = \array_map( [ $this, 'normalize_directory_separators' ], $exclude );
+		$path_to_file = $this->normalize_directory_separators( $path_to_file );
+
+		if ( ! isset( $phpcsFile->config->basepath ) ) {
+			$phpcsFile->addWarning(
+				'For the exclude property to work with relative file path files, the --basepath needs to be set.',
+				0,
+				'MissingBasePath'
+			);
+		}
+		else {
+			$base_path    = $this->normalize_directory_separators( $phpcsFile->config->basepath );
+			$path_to_file = Common::stripBasepath( $path_to_file, $base_path );
+		}
+
+		// Lowercase the filename to not interfere with the lowercase/dashes rule.
+		$path_to_file = \strtolower( \ltrim( $path_to_file, '/' ) );
+
+		return isset( $exclude[ $path_to_file ] );
 	}
 
 	/**

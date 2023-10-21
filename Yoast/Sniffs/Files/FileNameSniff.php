@@ -92,7 +92,7 @@ final class FileNameSniff implements Sniff {
 		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return;
+			return ( $phpcsFile->numTokens + 1 ); // @codeCoverageIgnore
 		}
 
 		$path_info = \pathinfo( $file );

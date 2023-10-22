@@ -56,6 +56,9 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'excluded-CLASS-file.inc'         => 1, // Lowercase expected.
 		'excluded-backslash-file.inc'     => 0,
 		'excluded-class-wrong-case.inc'   => 1, // Filename not in line with class name. File not excluded due to wrong case used.
+		'excluded-illegal.inc'            => 1, // Filename not in line with class name. File not excluded due to illegal path setting.
+		'excluded-multiple.inc'           => 0,
+		'excluded-dot-prefixed.inc'       => 0,
 
 		// Interface file names.
 		'outline-something-interface.inc' => 0,

@@ -4,7 +4,6 @@ namespace YoastCS\Yoast\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Common;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\TextStrings;
@@ -88,6 +87,22 @@ final class FileNameSniff implements Sniff {
 	 * @var array<string>
 	 */
 	private $clean_oo_prefixes = [];
+
+	/**
+	 * Cache of previously set list of excluded files.
+	 *
+	 * Prevents having to do the same file validation over and over again.
+	 *
+	 * @var array<string>
+	 */
+	private $previous_excluded_files = [];
+
+	/**
+	 * Validated & cleaned up list of absolute paths to the excluded files.
+	 *
+	 * @var array<string, int> Key is the path, value irrelevant.
+	 */
+	private $validated_excluded_files = [];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -248,30 +263,15 @@ final class FileNameSniff implements Sniff {
 	 * @return bool
 	 */
 	private function is_file_excluded( File $phpcsFile, $path_to_file ) {
-		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check );
-
-		if ( empty( $exclude ) ) {
+		$this->validate_excluded_files( $phpcsFile );
+		if ( empty( $this->validated_excluded_files ) ) {
 			return false;
 		}
 
-		$exclude      = \array_map( [ $this, 'normalize_directory_separators' ], $exclude );
 		$path_to_file = $this->normalize_directory_separators( $path_to_file );
-
-		if ( ! isset( $phpcsFile->config->basepath ) ) {
-			$phpcsFile->addWarning(
-				'For the exclude property to work with relative file path files, the --basepath needs to be set.',
-				0,
-				'MissingBasePath'
-			);
-		}
-		else {
-			$base_path    = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-			$path_to_file = Common::stripBasepath( $path_to_file, $base_path );
-		}
-
 		$path_to_file = \ltrim( $path_to_file, '/' );
 
-		return \in_array( $path_to_file, $exclude, true );
+		return isset( $this->validated_excluded_files[ $path_to_file ] );
 	}
 
 	/**
@@ -321,6 +321,72 @@ final class FileNameSniff implements Sniff {
 		if ( ! empty( $this->clean_oo_prefixes ) ) {
 			// Use reverse natural sorting to get the longest of overlapping prefixes first.
 			\rsort( $this->clean_oo_prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
+		}
+	}
+
+	/**
+	 * Validate the list of excluded files passed from a custom ruleset.
+	 *
+	 * This will only need to be done once in a normal PHPCS run, though for
+	 * tests the function may be called multiple times.
+	 *
+	 * @param File $phpcsFile The file being scanned.
+	 *
+	 * @return void
+	 */
+	private function validate_excluded_files( $phpcsFile ) {
+		// The basepath check needs to be done first as otherwise the previous/current comparison would be broken.
+		if ( ! isset( $phpcsFile->config->basepath ) ) {
+			$phpcsFile->addWarning(
+				'For the exclude property to work with relative file path files, the --basepath needs to be set.',
+				0,
+				'MissingBasePath'
+			);
+
+			// Only relevant for the tests: make sure previously set validated paths are cleared out.
+			$this->validated_excluded_files = [];
+
+			// No use continuing as we can't turn relative paths into absolute paths.
+			return;
+		}
+
+		if ( $this->previous_excluded_files === $this->excluded_files_strict_check ) {
+			return;
+		}
+
+		// Set the cache *before* validation so as to not break the above compare.
+		$this->previous_excluded_files = $this->excluded_files_strict_check;
+
+		// Reset a potentially previous set validated value.
+		$this->validated_excluded_files = [];
+
+		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check );
+		if ( empty( $exclude ) ) {
+			return;
+		}
+
+		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
+		$exclude   = \array_map( [ $this, 'normalize_directory_separators' ], $exclude );
+
+		foreach ( $exclude as $relative ) {
+			if ( \strpos( $relative, '..' ) !== false ) {
+				// Ignore paths containing path walking.
+				continue;
+			}
+
+			if ( \strpos( $relative, './' ) === 0 ) {
+				$relative = \substr( $relative, 2 );
+			}
+
+			/*
+			 * Note: no need to check if the file really exists. We'll be doing a literal absolute path comparison,
+			 * so if the file doesn't exist, it will never match.
+			 */
+			$this->validated_excluded_files[] = $base_path . '/' . $relative;
+		}
+
+		if ( ! empty( $this->validated_excluded_files ) ) {
+			$this->validated_excluded_files = \array_flip( $this->validated_excluded_files );
 		}
 	}
 }

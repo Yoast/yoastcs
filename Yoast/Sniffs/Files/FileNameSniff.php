@@ -234,7 +234,7 @@ final class FileNameSniff implements Sniff {
 	 * @return bool
 	 */
 	private function is_file_excluded( File $phpcsFile, $path_to_file ) {
-		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check, true );
+		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check );
 
 		if ( empty( $exclude ) ) {
 			return false;
@@ -255,8 +255,7 @@ final class FileNameSniff implements Sniff {
 			$path_to_file = Common::stripBasepath( $path_to_file, $base_path );
 		}
 
-		// Lowercase the filename to not interfere with the lowercase/dashes rule.
-		$path_to_file = \strtolower( \ltrim( $path_to_file, '/' ) );
+		$path_to_file = \ltrim( $path_to_file, '/' );
 
 		return \in_array( $path_to_file, $exclude, true );
 	}
@@ -269,18 +268,11 @@ final class FileNameSniff implements Sniff {
 	 * - Remove empty array entries.
 	 *
 	 * @param array<string> $property The current property value.
-	 * @param bool          $to_lower Whether to lowercase the array values.
 	 *
 	 * @return array<string>
 	 */
-	private function clean_custom_array_property( $property, $to_lower = false ) {
-		$property = \array_filter( \array_map( 'trim', $property ) );
-
-		if ( $to_lower === true ) {
-			$property = \array_map( 'strtolower', $property );
-		}
-
-		return $property;
+	private function clean_custom_array_property( $property ) {
+		return \array_filter( \array_map( 'trim', $property ) );
 	}
 
 	/**

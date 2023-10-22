@@ -55,6 +55,7 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'class-wpseo-some-class.inc'      => 1, // Prefixes 'class' and 'wpseo' not necessary.
 		'excluded-CLASS-file.inc'         => 1, // Lowercase expected.
 		'excluded-backslash-file.inc'     => 0,
+		'excluded-class-wrong-case.inc'   => 1, // Filename not in line with class name. File not excluded due to wrong case used.
 
 		// Interface file names.
 		'outline-something-interface.inc' => 0,

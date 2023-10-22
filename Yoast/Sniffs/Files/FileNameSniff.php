@@ -7,6 +7,8 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\TextStrings;
+use YoastCS\Yoast\Utils\PathHelper;
+use YoastCS\Yoast\Utils\PathValidationHelper;
 
 /**
  * Ensures files comply with the Yoast file name rules.
@@ -100,7 +102,7 @@ final class FileNameSniff implements Sniff {
 	/**
 	 * Validated & cleaned up list of absolute paths to the excluded files.
 	 *
-	 * @var array<string, int> Key is the path, value irrelevant.
+	 * @var array<string, string> Both the key and the value will be the same absolute path.
 	 */
 	private $validated_excluded_files = [];
 
@@ -281,8 +283,7 @@ final class FileNameSniff implements Sniff {
 			return false;
 		}
 
-		$path_to_file = $this->normalize_directory_separators( $path_to_file );
-		$path_to_file = \ltrim( $path_to_file, '/' );
+		$path_to_file = PathHelper::normalize_path( $path_to_file );
 
 		return isset( $this->validated_excluded_files[ $path_to_file ] );
 	}
@@ -300,17 +301,6 @@ final class FileNameSniff implements Sniff {
 	 */
 	private function clean_custom_array_property( $property ) {
 		return \array_filter( \array_map( 'trim', $property ) );
-	}
-
-	/**
-	 * Normalize all directory separators to be a forward slash and remove prefixed slash.
-	 *
-	 * @param string $path Path to normalize.
-	 *
-	 * @return string
-	 */
-	private function normalize_directory_separators( $path ) {
-		return \ltrim( \strtr( $path, '\\', '/' ), '/' );
 	}
 
 	/**
@@ -364,37 +354,11 @@ final class FileNameSniff implements Sniff {
 		// Set the cache *before* validation so as to not break the above compare.
 		$this->previous_excluded_files = $this->excluded_files_strict_check;
 
-		// Reset a potentially previous set validated value.
-		$this->validated_excluded_files = [];
+		$absolute_paths = PathValidationHelper::relative_to_absolute( $phpcsFile, $this->excluded_files_strict_check );
+		$absolute_paths = \array_unique( $absolute_paths );
+		$absolute_paths = \array_values( $absolute_paths );
 
-		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check );
-		if ( empty( $exclude ) ) {
-			return;
-		}
-
-		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-		$exclude   = \array_map( [ $this, 'normalize_directory_separators' ], $exclude );
-
-		foreach ( $exclude as $relative ) {
-			if ( \strpos( $relative, '..' ) !== false ) {
-				// Ignore paths containing path walking.
-				continue;
-			}
-
-			if ( \strpos( $relative, './' ) === 0 ) {
-				$relative = \substr( $relative, 2 );
-			}
-
-			/*
-			 * Note: no need to check if the file really exists. We'll be doing a literal absolute path comparison,
-			 * so if the file doesn't exist, it will never match.
-			 */
-			$this->validated_excluded_files[] = $base_path . '/' . $relative;
-		}
-
-		if ( ! empty( $this->validated_excluded_files ) ) {
-			$this->validated_excluded_files = \array_flip( $this->validated_excluded_files );
-		}
+		$this->validated_excluded_files = \array_combine( $absolute_paths, $absolute_paths );
 	}
 
 	/**

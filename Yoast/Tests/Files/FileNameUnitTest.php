@@ -25,6 +25,9 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		 * In /FileNameUnitTests.
 		 */
 
+		// Live coding/parse error test.
+		'live-coding.inc'                 => 0,
+
 		// Exclusions.
 		'excluded-file.inc'               => 0,
 		'ExcludedFile.inc'                => 1, // Lowercase expected.

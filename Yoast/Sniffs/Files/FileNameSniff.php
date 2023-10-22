@@ -125,46 +125,48 @@ final class FileNameSniff implements Sniff {
 				$tokens  = $phpcsFile->getTokens();
 				$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
-				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
-				if ( ! empty( $prefixes ) ) {
-					// Use reverse natural sorting to get the longest of overlapping prefixes first.
-					\rsort( $prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
-					foreach ( $prefixes as $prefix ) {
-						if ( $oo_name !== $prefix && \stripos( $oo_name, $prefix ) === 0 ) {
-							$oo_name = \substr( $oo_name, \strlen( $prefix ) );
-							$oo_name = \ltrim( $oo_name, '_-' );
-							break;
+				if ( ! empty( $oo_name ) ) {
+					$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
+					if ( ! empty( $prefixes ) ) {
+						// Use reverse natural sorting to get the longest of overlapping prefixes first.
+						\rsort( $prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
+						foreach ( $prefixes as $prefix ) {
+							if ( $oo_name !== $prefix && \stripos( $oo_name, $prefix ) === 0 ) {
+								$oo_name = \substr( $oo_name, \strlen( $prefix ) );
+								$oo_name = \ltrim( $oo_name, '_-' );
+								break;
+							}
 						}
 					}
-				}
 
-				$expected = \strtolower( \str_replace( '_', '-', $oo_name ) );
+					$expected = \strtolower( \str_replace( '_', '-', $oo_name ) );
 
-				switch ( $tokens[ $oo_structure ]['code'] ) {
-					case \T_CLASS:
-						$error      = 'Class file names should be based on the class name without the plugin prefix. Expected %s, but found %s.';
-						$error_code = 'InvalidClassFileName';
-						break;
+					switch ( $tokens[ $oo_structure ]['code'] ) {
+						case \T_CLASS:
+							$error      = 'Class file names should be based on the class name without the plugin prefix. Expected %s, but found %s.';
+							$error_code = 'InvalidClassFileName';
+							break;
 
-					case \T_INTERFACE:
-						$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected "%s", but found "%s".';
-						$error_code = 'InvalidInterfaceFileName';
+						case \T_INTERFACE:
+							$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected "%s", but found "%s".';
+							$error_code = 'InvalidInterfaceFileName';
 
-						// Don't duplicate "interface" in the filename.
-						if ( \substr( $expected, -10 ) !== '-interface' ) {
-							$expected .= '-interface';
-						}
-						break;
+							// Don't duplicate "interface" in the filename.
+							if ( \substr( $expected, -10 ) !== '-interface' ) {
+								$expected .= '-interface';
+							}
+							break;
 
-					case \T_TRAIT:
-						$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected "%s", but found "%s".';
-						$error_code = 'InvalidTraitFileName';
+						case \T_TRAIT:
+							$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected "%s", but found "%s".';
+							$error_code = 'InvalidTraitFileName';
 
-						// Don't duplicate "trait" in the filename.
-						if ( \substr( $expected, -6 ) !== '-trait' ) {
-							$expected .= '-trait';
-						}
-						break;
+							// Don't duplicate "trait" in the filename.
+							if ( \substr( $expected, -6 ) !== '-trait' ) {
+								$expected .= '-trait';
+							}
+							break;
+					}
 				}
 			}
 			else {

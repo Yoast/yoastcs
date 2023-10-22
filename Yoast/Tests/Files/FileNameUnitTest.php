@@ -54,6 +54,7 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'yoast.inc'                       => 0, // Class name = prefix, so there would be nothing left otherwise.
 		'class-wpseo-some-class.inc'      => 1, // Prefixes 'class' and 'wpseo' not necessary.
 		'excluded-CLASS-file.inc'         => 1, // Lowercase expected.
+		'excluded-backslash-file.inc'     => 0,
 
 		// Interface file names.
 		'outline-something-interface.inc' => 0,

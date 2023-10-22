@@ -74,6 +74,22 @@ final class FileNameSniff implements Sniff {
 	public $excluded_files_strict_check = [];
 
 	/**
+	 * Cache of previously set OO prefixes.
+	 *
+	 * Prevents having to do the same prefix validation over and over again.
+	 *
+	 * @var array<string>
+	 */
+	private $previous_oo_prefixes = [];
+
+	/**
+	 * Validated & cleaned up OO set prefixes.
+	 *
+	 * @var array<string>
+	 */
+	private $clean_oo_prefixes = [];
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array<int|string>
@@ -153,11 +169,9 @@ final class FileNameSniff implements Sniff {
 				$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
 				if ( ! empty( $oo_name ) ) {
-					$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
-					if ( ! empty( $prefixes ) ) {
-						// Use reverse natural sorting to get the longest of overlapping prefixes first.
-						\rsort( $prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
-						foreach ( $prefixes as $prefix ) {
+					$this->validate_oo_prefixes();
+					if ( ! empty( $this->clean_oo_prefixes ) ) {
+						foreach ( $this->clean_oo_prefixes as $prefix ) {
 							if ( $oo_name !== $prefix && \stripos( $oo_name, $prefix ) === 0 ) {
 								$oo_name = \substr( $oo_name, \strlen( $prefix ) );
 								$oo_name = \ltrim( $oo_name, '_-' );
@@ -284,5 +298,29 @@ final class FileNameSniff implements Sniff {
 	 */
 	private function normalize_directory_separators( $path ) {
 		return \ltrim( \strtr( $path, '\\', '/' ), '/' );
+	}
+
+	/**
+	 * Validate and sort the OO prefixes passed from a custom ruleset.
+	 *
+	 * This will only need to be done once in a normal PHPCS run, though for
+	 * tests the function may be called multiple times.
+	 *
+	 * @return void
+	 */
+	private function validate_oo_prefixes() {
+		if ( $this->previous_oo_prefixes === $this->oo_prefixes ) {
+			return;
+		}
+
+		// Set the cache *before* validation so as to not break the above compare.
+		$this->previous_oo_prefixes = $this->oo_prefixes;
+
+		$this->clean_oo_prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
+
+		if ( ! empty( $this->clean_oo_prefixes ) ) {
+			// Use reverse natural sorting to get the longest of overlapping prefixes first.
+			\rsort( $this->clean_oo_prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
+		}
 	}
 }

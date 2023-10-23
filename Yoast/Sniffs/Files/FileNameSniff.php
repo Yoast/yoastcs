@@ -16,9 +16,9 @@ use PHPCSUtils\Utils\TextStrings;
  * - (WP) Filenames should be lowercase and words should be separated by dashes (not underscores).
  * - All class files should only contain one class (enforced by another sniff) and the file name
  *   should reflect the class name without the plugin specific prefix.
- * - All interface and trait files should only contain one interface/trait (enforced by another sniff)
- *   and the file name should reflect the interface/trait name without the plugin specific prefix
- *   and with an "-interface" or "-trait" suffix.
+ * - All interface, trait and enum files should only contain one interface/trait/enum (enforced by another sniff)
+ *   and the file name should reflect the interface/trait/enum name without the plugin specific prefix
+ *   and with an "-interface", "-trait" or "-enum" suffix.
  * - Files which don't contain an object structure, but do contain function declarations should
  *   have a "-functions" suffix.
  *
@@ -34,6 +34,7 @@ final class FileNameSniff implements Sniff {
 	 */
 	private const NAMED_OO_TOKENS = [
 		\T_CLASS,
+		\T_ENUM,
 		\T_INTERFACE,
 		\T_TRAIT,
 	];
@@ -173,7 +174,7 @@ final class FileNameSniff implements Sniff {
 							$error_code = 'InvalidClassFileName';
 							break;
 
-						// Interfaces, traits.
+						// Interfaces, traits, enums.
 						default:
 							$oo_type         = \strtolower( $tokens[ $oo_structure ]['content'] );
 							$oo_type_ucfirst = \ucfirst( $oo_type );
@@ -185,7 +186,7 @@ final class FileNameSniff implements Sniff {
 							);
 							$error_code = \sprintf( 'Invalid%sFileName', $oo_type_ucfirst );
 
-							// Don't duplicate "interface/trait" in the filename.
+							// Don't duplicate "interface/trait/enum" in the filename.
 							$expected_suffix = '-' . $oo_type;
 							if ( \substr( $expected, -\strlen( $expected_suffix ) ) !== $expected_suffix ) {
 								$expected .= $expected_suffix;

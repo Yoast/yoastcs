@@ -71,6 +71,14 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'no-duplicate-trait.inc'          => 0, // Check that 'Trait' in trait name does not cause duplication in filename.
 		'excluded-trait-file.inc'         => 0,
 
+		// Enum file names.
+		'something-enum.inc'              => 0,
+		'different-enum.inc'              => 1, // Filename not in line with enum name.
+		'something.inc'                   => 1, // Missing '-enum' suffix.
+		'yoast-something.inc'             => 1, // Prefix 'yoast' not needed.
+		'no-duplicate-enum.inc'           => 0, // Check that 'Enum' in enum name does not cause duplication in filename.
+		'excluded-enum.inc'               => 0,
+
 		// Functions file names.
 		'functions.inc'                   => 0,
 		'some-functions.inc'              => 0,

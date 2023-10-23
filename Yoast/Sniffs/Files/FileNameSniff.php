@@ -114,7 +114,7 @@ final class FileNameSniff implements Sniff {
 			$extension = $path_info['extension'];
 		}
 
-		$error      = 'Filenames should be all lowercase with hyphens as word separators. Expected %s, but found %s.';
+		$error      = 'Filenames should be all lowercase with hyphens as word separators.';
 		$error_code = 'NotHyphenatedLowercase';
 		$expected   = \strtolower( \str_replace( '_', '-', $file_name ) );
 
@@ -143,12 +143,12 @@ final class FileNameSniff implements Sniff {
 
 					switch ( $tokens[ $oo_structure ]['code'] ) {
 						case \T_CLASS:
-							$error      = 'Class file names should be based on the class name without the plugin prefix. Expected %s, but found %s.';
+							$error      = 'Class file names should be based on the class name without the plugin prefix.';
 							$error_code = 'InvalidClassFileName';
 							break;
 
 						case \T_INTERFACE:
-							$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix. Expected "%s", but found "%s".';
+							$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix.';
 							$error_code = 'InvalidInterfaceFileName';
 
 							// Don't duplicate "interface" in the filename.
@@ -158,7 +158,7 @@ final class FileNameSniff implements Sniff {
 							break;
 
 						case \T_TRAIT:
-							$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix. Expected "%s", but found "%s".';
+							$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix.';
 							$error_code = 'InvalidTraitFileName';
 
 							// Don't duplicate "trait" in the filename.
@@ -172,7 +172,7 @@ final class FileNameSniff implements Sniff {
 			else {
 				$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
 				if ( $has_function !== false && $file_name !== 'functions' ) {
-					$error      = 'Files containing function declarations should have "-functions" as a suffix. Expected "%s", but found "%s".';
+					$error      = 'Files containing function declarations should have "-functions" as a suffix.';
 					$error_code = 'InvalidFunctionsFileName';
 
 					if ( \substr( $expected, -10 ) !== '-functions' ) {
@@ -185,7 +185,7 @@ final class FileNameSniff implements Sniff {
 		// Throw the error.
 		if ( $expected !== '' && $file_name !== $expected ) {
 			$phpcsFile->addError(
-				$error,
+				$error . ' Expected "%s", but found "%s".',
 				0,
 				$error_code,
 				[

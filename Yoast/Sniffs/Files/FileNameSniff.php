@@ -105,6 +105,15 @@ final class FileNameSniff implements Sniff {
 	private $validated_excluded_files = [];
 
 	/**
+	 * Track if the "missing basepath" warning has been thrown.
+	 *
+	 * This prevents this warning potentially being thrown for every single file in a PHPCS run.
+	 *
+	 * @var bool
+	 */
+	private $basepath_warning_thrown = false;
+
+	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
 	 * @return array<int|string>
@@ -176,6 +185,10 @@ final class FileNameSniff implements Sniff {
 		$error      = 'Filenames should be all lowercase with hyphens as word separators.';
 		$error_code = 'NotHyphenatedLowercase';
 		$expected   = \strtolower( \preg_replace( '`[[:punct:]]`', '-', $file_name ) );
+
+		if ( ! isset( $phpcsFile->config->basepath ) ) {
+			$this->add_missing_basepath_warning( $phpcsFile );
+		}
 
 		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
 			$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );
@@ -337,12 +350,6 @@ final class FileNameSniff implements Sniff {
 	private function validate_excluded_files( $phpcsFile ) {
 		// The basepath check needs to be done first as otherwise the previous/current comparison would be broken.
 		if ( ! isset( $phpcsFile->config->basepath ) ) {
-			$phpcsFile->addWarning(
-				'For the exclude property to work with relative file path files, the --basepath needs to be set.',
-				0,
-				'MissingBasePath'
-			);
-
 			// Only relevant for the tests: make sure previously set validated paths are cleared out.
 			$this->validated_excluded_files = [];
 
@@ -388,5 +395,26 @@ final class FileNameSniff implements Sniff {
 		if ( ! empty( $this->validated_excluded_files ) ) {
 			$this->validated_excluded_files = \array_flip( $this->validated_excluded_files );
 		}
+	}
+
+	/**
+	 * Throw a warning if the basepath is missing (and this warning hasn't been thrown before).
+	 *
+	 * @param File $phpcsFile The file being scanned.
+	 *
+	 * @return void
+	 */
+	private function add_missing_basepath_warning( File $phpcsFile ) {
+		if ( $this->basepath_warning_thrown === true ) {
+			return;
+		}
+
+		$phpcsFile->addWarning(
+			'For the exclude property to work with relative file path files, the --basepath needs to be set.',
+			0,
+			'MissingBasePath'
+		);
+
+		$this->basepath_warning_thrown = true;
 	}
 }

@@ -122,23 +122,23 @@ final class FileNameSniff implements Sniff {
 			$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );
 			if ( $oo_structure !== false ) {
 
-				$tokens = $phpcsFile->getTokens();
-				$name   = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
+				$tokens  = $phpcsFile->getTokens();
+				$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
 				$prefixes = $this->clean_custom_array_property( $this->oo_prefixes );
 				if ( ! empty( $prefixes ) ) {
 					// Use reverse natural sorting to get the longest of overlapping prefixes first.
 					\rsort( $prefixes, ( \SORT_NATURAL | \SORT_FLAG_CASE ) );
 					foreach ( $prefixes as $prefix ) {
-						if ( $name !== $prefix && \stripos( $name, $prefix ) === 0 ) {
-							$name = \substr( $name, \strlen( $prefix ) );
-							$name = \ltrim( $name, '_-' );
+						if ( $oo_name !== $prefix && \stripos( $oo_name, $prefix ) === 0 ) {
+							$oo_name = \substr( $oo_name, \strlen( $prefix ) );
+							$oo_name = \ltrim( $oo_name, '_-' );
 							break;
 						}
 					}
 				}
 
-				$expected = \strtolower( \str_replace( '_', '-', $name ) );
+				$expected = \strtolower( \str_replace( '_', '-', $oo_name ) );
 
 				switch ( $tokens[ $oo_structure ]['code'] ) {
 					case \T_CLASS:

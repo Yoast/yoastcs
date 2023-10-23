@@ -3,6 +3,6 @@ phpcs:set Yoast.Files.FileName oo_prefixes[] wpseo,yoast
 
 <?php
 
-interface Yoast_No_Duplicate_Interface {}
+INTERFACE Yoast_No_Duplicate_Interface {}
 
 // phpcs:set Yoast.Files.FileName oo_prefixes[]

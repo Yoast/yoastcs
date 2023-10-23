@@ -173,23 +173,22 @@ final class FileNameSniff implements Sniff {
 							$error_code = 'InvalidClassFileName';
 							break;
 
-						case \T_INTERFACE:
-							$error      = 'Interface file names should be based on the interface name without the plugin prefix and should have "-interface" as a suffix.';
-							$error_code = 'InvalidInterfaceFileName';
+						// Interfaces, traits.
+						default:
+							$oo_type         = \strtolower( $tokens[ $oo_structure ]['content'] );
+							$oo_type_ucfirst = \ucfirst( $oo_type );
 
-							// Don't duplicate "interface" in the filename.
-							if ( \substr( $expected, -10 ) !== '-interface' ) {
-								$expected .= '-interface';
-							}
-							break;
+							$error      = \sprintf(
+								'%1$s file names should be based on the %2$s name without the plugin prefix and should have "-%2$s" as a suffix.',
+								$oo_type_ucfirst,
+								$oo_type
+							);
+							$error_code = \sprintf( 'Invalid%sFileName', $oo_type_ucfirst );
 
-						case \T_TRAIT:
-							$error      = 'Trait file names should be based on the trait name without the plugin prefix and should have "-trait" as a suffix.';
-							$error_code = 'InvalidTraitFileName';
-
-							// Don't duplicate "trait" in the filename.
-							if ( \substr( $expected, -6 ) !== '-trait' ) {
-								$expected .= '-trait';
+							// Don't duplicate "interface/trait" in the filename.
+							$expected_suffix = '-' . $oo_type;
+							if ( \substr( $expected, -\strlen( $expected_suffix ) ) !== $expected_suffix ) {
+								$expected .= $expected_suffix;
 							}
 							break;
 					}

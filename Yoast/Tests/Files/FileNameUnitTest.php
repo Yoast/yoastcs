@@ -101,12 +101,41 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'partial-file-disable.inc'        => 1,
 		'Errorcode_Disable.inc'           => 1, // The sniff can only be disabled completely, not by error code.
 
+		// PSR4 file names.
+		'Some_Class.inc'                  => 0,
+		'Some_Enum.inc'                   => 0,
+		'Some_Interface.inc'              => 0,
+		'Some_Trait.inc'                  => 0,
+		'Wrong_Class.inc'                 => 1, // Filename not in line with class name.
+		'Wrong_Enum.inc'                  => 1, // Filename not in line with enum name.
+		'Wrong_Interface.inc'             => 1, // Filename not in line with interface name.
+		'Wrong_Trait.inc'                 => 1, // Filename not in line with trait name.
+		'wrong_case.inc'                  => 1, // Names are case-sensitive.
+		'Wrong_Case_Too.inc'              => 1, // Names are case-sensitive.
+		'WPSEO_Prefixed.inc'              => 0, // Prefixes should not be stripped for PSR4 file names.
+		'Yoast_Prefixed.inc'              => 0, // Prefixes should not be stripped for PSR4 file names.
+		'Prefix_Stripped.inc'             => 1, // Prefixes should not be stripped for PSR4 file names.
+		'Not_Excluded.inc'                => 1, // Exclusions do not apply to files where prefix stripping is not supported.
+		'no-oo.inc'                       => 0, // Files not containing OO should follow the normal rules for PSR4 dirs.
+		'no-oo-functions.inc'             => 0, // Files containing only functions should follow the normal rules for PSR4 dirs.
+		'missing-suffix.inc'              => 1, // Files containing only functions should follow the normal rules for PSR4 dirs.
+		'Multiple_Paths.inc'              => 0,
+		'Dot_Prefixed_Path.inc'           => 0,
+		'illegal-psr4-path.inc'           => 0, // PSR4 path ignored, so normal rules apply.
+		'Illegal_PSR4_Path.inc'           => 1, // PSR4 path ignored, so normal rules apply.
+
 		/*
 		 * In /.
 		 */
 
 		// Fall-back file in case glob() fails.
 		'FileNameUnitTest.inc'            => 1,
+
+		// PSR4 related, PSR4 dir is root dir.
+		'not-in-psr4-path.inc'            => 0,
+		'not-in-psr4-path-wrong-name.inc' => 1, // Filename not in line with class name, non-PSR4.
+		'PSR4_Path_Is_Root_Path.inc'      => 0,
+		'PSR4_Path_Root_Wrong_Name.inc'   => 1, // Filename not in line with class name, PSR4.
 	];
 
 	/**
@@ -118,7 +147,7 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 	 * @return void
 	 */
 	public function setCliValues( $filename, $config ): void {
-		if ( $filename === 'no-basepath.inc' ) {
+		if ( $filename === 'no-basepath.inc' || $filename === 'no-basepath-psr4.inc' ) {
 			return;
 		}
 
@@ -169,7 +198,12 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
 	public function getWarningList( string $testFile = '' ): array {
-		if ( $testFile === 'no-basepath.inc' ) {
+		/*
+		 * Note: no warning for the 'no-basepath.inc' file as the warning will only be thrown once.
+		 * Also note that in which file the warning is thrown, relies on the sorting order of the
+		 * test files, which could change.
+		 */
+		if ( $testFile === 'no-basepath-psr4.inc' ) {
 			return [
 				1 => 1,
 			];

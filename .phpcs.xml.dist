@@ -39,9 +39,6 @@
 
 	<rule ref="Yoast">
 
-		<!-- Conflicts with PHPCS autoloading of sniffs. -->
-		<exclude name="Yoast.Files.FileName"/>
-
 		<!-- This sniff is irrelevant for a PHPCS standard which follows the PHPCS directory structure. -->
 		<exclude name="Yoast.Files.TestDoubles"/>
 
@@ -76,6 +73,14 @@
 	SNIFF SPECIFIC CONFIGURATION
 	#############################################################################
 	-->
+
+	<rule ref="Yoast.Files.FileName">
+		<properties>
+			<property name="psr4_paths" type="array">
+				<element key="YoastCS\Yoast\\" value="Yoast"/>
+			</property>
+		</properties>
+	</rule>
 
 	<rule ref="Yoast.NamingConventions.NamespaceName">
 		<properties>

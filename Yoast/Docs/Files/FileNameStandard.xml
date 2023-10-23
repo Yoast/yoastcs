@@ -65,6 +65,33 @@ class WPSEO_Utils {}
     </code_comparison>
     <standard>
     <![CDATA[
+    Optionally, it can be enforced that files containing classes, interfaces, traits and enums, should follow the PSR-4 based file name rules.
+    According to PSR-4, the file name should reflect the name of the OO structure within the file.
+    
+    In contrast to the "normal" file name rules, plugin specific prefixes should only be stripped from the file name if they are also stripped off the OO structure name.
+    Additionally, interface/trait/enum files are not expected to have a suffix, other than if the interface/trait/enum structure has that suffix in its name already.
+    
+    The sniff offers a public property, which can be configured from a custom ruleset, to indicate directories which follow PSR-4.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Using a PSR-4 compliant file name for a file in a path marked as using PSR-4.">
+        <![CDATA[
+<!-- File name: <em>Yoast_Output_Thing</em>.php -->
+<?php
+class <em>Yoast_Output_Thing</em> {}
+        ]]>
+        </code>
+        <code title="Invalid: Using a Yoast/WP compliant file name for a file in a path marked as using PSR-4.">
+        <![CDATA[
+<!-- File name: <em>outline-something</em>.php -->
+<?php
+trait <em>Yoast_Outline_Something</em> {}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
     Files which don't contain an object structure, but do contain function declarations should have a "-functions" suffix.
     ]]>
     </standard>

@@ -99,12 +99,11 @@ final class TestDoublesSniff implements Sniff {
 			return ( $phpcsFile->numTokens + 1 );
 		}
 
-		$tokens    = $phpcsFile->getTokens();
-		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-		$base_path = \rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
-
 		if ( ! isset( $this->target_paths ) || \defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
 			$this->target_paths = [];
+
+			$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
+			$base_path = \rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
 
 			foreach ( $this->doubles_path as $doubles_path ) {
 				$target_path  = $base_path;
@@ -168,7 +167,8 @@ final class TestDoublesSniff implements Sniff {
 			}
 		}
 
-		$data = [
+		$tokens = $phpcsFile->getTokens();
+		$data   = [
 			$tokens[ $stackPtr ]['content'],
 			$object_name,
 		];

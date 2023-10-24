@@ -75,6 +75,17 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'some-file.inc'                   => 1, // Missing '-functions' suffix.
 		'excluded-functions-file.inc'     => 0,
 
+		// Ignore annotation handling.
+		'blanket-disable.inc'             => 0,
+		'yoast-disable.inc'               => 0,
+		'category-disable.inc'            => 0,
+		'rule-disable.inc'                => 0,
+		'disable-matching-enable.inc'     => 1,
+		'disable-non-matching-enable.inc' => 0,
+		'non-relevant-disable.inc'        => 1,
+		'partial-file-disable.inc'        => 1,
+		'Errorcode_Disable.inc'           => 1, // The sniff can only be disabled completely, not by error code.
+
 		/*
 		 * In /.
 		 */

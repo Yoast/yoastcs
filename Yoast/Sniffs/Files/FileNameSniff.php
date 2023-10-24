@@ -98,6 +98,31 @@ final class FileNameSniff implements Sniff {
 			return ( $phpcsFile->numTokens + 1 ); // @codeCoverageIgnore
 		}
 
+		// Respect phpcs:disable comments as long as they are not accompanied by an enable.
+		$tokens = $phpcsFile->getTokens();
+		$i      = -1;
+		while ( $i = $phpcsFile->findNext( \T_PHPCS_DISABLE, ( $i + 1 ) ) ) {
+			if ( empty( $tokens[ $i ]['sniffCodes'] )
+				|| isset( $tokens[ $i ]['sniffCodes']['Yoast'] )
+				|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Files'] )
+				|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Files.FileName'] )
+			) {
+				do {
+					$i = $phpcsFile->findNext( \T_PHPCS_ENABLE, ( $i + 1 ) );
+				} while ( $i !== false
+					&& ! empty( $tokens[ $i ]['sniffCodes'] )
+					&& ! isset( $tokens[ $i ]['sniffCodes']['Yoast'] )
+					&& ! isset( $tokens[ $i ]['sniffCodes']['Yoast.Files'] )
+					&& ! isset( $tokens[ $i ]['sniffCodes']['Yoast.Files.FileName'] )
+				);
+
+				if ( $i === false ) {
+					// The entire (rest of the) file is disabled.
+					return ( $phpcsFile->numTokens + 1 );
+				}
+			}
+		}
+
 		$path_info = \pathinfo( $file );
 
 		// Basename = filename + extension.
@@ -124,7 +149,6 @@ final class FileNameSniff implements Sniff {
 			$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );
 			if ( $oo_structure !== false ) {
 
-				$tokens  = $phpcsFile->getTokens();
 				$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
 				if ( ! empty( $oo_name ) ) {

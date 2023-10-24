@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\Files;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\TextStrings;
 
@@ -22,6 +23,7 @@ use PHPCSUtils\Utils\TextStrings;
  *   have a "-functions" suffix.
  *
  * @since 0.5
+ * @since 3.0.0 The sniff will now also be enforced for files only using the PHP short open tag.
  */
 final class FileNameSniff implements Sniff {
 
@@ -76,7 +78,7 @@ final class FileNameSniff implements Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		return [ \T_OPEN_TAG ];
+		return Collections::phpOpenTags();
 	}
 
 	/**

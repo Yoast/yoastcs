@@ -37,6 +37,9 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'some_file.inc'                   => 1, // Dashes, not underscores.
 		'SomeFile.inc'                    => 1, // Lowercase expected.
 		'some-File.inc'                   => 1, // Lowercase expected.
+		'short-open.inc'                  => 0,
+		'ShortOpen.inc'                   => 1, // Lowercase expected.
+		'short_Open.inc'                  => 1, // Lowercase expected, dashes, not underscores.
 
 		// Class file names.
 		'my-class.inc'                    => 0,

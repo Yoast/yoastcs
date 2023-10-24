@@ -143,7 +143,7 @@ final class FileNameSniff implements Sniff {
 
 		$error      = 'Filenames should be all lowercase with hyphens as word separators.';
 		$error_code = 'NotHyphenatedLowercase';
-		$expected   = \strtolower( \str_replace( '_', '-', $file_name ) );
+		$expected   = \strtolower( \preg_replace( '`[[:punct:]]`', '-', $file_name ) );
 
 		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
 			$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );

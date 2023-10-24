@@ -15,7 +15,7 @@
 
 	<testsuites>
 		<testsuite name="YoastCS">
-			<directory suffix="UnitTest.php">./Yoast/Tests/</directory>
+			<directory suffix="Test.php">./Yoast/Tests/</directory>
 		</testsuite>
 	</testsuites>
 

@@ -169,6 +169,10 @@
 	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
 	<rule ref="PSR12.Files.OpenTag"/>
 
+	<!-- CS: Enforces that a PHP open tag uses lowercase. -->
+	<!-- PHPCSExtra 1.2.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="Universal.PHP.LowercasePHPTag"/>
+
 	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
 	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
 

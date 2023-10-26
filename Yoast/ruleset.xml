@@ -199,6 +199,9 @@
 	<!-- CS/QA: Forbid the use of the and/or logical operators. -->
 	<rule ref="Universal.Operators.DisallowLogicalAndOr"/>
 
+	<!-- CS/QA: Forbid the use double `!`. -->
+	<rule ref="Universal.CodeAnalysis.NoDoubleNegative"/>
+
 	<!-- CS: enforce that boolean operators between conditions in multi-line control structures are
 		 consistently at the start or end of the line, not a mix of both. -->
 	<rule ref="PSR12.ControlStructures.BooleanOperatorPlacement">

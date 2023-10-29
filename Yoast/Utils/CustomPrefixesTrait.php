@@ -52,7 +52,7 @@ trait CustomPrefixesTrait {
 	 *
 	 * @return void
 	 */
-	protected function validate_prefixes() {
+	final protected function validate_prefixes() {
 		if ( $this->previous_prefixes === $this->prefixes ) {
 			return;
 		}
@@ -109,7 +109,7 @@ trait CustomPrefixesTrait {
 	 *
 	 * @return array<string>
 	 */
-	protected function filter_allow_only_namespace_prefixes( $prefixes ) {
+	final protected function filter_allow_only_namespace_prefixes( $prefixes ) {
 		$filtered = [];
 		foreach ( $prefixes as $prefix ) {
 			if ( \strpos( $prefix, '\\' ) === false ) {
@@ -129,7 +129,7 @@ trait CustomPrefixesTrait {
 	 *
 	 * @return array<string>
 	 */
-	protected function filter_exclude_lowercase_prefixes( $prefixes ) {
+	final protected function filter_exclude_lowercase_prefixes( $prefixes ) {
 		$filtered = [];
 		foreach ( $prefixes as $prefix ) {
 			if ( \strtolower( $prefix ) === $prefix ) {

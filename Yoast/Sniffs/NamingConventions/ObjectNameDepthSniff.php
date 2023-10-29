@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use WordPressCS\WordPress\Helpers\SnakeCaseHelper;
@@ -129,11 +130,8 @@ final class ObjectNameDepthSniff implements Sniff {
 		}
 
 		// Check if the OO structure is deprecated.
-		$ignore = [
-			\T_ABSTRACT   => \T_ABSTRACT,
-			\T_FINAL      => \T_FINAL,
-			\T_WHITESPACE => \T_WHITESPACE,
-		];
+		$ignore                  = Collections::classModifierKeywords();
+		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
 		$comment_end = $stackPtr;
 		for ( $comment_end = ( $stackPtr - 1 ); $comment_end >= 0; $comment_end-- ) {

@@ -135,3 +135,18 @@ enum MyEnumName {} // OK.
 enum Too_Long_Enum_Name: int {} // Error.
 enum TooLongEnumName: int {} // Error.
 enum Three_Word_Name_Mock: string implements Word_Interface {} // OK.
+
+/**
+ * Class description, no @deprecated tag.
+ *
+ * @since x.x.x
+ */
+#[Some_Attribute]
+readonly class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
+
+/**
+ * Class description.
+ *
+ * @deprecated x.x.x
+ */
+final readonly class Deprecated_Readonly_Class_With_Too_Long_Class_Name {} // OK.

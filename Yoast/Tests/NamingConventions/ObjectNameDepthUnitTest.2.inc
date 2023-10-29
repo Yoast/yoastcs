@@ -70,7 +70,7 @@ class Deprecated_Class_With_Too_Long_Class_Name {} // OK.
  * @since x.x.x
  */
 #[Some_Attribute]
-class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
+final class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
 
 /**
  * Class description.
@@ -79,7 +79,7 @@ class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
  */
 #[Attribute_One]
 #[Attribute_Two]
-class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
+abstract class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
 
 /*
  * Allow for a `_Test` suffix in classes within the unit test suite.
@@ -87,7 +87,7 @@ class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
 class Three_Word_Name_Test {} // Error.
 
 class Three_Word_Name_Test extends TestCase {} // OK.
-class Three_Word_Name_Test extends WP_UnitTestCase {} // OK.
+class Three_Word_Name_Test extends \WP_UnitTestCase {} // OK.
 
 class Four_Word_Long_Name_Test extends TestCase {} // Error.
 

@@ -6,7 +6,6 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
-use WordPressCS\WordPress\Helpers\IsUnitTestTrait;
 use WordPressCS\WordPress\Helpers\SnakeCaseHelper;
 
 /**
@@ -14,18 +13,15 @@ use WordPressCS\WordPress\Helpers\SnakeCaseHelper;
  *
  * @since 2.0.0
  * @since 3.0.0 This sniff no longer extends the WPCS abstract Sniff class.
- *
- * @uses \WordPressCS\WordPress\Helpers\IsUnitTestTrait::$custom_test_classes
  */
 final class ObjectNameDepthSniff implements Sniff {
-
-	use IsUnitTestTrait;
 
 	/**
 	 * Suffixes commonly used for classes in the test suites.
 	 *
 	 * The key is the suffix in lowercase. The value indicates whether this suffix is
 	 * only allowed when the class extends a known test class.
+	 * The value is currently unused.
 	 *
 	 * @var array<string, bool>
 	 */
@@ -113,14 +109,9 @@ final class ObjectNameDepthSniff implements Sniff {
 		 */
 		$last = \strtolower( \array_pop( $parts ) );
 		if ( isset( self::TEST_SUFFIXES[ $last ] ) ) {
-			if ( self::TEST_SUFFIXES[ $last ] === true && $this->is_test_class( $phpcsFile, $stackPtr ) ) {
+			$extends = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
+			if ( \is_string( $extends ) ) {
 				--$part_count;
-			}
-			else {
-				$extends = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
-				if ( \is_string( $extends ) ) {
-					--$part_count;
-				}
 			}
 		}
 

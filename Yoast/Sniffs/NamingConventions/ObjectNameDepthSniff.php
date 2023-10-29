@@ -4,6 +4,7 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use WordPressCS\WordPress\Helpers\SnakeCaseHelper;
@@ -62,11 +63,10 @@ final class ObjectNameDepthSniff implements Sniff {
 	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			\T_CLASS,
-			\T_INTERFACE,
-			\T_TRAIT,
-		];
+		$targets = Tokens::$ooScopeTokens;
+		unset( $targets[ \T_ANON_CLASS ] );
+
+		return $targets;
 	}
 
 	/**
@@ -107,11 +107,19 @@ final class ObjectNameDepthSniff implements Sniff {
 		/*
 		 * Allow the OO name to be one part longer for confirmed test/mock/double OO structures.
 		 */
+		$tokens = $phpcsFile->getTokens();
+
 		$last = \strtolower( \array_pop( $parts ) );
 		if ( isset( self::TEST_SUFFIXES[ $last ] ) ) {
-			$extends = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
-			if ( \is_string( $extends ) ) {
+			if ( $tokens[ $stackPtr ]['code'] === \T_ENUM ) {
+				// Enums cannot extend, but a mock/double without direct link to the parent could be needed.
 				--$part_count;
+			}
+			else {
+				$extends = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
+				if ( \is_string( $extends ) ) {
+					--$part_count;
+				}
 			}
 		}
 
@@ -126,8 +134,6 @@ final class ObjectNameDepthSniff implements Sniff {
 			\T_FINAL      => \T_FINAL,
 			\T_WHITESPACE => \T_WHITESPACE,
 		];
-
-		$tokens = $phpcsFile->getTokens();
 
 		$comment_end = $stackPtr;
 		for ( $comment_end = ( $stackPtr - 1 ); $comment_end >= 0; $comment_end-- ) {
@@ -160,7 +166,7 @@ final class ObjectNameDepthSniff implements Sniff {
 
 		// Not a deprecated OO structure, this OO structure should comply with the rules.
 		$object_type = 'a ' . $tokens[ $stackPtr ]['content'];
-		if ( $tokens[ $stackPtr ]['code'] === \T_INTERFACE ) {
+		if ( $tokens[ $stackPtr ]['code'] === \T_INTERFACE || $tokens[ $stackPtr ]['code'] === \T_ENUM ) {
 			$object_type = 'an ' . $tokens[ $stackPtr ]['content'];
 		}
 

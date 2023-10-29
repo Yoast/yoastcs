@@ -126,3 +126,12 @@ class Three_Word_Name_MOCK extends Some_Class {} // OK.
  */
 class ThreeWordNameTestCase extends TestCase {} // OK.
 class Three_Word_Name_TestCase extends TestCase {} // OK.
+
+/*
+ * Allow for PHP 8.1+ enums.
+ */
+enum My_Enum_Name {} // OK.
+enum MyEnumName {} // OK.
+enum Too_Long_Enum_Name: int {} // Error.
+enum TooLongEnumName: int {} // Error.
+enum Three_Word_Name_Mock: string implements Word_Interface {} // OK.

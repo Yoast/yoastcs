@@ -24,15 +24,15 @@ final class ObjectNameDepthSniff implements Sniff {
 	/**
 	 * Suffixes commonly used for classes in the test suites.
 	 *
-	 * The key is the suffix. The value indicates whether this suffix is
+	 * The key is the suffix in lowercase. The value indicates whether this suffix is
 	 * only allowed when the class extends a known test class.
 	 *
 	 * @var array<string, bool>
 	 */
 	private const TEST_SUFFIXES = [
-		'Test'   => true,
-		'Mock'   => false,
-		'Double' => false,
+		'test'   => true,
+		'mock'   => false,
+		'double' => false,
 	];
 
 	/**
@@ -105,7 +105,7 @@ final class ObjectNameDepthSniff implements Sniff {
 		/*
 		 * Allow the OO name to be one part longer for confirmed test/mock/double OO structures.
 		 */
-		$last = \array_pop( $parts );
+		$last = \strtolower( \array_pop( $parts ) );
 		if ( isset( self::TEST_SUFFIXES[ $last ] ) ) {
 			if ( self::TEST_SUFFIXES[ $last ] === true && $this->is_test_class( $phpcsFile, $stackPtr ) ) {
 				--$part_count;

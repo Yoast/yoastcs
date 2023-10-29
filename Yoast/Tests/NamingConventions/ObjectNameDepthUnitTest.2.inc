@@ -114,3 +114,9 @@ trait SomeACRONYMName {} // Error - false positive, this will be fixed in a late
 class TooLongClassName {} // Error.
 interface ThisInterfaceNameIsTooLong {} // Error.
 trait TraitNameIsTooLong {} // Error.
+
+// Now, let's also make sure the test/double handling works for CamelCaps class names + class names with the suffix in an unconventional case.
+class ThreeWordNameTest extends TestCase {} // OK.
+class ThreeWordNameDouble extends ThreeWordName {} // OK.
+class Three_Word_Name_test extends TestCase {} // OK.
+class Three_Word_Name_MOCK extends Some_Class {} // OK.

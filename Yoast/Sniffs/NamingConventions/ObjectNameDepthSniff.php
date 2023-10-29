@@ -30,9 +30,10 @@ final class ObjectNameDepthSniff implements Sniff {
 	 * @var array<string, bool>
 	 */
 	private const TEST_SUFFIXES = [
-		'test'   => true,
-		'mock'   => false,
-		'double' => false,
+		'test'     => true,
+		'testcase' => true,
+		'mock'     => false,
+		'double'   => false,
 	];
 
 	/**
@@ -97,6 +98,11 @@ final class ObjectNameDepthSniff implements Sniff {
 		// Handle names which are potentially in CamelCaps.
 		if ( \strpos( $snakecase_object_name, '_' ) === false ) {
 			$snakecase_object_name = SnakeCaseHelper::get_suggestion( $snakecase_object_name );
+
+			// Always treat "TestCase" as one word.
+			if ( \substr( $snakecase_object_name, -9 ) === 'test_case' ) {
+				$snakecase_object_name = \substr( $snakecase_object_name, 0, -9 ) . 'testcase';
+			}
 		}
 
 		$parts      = \explode( '_', $snakecase_object_name );

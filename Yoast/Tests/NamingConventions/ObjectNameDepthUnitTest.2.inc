@@ -120,3 +120,9 @@ class ThreeWordNameTest extends TestCase {} // OK.
 class ThreeWordNameDouble extends ThreeWordName {} // OK.
 class Three_Word_Name_test extends TestCase {} // OK.
 class Three_Word_Name_MOCK extends Some_Class {} // OK.
+
+/*
+ * TestCase classes should also be allowed extra word length.
+ */
+class ThreeWordNameTestCase extends TestCase {} // OK.
+class Three_Word_Name_TestCase extends TestCase {} // OK.

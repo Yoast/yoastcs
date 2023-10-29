@@ -78,7 +78,7 @@ final class ObjectNameDepthSniff implements Sniff {
 	 * @param File $phpcsFile The file being scanned.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void|int Optionally returns stack pointer to skip to.
+	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 
@@ -103,7 +103,7 @@ final class ObjectNameDepthSniff implements Sniff {
 		$part_count = \count( $parts );
 
 		/*
-		 * Allow the class name to be one part longer for confirmed test/mock/double classes.
+		 * Allow the OO name to be one part longer for confirmed test/mock/double OO structures.
 		 */
 		$last = \array_pop( $parts );
 		if ( isset( self::TEST_SUFFIXES[ $last ] ) ) {
@@ -123,7 +123,7 @@ final class ObjectNameDepthSniff implements Sniff {
 			return;
 		}
 
-		// Check if the class is deprecated.
+		// Check if the OO structure is deprecated.
 		$ignore = [
 			\T_ABSTRACT   => \T_ABSTRACT,
 			\T_FINAL      => \T_FINAL,
@@ -149,11 +149,11 @@ final class ObjectNameDepthSniff implements Sniff {
 		}
 
 		if ( $tokens[ $comment_end ]['code'] === \T_DOC_COMMENT_CLOSE_TAG ) {
-			// Only check if the class has a docblock.
+			// Only check if the OO structure has a docblock.
 			$comment_start = $tokens[ $comment_end ]['comment_opener'];
 			foreach ( $tokens[ $comment_start ]['comment_tags'] as $tag ) {
 				if ( $tokens[ $tag ]['content'] === '@deprecated' ) {
-					// Deprecated class, ignore.
+					// Deprecated OO structure, ignore.
 					return;
 				}
 			}
@@ -161,7 +161,7 @@ final class ObjectNameDepthSniff implements Sniff {
 
 		$phpcsFile->recordMetric( $stackPtr, 'Nr of words in object name', $part_count );
 
-		// Active class.
+		// Not a deprecated OO structure, this OO structure should comply with the rules.
 		$object_type = 'a ' . $tokens[ $stackPtr ]['content'];
 		if ( $tokens[ $stackPtr ]['code'] === \T_INTERFACE ) {
 			$object_type = 'an ' . $tokens[ $stackPtr ]['content'];

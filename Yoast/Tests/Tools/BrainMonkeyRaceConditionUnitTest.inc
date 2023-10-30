@@ -153,4 +153,41 @@ class BrainMonkeyBasedTest extends TestCase {
 
 		// Do something to satisfy expectations.
 	}
+
+	/*
+	 * Tests involving PHP 8.0+ named parameters.
+	 */
+	public function test_NOT_race_condition_wrong_param_name() {
+		Functions\expect( not_functionname: "apply_filters")->times(5);
+
+		Filters\ExpectDone  ( 'filter_name' );
+
+		// Do something to satisfy expectations.
+	}
+
+	public function test_NOT_race_condition_named_param_not_for_hook() {
+		Functions\expect( function_name: "other_function")->times(5);
+
+		Filters\ExpectDone  ( 'filter_name' );
+
+		// Do something to satisfy expectations.
+	}
+
+	public function test_filter_race_condition_named_param() {
+		Functions\expect( function_name: "apply_filters")->twice();
+
+		Filters\ExpectApplied  ( 'filter_name' )
+			->with( true );
+
+		// Do something to satisfy expectations.
+	}
+
+	public function test_action_race_condition_named_param_unconventional_order() {
+		\Brain\Monkey\Functions\Expect( something: foo, function_name: 'do_action' )->once();
+
+		Actions\expectDone( 'yoast\action_name' )
+			->with( $param );
+
+		// Do something to satisfy expectations.
+	}
 }

@@ -92,8 +92,8 @@ final class BrainMonkeyRaceConditionSniff implements Sniff {
 
 		// Now walk the contents of the function declaration to see if we can find the other function call.
 		if ( isset( $tokens[ $functionToken ]['scope_opener'], $tokens[ $functionToken ]['scope_closer'] ) === false ) {
-			// We don't know the start or end of the function.
-			return;
+			// We don't know the start or end of the function. Edge case which can't happen under normal circumstances.
+			return; // @codeCoverageIgnore
 		}
 
 		$targetContent = 'expectdone';

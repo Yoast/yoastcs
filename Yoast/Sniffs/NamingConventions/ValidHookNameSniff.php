@@ -208,6 +208,10 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 
 		$param           = $parameters[1];
 		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
+		if ( $first_non_empty === false ) {
+			// Shouldn't be possible as we've checked this before.
+			return; // @codeCoverageIgnore
+		}
 
 		/*
 		 * Check that the namespace-like prefix is used for hooks.

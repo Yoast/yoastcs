@@ -23,7 +23,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  * Check the number of words in hook names and the use of the correct prefix-type,
  * but only when plugin specific prefixes have been passed.
  *
- * {@internal For now allows for an array of both old-style as well as new-style
+ * {@internal For now, allows for an array of both old-style as well as new-style
  *            prefixes during the transition period.
  *            Once all plugins have been transitioned over to use the new-style
  *            namespace-like prefix for hooks, the `WrongPrefix` warning should be
@@ -72,7 +72,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * Keep track of the content of first text string which was passed to the `transform()`
 	 * method as it may be repeatedly called for the same token.
 	 *
-	 * @var bool
+	 * @var string
 	 */
 	private $first_string = '';
 
@@ -90,10 +90,11 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	/**
 	 * Process the parameters of a matched function.
 	 *
-	 * @param int    $stackPtr        The position of the current token in the stack.
-	 * @param string $group_name      The name of the group which was matched.
-	 * @param string $matched_content The token content (function name) which was matched.
-	 * @param array  $parameters      Array with information about the parameters.
+	 * @param int                                   $stackPtr        The position of the current token in the stack.
+	 * @param string                                $group_name      The name of the group which was matched.
+	 * @param string                                $matched_content The token content (function name) which was
+	 *                                                               matched in lowercase.
+	 * @param array<int, array<string, int|string>> $parameters      Array with information about the parameters.
 	 *
 	 * @return void
 	 */
@@ -205,8 +206,8 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	/**
 	 * Additional YoastCS specific hook name checks.
 	 *
-	 * @param int   $stackPtr        The position of the current token in the stack.
-	 * @param array $hook_name_param Array with information about the hook name parameter.
+	 * @param int                       $stackPtr        The position of the current token in the stack.
+	 * @param array<string, int|string> $hook_name_param Array with information about the hook name parameter.
 	 *
 	 * @return void
 	 */

@@ -4,6 +4,7 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\TextStrings;
+use WordPressCS\WordPress\Helpers\WPHookHelper;
 use WordPressCS\WordPress\Sniffs\NamingConventions\ValidHookNameSniff as WPCS_ValidHookNameSniff;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 
@@ -97,6 +98,12 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * @return void
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
+		$hook_name_param = WPHookHelper::get_hook_name_param( $matched_content, $parameters );
+		if ( $hook_name_param === false ) {
+			// If we can't find the hook name parameter, there's nothing to do, so bow out.
+			return;
+		}
+
 		/*
 		 * The custom prefix should be in the first text passed to `transform()` for each
 		 * matched function call.
@@ -113,7 +120,6 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		 * If any prefixes were passed, check if this is a hook belonging to the plugin being checked.
 		 */
 		if ( empty( $this->validated_prefixes ) === false ) {
-			$hook_name_param = $parameters[1];
 			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 			$found_prefix    = '';
 

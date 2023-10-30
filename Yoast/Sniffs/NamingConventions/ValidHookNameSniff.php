@@ -113,8 +113,8 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		 * If any prefixes were passed, check if this is a hook belonging to the plugin being checked.
 		 */
 		if ( empty( $this->validated_prefixes ) === false ) {
-			$param           = $parameters[1];
-			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
+			$hook_name_param = $parameters[1];
+			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 			$found_prefix    = '';
 
 			if ( isset( Tokens::$stringTokens[ $this->tokens[ $first_non_empty ]['code'] ] ) ) {
@@ -206,8 +206,8 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 */
 	public function verify_yoast_hook_name( $stackPtr, $parameters ) {
 
-		$param           = $parameters[1];
-		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
+		$hook_name_param = $parameters[1];
+		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 		if ( $first_non_empty === false ) {
 			// Shouldn't be possible as we've checked this before.
 			return; // @codeCoverageIgnore
@@ -274,7 +274,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		$allow  = [ \T_CONSTANT_ENCAPSED_STRING ];
 		$allow += Tokens::$emptyTokens;
 
-		$has_non_string = $this->phpcsFile->findNext( $allow, $param['start'], ( $param['end'] + 1 ), true );
+		$has_non_string = $this->phpcsFile->findNext( $allow, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 		if ( $has_non_string !== false ) {
 			/*
 			 * Double quoted string or a hook name concatenated together, checking the word count for the
@@ -290,7 +290,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 				'NonString',
 				[
 					$this->max_words,
-					$param['raw'],
+					$hook_name_param['raw'],
 				],
 				3
 			);

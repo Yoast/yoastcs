@@ -305,10 +305,6 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 
 		$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in hook name', $part_count );
 
-		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
-			return;
-		}
-
 		if ( $part_count > $this->max_words ) {
 			$error = 'A hook name is not allowed to consist of more than %d words after the plugin prefix. Words found: %d in %s';
 			$data  = [

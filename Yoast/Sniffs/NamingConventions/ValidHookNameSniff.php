@@ -285,10 +285,13 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			 * be thrown when PHPCS is explicitly requested to check with a lower severity.
 			 */
 			$this->phpcsFile->addWarning(
-				'Hook name could not reliably be examined for maximum word count. Please verify this hook name manually. Found: %s',
+				'Hook name could not reliably be examined for maximum word count (max is %d words). Please verify this hook name manually. Found: %s',
 				$first_non_empty,
 				'NonString',
-				[ $param['raw'] ],
+				[
+					$this->max_words,
+					$param['raw'],
+				],
 				3
 			);
 

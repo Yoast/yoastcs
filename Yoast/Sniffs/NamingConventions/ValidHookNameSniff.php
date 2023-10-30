@@ -157,7 +157,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		}
 
 		// Do the YoastCS specific hook name length and prefix check.
-		$this->verify_yoast_hook_name( $stackPtr, $parameters );
+		$this->verify_yoast_hook_name( $stackPtr, $hook_name_param );
 	}
 
 	/**
@@ -199,14 +199,13 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	/**
 	 * Additional YoastCS specific hook name checks.
 	 *
-	 * @param int   $stackPtr   The position of the current token in the stack.
-	 * @param array $parameters Array with information about the parameters.
+	 * @param int   $stackPtr        The position of the current token in the stack.
+	 * @param array $hook_name_param Array with information about the hook name parameter.
 	 *
 	 * @return void
 	 */
-	public function verify_yoast_hook_name( $stackPtr, $parameters ) {
+	private function verify_yoast_hook_name( $stackPtr, $hook_name_param ) {
 
-		$hook_name_param = $parameters[1];
 		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 		if ( $first_non_empty === false ) {
 			// Shouldn't be possible as we've checked this before.

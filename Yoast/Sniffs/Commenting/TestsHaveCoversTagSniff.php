@@ -59,7 +59,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 * @return void|int If covers annotations were found (or this is not a test class),
 	 *                  will return the stack pointer to the end of the class.
 	 */
-	protected function process_class( File $phpcsFile, $stackPtr ) {
+	private function process_class( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 		$name   = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 
@@ -134,7 +134,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 *
 	 * @return void
 	 */
-	protected function process_function( File $phpcsFile, $stackPtr ) {
+	private function process_function( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
 		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveFunction() method.

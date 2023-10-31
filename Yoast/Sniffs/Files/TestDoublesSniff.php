@@ -46,7 +46,7 @@ final class TestDoublesSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	protected $target_paths;
+	private $target_paths;
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

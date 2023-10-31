@@ -2,8 +2,8 @@
 
 /*
  * Testing namespace depth checking, including tolerance for whitespace and comments.
+ * Note: comments and whitespace in namespace names are a parse error since PHP 8.0. This was fine before that time.
  */
-
 namespace Foo \     Bar; // OK.
 namespace Foo /* comment */
 	\Bar
@@ -72,6 +72,13 @@ namespace Yoast\WP\Plugin\Tests\Doubles\Foo\Bar\Baz\Fro; // Error.
 namespace Yoast\WP\Plugin\Foo\Tests\Bar; // Warning, `Tests\` counted as not directly after the prefix.
 namespace Yoast\WP\Plugin\Tests\Foo\Doubles\Bar; // Warning, `Doubles\` counted as not directly after the prefix + `Tests\`.
 namespace Yoast\WP\Plugin\Doubles\Foo\Bar\Fro; // Error, `Doubles\` counted as not found in combination with `Tests\`.
+
+/*
+ * Test handling of namespace names with reserved keywords in them (PHP 8.0+).
+ */
+namespace Yoast\WP\Plugin\Trait\Sub; // OK.
+namespace Yoast\WP\Plugin\Foo\Bar\Global; // Warning.
+namespace Yoast\WP\Plugin\Foo\Case\Bar\Default; // Error.
 
 // Reset to default settings.
 // phpcs:set Yoast.NamingConventions.NamespaceName prefixes[]

@@ -80,6 +80,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 					66 => 1,
 					70 => 1,
 					74 => 1,
+					81 => 1,
 				];
 
 			case 'no-basepath-scoped.inc':
@@ -184,6 +185,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 					69 => 1,
 					72 => 1,
 					73 => 1,
+					80 => 1,
 				];
 
 			case 'no-basepath-scoped.inc':

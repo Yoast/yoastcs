@@ -2,9 +2,9 @@
 
 /*
  * Testing path translation.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin,yoast_plugin
  */
-
-// phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin,yoast_plugin
 
 namespace Yoast\WP\Plugin; // OK.
 

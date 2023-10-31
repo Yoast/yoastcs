@@ -124,6 +124,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			case 'path-translation-src-sub-b.inc':
 				return [
 					14 => 1,
+					15 => 1,
 				];
 
 			// Path translation with multiple items in $src_directory tests.
@@ -153,12 +154,8 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			// Path translation with no matching $src_directory.
 			case 'path-translation-mismatch.inc':
 				return [
-					13 => 1,
-				];
-
-			case 'path-translation-mismatch-illegal.inc':
-				return [
-					12 => 1,
+					14 => 1,
+					24 => 1,
 				];
 
 			default:

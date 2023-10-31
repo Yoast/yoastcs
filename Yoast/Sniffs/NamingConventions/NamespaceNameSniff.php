@@ -279,7 +279,7 @@ final class NamespaceNameSniff implements Sniff {
 	 *
 	 * @return void
 	 */
-	protected function validate_src_directory() {
+	private function validate_src_directory() {
 		if ( $this->previous_src_directory === $this->src_directory ) {
 			return;
 		}

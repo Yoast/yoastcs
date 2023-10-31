@@ -205,7 +205,7 @@ final class FileNameSniff implements Sniff {
 	 *
 	 * @return bool
 	 */
-	protected function is_file_excluded( File $phpcsFile, $path_to_file ) {
+	private function is_file_excluded( File $phpcsFile, $path_to_file ) {
 		$exclude = $this->clean_custom_array_property( $this->excluded_files_strict_check, true, true );
 
 		if ( ! empty( $exclude ) ) {
@@ -251,7 +251,7 @@ final class FileNameSniff implements Sniff {
 	 *
 	 * @return array<string>|array<string, false>
 	 */
-	protected function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
+	private function clean_custom_array_property( $property, $flip = false, $to_lower = false ) {
 		$property = \array_filter( \array_map( 'trim', $property ) );
 
 		if ( $to_lower === true ) {

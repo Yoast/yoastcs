@@ -281,7 +281,7 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @return bool Whether an error has been thrown or not.
 	 */
-	protected function fixSimpleError( File $phpcsFile, $stackPtr, $expected, $errorCode ) {
+	private function fixSimpleError( File $phpcsFile, $stackPtr, $expected, $errorCode ) {
 		$tokens     = $phpcsFile->getTokens();
 		$annotation = $tokens[ $stackPtr ]['content'];
 
@@ -315,7 +315,7 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @return bool Whether to skip the rest of the annotation examination or not.
 	 */
-	protected function fixAnnotationToSplit( File $phpcsFile, $stackPtr, $errorCode, $separator ) {
+	private function fixAnnotationToSplit( File $phpcsFile, $stackPtr, $errorCode, $separator ) {
 		$fix = $phpcsFile->addFixableError(
 			'Each @covers annotation should reference only one covered structure',
 			$stackPtr,

@@ -51,6 +51,8 @@ namespace Yoast\WP\Plugin\Tests\<em>Foo\Bar\Flo\Sub</em>;
     <![CDATA[
     The levels in a namespace name should reflect the path to the file.
 
+    If a path to name translation would result in an invalid namespace name based on the naming rules for PHP, an error will be thrown to rename the problem directory.
+
     The plugin specific prefix is disregarded for this check.
     ]]>
     </standard>

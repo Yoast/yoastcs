@@ -6,6 +6,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
 use PHPCSUtils\Utils\Namespaces;
+use PHPCSUtils\Utils\NamingConventions;
 use PHPCSUtils\Utils\TextStrings;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 
@@ -279,16 +280,6 @@ final class NamespaceNameSniff implements Sniff {
 		// Now any potential src directory has been stripped, remove the slashes again.
 		$relative_directory = \trim( $relative_directory, '/' );
 
-		$namespace_name_for_translation = \str_replace(
-			[ '_', '\\' ], // Find.
-			[ '-', '/' ],  // Replace with.
-			$namespace_name_no_prefix
-		);
-
-		if ( \strcasecmp( $relative_directory, $namespace_name_for_translation ) === 0 ) {
-			return;
-		}
-
 		$expected = '[Plugin\Prefix]';
 		if ( $found_prefix !== '' ) {
 			$expected = $found_prefix;
@@ -297,14 +288,43 @@ final class NamespaceNameSniff implements Sniff {
 			$expected = \rtrim( $this->validated_prefixes[0], '\\' );
 		}
 
+		$clean            = [];
+		$name_for_compare = '';
+
 		if ( $relative_directory !== '' ) {
 			$levels = \explode( '/', $relative_directory );
-			$levels = \array_filter( $levels ); // Remove empties.
+			$levels = \array_filter( $levels ); // Remove empties, just in case.
+
 			foreach ( $levels as $level ) {
-				$words     = \explode( '-', $level );
-				$words     = \array_map( 'ucfirst', $words );
-				$expected .= '\\' . \implode( '_', $words );
+				$cleaned_level = \preg_replace( '`[[:punct:]]`', '_', $level );
+				$words         = \explode( '_', $cleaned_level );
+				$words         = \array_map( 'ucfirst', $words );
+				$cleaned_level = \implode( '_', $words );
+
+				if ( NamingConventions::isValidIdentifierName( $cleaned_level ) === false ) {
+					$phpcsFile->addError(
+						'Translating the directory name to a namespace name would not yield a valid namespace name. Rename the "%s" directory.',
+						0,
+						'DirectoryInvalid',
+						[ $level ]
+					);
+
+					// Continuing would be useless as the name would be invalid anyway.
+					return;
+				}
+
+				$clean[] = $cleaned_level;
 			}
+
+			$name_for_compare = \implode( '\\', $clean );
+		}
+
+		if ( \strcasecmp( $name_for_compare, $namespace_name_no_prefix ) === 0 ) {
+			return;
+		}
+
+		if ( $name_for_compare !== '' ) {
+			$expected .= '\\' . $name_for_compare;
 		}
 
 		$phpcsFile->addError(

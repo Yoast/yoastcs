@@ -115,6 +115,19 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 					12 => 1,
 					13 => 1,
 					14 => 1,
+					15 => 1,
+				];
+
+			// Path translation with unconventional chars in directory name.
+			case 'path-translation-sub2-dot.inc':
+			case 'path-translation-sub2-underscore.inc':
+				return [
+					12 => 1,
+				];
+
+			case 'path-translation-sub2-space.inc':
+				return [
+					1 => 1, // Invalid dir error.
 				];
 
 			// Path translation with $src_directory set tests.

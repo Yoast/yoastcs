@@ -1,6 +1,6 @@
 <?php
 /**
- * File Comment for a file with the namespace keyword, but no namespace.
+ * File Comment for a file with the namespace keyword, but no namespace (= parse error).
  *
  * @package    Some\Package
  * @subpackage Something\Else

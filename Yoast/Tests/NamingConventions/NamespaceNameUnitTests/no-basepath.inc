@@ -20,8 +20,8 @@ namespace Yoast\WP\ /* comment */ Plugin\Foo\Bar; // OK.
 namespace Yoast\WP\Plugin\Foo\Bar\Baz; // Warning.
 namespace Yoast \ /* comment */ WP\Plugin\Foo\Bar\Baz\Fro; // Error.
 
-namespace Yoast_Plugin\Foo\Bar; // Warning. Not a namespace prefix, so prefix not taken into account.
-namespace Yoast_Plugin\Foo\Bar\Baz\Fro; // Error.
+namespace Yoast_Plugin\Foo\Bar; // Warning for object depth. Not a namespace prefix, so prefix not taken into account. Error for not using prefix.
+namespace Yoast_Plugin\Foo\Bar\Baz\Fro; // Error for object depth + not using valid prefix.
 
 /*
  * Testing with (correct) prefix.
@@ -79,6 +79,30 @@ namespace Yoast\WP\Plugin\Doubles\Foo\Bar\Fro; // Error, `Doubles\` counted as n
 namespace Yoast\WP\Plugin\Trait\Sub; // OK.
 namespace Yoast\WP\Plugin\Foo\Bar\Global; // Warning.
 namespace Yoast\WP\Plugin\Foo\Case\Bar\Default; // Error.
+
+/*
+ * Testing an error is thrown for not using a prefix from the validated prefixes array - single valid prefix.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin
+ */
+
+namespace Yoast\WP\Plugin\Foo; // OK.
+namespace Yoast\WP\Foo; // Error (+ warning for level depth as prefix not correct).
+namespace Yoast\Foo; // Error.
+namespace Foo\Bar; // Error.
+
+/*
+ * Testing an error is thrown for not using a prefix from the validated prefixes array - multiple valid prefixes.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin\SubA,Yoast\WP\Plugin\SubB,Yoast\WP\Plugin
+ */
+
+namespace Yoast\WP\Plugin\SubA\Foo; // OK.
+namespace Yoast\WP\Plugin\SubB; // OK.
+namespace Yoast\WP\Plugin\Foo; // OK.
+namespace Yoast\WP\Foo; // Error (+ warning for level depth as prefix not correct).
+namespace Yoast\Foo; // Error.
+namespace Foo\Bar; // Error.
 
 // Reset to default settings.
 // phpcs:set Yoast.NamingConventions.NamespaceName prefixes[]

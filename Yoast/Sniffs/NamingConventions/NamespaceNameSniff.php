@@ -21,6 +21,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  * placed in.
  *
  * @since 2.0.0
+ * @since 3.0.0 Added new check to verify a prefix is used.
  *
  * @uses \YoastCS\Yoast\Utils\CustomPrefixesTrait::$prefixes
  */
@@ -136,6 +137,22 @@ final class NamespaceNameSniff implements Sniff {
 				}
 			}
 			unset( $prefix, $name );
+		}
+
+		// Check if a prefix is used.
+		if ( ! empty( $this->validated_prefixes ) && $found_prefix === '' ) {
+			if ( \count( $this->validated_prefixes ) === 1 ) {
+				$error = 'A namespace name is required to start with the "%s" prefix.';
+			}
+			else {
+				$error = 'A namespace name is required to start with one of the following prefixes: "%s"';
+			}
+
+			$prefixes = $this->validated_prefixes;
+			\natcasesort( $prefixes );
+			$data = [ \implode( '", "', $prefixes ) ];
+
+			$phpcsFile->addError( $error, $stackPtr, 'MissingPrefix', $data );
 		}
 
 		/*

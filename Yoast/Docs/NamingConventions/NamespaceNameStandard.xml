@@ -1,8 +1,27 @@
 <?xml version="1.0"?>
 <documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
-    title="Namespace Name Depth"
+    title="Namespace Name"
     >
+    <standard>
+    <![CDATA[
+    A namespace name is expected to start with a package specific prefix.
+
+    Valid prefix(es) can be passed via a custom ruleset.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: namespace starting with a package specific prefix.">
+        <![CDATA[
+namespace <em>Yoast\WP\Plugin\Admin\Forms</em>;
+        ]]>
+        </code>
+        <code title="Invalid: namespace missing a package specific prefix.">
+        <![CDATA[
+namespace <em>Admin\Forms</em>;
+        ]]>
+        </code>
+    </code_comparison>
     <standard>
     <![CDATA[
     A namespace name is not allowed to be more than 3 levels deep (excluding the prefix).

@@ -30,6 +30,17 @@ final class NamespaceNameSniff implements Sniff {
 	use CustomPrefixesTrait;
 
 	/**
+	 * Double/Mock/Fixture directories to allow for.
+	 *
+	 * @var array<string, int> Key is the subdirectory name, value the length of that name.
+	 */
+	private const DOUBLE_DIRS = [
+		'\Doubles\\'  => 9,
+		'\Mocks\\'    => 7,
+		'\Fixtures\\' => 10,
+	];
+
+	/**
 	 * Project root(s).
 	 *
 	 * When the _real_ project root as set in `$basepath` is not the
@@ -161,18 +172,31 @@ final class NamespaceNameSniff implements Sniff {
 		if ( $namespace_name_no_prefix !== '' ) {
 			$namespace_for_level_check = $namespace_name_no_prefix;
 
-			// Allow for `Tests\` and `Tests\Doubles\` after the prefix.
+			// Allow for a variation of `Tests\` and `Tests\*\Doubles\` after the prefix.
 			$starts_with_tests = ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 );
 			if ( $starts_with_tests === true ) {
-				$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
-			}
+				$stripped = false;
+				foreach ( self::DOUBLE_DIRS as $dir => $length ) {
+					if ( \strpos( $namespace_for_level_check, $dir ) !== false ) {
+						$namespace_for_level_check = \substr( $namespace_for_level_check, ( \strpos( $namespace_for_level_check, $dir ) + $length ) );
+						$stripped                  = true;
+						break;
+					}
+				}
 
-			if ( ( $starts_with_tests === true
-				// Allow for non-conventional test directory layout, like in YoastSEO Free.
-				|| \strpos( $found_prefix, '\\Tests\\' ) !== false )
-				&& \strpos( $namespace_for_level_check, 'Doubles\\' ) === 0
-			) {
-				$namespace_for_level_check = \substr( $namespace_for_level_check, 8 );
+				if ( $stripped === false ) {
+					// No double dir found, now check/strip typical test dirs.
+					if ( \strpos( $namespace_for_level_check, 'Tests\WP\\' ) === 0 ) {
+						$namespace_for_level_check = \substr( $namespace_for_level_check, 9 );
+					}
+					elseif ( \strpos( $namespace_for_level_check, 'Tests\Unit\\' ) === 0 ) {
+						$namespace_for_level_check = \substr( $namespace_for_level_check, 11 );
+					}
+					else {
+						// Okay, so this only has the `Tests` prefix, just strip it.
+						$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
+					}
+				}
 			}
 
 			$parts      = \explode( '\\', $namespace_for_level_check );

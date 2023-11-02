@@ -70,7 +70,7 @@ namespace Yoast\WP\Plugin\Tests\Doubles\Foo\Bar\Baz; // Warning.
 namespace Yoast\WP\Plugin\Tests\Doubles\Foo\Bar\Baz\Fro; // Error.
 
 namespace Yoast\WP\Plugin\Foo\Tests\Bar; // Warning, `Tests\` counted as not directly after the prefix.
-namespace Yoast\WP\Plugin\Tests\Foo\Doubles\Bar; // Warning, `Doubles\` counted as not directly after the prefix + `Tests\`.
+namespace Yoast\WP\Plugin\Tests\Foo\Doubles\Bar; // OK.
 namespace Yoast\WP\Plugin\Doubles\Foo\Bar\Fro; // Error, `Doubles\` counted as not found in combination with `Tests\`.
 
 /*
@@ -103,6 +103,30 @@ namespace Yoast\WP\Plugin\Foo; // OK.
 namespace Yoast\WP\Foo; // Error (+ warning for level depth as prefix not correct).
 namespace Yoast\Foo; // Error.
 namespace Foo\Bar; // Error.
+
+/*
+ * Test allowing for more variations of test directories and deeper double directories.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin
+ */
+
+namespace Yoast\WP\Plugin\Tests\WP\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\Unit\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\WP\Doubles\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\Unit\Doubles\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\WP\Mocks\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\Unit\Mocks\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\WP\Fixtures\Foo\Bar; // OK.
+namespace Yoast\WP\Plugin\Tests\Unit\Fixtures\Foo\Bar; // OK.
+
+namespace Yoast\WP\Plugin\Tests\WP\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\Unit\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\WP\Doubles\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\Unit\Doubles\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\WP\Mocks\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\Unit\Mocks\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\WP\Fixtures\Foo\Bar\Baz; // Warning.
+namespace Yoast\WP\Plugin\Tests\Unit\Fixtures\Foo\Bar\Baz; // Warning.
 
 // Reset to default settings.
 // phpcs:set Yoast.NamingConventions.NamespaceName prefixes[]

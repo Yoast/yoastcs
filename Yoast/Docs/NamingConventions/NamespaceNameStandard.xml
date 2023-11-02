@@ -28,7 +28,7 @@ namespace <em>Admin\Forms</em>;
 
     It is recommended for the name to be two levels.
 
-    For unit test files, `Tests\(Doubles\)` will be regarded as part of the prefix for this check.
+    For unit test files, `Tests\(Unit|WP)\(Doubles\)` will be regarded as part of the prefix for this check.
     ]]>
     </standard>
     <code_comparison>

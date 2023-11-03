@@ -7,11 +7,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the FileComment sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.2.0
  *
- * @since   1.2.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Commenting\FileCommentSniff
+ * @covers YoastCS\Yoast\Sniffs\Commenting\FileCommentSniff
  */
 final class FileCommentUnitTest extends AbstractSniffUnitTest {
 

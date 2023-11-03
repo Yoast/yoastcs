@@ -7,10 +7,7 @@ use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 /**
  * Discourages the use of various functions and suggests (Yoast) alternatives.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.3.0
+ * @since 1.3.0
  */
 final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 

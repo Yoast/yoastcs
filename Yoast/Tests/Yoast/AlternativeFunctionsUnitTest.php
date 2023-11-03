@@ -7,11 +7,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the AlternativeFunctions sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.3.0
  *
- * @since   1.3.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Yoast\AlternativeFunctionsSniff
+ * @covers YoastCS\Yoast\Sniffs\Yoast\AlternativeFunctionsSniff
  */
 final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 

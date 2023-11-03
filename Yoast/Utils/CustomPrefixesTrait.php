@@ -6,10 +6,7 @@ namespace YoastCS\Yoast\Utils;
  * Trait to add a custom `$prefixes` property to sniffs and utility functions
  * to validate the property value.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   2.0.0
+ * @since 2.0.0
  */
 trait CustomPrefixesTrait {
 

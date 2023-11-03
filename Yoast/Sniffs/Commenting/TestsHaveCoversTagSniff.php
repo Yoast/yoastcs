@@ -9,10 +9,7 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * Verifies that all test functions have at least one @covers tag.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.3.0
+ * @since 1.3.0
  */
 final class TestsHaveCoversTagSniff implements Sniff {
 

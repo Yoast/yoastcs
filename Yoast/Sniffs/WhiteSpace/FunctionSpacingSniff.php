@@ -13,10 +13,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * in the global namespace as those are often wrapped in an if clause which causes
  * a fixer conflict.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.0.0
+ * @since 1.0.0
  */
 final class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 

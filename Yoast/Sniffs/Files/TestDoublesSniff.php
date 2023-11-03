@@ -11,9 +11,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  * Additionally, checks that all classes in the `doubles` directory/directories
  * have `Double` or `Mock` in the class name.
  *
- * @package Yoast\YoastCS
- *
- * @since   1.0.0
+ * @since 1.0.0
  */
 final class TestDoublesSniff implements Sniff {
 

@@ -14,10 +14,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  * - there are no duplicate @coversNothing tags;
  * - a method does not have both a @covers as well as a @coversNothing tag.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.3.0
+ * @since 1.3.0
  */
 final class CoversTagSniff implements Sniff {
 

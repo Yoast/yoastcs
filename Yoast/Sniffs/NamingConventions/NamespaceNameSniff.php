@@ -19,10 +19,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  * as well as that the levels directly translate to the (sub-)directory a file is
  * placed in.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   2.0.0
+ * @since 2.0.0
  */
 final class NamespaceNameSniff implements Sniff {
 

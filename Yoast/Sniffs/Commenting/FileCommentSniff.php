@@ -22,10 +22,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * see if it's still relevant to have this sniff and if so, if the sniff needs
  * adjustments.}}
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.2.0
+ * @since 1.2.0
  */
 final class FileCommentSniff extends Squiz_FileCommentSniff {
 

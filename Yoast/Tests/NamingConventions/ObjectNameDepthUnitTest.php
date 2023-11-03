@@ -7,11 +7,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the ObjectNameDepth sniff.
  *
- * @package Yoast\YoastCS
+ * @since 2.0.0
  *
- * @since   2.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\NamingConventions\ObjectNameDepthSniff
+ * @covers YoastCS\Yoast\Sniffs\NamingConventions\ObjectNameDepthSniff
  */
 final class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 

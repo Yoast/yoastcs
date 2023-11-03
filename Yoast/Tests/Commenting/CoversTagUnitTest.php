@@ -7,11 +7,9 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the CoversTag sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.3.0
  *
- * @since   1.3.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Commenting\CoversTagSniff
+ * @covers YoastCS\Yoast\Sniffs\Commenting\CoversTagSniff
  */
 final class CoversTagUnitTest extends AbstractSniffUnitTest {
 

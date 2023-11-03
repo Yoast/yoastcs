@@ -11,9 +11,6 @@ use WordPressCS\WordPress\Sniff;
  * @link https://github.com/Yoast/yoastcs/issues/264
  *
  * @since 2.3.0
- *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
  */
 final class BrainMonkeyRaceConditionSniff extends Sniff {
 

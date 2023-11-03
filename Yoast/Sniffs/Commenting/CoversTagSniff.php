@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  *
  * @since   1.3.0
  */
-class CoversTagSniff implements Sniff {
+final class CoversTagSniff implements Sniff {
 
 	/**
 	 * Regex to check for valid content of a @covers tags.

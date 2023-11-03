@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers  YoastCS\Yoast\Sniffs\Files\FileNameSniff
  */
-class FileNameUnitTest extends AbstractSniffUnitTest {
+final class FileNameUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Error files with the expected nr of errors.

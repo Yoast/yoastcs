@@ -27,7 +27,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since   1.2.0
  */
-class FileCommentSniff extends Squiz_FileCommentSniff {
+final class FileCommentSniff extends Squiz_FileCommentSniff {
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.

@@ -32,7 +32,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  *
  * @since   2.0.0
  */
-class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
+final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 
 	use CustomPrefixesTrait;
 

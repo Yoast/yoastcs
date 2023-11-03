@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  *
  * @since   1.0.0
  */
-class TestDoublesSniff implements Sniff {
+final class TestDoublesSniff implements Sniff {
 
 	/**
 	 * Relative paths to the directories where the test doubles/mocks are allowed to be placed.

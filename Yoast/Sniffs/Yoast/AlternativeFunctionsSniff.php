@@ -12,7 +12,7 @@ use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
  *
  * @since   1.3.0
  */
-class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
+final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 
 	/**
 	 * Groups of functions to restrict.

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * @covers  YoastCS\Yoast\Sniffs\NamingConventions\NamespaceNameSniff
  * @covers  YoastCS\Yoast\Utils\CustomPrefixesTrait
  */
-class NamespaceNameUnitTest extends AbstractSniffUnitTest {
+final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Set CLI values before the file is tested.

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since   1.1.0
  */
-class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
+final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

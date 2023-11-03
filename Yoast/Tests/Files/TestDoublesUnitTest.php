@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers  YoastCS\Yoast\Sniffs\Files\TestDoublesSniff
  */
-class TestDoublesUnitTest extends AbstractSniffUnitTest {
+final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Set CLI values before the file is tested.

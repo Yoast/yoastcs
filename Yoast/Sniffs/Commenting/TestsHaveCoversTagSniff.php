@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since   1.3.0
  */
-class TestsHaveCoversTagSniff implements Sniff {
+final class TestsHaveCoversTagSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.

@@ -23,7 +23,7 @@ use PHP_CodeSniffer\Util\Common;
  *
  * @since   0.5
  */
-class FileNameSniff implements Sniff {
+final class FileNameSniff implements Sniff {
 
 	/**
 	 * List of prefixes for object structures.

@@ -3,6 +3,7 @@
 namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\TextStrings;
 use WordPressCS\WordPress\Sniffs\NamingConventions\ValidHookNameSniff as WPCS_ValidHookNameSniff;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 
@@ -118,7 +119,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 
 			if ( isset( Tokens::$stringTokens[ $this->tokens[ $first_non_empty ]['code'] ] ) ) {
 				$this->prefix_quote_style = $this->tokens[ $first_non_empty ]['content'][0];
-				$content                  = \trim( $this->strip_quotes( $this->tokens[ $first_non_empty ]['content'] ) );
+				$content                  = \trim( TextStrings::stripQuotes( $this->tokens[ $first_non_empty ]['content'] ) );
 
 				foreach ( $this->validated_prefixes as $prefix ) {
 					if ( \strpos( $prefix, '\\' ) === false
@@ -296,7 +297,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		 * Check the hook name depth.
 		 */
 		$hook_ptr  = $first_non_empty; // If no other tokens were found, the first non empty will be the hook name.
-		$hook_name = $this->strip_quotes( $this->tokens[ $hook_ptr ]['content'] );
+		$hook_name = TextStrings::stripQuotes( $this->tokens[ $hook_ptr ]['content'] );
 		$hook_name = \substr( $hook_name, \strlen( $this->found_prefix ) );
 
 		$parts      = \explode( '_', $hook_name );

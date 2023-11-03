@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\WhiteSpace;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\FunctionSpacingSniff as Squiz_FunctionSpacingSniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Conditions;
 
 /**
  * Verifies the space between methods.
@@ -54,7 +55,7 @@ final class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Check that the function is nested in an OO structure (class, trait, interface).
-		if ( $phpcsFile->hasCondition( $stackPtr, Tokens::$ooScopeTokens ) === false ) {
+		if ( Conditions::hasCondition( $phpcsFile, $stackPtr, Tokens::$ooScopeTokens ) === false ) {
 			return;
 		}
 

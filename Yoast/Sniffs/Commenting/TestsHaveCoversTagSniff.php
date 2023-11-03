@@ -5,6 +5,8 @@ namespace YoastCS\Yoast\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FunctionDeclarations;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Verifies that all test functions have at least one @covers tag.
@@ -59,7 +61,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 */
 	protected function process_class( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
-		$name   = $phpcsFile->getDeclarationName( $stackPtr );
+		$name   = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 
 		if ( \substr( $name, -4 ) !== 'Test'
 			&& \substr( $name, -8 ) !== 'TestCase'
@@ -180,13 +182,13 @@ final class TestsHaveCoversTagSniff implements Sniff {
 			}
 		}
 
-		$name = $phpcsFile->getDeclarationName( $stackPtr );
+		$name = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
 		if ( \stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
 			// Not a test method.
 			return;
 		}
 
-		$method_props = $phpcsFile->getMethodProperties( $stackPtr );
+		$method_props = FunctionDeclarations::getProperties( $phpcsFile, $stackPtr );
 		if ( $method_props['is_abstract'] === true ) {
 			// Abstract test method, not implemented.
 			return;

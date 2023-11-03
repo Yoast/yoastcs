@@ -2,6 +2,9 @@
 
 namespace YoastCS\Yoast\Sniffs\Yoast;
 
+use PHPCSUtils\Utils\MessageHelper;
+use PHPCSUtils\Utils\Namespaces;
+use PHPCSUtils\Utils\PassedParameters;
 use WordPressCS\WordPress\AbstractFunctionRestrictionsSniff;
 
 /**
@@ -49,7 +52,7 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 		$fixable    = true;
 		$message    = $this->groups[ $group_name ]['message'];
 		$is_error   = ( $this->groups[ $group_name ]['type'] === 'error' );
-		$error_code = $this->string_to_errorcode( $group_name . '_' . $matched_content );
+		$error_code = MessageHelper::stringToErrorcode( $group_name . '_' . $matched_content );
 		$data       = [
 			$matched_content,
 			$replacement,
@@ -65,7 +68,7 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 				 * The function `WPSEO_Utils:format_json_encode()` is only a valid alternative
 				 * when only the first parameter is passed.
 				 */
-				if ( $this->get_function_call_parameter_count( $stackPtr ) !== 1 ) {
+				if ( PassedParameters::getParameterCount( $this->phpcsFile, $stackPtr ) !== 1 ) {
 					$fixable     = false;
 					$error_code .= 'WithAdditionalParams';
 				}
@@ -74,13 +77,13 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 		}
 
 		if ( $fixable === false ) {
-			$this->addMessage( $message, $stackPtr, $is_error, $error_code, $data );
+			MessageHelper::addMessage( $this->phpcsFile, $message, $stackPtr, $is_error, $error_code, $data );
 			return;
 		}
 
-		$fix = $this->addFixableMessage( $message, $stackPtr, $is_error, $error_code, $data );
+		$fix = MessageHelper::addFixableMessage( $this->phpcsFile, $message, $stackPtr, $is_error, $error_code, $data );
 		if ( $fix === true ) {
-			$namespaced = $this->determine_namespace( $stackPtr );
+			$namespaced = Namespaces::determineNamespace( $this->phpcsFile, $stackPtr );
 
 			if ( empty( $namespaced ) || empty( $replacement ) ) {
 				$this->phpcsFile->fixer->replaceToken( $stackPtr, $replacement );

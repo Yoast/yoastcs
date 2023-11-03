@@ -49,7 +49,8 @@ else {
 
 If you use Composer, please run `composer install`.
 Otherwise, make sure you set a `PHPCS_DIR` environment variable in your phpunit.xml file
-pointing to the PHPCS directory.
+pointing to the PHPCS directory and that PHPCSUtils is included in the `installed_paths`
+for that PHPCS install.
 ';
 
 	die( 1 );

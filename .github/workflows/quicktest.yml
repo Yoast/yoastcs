@@ -63,6 +63,7 @@ jobs:
         run: >
           composer require --no-update --no-scripts --no-interaction --ignore-platform-req=php+
           squizlabs/php_codesniffer:"dev-master"
+          phpcsstandards/phpcsutils:"dev-develop"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -86,6 +87,7 @@ jobs:
         run: >
           composer update --prefer-lowest --no-scripts --no-interaction --ignore-platform-req=php+
           squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
           wp-coding-standards/wpcs
 
       - name: Verify installed standards

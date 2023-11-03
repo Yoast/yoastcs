@@ -54,6 +54,7 @@ jobs:
         run: >
           composer require --no-update --no-scripts --no-interaction
           squizlabs/php_codesniffer:"dev-master"
+          phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
 
       # Install dependencies and handle caching in one go.

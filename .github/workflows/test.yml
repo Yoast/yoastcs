@@ -32,8 +32,6 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      # Keys:
-      # - experimental: Whether the build is "allowed to fail".
       matrix:
         # The GHA matrix works different from Travis.
         # You can define jobs here and then augment them with extra variables in `include`,
@@ -42,41 +40,42 @@ jobs:
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
         php_version: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2']
-        cs_dependencies: ['lowest', 'highest']
-        experimental: [false]
+        cs_dependencies: ['lowest', 'stable']
 
         include:
-          # Experimental builds. These are allowed to fail.
+          # Make the matrix complete (when combined with the code coverage builds).
+          - php_version: '5.4'
+            cs_dependencies: 'stable'
+          - php_version: '7.4'
+            cs_dependencies: 'stable'
 
+          # Test against dev versions of all CS dependencies with select PHP versions for early detection of issues.
+          - php_version: '7.0'
+            cs_dependencies: 'dev'
+          - php_version: '8.0'
+            cs_dependencies: 'dev'
+          - php_version: '8.2'
+            cs_dependencies: 'dev'
+
+          # Experimental build(s). These are allowed to fail.
           # PHP nightly
           - php_version: '8.3'
-            cs_dependencies: 'highest'
-            experimental: true
-          # Test against WPCS unstable. Re-enable when WPCS is not in dev for the next major.
-          #- php_version: '8.0'
-          #  cs_dependencies: 'highest'
-          #  experimental: true
+            cs_dependencies: 'dev'
 
-          # Test against the next major of PHPCS. Temporarily disabled due to upstream bugs.
-          #- php_version: '7.4'
-          #  cs_dependencies: 'highest'
-          #  phpcs_version: '4.0.x-dev'
-          #  experimental: true
+    name: "Test${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
-    name: "Test${{ matrix.cs_dependencies == 'highest' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
-
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.cs_dependencies }}" != "highest" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
+          if [ "${{ matrix.cs_dependencies }}" != "dev" ]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
@@ -89,32 +88,14 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
           tools: cs2pr
-        env:
-          # Token is needed for the PHPCS 4.x run against source.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Set Composer up to download only PHPCS from source for PHPCS 4.x.
-      # The source is needed to get the base testcase from PHPCS.
-      # All other jobs can use `auto`, which is Composer's default value.
-      - name: 'Composer: conditionally prefer source for PHPCS 4.x'
-        if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
-        run: composer config preferred-install.squizlabs/php_codesniffer source
-
-      - name: 'Composer: adjust CS dependencies (high)'
-        if: ${{ matrix.cs_dependencies == 'highest' }}
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}" --no-interaction
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ env.WPCS_HIGHEST }}" --no-interaction
-
-      - name: 'Composer: adjust CS dependencies (4.x)'
-        if: ${{ matrix.phpcs_version }}
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
-
-      - name: 'Composer: conditionally remove PHPCSDevtools for PHPCS 4.x'
-        if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
-        # Remove devtools as it will not (yet) install on PHPCS 4.x.
-        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
+      - name: "Composer: set PHPCS dependencies for tests (dev)"
+        if: ${{ matrix.cs_dependencies == 'dev' }}
+        # Note: while WPCS 3.0.0 is not yet supported, WPCS will not be updated for the `dev` builds.
+        # Once YoastCS has been updated for WPCS 3.0.0, WPCS dev-develop should be added to this command.
+        run: >
+          composer require --no-update --no-scripts --no-interaction --ignore-platform-req=php+
+          squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -133,9 +114,12 @@ jobs:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Composer: set PHPCS version for tests (low)"
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest) (with ignore platform)"
         if: ${{ matrix.cs_dependencies == 'lowest' }}
-        run: composer update squizlabs/php_codesniffer wp-coding-standards/wpcs --with-dependencies --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction --ignore-platform-req=php+
+          squizlabs/php_codesniffer
+          wp-coding-standards/wpcs
 
       - name: Verify installed versions
         run: composer info --no-dev
@@ -146,7 +130,7 @@ jobs:
       # The results of the linting will be shown inline in the PR via the CS2PR tool.
       # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
       - name: Lint against parse errors
-        if: ${{ matrix.cs_dependencies == 'highest' }}
+        if: ${{ matrix.cs_dependencies == 'stable' }}
         run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests - PHP 5.4 - 8.0
@@ -171,22 +155,22 @@ jobs:
 
     strategy:
       matrix:
-        # 7.4 should be updated to 8.2 when higher PHPUnit versions can be supported.
+        # 7.4 should be updated to 8.x when higher PHPUnit versions can be supported.
         php_version: ['5.4', '7.4']
-        cs_dependencies: ['lowest', 'highest']
+        cs_dependencies: ['lowest', 'dev']
 
-    name: "Coverage${{ matrix.cs_dependencies == 'highest' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
+    name: "Coverage${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.cs_dependencies }}" != "highest" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
+          if [ "${{ matrix.cs_dependencies }}" != "dev" ]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
@@ -200,11 +184,13 @@ jobs:
           coverage: xdebug
           tools: cs2pr
 
-      - name: 'Composer: adjust CS dependencies (high)'
-        if: ${{ matrix.cs_dependencies == 'highest' }}
-        run: |
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}" --no-interaction
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ env.WPCS_HIGHEST }}" --no-interaction
+      - name: "Composer: set PHPCS dependencies for tests (dev)"
+        if: ${{ matrix.cs_dependencies == 'dev' }}
+        # Note: while WPCS 3.0.0 is not yet supported, WPCS will not be updated for the `dev` builds.
+        # Once YoastCS has been updated for WPCS 3.0.0, WPCS dev-develop should be added to this command.
+        run: >
+          composer require --no-update --no-scripts --no-interaction
+          squizlabs/php_codesniffer:"${{ env.PHPCS_HIGHEST }}"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -214,9 +200,12 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Composer: set PHPCS version for tests (low)"
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest)"
         if: ${{ matrix.cs_dependencies == 'lowest' }}
-        run: composer update squizlabs/php_codesniffer wp-coding-standards/wpcs --with-dependencies --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          wp-coding-standards/wpcs
 
       - name: Verify installed versions
         run: composer info --no-dev
@@ -227,7 +216,7 @@ jobs:
       # The results of the linting will be shown inline in the PR via the CS2PR tool.
       # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
       - name: Lint against parse errors
-        if: ${{ matrix.cs_dependencies == 'highest' }}
+        if: ${{ matrix.cs_dependencies == 'dev' }}
         run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests with code coverage

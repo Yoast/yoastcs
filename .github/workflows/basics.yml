@@ -33,7 +33,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1' # Can be updated to "latest" once PHPCS 3.8.0 has been released.
           coverage: none
           tools: cs2pr
 
@@ -48,14 +48,12 @@ jobs:
 
       # Use the WIP/develop branches of all CS dependencies as an early detection system for bugs upstream.
       - name: 'Composer: adjust dependencies - use dev versions of CS dependencies'
-        # Note: while WPCS 3.0.0 is not yet supported, WPCS will not be updated.
-        # Once YoastCS has been updated for WPCS 3.0.0, WPCS dev-develop should be added (back) to this command.
-        # wp-coding-standards/wpcs:"dev-develop"
         run: >
           composer require --no-update --no-scripts --no-interaction
           squizlabs/php_codesniffer:"dev-master"
           phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
+          wp-coding-standards/wpcs:"dev-develop"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies

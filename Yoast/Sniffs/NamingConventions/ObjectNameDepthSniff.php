@@ -4,14 +4,20 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
+use WordPressCS\WordPress\Helpers\IsUnitTestTrait;
+use WordPressCS\WordPress\Helpers\SnakeCaseHelper;
 use WordPressCS\WordPress\Sniff as WPCS_Sniff;
 
 /**
  * Check the number of words in object names declared within a namespace.
  *
  * @since 2.0.0
+ *
+ * @uses \WordPressCS\WordPress\Helpers\IsUnitTestTrait::$custom_test_classes
  */
 final class ObjectNameDepthSniff extends WPCS_Sniff {
+
+	use IsUnitTestTrait;
 
 	/**
 	 * Maximum number of words.
@@ -88,7 +94,7 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 
 		// Handle names which are potentially in CamelCaps.
 		if ( \strpos( $snakecase_object_name, '_' ) === false ) {
-			$snakecase_object_name = self::get_snake_case_name_suggestion( $snakecase_object_name );
+			$snakecase_object_name = SnakeCaseHelper::get_suggestion( $snakecase_object_name );
 		}
 
 		$parts      = \explode( '_', $snakecase_object_name );
@@ -99,7 +105,7 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 		 */
 		$last = \array_pop( $parts );
 		if ( isset( $this->test_suffixes[ $last ] ) ) {
-			if ( $this->test_suffixes[ $last ] === true && $this->is_test_class( $stackPtr ) ) {
+			if ( $this->test_suffixes[ $last ] === true && $this->is_test_class( $this->phpcsFile, $stackPtr ) ) {
 				--$part_count;
 			}
 			else {

@@ -68,4 +68,3 @@ final class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 		}
 	}
 }
-

@@ -167,33 +167,33 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * plugin prefix for hook names and remembers whether a prefix was found to allow
 	 * checking whether it was the correct one.
 	 *
-	 * @param string $string         The target string.
+	 * @param string $text_string    The target string.
 	 * @param string $regex          The punctuation regular expression to use.
 	 * @param string $transform_type Whether to do a partial or complete transform.
 	 *                               Valid values are: 'full', 'case', 'punctuation'.
 	 * @return string
 	 */
-	protected function transform( $string, $regex, $transform_type = 'full' ) {
+	protected function transform( $text_string, $regex, $transform_type = 'full' ) {
 
 		if ( empty( $this->validated_prefixes ) ) {
-			return parent::transform( $string, $regex, $transform_type );
+			return parent::transform( $text_string, $regex, $transform_type );
 		}
 
 		if ( $this->first_string === '' ) {
-			$this->first_string = $string;
+			$this->first_string = $text_string;
 		}
 
 		// Not the first text string.
-		if ( $string !== $this->first_string ) {
-			return parent::transform( $string, $regex, $transform_type );
+		if ( $text_string !== $this->first_string ) {
+			return parent::transform( $text_string, $regex, $transform_type );
 		}
 
 		// Repeated call for the first text string.
 		if ( $this->found_prefix !== '' ) {
-			$string = \substr( $string, \strlen( $this->found_prefix ) );
+			$text_string = \substr( $text_string, \strlen( $this->found_prefix ) );
 		}
 
-		return $this->found_prefix . parent::transform( $string, $regex, $transform_type );
+		return $this->found_prefix . parent::transform( $text_string, $regex, $transform_type );
 	}
 
 	/**

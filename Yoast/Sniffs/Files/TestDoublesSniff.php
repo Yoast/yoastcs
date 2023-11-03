@@ -134,7 +134,6 @@ final class TestDoublesSniff implements Sniff {
 			$name_contains_double_or_mock = true;
 		}
 
-
 		if ( empty( $this->target_paths ) === true ) {
 			if ( $name_contains_double_or_mock === true ) {
 				// No valid target paths found.

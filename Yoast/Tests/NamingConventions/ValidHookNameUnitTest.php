@@ -82,4 +82,3 @@ final class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 		];
 	}
 }
-

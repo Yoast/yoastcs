@@ -20,6 +20,8 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  * placed in.
  *
  * @since 2.0.0
+ *
+ * @uses \YoastCS\Yoast\Utils\CustomPrefixesTrait::$prefixes
  */
 final class NamespaceNameSniff implements Sniff {
 

@@ -28,6 +28,8 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  *            changed to an error and only namespace-like prefixes should be allowed.}
  *
  * @since 2.0.0
+ *
+ * @uses \YoastCS\Yoast\Utils\CustomPrefixesTrait::$prefixes
  */
 final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 

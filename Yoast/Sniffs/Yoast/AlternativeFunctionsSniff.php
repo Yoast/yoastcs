@@ -44,16 +44,12 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 	 */
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
 
-		$replacement = '';
-		if ( isset( $this->groups[ $group_name ]['replacement'] ) ) {
-			$replacement = $this->groups[ $group_name ]['replacement'];
-		}
-
-		$fixable    = true;
-		$message    = $this->groups[ $group_name ]['message'];
-		$is_error   = ( $this->groups[ $group_name ]['type'] === 'error' );
-		$error_code = MessageHelper::stringToErrorcode( $group_name . '_' . $matched_content );
-		$data       = [
+		$replacement = ( $this->groups[ $group_name ]['replacement'] ?? '' );
+		$fixable     = true;
+		$message     = $this->groups[ $group_name ]['message'];
+		$is_error    = ( $this->groups[ $group_name ]['type'] === 'error' );
+		$error_code  = MessageHelper::stringToErrorcode( $group_name . '_' . $matched_content );
+		$data        = [
 			$matched_content,
 			$replacement,
 		];

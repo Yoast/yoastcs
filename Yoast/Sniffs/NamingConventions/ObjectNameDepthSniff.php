@@ -20,6 +20,20 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 	use IsUnitTestTrait;
 
 	/**
+	 * Suffixes commonly used for classes in the test suites.
+	 *
+	 * The key is the suffix. The value indicates whether this suffix is
+	 * only allowed when the class extends a known test class.
+	 *
+	 * @var array<string, bool>
+	 */
+	private const TEST_SUFFIXES = [
+		'Test'   => true,
+		'Mock'   => false,
+		'Double' => false,
+	];
+
+	/**
 	 * Maximum number of words.
 	 *
 	 * The maximum number of words an object name should consist of, each
@@ -42,20 +56,6 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 	 * @var int
 	 */
 	public $recommended_max_words = 3;
-
-	/**
-	 * Suffixes commonly used for classes in the test suites.
-	 *
-	 * The key is the suffix. The value indicates whether this suffix is
-	 * only allowed when the class extends a known test class.
-	 *
-	 * @var bool[]
-	 */
-	private $test_suffixes = [
-		'Test'   => true,
-		'Mock'   => false,
-		'Double' => false,
-	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -104,8 +104,8 @@ final class ObjectNameDepthSniff extends WPCS_Sniff {
 		 * Allow the class name to be one part longer for confirmed test/mock/double classes.
 		 */
 		$last = \array_pop( $parts );
-		if ( isset( $this->test_suffixes[ $last ] ) ) {
-			if ( $this->test_suffixes[ $last ] === true && $this->is_test_class( $this->phpcsFile, $stackPtr ) ) {
+		if ( isset( self::TEST_SUFFIXES[ $last ] ) ) {
+			if ( self::TEST_SUFFIXES[ $last ] === true && $this->is_test_class( $this->phpcsFile, $stackPtr ) ) {
 				--$part_count;
 			}
 			else {

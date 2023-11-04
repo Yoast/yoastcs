@@ -23,7 +23,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $testFile, $config ) {
+	public function setCliValues( $testFile, $config ): void {
 		if ( \strpos( $testFile, 'no-basepath' ) === 0 ) {
 			return;
 		}
@@ -38,7 +38,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return string[]
 	 */
-	protected function getTestFiles( $testFileBase ) {
+	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;
 		$test_files = \glob(
 			\dirname( $testFileBase ) . $sep . 'NamespaceNameUnitTests{'
@@ -64,7 +64,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList( $testFile = '' ) {
+	public function getErrorList( string $testFile = '' ): array {
 
 		switch ( $testFile ) {
 			// Level check tests.
@@ -173,7 +173,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList( $testFile = '' ) {
+	public function getWarningList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			// Level check tests.
 			case 'no-basepath.inc':

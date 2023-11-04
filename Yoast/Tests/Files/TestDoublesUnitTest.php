@@ -22,7 +22,7 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $testFile, $config ) {
+	public function setCliValues( $testFile, $config ): void {
 		if ( $testFile === 'no-basepath.inc' ) {
 			return;
 		}
@@ -37,7 +37,7 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return string[]
 	 */
-	protected function getTestFiles( $testFileBase ) {
+	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;
 		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests' . $sep . 'tests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
@@ -55,7 +55,7 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of errors>
 	 */
-	public function getErrorList( $testFile = '' ) {
+	public function getErrorList( string $testFile = '' ): array {
 
 		switch ( $testFile ) {
 			// In tests/.
@@ -134,7 +134,7 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return array <int line number> => <int number of warnings>
 	 */
-	public function getWarningList( $testFile = '' ) {
+	public function getWarningList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			case 'no-basepath.inc':
 				return [

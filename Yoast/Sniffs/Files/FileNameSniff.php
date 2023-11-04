@@ -25,6 +25,17 @@ use PHPCSUtils\Utils\ObjectDeclarations;
 final class FileNameSniff implements Sniff {
 
 	/**
+	 * Object tokens to search for in a file.
+	 *
+	 * @var array<int|string>
+	 */
+	private const NAMED_OO_TOKENS = [
+		\T_CLASS,
+		\T_INTERFACE,
+		\T_TRAIT,
+	];
+
+	/**
 	 * List of prefixes for object structures.
 	 *
 	 * These prefixes do not need to be reflected in the file name.
@@ -57,17 +68,6 @@ final class FileNameSniff implements Sniff {
 	 * @var string[]
 	 */
 	public $excluded_files_strict_check = [];
-
-	/**
-	 * Object tokens to search for in a file.
-	 *
-	 * @var (int|string)[]
-	 */
-	private $oo_tokens = [
-		\T_CLASS,
-		\T_INTERFACE,
-		\T_TRAIT,
-	];
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
@@ -118,7 +118,7 @@ final class FileNameSniff implements Sniff {
 		$expected   = \strtolower( \str_replace( '_', '-', $file_name ) );
 
 		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
-			$oo_structure = $phpcsFile->findNext( $this->oo_tokens, $stackPtr );
+			$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );
 			if ( $oo_structure !== false ) {
 
 				$tokens = $phpcsFile->getTokens();

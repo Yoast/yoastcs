@@ -18,13 +18,13 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Set CLI values before the file is tested.
 	 *
-	 * @param string $testFile The name of the file being tested.
+	 * @param string $filename The name of the file being tested.
 	 * @param Config $config   The config data for the test run.
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $testFile, $config ): void {
-		if ( \strpos( $testFile, 'no-basepath' ) === 0 ) {
+	public function setCliValues( $filename, $config ): void {
+		if ( \strpos( $filename, 'no-basepath' ) === 0 ) {
 			return;
 		}
 

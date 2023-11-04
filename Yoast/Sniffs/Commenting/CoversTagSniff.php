@@ -13,7 +13,8 @@ use PHPCSUtils\Utils\GetTokensAsString;
  * - each @covers tag has an annotation;
  * - there are no duplicate @covers tags;
  * - there are no duplicate @coversNothing tags;
- * - a method does not have both a @covers as well as a @coversNothing tag.
+ * - a method does not have both a @covers as well as a @coversNothing tag;
+ * - deprecated @covers tag formats are flagged. (since 3.0.0)
  *
  * @since 1.3.0
  */
@@ -24,7 +25,27 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @var string
 	 */
-	private const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)(?P>OOName)))?|::(?P>functionName)|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
+	private const VALID_CONTENT_REGEX = '(?:\\\\?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)(?:<extended>|::<[!]?(?:public|protected|private)>|::(?<functionName>(?!public$|protected$|private$)(?P>OOName)))?|::(?P>functionName)|::<[!]?(?:public|protected|private)>|\\\\?(?:(?P>OOName)\\\\)+(?P>functionName))';
+
+	/**
+	 * Regex to check for deprecated `@covers ClassName<extended>` tag format.
+	 *
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3630 PHPUnit 9.0 deprecation.
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3631 PHPUnit 10.0 removal.
+	 *
+	 * @var string
+	 */
+	private const DEPRECATED_FORMAT_EXTENDED = '`^(?:\\\\)?(?:(?<OOName>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)\\\\)*(?P>OOName)<extended>$`';
+
+	/**
+	 * Regex to check for deprecated `@covers *::<[!]public|protected|private>` tag format.
+	 *
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3630 PHPUnit 9.0 deprecation.
+	 * @link https://github.com/sebastianbergmann/phpunit/issues/3631 PHPUnit 10.0 removal.
+	 *
+	 * @var string
+	 */
+	private const DEPRECATED_FORMAT_VISIBILITY = '`::<[!]?(?:public|protected|private)>$`';
 
 	/**
 	 * Base error message.
@@ -57,6 +78,9 @@ final class CoversTagSniff implements Sniff {
 	public function process( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
+		/*
+		 * Find all relevant tags and check for common mistakes in the tag format.
+		 */
 		$firstCoversTag    = false;
 		$coversTags        = [];
 		$coversNothingTags = [];
@@ -76,7 +100,8 @@ final class CoversTagSniff implements Sniff {
 
 			// Found a @covers tag.
 			$next = $phpcsFile->findNext( \T_DOC_COMMENT_WHITESPACE, ( $tag + 1 ), null, true );
-			if ( $tokens[ $next ]['code'] !== \T_DOC_COMMENT_STRING
+			if ( $next === false // Shouldn't be possible.
+				|| $tokens[ $next ]['code'] !== \T_DOC_COMMENT_STRING
 				|| $tokens[ $next ]['line'] !== $tokens[ $tag ]['line']
 			) {
 				$phpcsFile->addError(
@@ -90,6 +115,16 @@ final class CoversTagSniff implements Sniff {
 
 			$annotation                 = $tokens[ $next ]['content'];
 			$coversTags[ "$tag-$next" ] = $annotation;
+
+			// Check for deprecated/removed @covers formats.
+			if ( \preg_match( self::DEPRECATED_FORMAT_EXTENDED, $annotation ) === 1
+				|| \preg_match( self::DEPRECATED_FORMAT_VISIBILITY, $annotation ) === 1
+			) {
+				$warning  = 'Use of the "ClassName<*>" type values for @covers annotations has been deprecated in PHPUnit 9.0';
+				$warning .= ' and support has been removed in PHPUnit 10.0. Found: %s';
+				$data     = [ $annotation ];
+				$phpcsFile->addWarning( $warning, $next, 'RemovedFormat', $data );
+			}
 
 			if ( \preg_match( '`^' . self::VALID_CONTENT_REGEX . '$`', $annotation ) === 1 ) {
 				continue;
@@ -146,6 +181,9 @@ final class CoversTagSniff implements Sniff {
 			$phpcsFile->addError( $error, $next, 'Invalid', $data );
 		}
 
+		/*
+		 * Check that a docblock doesn't contain both `@covers` tags as well as `@coversNothing` tag(s).
+		 */
 		$coversNothingCount = \count( $coversNothingTags );
 		if ( $firstCoversTag !== false && $coversNothingCount > 0 ) {
 			$error = 'A test can\'t both cover something as well as cover nothing. First @coversNothing tag encountered on line %d; first @covers tag encountered on line %d';
@@ -157,6 +195,9 @@ final class CoversTagSniff implements Sniff {
 			$phpcsFile->addError( $error, $tokens[ $stackPtr ]['comment_closer'], 'Contradictory', $data );
 		}
 
+		/*
+		 * Check for duplicate `@coversNothing` tags.
+		 */
 		if ( $coversNothingCount > 1 ) {
 			$error      = 'Only one @coversNothing tag allowed per test';
 			$code       = 'DuplicateCoversNothing';
@@ -177,7 +218,6 @@ final class CoversTagSniff implements Sniff {
 				$phpcsFile->addError( $error, $tokens[ $stackPtr ]['comment_closer'], $code );
 			}
 			else {
-
 				$fix = $phpcsFile->addFixableError( $error, $tokens[ $stackPtr ]['comment_closer'], $code );
 				if ( $fix === true ) {
 					$skipFirst = ( $coversNothingCount === $removalCount );
@@ -205,6 +245,9 @@ final class CoversTagSniff implements Sniff {
 			}
 		}
 
+		/*
+		 * Check for duplicate `@covers ...` tags.
+		 */
 		$coversCount = \count( $coversTags );
 		if ( $coversCount > 1 ) {
 			$unique = \array_unique( $coversTags );
@@ -218,6 +261,7 @@ final class CoversTagSniff implements Sniff {
 					}
 
 					$first = null;
+					$data  = [];
 					foreach ( $coversTags as $ptrs => $annot ) {
 						if ( $annotation !== $annot ) {
 							continue;
@@ -231,13 +275,12 @@ final class CoversTagSniff implements Sniff {
 
 						$ptrs = \explode( '-', $ptrs );
 
-						$fix = $phpcsFile->addFixableError( $error, $ptrs[0], $code, $data );
+						$fix = $phpcsFile->addFixableError( $error, (int) $ptrs[0], $code, $data );
 						if ( $fix === true ) {
-
 							$phpcsFile->fixer->beginChangeset();
 
 							// Remove the whole line.
-							for ( $i = ( $ptrs[1] ); $i >= 0; $i-- ) {
+							for ( $i = (int) $ptrs[1]; $i >= 0; $i-- ) {
 								if ( $tokens[ $i ]['line'] !== $tokens[ $ptrs[1] ]['line'] ) {
 									if ( $tokens[ $i ]['code'] === \T_DOC_COMMENT_WHITESPACE
 										&& $tokens[ $i ]['content'] === $phpcsFile->eolChar
@@ -269,7 +312,7 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @return bool Whether an error has been thrown or not.
 	 */
-	protected function fixSimpleError( File $phpcsFile, $stackPtr, $expected, $errorCode ) {
+	private function fixSimpleError( File $phpcsFile, $stackPtr, $expected, $errorCode ) {
 		$tokens     = $phpcsFile->getTokens();
 		$annotation = $tokens[ $stackPtr ]['content'];
 
@@ -303,7 +346,7 @@ final class CoversTagSniff implements Sniff {
 	 *
 	 * @return bool Whether to skip the rest of the annotation examination or not.
 	 */
-	protected function fixAnnotationToSplit( File $phpcsFile, $stackPtr, $errorCode, $separator ) {
+	private function fixAnnotationToSplit( File $phpcsFile, $stackPtr, $errorCode, $separator ) {
 		$fix = $phpcsFile->addFixableError(
 			'Each @covers annotation should reference only one covered structure',
 			$stackPtr,

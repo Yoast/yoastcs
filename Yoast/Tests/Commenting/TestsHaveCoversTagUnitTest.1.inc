@@ -29,7 +29,7 @@ class ClassLevelCoversTest {
 /**
  * @coversNothing
  */
-class ClassLevelCoversNothingTest {
+final class ClassLevelCoversNothingTest {
 
 	/**
 	 * Docblock.
@@ -85,7 +85,7 @@ class ClassNameTest {
 	 *
 	 * @test
 	 */
-	public function annotatedTestMissingCoversTag() {}
+	public static function annotatedTestMissingCoversTag() {}
 
 	/**
 	 * Docblock.
@@ -101,14 +101,14 @@ class ClassNameTest {
 	 * @test
 	 * @covers ::globalFunction
 	 */
-	public function annotatedTestHasCoversTag() {}
+	final public function annotatedTestHasCoversTag() {}
 }
 
 /**
  * @covers ClassName
  */
 #[Some_Attribute]
-class ClassLevelCoversWithAttributeTest {
+final class ClassLevelCoversWithAttributeTest {
 
 	/**
 	 * Docblock.
@@ -153,4 +153,45 @@ abstract class ContainsTestMethodsTestCase {
 	 * Docblock - this abstract method can be ignored.
 	 */
 	abstract function testToBeImplementedInChildClass();
+}
+
+/**
+ * Docblock.
+ *
+ * @sometag
+ * @anothertag
+ */
+class DoesNotHaveOurTargetTagsTest {
+	/**
+	 * Docblock with tags, but not any of the tags we're looking for.
+	 *
+	 * @param mixed  $input
+	 * @param string $expected
+	 *
+	 * @return void
+	 */
+	final public function testSomething($input, $expected) {}
+}
+
+/**
+ * Global functions should be ignored as PHPUnit tests should always be in a class.
+ */
+function testMe() {}
+
+/**
+ * Docblocks above PHP 8.2 readonly test classes should be recognized correctly.
+ *
+ * @covers \Some\Class::methodName
+ */
+readonly class ReadonlyTest {
+	public function testMe() {}
+}
+
+/**
+ * Docblocks above PHP 8.2 readonly test classes should be recognized correctly.
+ *
+ * @covers \Some\Class::methodName
+ */
+final readonly class FinalReadonlyTest {
+	public function testMe() {}
 }

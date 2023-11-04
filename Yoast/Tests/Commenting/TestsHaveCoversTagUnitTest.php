@@ -16,17 +16,27 @@ final class TestsHaveCoversTagUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Returns the lines where errors should occur.
 	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
 	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList(): array {
-		return [
-			49  => 1,
-			59  => 1,
-			88  => 1,
-			126 => 1,
-			142 => 1,
-			150 => 1,
-		];
+	public function getErrorList( string $testFile = '' ): array {
+
+		switch ( $testFile ) {
+			case 'TestsHaveCoversTagUnitTest.1.inc':
+				return [
+					49  => 1,
+					59  => 1,
+					88  => 1,
+					126 => 1,
+					142 => 1,
+					150 => 1,
+					173 => 1,
+				];
+
+			default:
+				return [];
+		}
 	}
 
 	/**

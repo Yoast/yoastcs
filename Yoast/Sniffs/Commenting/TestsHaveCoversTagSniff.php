@@ -5,8 +5,10 @@ namespace YoastCS\Yoast\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\ObjectDeclarations;
+use PHPCSUtils\Utils\Scopes;
 
 /**
  * Verifies that all test functions have at least one @covers tag.
@@ -45,9 +47,8 @@ final class TestsHaveCoversTagSniff implements Sniff {
 			return $this->process_class( $phpcsFile, $stackPtr );
 		}
 
-		if ( $tokens[ $stackPtr ]['code'] === \T_FUNCTION ) {
-			return $this->process_function( $phpcsFile, $stackPtr );
-		}
+		// This must be a T_FUNCTION token.
+		$this->process_function( $phpcsFile, $stackPtr );
 	}
 
 	/**
@@ -59,13 +60,14 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 * @return void|int If covers annotations were found (or this is not a test class),
 	 *                  will return the stack pointer to the end of the class.
 	 */
-	protected function process_class( File $phpcsFile, $stackPtr ) {
+	private function process_class( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 		$name   = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 
-		if ( \substr( $name, -4 ) !== 'Test'
-			&& \substr( $name, -8 ) !== 'TestCase'
-			&& \substr( $name, 0, 4 ) !== 'Test'
+		if ( empty( $name )
+			|| ( \substr( $name, -4 ) !== 'Test'
+				&& \substr( $name, -8 ) !== 'TestCase'
+				&& \substr( $name, 0, 4 ) !== 'Test' )
 		) {
 			// Not a test class.
 			if ( isset( $tokens[ $stackPtr ]['scope_closer'] ) ) {
@@ -76,12 +78,9 @@ final class TestsHaveCoversTagSniff implements Sniff {
 			return;
 		}
 
-		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveOOStructure() method.
-		$ignore = [
-			\T_WHITESPACE => \T_WHITESPACE,
-			\T_ABSTRACT   => \T_ABSTRACT,
-			\T_FINAL      => \T_FINAL,
-		];
+		// @todo: Once PHPCSUtils 1.2.0 (?) is out, replace with call to new findCommentAboveOOStructure() method.
+		$ignore                  = Collections::classModifierKeywords();
+		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
 		$commentEnd = $stackPtr;
 		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {
@@ -111,10 +110,12 @@ final class TestsHaveCoversTagSniff implements Sniff {
 		foreach ( $tokens[ $commentStart ]['comment_tags'] as $tag ) {
 			if ( $tokens[ $tag ]['content'] === '@covers' ) {
 				$foundCovers = true;
+				break;
 			}
 
 			if ( $tokens[ $tag ]['content'] === '@coversNothing' ) {
 				$foundCoversNothing = true;
+				break;
 			}
 		}
 
@@ -134,10 +135,15 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 *
 	 * @return void
 	 */
-	protected function process_function( File $phpcsFile, $stackPtr ) {
+	private function process_function( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// @todo: Once PHPCSUtils is out, replace with call to new findCommentAboveFunction() method.
+		if ( Scopes::isOOMethod( $phpcsFile, $stackPtr ) === false ) {
+			// This is a global function, not a method in a test class.
+			return;
+		}
+
+		// @todo: Once PHPCSUtils 1.2.0 (?) is out, replace with call to new findCommentAboveFunction() method.
 		$ignore                  = Tokens::$methodPrefixes;
 		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
@@ -183,6 +189,11 @@ final class TestsHaveCoversTagSniff implements Sniff {
 		}
 
 		$name = FunctionDeclarations::getName( $phpcsFile, $stackPtr );
+		if ( empty( $name ) ) {
+			// Parse error. Ignore this method as it will never be run as a test.
+			return;
+		}
+
 		if ( \stripos( $name, 'test' ) !== 0 && $foundTest === false ) {
 			// Not a test method.
 			return;

@@ -4,6 +4,7 @@ namespace YoastCS\Yoast\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\TextStrings;
+use WordPressCS\WordPress\Helpers\WPHookHelper;
 use WordPressCS\WordPress\Sniffs\NamingConventions\ValidHookNameSniff as WPCS_ValidHookNameSniff;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 
@@ -22,7 +23,7 @@ use YoastCS\Yoast\Utils\CustomPrefixesTrait;
  * Check the number of words in hook names and the use of the correct prefix-type,
  * but only when plugin specific prefixes have been passed.
  *
- * {@internal For now allows for an array of both old-style as well as new-style
+ * {@internal For now, allows for an array of both old-style as well as new-style
  *            prefixes during the transition period.
  *            Once all plugins have been transitioned over to use the new-style
  *            namespace-like prefix for hooks, the `WrongPrefix` warning should be
@@ -71,7 +72,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * Keep track of the content of first text string which was passed to the `transform()`
 	 * method as it may be repeatedly called for the same token.
 	 *
-	 * @var bool
+	 * @var string
 	 */
 	private $first_string = '';
 
@@ -89,14 +90,21 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	/**
 	 * Process the parameters of a matched function.
 	 *
-	 * @param int    $stackPtr        The position of the current token in the stack.
-	 * @param string $group_name      The name of the group which was matched.
-	 * @param string $matched_content The token content (function name) which was matched.
-	 * @param array  $parameters      Array with information about the parameters.
+	 * @param int                                   $stackPtr        The position of the current token in the stack.
+	 * @param string                                $group_name      The name of the group which was matched.
+	 * @param string                                $matched_content The token content (function name) which was
+	 *                                                               matched in lowercase.
+	 * @param array<int, array<string, int|string>> $parameters      Array with information about the parameters.
 	 *
 	 * @return void
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
+		$hook_name_param = WPHookHelper::get_hook_name_param( $matched_content, $parameters );
+		if ( $hook_name_param === false ) {
+			// If we can't find the hook name parameter, there's nothing to do, so bow out.
+			return;
+		}
+
 		/*
 		 * The custom prefix should be in the first text passed to `transform()` for each
 		 * matched function call.
@@ -113,8 +121,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		 * If any prefixes were passed, check if this is a hook belonging to the plugin being checked.
 		 */
 		if ( empty( $this->validated_prefixes ) === false ) {
-			$param           = $parameters[1];
-			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
+			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 			$found_prefix    = '';
 
 			if ( isset( Tokens::$stringTokens[ $this->tokens[ $first_non_empty ]['code'] ] ) ) {
@@ -157,7 +164,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		}
 
 		// Do the YoastCS specific hook name length and prefix check.
-		$this->verify_yoast_hook_name( $stackPtr, $parameters );
+		$this->verify_yoast_hook_name( $stackPtr, $hook_name_param );
 	}
 
 	/**
@@ -199,15 +206,18 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	/**
 	 * Additional YoastCS specific hook name checks.
 	 *
-	 * @param int   $stackPtr   The position of the current token in the stack.
-	 * @param array $parameters Array with information about the parameters.
+	 * @param int                       $stackPtr        The position of the current token in the stack.
+	 * @param array<string, int|string> $hook_name_param Array with information about the hook name parameter.
 	 *
 	 * @return void
 	 */
-	public function verify_yoast_hook_name( $stackPtr, $parameters ) {
+	private function verify_yoast_hook_name( $stackPtr, $hook_name_param ) {
 
-		$param           = $parameters[1];
-		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
+		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
+		if ( $first_non_empty === false ) {
+			// Shouldn't be possible as we've checked this before.
+			return; // @codeCoverageIgnore
+		}
 
 		/*
 		 * Check that the namespace-like prefix is used for hooks.
@@ -270,7 +280,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		$allow  = [ \T_CONSTANT_ENCAPSED_STRING ];
 		$allow += Tokens::$emptyTokens;
 
-		$has_non_string = $this->phpcsFile->findNext( $allow, $param['start'], ( $param['end'] + 1 ), true );
+		$has_non_string = $this->phpcsFile->findNext( $allow, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 		if ( $has_non_string !== false ) {
 			/*
 			 * Double quoted string or a hook name concatenated together, checking the word count for the
@@ -281,10 +291,13 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			 * be thrown when PHPCS is explicitly requested to check with a lower severity.
 			 */
 			$this->phpcsFile->addWarning(
-				'Hook name could not reliably be examined for maximum word count. Please verify this hook name manually. Found: %s',
+				'Hook name could not reliably be examined for maximum word count (max is %d words). Please verify this hook name manually. Found: %s',
 				$first_non_empty,
 				'NonString',
-				[ $param['raw'] ],
+				[
+					$this->max_words,
+					$hook_name_param['raw'],
+				],
 				3
 			);
 
@@ -304,10 +317,6 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		$part_count = \count( $parts );
 
 		$this->phpcsFile->recordMetric( $stackPtr, 'Nr of words in hook name', $part_count );
-
-		if ( $part_count <= $this->recommended_max_words && $part_count <= $this->max_words ) {
-			return;
-		}
 
 		if ( $part_count > $this->max_words ) {
 			$error = 'A hook name is not allowed to consist of more than %d words after the plugin prefix. Words found: %d in %s';

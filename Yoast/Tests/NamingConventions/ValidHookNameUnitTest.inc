@@ -140,5 +140,13 @@ apply_filters( "Yoast\\WP\\Plugin\\hookname", $var); // OK.
 apply_filters( "Yoast\WP\Plugin\hookname", $var); // Warning, missing escaping x 3.
 apply_filters( "Yoast\WP\\Plugin\hook{$name}", $var); // Warning, missing escaping x 2 + warning at severity 3 for word count.
 
+
+// Safeguard support for PHP 8.0+ named parameters.
+do_action_ref_array( hook: 'My-Hook', args: $args ); // OK. Well, not really, but using the wrong parameter name, so not our concern.
+do_action_ref_array( args: $args, hook_name: 'Yoast\WP\Plugin\Test\some_hook_name', ); // OK.
+do_action_ref_array( args: $args, hook_name: "yoast_plugin_some_hook_name", ); // Warning - wrong prefix.
+do_action_ref_array( args: $args, hook_name: 'Yoast\WP\Plugin\some_hook', ); // OK.
+do_action_ref_array( args: $args, hook_name: 'Yoast\WP\Plugin\some_hook_name_which_is_too_long', ); // Error - too long.
+
 // Reset to default settings.
 // phpcs:set Yoast.NamingConventions.ValidHookName prefixes[]

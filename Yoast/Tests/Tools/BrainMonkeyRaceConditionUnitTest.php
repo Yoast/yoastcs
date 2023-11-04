@@ -24,6 +24,8 @@ final class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
 			113 => 1,
 			122 => 1,
 			131 => 1,
+			176 => 1,
+			185 => 1,
 		];
 	}
 

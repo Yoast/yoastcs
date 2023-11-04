@@ -26,8 +26,18 @@ final class FileCommentUnitTest extends AbstractSniffUnitTest {
 			case 'FileCommentUnitTest.8.inc':
 			case 'FileCommentUnitTest.10.inc':
 			case 'FileCommentUnitTest.12.inc':
+			case 'FileCommentUnitTest.22.inc':
+			case 'FileCommentUnitTest.24.inc':
+			case 'FileCommentUnitTest.28.inc':
+			case 'FileCommentUnitTest.32.inc':
+			case 'FileCommentUnitTest.36.inc':
 				return [
 					1 => 1,
+				];
+
+			case 'FileCommentUnitTest.21.inc':
+				return [
+					2 => 1,
 				];
 
 			default:
@@ -48,6 +58,9 @@ final class FileCommentUnitTest extends AbstractSniffUnitTest {
 			case 'FileCommentUnitTest.6.inc':
 			case 'FileCommentUnitTest.14.inc':
 			case 'FileCommentUnitTest.20.inc':
+			case 'FileCommentUnitTest.26.inc':
+			case 'FileCommentUnitTest.30.inc':
+			case 'FileCommentUnitTest.34.inc':
 				return [
 					2 => 1,
 				];

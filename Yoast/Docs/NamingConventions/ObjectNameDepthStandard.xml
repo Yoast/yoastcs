@@ -5,9 +5,9 @@
     >
     <standard>
     <![CDATA[
-    The name of objects - classes, interfaces, traits - declared within a namespace should consist of a maximum of three words.
+    The name of OO structures - classes, interfaces, traits, enums - declared within a namespace should consist of a maximum of three words.
 
-    A partial exception is made for test, mock and double classes. These can have a `_Test`, `_Mock` or `_Double` class name suffix, which won't be counted.
+    A partial exception is made for test, mock and double classes. These can have a `_Test`, `_TestCase`, `_Mock` or `_Double` class name suffix, which won't be counted.
 
     Note: the maximum (error) and the recommended (warning) maximum length are configurable.
     ]]>

@@ -70,7 +70,7 @@ class Deprecated_Class_With_Too_Long_Class_Name {} // OK.
  * @since x.x.x
  */
 #[Some_Attribute]
-class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
+final class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
 
 /**
  * Class description.
@@ -79,7 +79,7 @@ class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
  */
 #[Attribute_One]
 #[Attribute_Two]
-class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
+abstract class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
 
 /*
  * Allow for a `_Test` suffix in classes within the unit test suite.
@@ -87,7 +87,7 @@ class Deprecated_Class_With_Attribute_With_Too_Long_Class_Name {} // OK.
 class Three_Word_Name_Test {} // Error.
 
 class Three_Word_Name_Test extends TestCase {} // OK.
-class Three_Word_Name_Test extends WP_UnitTestCase {} // OK.
+class Three_Word_Name_Test extends \WP_UnitTestCase {} // OK.
 
 class Four_Word_Long_Name_Test extends TestCase {} // Error.
 
@@ -114,3 +114,39 @@ trait SomeACRONYMName {} // Error - false positive, this will be fixed in a late
 class TooLongClassName {} // Error.
 interface ThisInterfaceNameIsTooLong {} // Error.
 trait TraitNameIsTooLong {} // Error.
+
+// Now, let's also make sure the test/double handling works for CamelCaps class names + class names with the suffix in an unconventional case.
+class ThreeWordNameTest extends TestCase {} // OK.
+class ThreeWordNameDouble extends ThreeWordName {} // OK.
+class Three_Word_Name_test extends TestCase {} // OK.
+class Three_Word_Name_MOCK extends Some_Class {} // OK.
+
+/*
+ * TestCase classes should also be allowed extra word length.
+ */
+class ThreeWordNameTestCase extends TestCase {} // OK.
+class Three_Word_Name_TestCase extends TestCase {} // OK.
+
+/*
+ * Allow for PHP 8.1+ enums.
+ */
+enum My_Enum_Name {} // OK.
+enum MyEnumName {} // OK.
+enum Too_Long_Enum_Name: int {} // Error.
+enum TooLongEnumName: int {} // Error.
+enum Three_Word_Name_Mock: string implements Word_Interface {} // OK.
+
+/**
+ * Class description, no @deprecated tag.
+ *
+ * @since x.x.x
+ */
+#[Some_Attribute]
+readonly class Active_Class_With_Attribute_With_Too_Long_Class_Name {} // Error.
+
+/**
+ * Class description.
+ *
+ * @deprecated x.x.x
+ */
+final readonly class Deprecated_Readonly_Class_With_Too_Long_Class_Name {} // OK.

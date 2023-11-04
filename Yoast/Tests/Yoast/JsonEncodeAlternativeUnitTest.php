@@ -5,13 +5,13 @@ namespace YoastCS\Yoast\Tests\Yoast;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the AlternativeFunctions sniff.
+ * Unit test class for the JsonEncodeAlternative sniff.
  *
  * @since 1.3.0
  *
- * @covers YoastCS\Yoast\Sniffs\Yoast\AlternativeFunctionsSniff
+ * @covers YoastCS\Yoast\Sniffs\Yoast\JsonEncodeAlternativeSniff
  */
-final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
+final class JsonEncodeAlternativeUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
@@ -20,13 +20,29 @@ final class AlternativeFunctionsUnitTest extends AbstractSniffUnitTest {
 	 */
 	public function getErrorList(): array {
 		return [
-			12 => 1,
 			13 => 1,
 			14 => 1,
-			16 => 1,
+			15 => 1,
 			17 => 1,
-			21 => 1,
+			18 => 1,
 			22 => 1,
+			23 => 1,
+			26 => 1,
+			27 => 1,
+			30 => 1,
+			31 => 1,
+			34 => 1,
+			35 => 1,
+			36 => 1,
+			37 => 1,
+			38 => 1,
+			40 => 1,
+			41 => 1,
+			43 => 1,
+			44 => 1,
+			47 => 1,
+			48 => 1,
+			52 => 1,
 		];
 	}
 

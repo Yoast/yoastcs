@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
-    title="Alternative Functions"
+    title="Json Encode Alternative"
     >
     <standard>
     <![CDATA[
-    Discourages the use of certain PHP or WP native functions in favour of Yoast native alternatives.
+    Discourages the use of the PHP and WP native [wp_]json_encode() functions in favour of a Yoast native alternative.
     ]]>
     </standard>
     <code_comparison>

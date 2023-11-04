@@ -64,10 +64,10 @@ final class Threshold implements Report {
 	 * and FALSE if it ignored the file. Returning TRUE indicates that the file and
 	 * its data should be counted in the grand totals.
 	 *
-	 * @param array $report      Prepared report data.
-	 * @param File  $phpcsFile   The file being reported on.
-	 * @param bool  $showSources Whether to show the source codes.
-	 * @param int   $width       Maximum allowed line width.
+	 * @param array<string, string|int|array<int, array<int, mixed>>> $report      Prepared report data.
+	 * @param File                                                    $phpcsFile   The file being reported on.
+	 * @param bool                                                    $showSources Whether to show the source codes.
+	 * @param int                                                     $width       Maximum allowed line width.
 	 *
 	 * @return bool
 	 */
@@ -155,6 +155,9 @@ final class Threshold implements Report {
 		}
 
 		// Make the threshold comparison outcome available to the calling script.
-		\define( 'YOASTCS_ABOVE_THRESHOLD', $above_threshold );
+		// The conditional define is only so as to make the method testable.
+		if ( \defined( 'YOASTCS_ABOVE_THRESHOLD' ) === false ) {
+			\define( 'YOASTCS_ABOVE_THRESHOLD', $above_threshold );
+		}
 	}
 }

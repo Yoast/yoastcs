@@ -21,6 +21,7 @@
 
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
+			<directory suffix=".php">Yoast/Reports/</directory>
 			<directory suffix=".php">Yoast/Sniffs/</directory>
 			<directory suffix=".php">Yoast/Utils/</directory>
 		</whitelist>

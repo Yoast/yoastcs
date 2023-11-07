@@ -53,7 +53,7 @@ Typically, (a variation on) the following snippet would be added to the `compose
 
 ## PHP Code Sniffer
 
-Set of [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) rules.
+Set of [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) rules.
 
 Severity levels:
 
@@ -65,7 +65,7 @@ Severity levels:
 The `Yoast` standard for PHP_CodeSniffer is comprised of the following:
 * The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://make.wordpress.org/core/handbook/coding-standards/php/), with some [select exclusions](https://github.com/Yoast/yoastcs/blob/develop/Yoast/ruleset.xml#L29-L75).
 * The [`PHPCompatibilityWP`](https://github.com/PHPCompatibility/PHPCompatibilityWP) ruleset which checks code for PHP cross-version compatibility while preventing false positives for functionality polyfilled within WordPress.
-* Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/squizlabs/PHP_CodeSniffer).
+* Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/PHPCSStandards/PHP_CodeSniffer).
 * Select additional sniffs taken from [`PHPCSExtra`](https://github.com/PHPCSStandards/PHPCSExtra).
 * A number of custom Yoast specific sniffs.
 
@@ -93,7 +93,7 @@ Not all sniffs have documentation available about what they sniff for, but for t
 "vendor/bin/phpcs" --extensions=php /path/to/folder/
 ```
 
-For more command-line options, please have a read through the [PHP_CodeSniffer documentation](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage).
+For more command-line options, please have a read through the [PHP_CodeSniffer documentation](https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Usage).
 
 #### Yoast plugin repositories
 

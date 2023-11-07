@@ -468,7 +468,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 Initial public release as a stand-alone package.
 
 
-[PHP_CodeSniffer]:         https://github.com/squizlabs/PHP_CodeSniffer/releases
+[PHP_CodeSniffer]:         https://github.com/PHPCSStandards/PHP_CodeSniffer/releases
 [WordPressCS]:             https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
 [PHPCompatibilityWP]:      https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
 [PHPCompatibility]:        https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md

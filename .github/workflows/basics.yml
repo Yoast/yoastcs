@@ -56,7 +56,7 @@ jobs:
           wp-coding-standards/wpcs:"dev-develop"
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
         with:
@@ -70,7 +70,7 @@ jobs:
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - name: Show XML issues inline
+      - name: Enable showing XML issues inline
         uses: korelstar/xmllint-problem-matcher@v1
 
       # Validate the ruleset XML file.

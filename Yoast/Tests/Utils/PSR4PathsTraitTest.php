@@ -35,6 +35,8 @@ final class PSR4PathsTraitTest extends NonSniffTestCase {
 	 * Clean up the trait after each test.
 	 *
 	 * @after
+	 *
+	 * @return void
 	 */
 	protected function clean_up() {
 		$this->psr4_paths           = [];
@@ -114,7 +116,7 @@ final class PSR4PathsTraitTest extends NonSniffTestCase {
 	 * @see test_get_psr4_info()          For the array format.
 	 * @see test_get_psr4_info_explicit() For the array format.
 	 *
-	 * @return array<string, array<string, string|array<string, string|bool>>>
+	 * @return array<string, array<string, string|array<string, string|bool|array<string, string>>>>
 	 */
 	public static function data_is_get_psr4_info() {
 		$default_psr4_paths = self::data_validate_psr4_paths()['multiple prefixes, variation of paths']['psr4_paths'];

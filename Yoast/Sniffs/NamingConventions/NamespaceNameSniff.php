@@ -129,7 +129,7 @@ final class NamespaceNameSniff implements Sniff {
 		if ( ! empty( $this->validated_prefixes ) ) {
 			$name = $namespace_name . '\\'; // Validated prefixes always have a \ at the end.
 			foreach ( $this->validated_prefixes as $prefix ) {
-				if ( \strpos( $name . '\\', $prefix ) === 0 ) {
+				if ( \strpos( $name, $prefix ) === 0 ) {
 					$namespace_name_no_prefix = \rtrim( \substr( $name, \strlen( $prefix ) ), '\\' );
 					$found_prefix             = \rtrim( $prefix, '\\' );
 					break;

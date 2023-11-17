@@ -128,8 +128,59 @@ namespace Yoast\WP\Plugin\Tests\Unit\Mocks\Foo\Bar\Baz; // Warning.
 namespace Yoast\WP\Plugin\Tests\WP\Fixtures\Foo\Bar\Baz; // Warning.
 namespace Yoast\WP\Plugin\Tests\Unit\Fixtures\Foo\Bar\Baz; // Warning.
 
+/*
+ * Test allowing for more variations of test directories and deeper double directories based on PSR4 paths.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[]
+ * phpcs:set Yoast.NamingConventions.NamespaceName psr4_paths[] Prefix\Foo=>PSR4_Path,Prefix\Bar=>OtherPath
+ */
+
+namespace Prefix\Foo\Tests\WP\Foo\Bar; // OK.
+namespace Prefix\Bar\Tests\Unit\Foo\Bar; // OK.
+namespace Prefix\Foo\Tests\WP\Doubles\Foo\Bar; // OK.
+namespace Prefix\Bar\Tests\Unit\Doubles\Foo\Bar; // OK.
+namespace Prefix\Foo\Tests\WP\Mocks\Foo\Bar; // OK.
+namespace Prefix\Bar\Tests\Unit\Mocks\Foo\Bar; // OK.
+namespace Prefix\Foo\Tests\WP\Fixtures\Foo\Bar; // OK.
+namespace Prefix\Bar\Tests\Unit\Fixtures\Foo\Bar; // OK.
+
+namespace Prefix\Foo\Tests\WP\Foo\Bar\Baz; // Warning.
+namespace Prefix\Bar\Tests\Unit\Foo\Bar\Baz; // Warning.
+namespace Prefix\Foo\Tests\WP\Doubles\Foo\Bar\Baz; // Warning.
+namespace Prefix\Bar\Tests\Unit\Doubles\Foo\Bar\Baz; // Warning.
+namespace Prefix\Foo\Tests\WP\Mocks\Foo\Bar\Baz; // Warning.
+namespace Prefix\Bar\Tests\Unit\Mocks\Foo\Bar\Baz; // Warning.
+namespace Prefix\Foo\Tests\WP\Fixtures\Foo\Bar\Baz; // Warning.
+namespace Prefix\Bar\Tests\Unit\Fixtures\Foo\Bar\Baz; // Warning.
+
+/*
+ * Test with PSR4 paths where the prefix already includes `Tests`.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[]
+ * phpcs:set Yoast.NamingConventions.NamespaceName psr4_paths[] PrefixA\Tests\\=>PSR4_Path
+ */
+
+namespace PrefixA\Tests\WP\Foo\Bar; // OK.
+namespace PrefixA\Tests\Unit\Foo\Bar; // OK.
+namespace PrefixA\Tests\WP\Doubles\Foo\Bar; // OK.
+namespace PrefixA\Tests\Unit\Doubles\Foo\Bar; // OK.
+namespace PrefixA\Tests\WP\Mocks\Foo\Bar; // OK.
+namespace PrefixA\Tests\Unit\Mocks\Foo\Bar; // OK.
+namespace PrefixA\Tests\WP\Fixtures\Foo\Bar; // OK.
+namespace PrefixA\Tests\Unit\Fixtures\Foo\Bar; // OK.
+
+namespace PrefixA\Tests\WP\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\Unit\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\WP\Doubles\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\Unit\Doubles\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\WP\Mocks\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\Unit\Mocks\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\WP\Fixtures\Foo\Bar\Baz; // Warning.
+namespace PrefixA\Tests\Unit\Fixtures\Foo\Bar\Baz; // Warning.
+
 // Reset to default settings.
 // phpcs:set Yoast.NamingConventions.NamespaceName prefixes[]
+// phpcs:set Yoast.NamingConventions.NamespaceName psr4_paths[]
 
 /*
  * Test against false positives for namespace operator and incorrect namespace declarations.

@@ -79,11 +79,8 @@
 
 	<rule ref="Yoast.NamingConventions.NamespaceName">
 		<properties>
-			<property name="prefixes" type="array">
-				<element value="YoastCS\Yoast"/>
-			</property>
-			<property name="src_directory" type="array">
-				<element value="Yoast"/>
+			<property name="psr4_paths" type="array">
+				<element key="YoastCS\Yoast\\" value="Yoast"/>
 			</property>
 		</properties>
 	</rule>

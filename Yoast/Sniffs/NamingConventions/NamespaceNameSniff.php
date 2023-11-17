@@ -10,6 +10,7 @@ use PHPCSUtils\Utils\TextStrings;
 use YoastCS\Yoast\Utils\CustomPrefixesTrait;
 use YoastCS\Yoast\Utils\PathHelper;
 use YoastCS\Yoast\Utils\PathValidationHelper;
+use YoastCS\Yoast\Utils\PSR4PathsTrait;
 
 /**
  * Check namespace name declarations.
@@ -23,13 +24,16 @@ use YoastCS\Yoast\Utils\PathValidationHelper;
  * placed in.
  *
  * @since 2.0.0
- * @since 3.0.0 Added new check to verify a prefix is used.
+ * @since 3.0.0 - Added new check to verify a prefix is used.
+ *              - The sniff now also has the ability to check for PSR-4 compliant namespace names.
  *
  * @uses \YoastCS\Yoast\Utils\CustomPrefixesTrait::$prefixes
+ * @uses \YoastCS\Yoast\Utils\PSR4PathsTrait::$psr4_paths
  */
 final class NamespaceNameSniff implements Sniff {
 
 	use CustomPrefixesTrait;
+	use PSR4PathsTrait;
 
 	/**
 	 * Double/Mock/Fixture directories to allow for.
@@ -135,14 +139,42 @@ final class NamespaceNameSniff implements Sniff {
 			return;
 		}
 
-		$this->validate_prefixes();
+		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
+		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
+		if ( $file === 'STDIN' ) {
+			$file = ''; // @codeCoverageIgnore
+		}
+		else {
+			$file = PathHelper::normalize_absolute_path( $file );
+		}
+
+		$valid_prefixes = [];
+		$psr4_info      = false;
+		if ( $file !== '' ) {
+			$psr4_info = $this->get_psr4_info( $phpcsFile, $file );
+		}
+
+		if ( \is_array( $psr4_info ) ) {
+			// If a PSR4 path matched, there will only ever be one valid prefix for the matched path.
+			$valid_prefixes = [ $psr4_info['prefix'] . '\\' ];
+		}
+		else {
+			// Safeguard that the PSR-4 prefixes are always included.
+			// Makes sure level depth check still happens even if there is no basepath or path doesn't match PSR-4 path.
+			if ( empty( $this->prefixes ) && ! empty( $this->psr4_paths ) ) {
+				$this->prefixes = \array_keys( $this->psr4_paths );
+			}
+
+			$this->validate_prefixes();
+			$valid_prefixes = $this->validated_prefixes;
+		}
 
 		// Strip off the (longest) plugin prefix.
 		$namespace_name_no_prefix = $namespace_name;
 		$found_prefix             = '';
-		if ( ! empty( $this->validated_prefixes ) ) {
+		if ( ! empty( $valid_prefixes ) ) {
 			$name = $namespace_name . '\\'; // Validated prefixes always have a \ at the end.
-			foreach ( $this->validated_prefixes as $prefix ) {
+			foreach ( $valid_prefixes as $prefix ) {
 				if ( \strpos( $name, $prefix ) === 0 ) {
 					$namespace_name_no_prefix = \rtrim( \substr( $name, \strlen( $prefix ) ), '\\' );
 					$found_prefix             = \rtrim( $prefix, '\\' );
@@ -153,19 +185,31 @@ final class NamespaceNameSniff implements Sniff {
 		}
 
 		// Check if a prefix is used.
-		if ( ! empty( $this->validated_prefixes ) && $found_prefix === '' ) {
-			if ( \count( $this->validated_prefixes ) === 1 ) {
-				$error = 'A namespace name is required to start with the "%s" prefix.';
+		if ( ! empty( $valid_prefixes ) && $found_prefix === '' ) {
+			$prefixes = $valid_prefixes;
+
+			if ( $psr4_info !== false ) {
+				$error     = 'PSR-4 namespace name for this path is required to start with the "%1$s" prefix.';
+				$errorcode = 'MissingPSR4Prefix';
 			}
 			else {
-				$error = 'A namespace name is required to start with one of the following prefixes: "%s"';
+				$error     = 'A namespace name is required to start with one of the following prefixes: "%s"';
+				$errorcode = 'MissingPrefix';
+
+				$prefixes = \array_merge( $prefixes, \array_keys( $this->psr4_paths ) );
+				$prefixes = \array_unique( $prefixes );
+
+				if ( \count( $prefixes ) === 1 ) {
+					$error = 'A namespace name is required to start with the "%s" prefix.';
+				}
+				else {
+					\natcasesort( $prefixes );
+				}
 			}
 
-			$prefixes = $this->validated_prefixes;
-			\natcasesort( $prefixes );
 			$data = [ \implode( '", "', $prefixes ) ];
 
-			$phpcsFile->addError( $error, $stackPtr, 'MissingPrefix', $data );
+			$phpcsFile->addError( $error, $stackPtr, $errorcode, $data );
 		}
 
 		/*
@@ -175,8 +219,9 @@ final class NamespaceNameSniff implements Sniff {
 			$namespace_for_level_check = $namespace_name_no_prefix;
 
 			// Allow for a variation of `Tests\` and `Tests\*\Doubles\` after the prefix.
-			$starts_with_tests = ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 );
-			if ( $starts_with_tests === true ) {
+			$starts_with_tests      = ( \strpos( $namespace_for_level_check, 'Tests\\' ) === 0 );
+			$prefix_ends_with_tests = ( \substr( $found_prefix, -6 ) === '\Tests' );
+			if ( $starts_with_tests === true || $prefix_ends_with_tests === true ) {
 				$stripped = false;
 				foreach ( self::DOUBLE_DIRS as $dir => $length ) {
 					if ( \strpos( $namespace_for_level_check, $dir ) !== false ) {
@@ -187,16 +232,27 @@ final class NamespaceNameSniff implements Sniff {
 				}
 
 				if ( $stripped === false ) {
-					// No double dir found, now check/strip typical test dirs.
-					if ( \strpos( $namespace_for_level_check, 'Tests\WP\\' ) === 0 ) {
-						$namespace_for_level_check = \substr( $namespace_for_level_check, 9 );
+					if ( $starts_with_tests === true ) {
+						// No double dir found, now check/strip typical test dirs.
+						if ( \strpos( $namespace_for_level_check, 'Tests\WP\\' ) === 0 ) {
+							$namespace_for_level_check = \substr( $namespace_for_level_check, 9 );
+						}
+						elseif ( \strpos( $namespace_for_level_check, 'Tests\Unit\\' ) === 0 ) {
+							$namespace_for_level_check = \substr( $namespace_for_level_check, 11 );
+						}
+						else {
+							// Okay, so this only has the `Tests` prefix, just strip it.
+							$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
+						}
 					}
-					elseif ( \strpos( $namespace_for_level_check, 'Tests\Unit\\' ) === 0 ) {
-						$namespace_for_level_check = \substr( $namespace_for_level_check, 11 );
-					}
-					else {
-						// Okay, so this only has the `Tests` prefix, just strip it.
-						$namespace_for_level_check = \substr( $namespace_for_level_check, 6 );
+					elseif ( $prefix_ends_with_tests === true ) {
+						// Prefix which already includes `Tests`.
+						if ( \strpos( $namespace_for_level_check, 'WP\\' ) === 0 ) {
+							$namespace_for_level_check = \substr( $namespace_for_level_check, 3 );
+						}
+						elseif ( \strpos( $namespace_for_level_check, 'Unit\\' ) === 0 ) {
+							$namespace_for_level_check = \substr( $namespace_for_level_check, 5 );
+						}
 					}
 				}
 			}
@@ -237,40 +293,50 @@ final class NamespaceNameSniff implements Sniff {
 			return;
 		}
 
-		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
-		if ( $file === 'STDIN' ) {
+		if ( $file === '' ) {
+			// STDIN.
 			return; // @codeCoverageIgnore
 		}
 
-		$directory          = PathHelper::normalize_absolute_path( \dirname( $file ) );
 		$relative_directory = '';
+		if ( \is_array( $psr4_info ) ) {
+			$relative_directory = $psr4_info['relative'];
+		}
+		else {
+			$directory = PathHelper::normalize_absolute_path( \dirname( $file ) );
 
-		$this->validate_src_directory( $phpcsFile );
+			$this->validate_src_directory( $phpcsFile );
 
-		if ( empty( $this->validated_src_directory ) === false ) {
-			foreach ( $this->validated_src_directory as $absolute_src_path ) {
-				if ( PathHelper::path_starts_with( $directory, $absolute_src_path ) === false ) {
-					continue;
+			if ( empty( $this->validated_src_directory ) === false ) {
+				foreach ( $this->validated_src_directory as $absolute_src_path ) {
+					if ( PathHelper::path_starts_with( $directory, $absolute_src_path ) === false ) {
+						continue;
+					}
+
+					$relative_directory = PathHelper::strip_basepath( $directory, $absolute_src_path );
+					break;
 				}
-
-				$relative_directory = PathHelper::strip_basepath( $directory, $absolute_src_path );
-				if ( $relative_directory === '.' ) {
-					$relative_directory = '';
-				}
-				break;
 			}
+		}
+
+		if ( $relative_directory === '.' ) {
+			$relative_directory = '';
 		}
 
 		// Now any potential src directory has been stripped, remove surrounding slashes.
 		$relative_directory = \trim( $relative_directory, '/' );
 
+		// Directory to namespace translation.
 		$expected = '[Plugin\Prefix]';
 		if ( $found_prefix !== '' ) {
 			$expected = $found_prefix;
 		}
-		elseif ( \count( $this->validated_prefixes ) === 1 ) {
-			$expected = \rtrim( $this->validated_prefixes[0], '\\' );
+		// Namespace name doesn't have the correct prefix, but we do know what the prefix should be.
+		elseif ( \is_array( $psr4_info ) ) {
+			$expected = $psr4_info['prefix'];
+		}
+		elseif ( \count( $valid_prefixes ) === 1 ) {
+			$expected = \rtrim( $valid_prefixes[0], '\\' );
 		}
 
 		$clean            = [];
@@ -281,10 +347,13 @@ final class NamespaceNameSniff implements Sniff {
 			$levels = \array_filter( $levels ); // Remove empties, just in case.
 
 			foreach ( $levels as $level ) {
-				$cleaned_level = \preg_replace( '`[[:punct:]]`', '_', $level );
-				$words         = \explode( '_', $cleaned_level );
-				$words         = \array_map( 'ucfirst', $words );
-				$cleaned_level = \implode( '_', $words );
+				$cleaned_level = $level;
+				if ( $psr4_info === false ) {
+					$cleaned_level = \preg_replace( '`[[:punct:]]`', '_', $cleaned_level );
+					$words         = \explode( '_', $cleaned_level );
+					$words         = \array_map( 'ucfirst', $words );
+					$cleaned_level = \implode( '_', $words );
+				}
 
 				if ( NamingConventions::isValidIdentifierName( $cleaned_level ) === false ) {
 					$phpcsFile->addError(
@@ -304,23 +373,36 @@ final class NamespaceNameSniff implements Sniff {
 			$name_for_compare = \implode( '\\', $clean );
 		}
 
-		if ( \strcasecmp( $name_for_compare, $namespace_name_no_prefix ) === 0 ) {
-			return;
+		// Check whether the namespace name complies with the rules.
+		if ( $psr4_info !== false ) {
+			// Check for PSR-4 compliant namespace.
+			if ( \strcmp( $name_for_compare, $namespace_name_no_prefix ) === 0 ) {
+				return;
+			}
+
+			$error = 'Directory marked as a PSR-4 path. The namespace name should match the path exactly in a case-sensitive manner. Expected namespace name: "%s"; found: "%s"';
+			$code  = 'NotPSR4Compliant';
+		}
+		else {
+			// Check for "old-style" namespace.
+			if ( \strcasecmp( $name_for_compare, $namespace_name_no_prefix ) === 0 ) {
+				return;
+			}
+
+			$error = 'The namespace (sub)level(s) should reflect the directory path to the file. Expected: "%s"; Found: "%s"';
+			$code  = 'Invalid';
 		}
 
 		if ( $name_for_compare !== '' ) {
 			$expected .= '\\' . $name_for_compare;
 		}
 
-		$phpcsFile->addError(
-			'The namespace (sub)level(s) should reflect the directory path to the file. Expected: "%s"; Found: "%s"',
-			$stackPtr,
-			'Invalid',
-			[
-				$expected,
-				$namespace_name,
-			]
-		);
+		$data = [
+			$expected,
+			$namespace_name,
+		];
+
+		$phpcsFile->addError( $error, $stackPtr, $code, $data );
 	}
 
 	/**

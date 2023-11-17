@@ -269,6 +269,9 @@ final class NamespaceNameSniff implements Sniff {
 		if ( $found_prefix !== '' ) {
 			$expected = $found_prefix;
 		}
+		elseif ( \count( $this->validated_prefixes ) === 1 ) {
+			$expected = \rtrim( $this->validated_prefixes[0], '\\' );
+		}
 
 		if ( $relative_directory !== '' ) {
 			$levels = \explode( '/', $relative_directory );

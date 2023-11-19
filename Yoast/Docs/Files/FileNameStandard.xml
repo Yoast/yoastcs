@@ -44,7 +44,7 @@ class WPSEO_Utils {}
     </code_comparison>
     <standard>
     <![CDATA[
-    For all interface and trait files, the file name should reflect the interface/trait name without the plugin specific prefix and with an "-interface" or "-trait" suffix.
+    For all interface, trait and enum files, the file name should reflect the interface/trait/enum name without the plugin specific prefix and with an "-interface", "-trait" or "-enum" suffix.
     ]]>
     </standard>
     <code_comparison>

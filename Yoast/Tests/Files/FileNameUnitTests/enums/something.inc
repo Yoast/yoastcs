@@ -3,6 +3,6 @@ phpcs:set Yoast.Files.FileName oo_prefixes[] wpseo,yoast
 
 <?php
 
-TraiT Yoast_Outline_MyThing {}
+enum Yoast_Something:int implements ArrayAccess {}
 
 // phpcs:set Yoast.Files.FileName oo_prefixes[]

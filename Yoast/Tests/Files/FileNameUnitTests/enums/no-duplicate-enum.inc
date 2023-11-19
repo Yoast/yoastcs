@@ -3,6 +3,6 @@ phpcs:set Yoast.Files.FileName oo_prefixes[] wpseo,yoast
 
 <?php
 
-TraiT Yoast_Outline_MyThing {}
+enum Yoast_No_Duplicate_Enum implements Foo {}
 
 // phpcs:set Yoast.Files.FileName oo_prefixes[]

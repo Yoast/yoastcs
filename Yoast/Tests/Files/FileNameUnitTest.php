@@ -17,13 +17,16 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 	/**
 	 * Error files with the expected nr of errors.
 	 *
-	 * @var int[]
+	 * @var array<string, int>
 	 */
 	private $expected_results = [
 
 		/*
 		 * In /FileNameUnitTests.
 		 */
+
+		// Live coding/parse error test.
+		'live-coding.inc'                 => 0,
 
 		// Exclusions.
 		'excluded-file.inc'               => 0,
@@ -34,6 +37,11 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'some_file.inc'                   => 1, // Dashes, not underscores.
 		'SomeFile.inc'                    => 1, // Lowercase expected.
 		'some-File.inc'                   => 1, // Lowercase expected.
+		'short-open.inc'                  => 0,
+		'ShortOpen.inc'                   => 1, // Lowercase expected.
+		'short_Open.inc'                  => 1, // Lowercase expected, dashes, not underscores.
+		'dot.not.underscore.inc'          => 1, // Dashes, not other punctuation.
+		'with#other+punctuation.inc'      => 1, // Dashes, not other punctuation.
 
 		// Class file names.
 		'my-class.inc'                    => 0,
@@ -46,6 +54,11 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'yoast.inc'                       => 0, // Class name = prefix, so there would be nothing left otherwise.
 		'class-wpseo-some-class.inc'      => 1, // Prefixes 'class' and 'wpseo' not necessary.
 		'excluded-CLASS-file.inc'         => 1, // Lowercase expected.
+		'excluded-backslash-file.inc'     => 0,
+		'excluded-class-wrong-case.inc'   => 1, // Filename not in line with class name. File not excluded due to wrong case used.
+		'excluded-illegal.inc'            => 1, // Filename not in line with class name. File not excluded due to illegal path setting.
+		'excluded-multiple.inc'           => 0,
+		'excluded-dot-prefixed.inc'       => 0,
 
 		// Interface file names.
 		'outline-something-interface.inc' => 0,
@@ -63,11 +76,30 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 		'no-duplicate-trait.inc'          => 0, // Check that 'Trait' in trait name does not cause duplication in filename.
 		'excluded-trait-file.inc'         => 0,
 
+		// Enum file names.
+		'something-enum.inc'              => 0,
+		'different-enum.inc'              => 1, // Filename not in line with enum name.
+		'something.inc'                   => 1, // Missing '-enum' suffix.
+		'yoast-something.inc'             => 1, // Prefix 'yoast' not needed.
+		'no-duplicate-enum.inc'           => 0, // Check that 'Enum' in enum name does not cause duplication in filename.
+		'excluded-enum.inc'               => 0,
+
 		// Functions file names.
 		'functions.inc'                   => 0,
 		'some-functions.inc'              => 0,
 		'some-file.inc'                   => 1, // Missing '-functions' suffix.
 		'excluded-functions-file.inc'     => 0,
+
+		// Ignore annotation handling.
+		'blanket-disable.inc'             => 0,
+		'yoast-disable.inc'               => 0,
+		'category-disable.inc'            => 0,
+		'rule-disable.inc'                => 0,
+		'disable-matching-enable.inc'     => 1,
+		'disable-non-matching-enable.inc' => 0,
+		'non-relevant-disable.inc'        => 1,
+		'partial-file-disable.inc'        => 1,
+		'Errorcode_Disable.inc'           => 1, // The sniff can only be disabled completely, not by error code.
 
 		/*
 		 * In /.
@@ -98,7 +130,7 @@ final class FileNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFileBase The base path that the unit tests files will have.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;

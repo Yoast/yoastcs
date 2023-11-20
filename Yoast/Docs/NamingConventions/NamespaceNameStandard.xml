@@ -50,10 +50,18 @@ namespace Yoast\WP\Plugin\Tests\<em>Foo\Bar\Flo\Sub</em>;
     <standard>
     <![CDATA[
     The levels in a namespace name should reflect the path to the file.
+    Optional, strict PSR-4 compliance for the path to namespace name translation can be enforced by setting the `psr4_paths` property.
+
+    The differences between the "basic" path to namespace translation and strict PSR-4 path to namespace translation, are as follows:
+    * The "basic" translation is case-insensitive, while the PSR-4 translation is case-sensitive.
+    * The "basic" translation will convert dashes and other punctuation characters in the path to underscores, while the PSR-4 translation enforces that the names match exactly.
+    * The "basic" translation will accept any of the provided prefixes, while the strict PSR-4 translation will require the exact prefix assigned to the matched PSR-4 path.
+    * The "basic" translation is suitable for use in combination with a Composer classmap for autoloading.
+      The PSR-4 compliant translation is suitable for use in combination with the Composer `psr4` autoload directive.
+
+    If the `psr4_paths` property is provided, the PSR-4 based path translation will always take precedence for a file matching any of the PSR-4 paths.
 
     If a path to name translation would result in an invalid namespace name based on the naming rules for PHP, an error will be thrown to rename the problem directory.
-
-    The plugin specific prefix is disregarded for this check.
     ]]>
     </standard>
     <code_comparison>
@@ -69,6 +77,22 @@ namespace Yoast\WP\Plugin\<em>Admin\Forms</em>;
 <!-- Path to file: <em>admin/forms/</em>file.php -->
 <?php
 namespace Yoast\WP\Plugin\<em>Unrelated</em>;
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: PSR-4 compliant namespace name reflects the path to the file exactly.">
+        <![CDATA[
+<!-- Path to file: <em>User_Forms/</em>file.php -->
+<?php
+namespace Yoast\WP\Plugin\<em>User_Forms</em>;
+        ]]>
+        </code>
+        <code title="Invalid: non-PSR-4 compliant namespace name does not reflect the path to the file exactly.">
+        <![CDATA[
+<!-- Path to file: <em>User_forms/</em>file.php -->
+<?php
+namespace Yoast\WP\Plugin\<em>user_Forms</em>;
         ]]>
         </code>
     </code_comparison>

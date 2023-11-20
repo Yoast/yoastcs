@@ -9,6 +9,7 @@ use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\TextStrings;
 use YoastCS\Yoast\Utils\PathHelper;
 use YoastCS\Yoast\Utils\PathValidationHelper;
+use YoastCS\Yoast\Utils\PSR4PathsTrait;
 
 /**
  * Ensures files comply with the Yoast file name rules.
@@ -24,9 +25,14 @@ use YoastCS\Yoast\Utils\PathValidationHelper;
  *   have a "-functions" suffix.
  *
  * @since 0.5
- * @since 3.0.0 The sniff will now also be enforced for files only using the PHP short open tag.
+ * @since 3.0.0 - The sniff will now also be enforced for files only using the PHP short open tag.
+ *              - The sniff now also has the ability to check for PSR-4 compliant file names.
+ *
+ * @uses \YoastCS\Yoast\Utils\PSR4PathsTrait::$psr4_paths
  */
 final class FileNameSniff implements Sniff {
+
+	use PSR4PathsTrait;
 
 	/**
 	 * Object tokens to search for in a file.
@@ -192,13 +198,19 @@ final class FileNameSniff implements Sniff {
 			$this->add_missing_basepath_warning( $phpcsFile );
 		}
 
-		if ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
-			$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );
-			if ( $oo_structure !== false ) {
+		$oo_structure = $phpcsFile->findNext( self::NAMED_OO_TOKENS, $stackPtr );
+		if ( $oo_structure !== false ) {
 
-				$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
+			$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
-				if ( ! empty( $oo_name ) ) {
+			if ( ! empty( $oo_name ) ) {
+
+				if ( $this->is_in_psr4_path( $phpcsFile, $file ) ) {
+					$error      = 'Directory marked as a PSR-4 path. File names should 100%% match the name of the OO structure contained in the file for PSR-4 compliance.';
+					$error_code = 'InvalidPSR4FileName';
+					$expected   = $oo_name;
+				}
+				elseif ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
 					$this->validate_oo_prefixes();
 					if ( ! empty( $this->clean_oo_prefixes ) ) {
 						foreach ( $this->clean_oo_prefixes as $prefix ) {
@@ -239,15 +251,15 @@ final class FileNameSniff implements Sniff {
 					}
 				}
 			}
-			else {
-				$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
-				if ( $has_function !== false && $file_name !== 'functions' ) {
-					$error      = 'Files containing function declarations should have "-functions" as a suffix.';
-					$error_code = 'InvalidFunctionsFileName';
+		}
+		elseif ( $this->is_file_excluded( $phpcsFile, $file ) === false ) {
+			$has_function = $phpcsFile->findNext( \T_FUNCTION, $stackPtr );
+			if ( $has_function !== false && $file_name !== 'functions' ) {
+				$error      = 'Files containing function declarations should have "-functions" as a suffix.';
+				$error_code = 'InvalidFunctionsFileName';
 
-					if ( \substr( $expected, -10 ) !== '-functions' ) {
-						$expected .= '-functions';
-					}
+				if ( \substr( $expected, -10 ) !== '-functions' ) {
+					$expected .= '-functions';
 				}
 			}
 		}
@@ -374,7 +386,7 @@ final class FileNameSniff implements Sniff {
 		}
 
 		$phpcsFile->addWarning(
-			'For the exclude property to work with relative file path files, the --basepath needs to be set.',
+			'For the excluded files and the psr4 paths properties to work with relative file paths, the --basepath needs to be set.',
 			0,
 			'MissingBasePath'
 		);

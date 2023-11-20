@@ -20,17 +20,26 @@ namespace YoastCS\Yoast\Utils;
 final class PathHelper {
 
 	/**
-	 * Normalize a path to forward slashes and normalize the leading/trailing slashes.
+	 * Normalize an absolute path to forward slashes and to include a trailing slash.
 	 *
-	 * @param string $path File or directory path.
-	 *                     Both absolute as well as relative paths are accepted.
+	 * @param string $path Absolute file or directory path.
 	 *
 	 * @return string
 	 */
-	public static function normalize_path( $path ) {
-		$path = self::normalize_directory_separators( $path );
-		$path = self::remove_leading_slash( $path );
-		return self::trailingslashit( $path );
+	public static function normalize_absolute_path( $path ) {
+		return self::trailingslashit( self::normalize_directory_separators( $path ) );
+	}
+
+	/**
+	 * Normalize a relative path to forward slashes and normalize the leading/trailing
+	 * slashes (no leading, yes trailing).
+	 *
+	 * @param string $path Relative file or directory path.
+	 *
+	 * @return string
+	 */
+	public static function normalize_relative_path( $path ) {
+		return self::remove_leading_slash( self::normalize_absolute_path( $path ) );
 	}
 
 	/**

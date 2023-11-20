@@ -283,7 +283,7 @@ final class FileNameSniff implements Sniff {
 			return false;
 		}
 
-		$path_to_file = PathHelper::normalize_path( $path_to_file );
+		$path_to_file = PathHelper::normalize_absolute_path( $path_to_file );
 
 		return isset( $this->validated_excluded_files[ $path_to_file ] );
 	}

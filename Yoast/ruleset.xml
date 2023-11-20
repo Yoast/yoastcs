@@ -18,6 +18,9 @@
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor(_prefixed)?/*</exclude-pattern>
 
+	<!-- Always exclude files from other plugins which may be installed for test purposes. -->
+	<exclude-pattern>*/wp-content/plugins*</exclude-pattern>
+
 
 	<!--
 	#############################################################################

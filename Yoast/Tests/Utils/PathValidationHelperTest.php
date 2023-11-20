@@ -26,7 +26,7 @@ final class PathValidationHelperTest extends NonSniffTestCase {
 	 *
 	 * @var string
 	 */
-	private const CLEAN_BASEPATH = 'base/path/';
+	private const CLEAN_BASEPATH = '/base/path/';
 
 	/**
 	 * Test converting a set of relative paths to absolute paths when no basepath is present.

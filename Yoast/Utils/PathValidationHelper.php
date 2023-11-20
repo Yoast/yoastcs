@@ -41,11 +41,11 @@ final class PathValidationHelper {
 			return $absolute;
 		}
 
-		$base_path = PathHelper::normalize_path( $phpcsFile->config->basepath );
+		$base_path = PathHelper::normalize_absolute_path( $phpcsFile->config->basepath );
 
 		foreach ( $relative_paths as $path ) {
 			$result_path = \trim( $path );
-			$result_path = PathHelper::normalize_path( $result_path );
+			$result_path = PathHelper::normalize_relative_path( $result_path );
 
 			if ( $result_path === '' ) {
 				continue;

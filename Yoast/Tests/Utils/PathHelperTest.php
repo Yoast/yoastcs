@@ -15,64 +15,90 @@ use YoastCS\Yoast\Utils\PathHelper;
 final class PathHelperTest extends TestCase {
 
 	/**
-	 * Test normalizing a directory path.
+	 * Test normalizing an absolute directory path.
 	 *
 	 * @dataProvider data_normalize_path
-	 * @covers       ::normalize_path
+	 * @covers       ::normalize_absolute_path
 	 *
-	 * @param string $input    The input string.
-	 * @param string $expected The expected function output.
+	 * @param string $input        The input string.
+	 * @param string $exp_absolute The expected function output.
 	 *
 	 * @return void
 	 */
-	public function test_normalize_path( $input, $expected ) {
-		$this->assertSame( $expected, PathHelper::normalize_path( $input ) );
+	public function test_normalize_absolute_path( $input, $exp_absolute ) {
+		$this->assertSame( $exp_absolute, PathHelper::normalize_absolute_path( $input ) );
+	}
+
+	/**
+	 * Test normalizing a relative directory path.
+	 *
+	 * @dataProvider data_normalize_path
+	 * @covers       ::normalize_relative_path
+	 *
+	 * @param string $input        The input string.
+	 * @param string $unused       Unused param.
+	 * @param string $exp_relative The expected function output.
+	 *
+	 * @return void
+	 */
+	public function test_normalize_relative_path( $input, $unused, $exp_relative ) {
+		$this->assertSame( $exp_relative, PathHelper::normalize_relative_path( $input ) );
 	}
 
 	/**
 	 * Data provider.
 	 *
-	 * @see test_normalize_path() For the array format.
+	 * @see test_normalize_absolute_path() For the array format.
+	 * @see test_normalize_relative_path() For the array format.
 	 *
 	 * @return array<string, array<string, string>>
 	 */
 	public static function data_normalize_path() {
 		return [
 			'path is dot' => [
-				'input'    => '.',
-				'expected' => './',
+				'input'        => '.',
+				'exp_absolute' => './',
+				'exp_relative' => './',
 			],
 			'path containing forward slashes only with trailing slash' => [
-				'input'    => 'my/path/to/',
-				'expected' => 'my/path/to/',
+				'input'        => 'my/path/to/',
+				'exp_absolute' => 'my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing forward slashes only without trailing slash' => [
-				'input'    => 'my/path/to',
-				'expected' => 'my/path/to/',
+				'input'        => 'my/path/to',
+				'exp_absolute' => 'my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing forward slashes only with leading and trailing slash' => [
-				'input'    => '/my/path/to/',
-				'expected' => 'my/path/to/',
+				'input'        => '/my/path/to/',
+				'exp_absolute' => '/my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing back-slashes only with trailing slash' => [
-				'input'    => 'my\path\to\\',
-				'expected' => 'my/path/to/',
+				'input'        => 'my\path\to\\',
+				'exp_absolute' => 'my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing back-slashes only without trailing slash' => [
-				'input'    => 'my\path\to',
-				'expected' => 'my/path/to/',
+				'input'        => 'my\path\to',
+				'exp_absolute' => 'my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing back-slashes only with leading, no trailing slash' => [
-				'input'    => '\my\path\to',
-				'expected' => 'my/path/to/',
+				'input'        => '\my\path\to',
+				'exp_absolute' => '/my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing a mix of forward and backslashes with leading and trailing slash' => [
-				'input'    => '/my\path/to\\',
-				'expected' => 'my/path/to/',
+				'input'        => '/my\path/to\\',
+				'exp_absolute' => '/my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 			'path containing a mix of forward and backslashes without trailing slash' => [
-				'input'    => 'my\path/to',
-				'expected' => 'my/path/to/',
+				'input'        => 'my\path/to',
+				'exp_absolute' => 'my/path/to/',
+				'exp_relative' => 'my/path/to/',
 			],
 		];
 	}

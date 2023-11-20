@@ -36,7 +36,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFileBase The base path that the unit tests files will have.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;
@@ -70,16 +70,24 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			// Level check tests.
 			case 'no-basepath.inc':
 				return [
-					12 => 1,
-					21 => 1,
-					24 => 1,
-					33 => 1,
-					44 => 1,
-					53 => 1,
-					54 => 1,
-					66 => 1,
-					70 => 1,
-					74 => 1,
+					12  => 1,
+					21  => 1,
+					23  => 1,
+					24  => 2,
+					33  => 1,
+					44  => 1,
+					53  => 1,
+					54  => 1,
+					66  => 1,
+					70  => 1,
+					74  => 1,
+					81  => 1,
+					90  => 1,
+					91  => 1,
+					92  => 1,
+					103 => 1,
+					104 => 1,
+					105 => 1,
 				];
 
 			case 'no-basepath-scoped.inc':
@@ -92,7 +100,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			case 'path-translation-root.inc':
 				return [
 					11 => 1,
-					14 => 1,
+					14 => 2,
 				];
 
 			case 'path-translation-sub1.inc':
@@ -110,6 +118,18 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 					15 => 1,
 				];
 
+			// Path translation with unconventional chars in directory name.
+			case 'path-translation-sub2-dot.inc':
+			case 'path-translation-sub2-underscore.inc':
+				return [
+					12 => 1,
+				];
+
+			case 'path-translation-sub2-space.inc':
+				return [
+					1 => 1, // Invalid dir error.
+				];
+
 			// Path translation with $src_directory set tests.
 			case 'path-translation-src.inc':
 				return [
@@ -124,6 +144,7 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			case 'path-translation-src-sub-b.inc':
 				return [
 					14 => 1,
+					15 => 1,
 				];
 
 			// Path translation with multiple items in $src_directory tests.
@@ -153,12 +174,8 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			// Path translation with no matching $src_directory.
 			case 'path-translation-mismatch.inc':
 				return [
-					13 => 1,
-				];
-
-			case 'path-translation-mismatch-illegal.inc':
-				return [
-					12 => 1,
+					14 => 1,
+					24 => 1,
 				];
 
 			default:
@@ -178,15 +195,25 @@ final class NamespaceNameUnitTest extends AbstractSniffUnitTest {
 			// Level check tests.
 			case 'no-basepath.inc':
 				return [
-					8  => 1,
-					20 => 1,
-					23 => 1,
-					32 => 1,
-					43 => 1,
-					65 => 1,
-					69 => 1,
-					72 => 1,
-					73 => 1,
+					8   => 1,
+					20  => 1,
+					23  => 1,
+					32  => 1,
+					43  => 1,
+					65  => 1,
+					69  => 1,
+					72  => 1,
+					80  => 1,
+					90  => 1,
+					103 => 1,
+					122 => 1,
+					123 => 1,
+					124 => 1,
+					125 => 1,
+					126 => 1,
+					127 => 1,
+					128 => 1,
+					129 => 1,
 				];
 
 			case 'no-basepath-scoped.inc':

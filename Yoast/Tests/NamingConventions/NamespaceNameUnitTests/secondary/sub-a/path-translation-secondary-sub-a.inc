@@ -2,10 +2,10 @@
 
 /*
  * Testing path translation in combination with src_directory.
+ *
+ * phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin
+ * phpcs:set Yoast.NamingConventions.NamespaceName src_directory[] src,secondary
  */
-
-// phpcs:set Yoast.NamingConventions.NamespaceName prefixes[] Yoast\WP\Plugin
-// phpcs:set Yoast.NamingConventions.NamespaceName src_directory[] src,secondary
 
 namespace Yoast\WP\Plugin\Sub_A; // OK.
 

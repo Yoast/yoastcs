@@ -35,7 +35,7 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFileBase The base path that the unit tests files will have.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;
@@ -61,20 +61,11 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 			// In tests/.
 			case 'mock-not-in-correct-dir.inc':
 				return [
-					3 => 1,
-				];
-
-			case 'multiple-objects-in-file.inc':
-				return [
-					5 => 2,
-				];
-
-			case 'multiple-objects-in-file-reverse.inc':
-				return [
-					7 => 2,
+					4 => 1,
 				];
 
 			case 'non-existant-doubles-dir.inc':
+			case 'non-existant-doubles-dirs.inc':
 				return [
 					4 => 1,
 				];
@@ -85,43 +76,55 @@ final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 				];
 
 			case 'not-in-correct-dir-double.inc':
-				return [
-					3 => 1,
-				];
-
 			case 'not-in-correct-dir-mock.inc':
+			case 'not-in-correct-dir-enum-double.inc':
+			case 'not-in-correct-dir-interface-double.inc':
+			case 'not-in-correct-dir-trait-double.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
-			// In tests/doubles.
+			// In tests/Doubles.
 			case 'correct-dir-not-double-or-mock.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
-			case 'multiple-mocks-in-file.inc':
-				return [
-					3 => 1,
-					5 => 1,
-				];
-
-			// In tests/doubles-not-correct.
+			// In tests/DoublesNotCorrect.
 			case 'not-in-correct-subdir.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
-			// In tests/mocks.
+			// In tests/Mocks.
 			case 'correct-custom-dir-not-mock.inc':
 				return [
 					4 => 1,
 				];
 
+			// In tests/lowercase.
+			case 'correct-custom-dir-wrong-case.inc':
+				return [
+					4 => 1,
+				];
+
+			// In tests/lowercase.
+			case 'correct-custom-lowercase-dir-not-mock.inc':
+				return [
+					4 => 1,
+				];
+
+			case 'live-coding.inc': // In tests.
 			case 'not-double-or-mock.inc': // In tests.
-			case 'correct-dir-double.inc': // In tests/doubles.
-			case 'correct-dir-mock.inc': // In tests/doubles.
-			case 'correct-custom-dir.inc': // In tests/mocks.
+			case 'non-existant-doubles-dir-not-double.inc': // In tests.
+			case 'correct-dir-double.inc': // In tests/Doubles.
+			case 'correct-dir-mock.inc': // In tests/Doubles.
+			case 'correct-dir-enum.inc': // In tests/Doubles.
+			case 'correct-dir-interface.inc': // In tests/Doubles.
+			case 'correct-dir-trait-double.inc': // In tests/Doubles.
+			case 'correct-custom-dir.inc': // In tests/Mocks.
+			case 'correct-custom-lowercase-dir.inc': // In tests/lowercase.
+			case 'correct-custom-dir-not-mock-wrong-case.inc': // In tests/lowercase.
 			default:
 				return [];
 		}

@@ -44,8 +44,6 @@
 			<property name="minimum_wp_version" value="6.2"/>
 		</properties>
 
-		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
-
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->
 		<exclude name="Generic.PHP.Syntax"/>
 

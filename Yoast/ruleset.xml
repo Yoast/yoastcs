@@ -273,6 +273,18 @@
 	</rule>
 
 
+	<!-- NAMESPACED FILES AND IMPORT USE STATEMENTS -->
+
+	<!-- CS/QA: Enforce all classes to be imported. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+		<properties>
+			<property name="searchAnnotations" value="true"/>
+			<property name="allowFullyQualifiedGlobalConstants" value="true"/>
+			<property name="allowFullyQualifiedGlobalFunctions" value="true"/>
+		</properties>
+	</rule>
+
+
 	<!--
 	#############################################################################
 	SNIFFS RELATED TO COMMENTS AND DOCBLOCKS

@@ -211,6 +211,10 @@
 		</properties>
 	</rule>
 
+	<!-- CS: enforce that concatenation operators in multi-line concatenations are
+		 consistently at the start of the line. -->
+	<rule ref="Universal.Operators.ConcatPosition"/>
+
 
 	<!--
 	#############################################################################

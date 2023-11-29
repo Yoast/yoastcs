@@ -65,6 +65,7 @@ Severity levels:
 The `Yoast` standard for PHP_CodeSniffer is comprised of the following:
 * The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://make.wordpress.org/core/handbook/coding-standards/php/), with some [select exclusions](https://github.com/Yoast/yoastcs/blob/develop/Yoast/ruleset.xml#L29-L75).
 * The [`PHPCompatibilityWP`](https://github.com/PHPCompatibility/PHPCompatibilityWP) ruleset which checks code for PHP cross-version compatibility while preventing false positives for functionality polyfilled within WordPress.
+* The [`VariableAnalysis`](https://github.com/sirbrillig/phpcs-variable-analysis/) ruleset.
 * Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/PHPCSStandards/PHP_CodeSniffer).
 * Select additional sniffs taken from [`PHPCSExtra`](https://github.com/PHPCSStandards/PHPCSExtra).
 * Select additional sniffs taken from [`SlevomatCodingStandard`](https://github.com/slevomat/coding-standard).

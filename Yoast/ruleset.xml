@@ -447,4 +447,7 @@
 	<!-- Modernize: Enforce visibility declarations for class constants (PHP 7.1+). -->
 	<rule ref="PSR12.Properties.ConstantVisibility"/>
 
+	<!-- Modernize: Enforce a nullable type declaration when the param has a null default value (PHP 7.1+). -->
+	<rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+
 </ruleset>

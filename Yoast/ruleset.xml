@@ -317,6 +317,11 @@
 	SNIFFS RELATED TO COMMENTS AND DOCBLOCKS
 	#############################################################################
 	-->
+	<!-- Undo the WPCS-Docs silencing of the @param tag formatting/alignment rule. -->
+	<rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamName">
+		<severity>5</severity>
+	</rule>
+
 	<!-- CS: don't allow "// end class" comments and the likes. -->
 	<rule ref="PSR12.Classes.ClosingBrace"/>
 

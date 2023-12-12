@@ -34,11 +34,9 @@ final class PSR4PathsTraitTest extends NonSniffTestCase {
 	/**
 	 * Clean up the trait after each test.
 	 *
-	 * @after
-	 *
 	 * @return void
 	 */
-	protected function clean_up() {
+	protected function tearDown(): void {
 		$this->psr4_paths           = [];
 		$this->previous_psr4_paths  = [];
 		$this->validated_psr4_paths = [];

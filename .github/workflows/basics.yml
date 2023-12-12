@@ -33,7 +33,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1' # Can be updated to "latest" once PHPCS 3.8.0 has been released.
+          php-version: 'latest'
           coverage: none
           tools: cs2pr
 
@@ -41,10 +41,6 @@ jobs:
       # @link https://getcomposer.org/doc/03-cli.md#validate
       - name: Validate Composer installation
         run: composer validate --no-check-all --strict
-
-      # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
-      - name: 'Composer: adjust dependencies - remove PHPUnit'
-        run: composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
 
       # Use the WIP/develop branches of all CS dependencies as an early detection system for bugs upstream.
       - name: 'Composer: adjust dependencies - use dev versions of CS dependencies'

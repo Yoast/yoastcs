@@ -92,7 +92,7 @@ Clean up: make sure to reset all the file changes made during testing!
 #### Public properties
 
 Some sniffs will behave differently based on the value of the sniff's `public` properties.
-These properties can be set [from a custom ruleset](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset) or in a test situation, in-line using `// phpcs:set Yoast.Category.SniffName propertyName propertyValue`.
+These properties can be set [from a custom ruleset](https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Annotated-Ruleset) or in a test situation, in-line using `// phpcs:set Yoast.Category.SniffName propertyName propertyValue`.
 
 If the results you are getting when testing are different from what you expected, first thing to do is to check whether the sniff has `public` properties, what those properties are set to (in your custom ruleset or in a test file in-line) and whether that setting is interferring with the results.
 

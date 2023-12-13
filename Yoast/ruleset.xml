@@ -317,8 +317,11 @@
 	SNIFFS RELATED TO COMMENTS AND DOCBLOCKS
 	#############################################################################
 	-->
-	<!-- Undo the WPCS-Docs silencing of the @param tag formatting/alignment rule. -->
+	<!-- Undo the WPCS-Docs silencing of the @param tag formatting/alignment and grammar/punctuation rules. -->
 	<rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamName">
+		<severity>5</severity>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.ParamCommentNotCapital">
 		<severity>5</severity>
 	</rule>
 

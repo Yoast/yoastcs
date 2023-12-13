@@ -325,6 +325,14 @@
 		<severity>5</severity>
 	</rule>
 
+	<!-- Undo the WPCS-Docs silencing of some @return tag related rules. -->
+	<rule ref="Squiz.Commenting.FunctionComment.MissingReturn">
+		<severity>5</severity>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.InvalidReturnNotVoid">
+		<severity>5</severity>
+	</rule>
+
 	<!-- CS: don't allow "// end class" comments and the likes. -->
 	<rule ref="PSR12.Classes.ClosingBrace"/>
 

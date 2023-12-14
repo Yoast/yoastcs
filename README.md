@@ -11,10 +11,9 @@ Yoast Coding Standards (YoastCS) is a project with rulesets for code style and q
 Standards are provided as a [Composer](https://getcomposer.org/) package and can be installed with:
 
 ```bash
-composer create-project yoast/yoastcs:"dev-main"
+composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+composer global require --dev yoast/yoastcs:"^3.0"
 ```
-
-Composer will automatically install dependencies, register standards paths, and set default PHP Code Sniffer standard to `Yoast`.
 
 ### As dependency
 
@@ -22,10 +21,10 @@ To include standards as part of a project require them as development dependenci
 
 ```bash
 composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer require --dev yoast/yoastcs:"^2.0"
+composer require --dev yoast/yoastcs:"^3.0"
 ```
 
-Composer will automatically install dependencies and register the YoastCS and other external standards with PHP_CodeSniffer.
+Composer will automatically install dependencies and register YoastCS and other external standards with PHP_CodeSniffer.
 
 ## Tools provided via YoastCS
 
@@ -63,7 +62,7 @@ Severity levels:
 ### The YoastCS Standard
 
 The `Yoast` standard for PHP_CodeSniffer is comprised of the following:
-* The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://make.wordpress.org/core/handbook/coding-standards/php/), with some [select exclusions](https://github.com/Yoast/yoastcs/blob/develop/Yoast/ruleset.xml#L29-L75).
+* The `WordPress` ruleset from the [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards) implementing the official [WordPress PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/), with some [select exclusions](https://github.com/Yoast/yoastcs/blob/develop/Yoast/ruleset.xml#L29-L75).
 * The [`PHPCompatibilityWP`](https://github.com/PHPCompatibility/PHPCompatibilityWP) ruleset which checks code for PHP cross-version compatibility while preventing false positives for functionality polyfilled within WordPress.
 * The [`VariableAnalysis`](https://github.com/sirbrillig/phpcs-variable-analysis/) ruleset.
 * Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/PHPCSStandards/PHP_CodeSniffer).
@@ -104,7 +103,7 @@ All Yoast plugin repositories contain a `[.]phpcs.xml.dist` file which contains 
 
 From the root of these repositories, you can run PHPCS by using:
 ```bash
-composer check-cs
+composer check-cs-warnings
 ```
 
 #### PhpStorm
@@ -139,6 +138,10 @@ After the report has run, a global `YOASTCS_ABOVE_THRESHOLD` constant (boolean) 
 To use this report, run PHPCS with the following command-line argument: `--report=YoastCS\Yoast\Reports\Threshold`.
 _Note: depending on the OS the command is run on, the backslashes in the report name may need to be escaped (doubled)._
 
+For those Yoast plugin repositories which use thresholds, the status can be checked locally by running:
+```bash
+composer check-cs-thresholds
+```
 
 ## Changelog
 

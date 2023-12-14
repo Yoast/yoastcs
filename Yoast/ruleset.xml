@@ -19,7 +19,7 @@
 	<exclude-pattern>*/vendor(_prefixed)?/*</exclude-pattern>
 
 	<!-- Always exclude files from other plugins which may be installed for test purposes. -->
-	<exclude-pattern>*/wp-content/plugins*</exclude-pattern>
+	<exclude-pattern>*/wp-content/plugins/*</exclude-pattern>
 
 
 	<!--
@@ -29,7 +29,6 @@
 	add configuration for a sniff.
 	#############################################################################
 	-->
-
 	<!--
 		 Trigger error if PHPCSUtils cannot be found.
 		 PHPCSUtils does not contain any sniffs, so this rule isn't strictly necessary, but
@@ -91,6 +90,15 @@
 		<exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
 	</rule>
 
+	<!-- In contrast to WPCS: demand short arrays. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+	<!-- In contrast to WPCS: disallow Yoda conditions. (PHPCS 3.5.0) -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+
+	<!-- SNIFF SPECIFIC CONFIGURATION -->
+
 	<rule ref="Generic.Formatting.MultipleStatementAlignment">
 		<type>error</type>
 	</rule>
@@ -126,12 +134,6 @@
 		</properties>
 	</rule>
 
-	<!-- In contrast to WPCS: demand short arrays. -->
-	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-
-	<!-- In contrast to WPCS: disallow Yoda conditions. (PHPCS 3.5.0) -->
-	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
-
 
 	<!--
 	#############################################################################
@@ -150,6 +152,9 @@
 	These may make it into WPCS at some point. If so, they can be removed here.
 	#############################################################################
 	-->
+	<!-- CS: Enforces that a PHP open tag is on a line by itself when used at the start of a PHP-only file. -->
+	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="PSR12.Files.OpenTag"/>
 
 	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
 	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
@@ -159,12 +164,6 @@
 
 	<!-- Error prevention: Make sure arithmetics are bracketed. -->
 	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
-
-	<!-- CS: ensure exactly one blank line before each property declaration. -->
-	<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
-
-	<!-- CS: don't allow "// end class" comments and the likes. -->
-	<rule ref="PSR12.Classes.ClosingBrace"/>
 
 	<!-- CS: enforce consistent indentation of chained object method calls. -->
 	<rule ref="PEAR.WhiteSpace.ObjectOperatorIndent">
@@ -182,18 +181,30 @@
 		</properties>
 	</rule>
 
-	<!-- CS: Enforces that a PHP open tag is on a line by itself when used at the start of a PHP-only file. -->
-	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
-	<rule ref="PSR12.Files.OpenTag"/>
 
-	<!-- ##### Documentation Sniffs vs empty index files ##### -->
+	<!--
+	#############################################################################
+	SNIFFS RELATED TO CODE STRUCTURING
+	#############################################################################
+	-->
+	<!-- CS: ensure exactly one blank line before each property declaration. -->
+	<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
 
-	<!-- Exclude the 'empty' index files from some documentation checks -->
+
+	<!--
+	#############################################################################
+	SNIFFS RELATED TO COMMENTS AND DOCBLOCKS
+	#############################################################################
+	-->
+	<!-- CS: don't allow "// end class" comments and the likes. -->
+	<rule ref="PSR12.Classes.ClosingBrace"/>
+
+	<!-- Exclude the 'empty' index files from some documentation checks. -->
 	<rule ref="Yoast.Commenting.FileComment">
-		<exclude-pattern>*/index\.php</exclude-pattern>
+		<exclude-pattern>*/index\.php$</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.InlineComment.NoSpaceBefore">
-		<exclude-pattern>*/index\.php</exclude-pattern>
+		<exclude-pattern>*/index\.php$</exclude-pattern>
 	</rule>
 
 
@@ -202,7 +213,6 @@
 	SNIFFS TO ENFORCE CODE MODERNIZATION
 	#############################################################################
 	-->
-
 	<!-- Undo the WPCS-Extra silencing of the "no nested dirnames, use $levels" notice (PHP 7.0+). -->
 	<rule ref="Modernize.FunctionCalls.Dirname.Nested">
 		<severity>5</severity>

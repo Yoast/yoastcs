@@ -5,6 +5,7 @@ namespace YoastCS\Yoast\Sniffs\WhiteSpace;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\FunctionSpacingSniff as Squiz_FunctionSpacingSniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\Conditions;
 
 /**
  * Verifies the space between methods.
@@ -13,12 +14,9 @@ use PHP_CodeSniffer\Util\Tokens;
  * in the global namespace as those are often wrapped in an if clause which causes
  * a fixer conflict.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.0.0
+ * @since 1.0.0
  */
-class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
+final class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 
 	/**
 	 * The number of blank lines between functions.
@@ -53,14 +51,14 @@ class FunctionSpacingSniff extends Squiz_FunctionSpacingSniff {
 	 * @param File $phpcsFile The file being scanned.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void|int Optionally returns stack pointer to skip to.
+	 * @return void
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
-		// Check that the function is nested in an OO structure (class, trait, interface).
-		if ( $phpcsFile->hasCondition( $stackPtr, Tokens::$ooScopeTokens ) === false ) {
+		// Check that the function is nested in an OO structure (class, trait, interface, enum).
+		if ( Conditions::hasCondition( $phpcsFile, $stackPtr, Tokens::$ooScopeTokens ) === false ) {
 			return;
 		}
 
-		return parent::process( $phpcsFile, $stackPtr );
+		parent::process( $phpcsFile, $stackPtr );
 	}
 }

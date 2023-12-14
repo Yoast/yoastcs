@@ -1,6 +1,6 @@
 <?php
 
-class SomeThing {
+abstract class SomeThing {
 
 	/**
 	 * Active (non-deprecated) function.
@@ -47,12 +47,12 @@ class SomeThing {
 	 *
 	 * This is a sentence containing the phrase codeCoverageIgnore, but should not be regarded as the tag.
 	 */
-	static protected function missingStaticCodeCoverageIgnore() {}
+	final static protected function missingStaticCodeCoverageIgnore() {}
 
 	/**
 	 * @deprecated x.x
 	 */
-	public function missingCodeCoverageIgnore() {}
+	public abstract function missingCodeCoverageIgnore();
 
 	/**
 	 * @deprecated x.x
@@ -89,3 +89,96 @@ class SomeThing {
 	#[fietsbel /*comment*/]
 	public function inlineCommentWithinAttribute() {}
 }
+
+/**
+ * Description.
+ *
+ * @deprecated
+ */
+class C_IsDeprecatedNotIgnored {}
+
+/**
+ * Description.
+ *
+ * @deprecated
+ */
+abstract class C_IsDeprecatedNotIgnoredAbstract {}
+
+/**
+ * Description.
+ *
+ * @deprecated
+ */
+#[AllowDynamicProperties]
+final class C_IsDeprecatedNotIgnoredFinal {}
+
+/**
+ * Description.
+ *
+ * @deprecated
+ */
+readonly class C_IsDeprecatedNotIgnoredReadonly {}
+
+/**
+ * Description.
+ *
+ * @deprecated
+ */
+final readonly class C_IsDeprecatedNotIgnoredFinalReadonly {}
+
+/**
+ * Description.
+ *
+ * @codeCoverageIgnore
+ * @deprecated
+ */
+readonly final class C_IsDeprecatedAndIgnored {}
+
+/**
+ * @deprecated
+ */
+#[MyAttribute, AnotherAttribute]
+interface I_IsDeprecatedNotIgnored {}
+
+/**
+ * @codeCoverageIgnore
+ * @deprecated
+ */
+interface I_IsDeprecatedAndIgnored {}
+
+/**
+ * Description.
+ *
+ * @deprecated
+ */
+trait T_IsDeprecatedNotIgnored {}
+
+/**
+ * @deprecated
+ * codeCoverageIgnore
+ */
+trait T_IsDeprecatedAndIgnored {}
+
+/**
+ * @deprecated
+ */
+enum E_IsDeprecatedNotIgnored {}
+
+/**
+ * Description.
+ *
+ * @deprecated
+ * @codeCoverageIgnore
+ */
+enum E_IsDeprecatedAndIgnored {}
+
+/**
+ * Not necessarily correct, but as this is an anomymous class, this won't be flagged
+ * same as closures/arrow functions won't be flagged.
+ *
+ * @deprecated
+ */
+$anon = new
+	#[AllowDynamicProperties]
+	#[AnotherAttribute([1, 2, 3])]
+	class {};

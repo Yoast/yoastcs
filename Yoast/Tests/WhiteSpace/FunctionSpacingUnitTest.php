@@ -7,40 +7,41 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the FunctionSpacing sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.0.0
  *
- * @since   1.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\WhiteSpace\FunctionSpacingSniff
+ * @covers YoastCS\Yoast\Sniffs\WhiteSpace\FunctionSpacingSniff
  */
-class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
+final class FunctionSpacingUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 		return [
-			31 => 1,
-			33 => 1,
-			39 => 1,
-			46 => 1,
-			53 => 2,
-			57 => 1,
-			60 => 1,
-			74 => 1,
-			87 => 2,
-			88 => 1,
+			31  => 1,
+			33  => 1,
+			39  => 1,
+			46  => 1,
+			53  => 2,
+			57  => 1,
+			60  => 1,
+			74  => 1,
+			87  => 2,
+			88  => 1,
+			94  => 1,
+			96  => 1,
+			102 => 1,
 		];
 	}
 
 	/**
 	 * Returns the lines where warnings should occur.
 	 *
-	 * @return array <int line number> => <int number of warnings>
+	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [];
 	}
 }

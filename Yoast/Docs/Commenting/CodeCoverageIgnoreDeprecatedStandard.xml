@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-    Deprecated functions and methods should be ignored for code coverage calculations.
+    Deprecated OO structures, functions and methods should be ignored for code coverage calculations.
     ]]>
     </standard>
     <code_comparison>

@@ -8,7 +8,7 @@
 	<!--
 	#############################################################################
 	COMMAND LINE ARGUMENTS
-	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
 	#############################################################################
 	-->
 
@@ -37,13 +37,7 @@
 	#############################################################################
 	-->
 
-	<!-- YoastCS supports PHP 5.4 or higher. -->
-	<config name="testVersion" value="5.4-"/>
-
 	<rule ref="Yoast">
-
-		<!-- Conflicts with PHPCS autoloading of sniffs. -->
-		<exclude name="Yoast.Files.FileName"/>
 
 		<!-- This sniff is irrelevant for a PHPCS standard which follows the PHPCS directory structure. -->
 		<exclude name="Yoast.Files.TestDoubles"/>
@@ -68,7 +62,16 @@
 	</rule>
 
 	<!-- Enforce PSR1 compatible namespaces. -->
-	<rule ref="PSR1.Classes.ClassDeclaration"/>
+	<rule ref="PSR1.Classes.ClassDeclaration">
+		<!-- YoastCS only applies this rule to test files. Overrule it to apply to all files. -->
+		<include-pattern>*\.php$</include-pattern>
+	</rule>
+
+	<!-- Enforce Final classes to prevent issues with the PHPCS autoloader. -->
+	<rule ref="Universal.Classes.RequireFinalClass">
+		<!-- YoastCS only applies this rule to test files. Overrule it to apply to all files. -->
+		<include-pattern>*\.php$</include-pattern>
+	</rule>
 
 
 	<!--
@@ -77,13 +80,18 @@
 	#############################################################################
 	-->
 
+	<rule ref="Yoast.Files.FileName">
+		<properties>
+			<property name="psr4_paths" type="array">
+				<element key="YoastCS\Yoast\\" value="Yoast"/>
+			</property>
+		</properties>
+	</rule>
+
 	<rule ref="Yoast.NamingConventions.NamespaceName">
 		<properties>
-			<property name="prefixes" type="array">
-				<element value="YoastCS\Yoast"/>
-			</property>
-			<property name="src_directory" type="array">
-				<element value="Yoast"/>
+			<property name="psr4_paths" type="array">
+				<element key="YoastCS\Yoast\\" value="Yoast"/>
 			</property>
 		</properties>
 	</rule>

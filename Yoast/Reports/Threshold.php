@@ -19,43 +19,46 @@ use PHP_CodeSniffer\Reports\Report;
  * available which can be used in calling scripts.
  *
  * @since 2.2.0
+ *
+ * @phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Flags unused params which are required via the interface. Invalid.
+ * @phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint -- Type is too complex to document properly.
  */
-class Threshold implements Report {
+final class Threshold implements Report {
 
 	/**
 	 * Escape sequence for making text white on the command-line.
 	 *
 	 * @var string
 	 */
-	const WHITE = "\033[1m";
+	private const WHITE = "\033[1m";
 
 	/**
 	 * Escape sequence for making text red on the command-line.
 	 *
 	 * @var string
 	 */
-	const RED = "\033[31m";
+	private const RED = "\033[31m";
 
 	/**
 	 * Escape sequence for making text green on the command-line.
 	 *
 	 * @var string
 	 */
-	const GREEN = "\033[32m";
+	private const GREEN = "\033[32m";
 
 	/**
 	 * Escape sequence for making text orange/yellow on the command-line.
 	 *
 	 * @var string
 	 */
-	const YELLOW = "\033[33m";
+	private const YELLOW = "\033[33m";
 
 	/**
 	 * Escape sequence for resetting the text colour.
 	 *
 	 * @var string
 	 */
-	const RESET = "\033[0m";
+	private const RESET = "\033[0m";
 
 	/**
 	 * Generate a partial report for a single processed file.
@@ -64,10 +67,10 @@ class Threshold implements Report {
 	 * and FALSE if it ignored the file. Returning TRUE indicates that the file and
 	 * its data should be counted in the grand totals.
 	 *
-	 * @param array $report      Prepared report data.
-	 * @param File  $phpcsFile   The file being reported on.
-	 * @param bool  $showSources Whether to show the source codes.
-	 * @param int   $width       Maximum allowed line width.
+	 * @param array<string, string|int|array<int, array<int, mixed>>> $report      Prepared report data.
+	 * @param File                                                    $phpcsFile   The file being reported on.
+	 * @param bool                                                    $showSources Whether to show the source codes.
+	 * @param int                                                     $width       Maximum allowed line width.
 	 *
 	 * @return bool
 	 */
@@ -155,6 +158,9 @@ class Threshold implements Report {
 		}
 
 		// Make the threshold comparison outcome available to the calling script.
-		\define( 'YOASTCS_ABOVE_THRESHOLD', $above_threshold );
+		// The conditional define is only so as to make the method testable.
+		if ( \defined( 'YOASTCS_ABOVE_THRESHOLD' ) === false ) {
+			\define( 'YOASTCS_ABOVE_THRESHOLD', $above_threshold );
+		}
 	}
 }

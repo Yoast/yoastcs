@@ -6,7 +6,7 @@
 	<!--
 	#############################################################################
 	COMMAND LINE ARGUMENTS
-	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
 	#############################################################################
 	-->
 
@@ -18,6 +18,22 @@
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor(_prefixed)?/*</exclude-pattern>
 
+	<!-- Always exclude files from other plugins which may be installed for test purposes. -->
+	<exclude-pattern>*/wp-content/plugins/*</exclude-pattern>
+
+
+	<!--
+	#############################################################################
+	AUTOLOADING
+	PHPCS handles the sniff autoloading, but the Slevomat standard uses an external
+	dependency which is not managed via the PHPCS autoloader.
+	When using YoastCS stand-alone, that means the Composer autoload needs to be
+	loaded (conditionally, which is why there is a bootstrap file).
+	#############################################################################
+	-->
+
+	<autoload>./../autoload-bootstrap.php</autoload>
+
 
 	<!--
 	#############################################################################
@@ -26,15 +42,22 @@
 	add configuration for a sniff.
 	#############################################################################
 	-->
+	<!--
+		 Trigger error if PHPCSUtils cannot be found.
+		 PHPCSUtils does not contain any sniffs, so this rule isn't strictly necessary, but
+		 by having this here anyway, if PHPCSUtils is missing, the user will get a
+		 descriptive error message during the loading of the ruleset instead of
+		 a fatal "class not found" error once the sniffs start running.
+	-->
+	<rule ref="PHPCSUtils"/>
+
 	<rule ref="WordPress">
 		<!-- Set the minimum supported WP version for all sniff which use it in one go.
 			 Ref: https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
 		-->
 		<properties>
-			<property name="minimum_supported_version" value="6.0"/>
+			<property name="minimum_wp_version" value="6.2"/>
 		</properties>
-
-		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
 
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->
 		<exclude name="Generic.PHP.Syntax"/>
@@ -66,19 +89,28 @@
 		<exclude name="Yoast.Commenting.FileComment.CopyrightTagOrder"/>
 
 		<!-- WPCS demands long arrays. YoastCS demands short arrays. -->
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 
 		<!-- Demanding Yoda conditions is stupid. -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 
 		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
-		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
 
 		<!-- If a conscious choice has been made for a non-strict comparison, that's ok.
 			 I.e. when `strict` has been explicitely set to `false` in an array comparison,
 			 it will be allowed. -->
 		<exclude name="WordPress.PHP.StrictInArray.FoundNonStrictFalse"/>
 	</rule>
+
+	<!-- In contrast to WPCS: demand short arrays. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+	<!-- In contrast to WPCS: disallow Yoda conditions. (PHPCS 3.5.0) -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+
+	<!-- SNIFF SPECIFIC CONFIGURATION -->
 
 	<rule ref="Generic.Formatting.MultipleStatementAlignment">
 		<type>error</type>
@@ -105,20 +137,15 @@
 		</properties>
 	</rule>
 
-	<!-- Temporary work-around for upstream bug: squizlabs/PHP_CodeSniffer#2228 -->
 	<rule ref="Yoast.Files.TestDoubles">
 		<properties>
 			<property name="doubles_path" type="array">
-				<element value="/tests/doubles"/>
+				<element value="/tests/Doubles"/>
+				<element value="/tests/Unit/Doubles"/>
+				<element value="/tests/WP/Doubles"/>
 			</property>
 		</properties>
 	</rule>
-
-	<!-- In contrast to WPCS: demand short arrays. -->
-	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-
-	<!-- In contrast to WPCS: disallow Yoda conditions. (PHPCS 3.5.0) -->
-	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
 
 
 	<!--
@@ -134,24 +161,52 @@
 
 	<!--
 	#############################################################################
+	SNIFF FOR USE OF UNDEFINED/UNUSED VARIABLES
+	#############################################################################
+	-->
+	<rule ref="VariableAnalysis">
+		<properties>
+			<property name="allowUnusedCaughtExceptions" value="true"/>
+			<property name="allowUnusedParametersBeforeUsed" value="true"/>
+			<property name="allowUnusedForeachVariables" value="true"/>
+			<property name="allowWordPressPassByRefFunctions" value="true"/>
+
+			<!-- These two properties (attempt to) prevent false positives for interaction with views. -->
+			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
+			<property name="allowUndefinedVariablesInFileScope" value="true"/>
+		</properties>
+	</rule>
+
+
+	<!--
+	#############################################################################
 	ADD SOME SPECIFIC EXTRA SNIFFS
 	These may make it into WPCS at some point. If so, they can be removed here.
 	#############################################################################
 	-->
+	<!-- CS: Enforces that a PHP open tag is on a line by itself when used at the start of a PHP-only file. -->
+	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="PSR12.Files.OpenTag"/>
+
+	<!-- CS: Enforces that a PHP open tag uses lowercase. -->
+	<!-- PHPCSExtra 1.2.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="Universal.PHP.LowercasePHPTag"/>
+
+	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
+	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
+
+	<!-- CS: Forbid the use of alternative control structure syntax, except in combination with inline HTML. -->
+	<rule ref="Universal.ControlStructures.DisallowAlternativeSyntax">
+		<properties>
+			<property name="allowWithInlineHTML" value="true"/>
+		</properties>
+	</rule>
+
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed. -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
 
 	<!-- Error prevention: Make sure arithmetics are bracketed. -->
 	<rule ref="Squiz.Formatting.OperatorBracket.MissingBrackets"/>
-
-	<!-- CS: no blank line between the content of a function and a function close brace.-->
-	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
-
-	<!-- CS: ensure exactly one blank line before each property declaration. -->
-	<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
-
-	<!-- CS: don't allow "// end class" comments and the likes. -->
-	<rule ref="PSR12.Classes.ClosingBrace"/>
 
 	<!-- CS: enforce consistent indentation of chained object method calls. -->
 	<rule ref="PEAR.WhiteSpace.ObjectOperatorIndent">
@@ -159,6 +214,12 @@
 			<property name="multilevel" value="true"/>
 		</properties>
 	</rule>
+
+	<!-- CS/QA: Forbid the use of the and/or logical operators. -->
+	<rule ref="Universal.Operators.DisallowLogicalAndOr"/>
+
+	<!-- CS/QA: Forbid the use double `!`. -->
+	<rule ref="Universal.CodeAnalysis.NoDoubleNegative"/>
 
 	<!-- CS: enforce that boolean operators between conditions in multi-line control structures are
 		 consistently at the start or end of the line, not a mix of both. -->
@@ -169,43 +230,264 @@
 		</properties>
 	</rule>
 
-	<!-- Error prevention: Ensure no git conflicts make it into the code base. -->
-	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1500 -->
-	<rule ref="Generic.VersionControl.GitMergeConflict"/>
+	<!-- CS: enforce that concatenation operators in multi-line concatenations are
+		 consistently at the start of the line. -->
+	<rule ref="Universal.Operators.ConcatPosition"/>
 
-	<!-- CS: no space between an increment/decrement operator and the variable it applies to. -->
-	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1511 -->
-	<rule ref="Generic.WhiteSpace.IncrementDecrementSpacing"/>
+	<!-- CS/QA: Disallow implicit array creation. -->
+	<rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
 
-	<!-- QA: Function declarations should not contain parameters which will never be used. -->
-	<!-- PHPCS 3.4.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1510 -->
-	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.Found"/>
-	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
+	<!-- CS/QA: Enforce static closures when a closure doesn't access $this. -->
+	<rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
 
-	<!-- CS: Ensure consistent whitespace around spread operators. -->
-	<!-- PHPCS 3.5.0: This sniff will be added to WPCS in due time and can then be removed from this ruleset.
-		 Related: https://github.com/WordPress/WordPress-Coding-Standards/issues/1762 -->
-	<rule ref="Generic.WhiteSpace.SpreadOperatorSpacingAfter"/>
 
-	<!-- CS: Disallow a leading backslash at the start of an import use statement. -->
-	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
-	<rule ref="PSR12.Files.ImportStatement"/>
+	<!--
+	#############################################################################
+	SNIFFS RELATED TO CODE STRUCTURING
+	#############################################################################
+	-->
+	<!-- CS/QA: Enforce consistent order of OO structures. -->
+	<rule ref="SlevomatCodingStandard.Classes.ClassStructure">
+		<properties>
+			<property name="groups" type="array">
+				<element value="uses"/>
+				<element value="enum cases"/>
+				<element value="constants"/>
+				<element value="properties"/>
+				<element value="methods"/>
+			</property>
+		</properties>
+	</rule>
 
-	<!-- CS: Enforces that a PHP open tag is on a line by itself when used at the start of a PHP-only file. -->
-	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
-	<rule ref="PSR12.Files.OpenTag"/>
+	<!-- CS: ensure exactly one blank line before each property declaration. -->
+	<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
 
-	<!-- ##### Documentation Sniffs vs empty index files ##### -->
+	<!-- CS/QA: Forbid the use long closures. Use named functions instead. -->
+	<rule ref="Universal.FunctionDeclarations.NoLongClosures">
+		<properties>
+			<property name="maxLines" value="10"/>
+		</properties>
 
-	<!-- Exclude the 'empty' index files from some documentation checks -->
+		<!-- Disable the warning, only have an error. -->
+		<exclude name="Universal.FunctionDeclarations.NoLongClosures.ExceedsRecommended"/>
+	</rule>
+
+
+	<!-- NAMESPACED FILES AND IMPORT USE STATEMENTS -->
+
+	<!-- CS/QA: Enforce all classes to be imported. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+		<properties>
+			<property name="searchAnnotations" value="true"/>
+			<property name="allowFullyQualifiedGlobalConstants" value="true"/>
+			<property name="allowFullyQualifiedGlobalFunctions" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- CS: Enforce alphabetically ordered import use statements. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
+		<properties>
+			<property name="psr12Compatible" value="true"/>
+			<property name="caseSensitive" value="false"/>
+		</properties>
+	</rule>
+
+	<!-- CS/QA: Disallow unused import use statements. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+		<properties>
+			<!-- Allow import use statements for classes only referenced in documentation. -->
+			<property name="searchAnnotations" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- CS/QA: Disallow import use statements for structures in the same namespace. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+
+	<!-- CS: For namespaced functions/constants: import the namespace, not the function/constant. -->
+	<rule ref="Universal.UseStatements.DisallowUseConst"/>
+	<rule ref="Universal.UseStatements.DisallowUseFunction"/>
+
+	<!-- CS: For global functions/constants: use fully qualified inline names. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions"/>
+
+
+	<!--
+	#############################################################################
+	SNIFFS RELATED TO COMMENTS AND DOCBLOCKS
+	#############################################################################
+	-->
+	<!-- Undo the WPCS-Docs silencing of the @param tag formatting/alignment and grammar/punctuation rules. -->
+	<rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamName">
+		<severity>5</severity>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.ParamCommentNotCapital">
+		<severity>5</severity>
+	</rule>
+
+	<!-- Undo the WPCS-Docs silencing of some @return tag related rules. -->
+	<rule ref="Squiz.Commenting.FunctionComment.MissingReturn">
+		<severity>5</severity>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.InvalidReturnNotVoid">
+		<severity>5</severity>
+	</rule>
+
+	<!-- Enforces using shorthand scalar typehint variants. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
+
+	<!-- Enforces null type hint on last position. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition"/>
+
+	<!-- Check property type information, but don't enforce native type declarations. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+		<properties>
+			<!-- PHP 7.4+. -->
+			<property name="enableNativeTypeHint" value="false"/>
+			<!-- PHP 8.0+. -->
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+			<!-- PHP 8.1+. -->
+			<property name="enableIntersectionTypeHint" value="false"/>
+			<!-- PHP 8.2+. -->
+			<property name="enableStandaloneNullTrueFalseTypeHints" value="false"/>
+		</properties>
+	</rule>
+
+	<!-- Check parameter type information, but don't enforce native type declarations. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+		<properties>
+			<!-- PHP 8.0+. -->
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+			<!-- PHP 8.1+. -->
+			<property name="enableIntersectionTypeHint" value="false"/>
+			<!-- PHP 8.2+. -->
+			<property name="enableStandaloneNullTrueFalseTypeHints" value="false"/>
+		</properties>
+
+		<exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint"/>
+	</rule>
+
+	<!-- Check return type information, but don't enforce native type declarations. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+		<properties>
+			<!-- PHP 8.0+. -->
+			<property name="enableStaticTypeHint" value="false"/>
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+			<!-- PHP 8.1+. -->
+			<property name="enableIntersectionTypeHint" value="false"/>
+			<property name="enableNeverTypeHint" value="false"/>
+			<!-- PHP 8.2+. -->
+			<property name="enableStandaloneNullTrueFalseTypeHints" value="false"/>
+		</properties>
+
+		<exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
+	</rule>
+
+	<!-- Disallows usage of "mixed" type hint. -->
+	<rule ref="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint">
+		<!-- Make an exception for the tests as "mixed" is a valid type for testing type validation in code. -->
+		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
+	</rule>
+
+	<!-- CS: don't allow "// end class" comments and the likes. -->
+	<rule ref="PSR12.Classes.ClosingBrace"/>
+
+	<!-- Exclude the 'empty' index files from some documentation checks. -->
 	<rule ref="Yoast.Commenting.FileComment">
-		<exclude-pattern>*/index\.php</exclude-pattern>
+		<exclude-pattern>*/index\.php$</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.InlineComment.NoSpaceBefore">
-		<exclude-pattern>*/index\.php</exclude-pattern>
+		<exclude-pattern>*/index\.php$</exclude-pattern>
+	</rule>
+
+
+	<!--
+	#############################################################################
+	SNIFFS TO PREVENT SOME WP COMPATIBILITY ISSUES
+	Some of these sniffs are expected to end up in WordPressCS in the future.
+	#############################################################################
+	-->
+	<!-- Verify method signatures for compatibility with a few typical WP parent classes. -->
+	<rule ref="WordPressVIPMinimum.Classes.DeclarationCompatibility"/>
+
+	<!-- Verify that all functions which are hooked into a filter always return a value. -->
+	<rule ref="WordPressVIPMinimum.Hooks.AlwaysReturnInFilter"/>
+
+	<!-- Verify that some typical functions with mixed return types are not nested.
+		 This can prevent some TypeErrors and related deprecation notices. -->
+	<rule ref="WordPressVIPMinimum.Security.EscapingVoidReturnFunctions"/>
+
+	<!-- Verify that the correct escaping function is used based on the context. -->
+	<rule ref="WordPressVIPMinimum.Security.ProperEscapingFunction"/>
+
+
+	<!--
+	#############################################################################
+	SNIFFS TO ENFORCE CODE MODERNIZATION
+	#############################################################################
+	-->
+	<!-- Modernize: Enforce the use of ClassName::class (PHP 5.5+). -->
+	<!-- A better version of this sniff is expected in PHPCSExtra at some point in the future. -->
+	<rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference">
+		<properties>
+			<!-- Prevent unsolvable issues as use with variables is PHP 8.0+. -->
+			<property name="enableOnObjects" value="false"/>
+		</properties>
+	</rule>
+
+	<!-- Undo the WPCS-Extra silencing of the "no nested dirnames, use $levels" notice (PHP 7.0+). -->
+	<rule ref="Modernize.FunctionCalls.Dirname.Nested">
+		<severity>5</severity>
+	</rule>
+
+	<!-- Modernize: Enforce visibility declarations for class constants (PHP 7.1+). -->
+	<rule ref="PSR12.Properties.ConstantVisibility"/>
+
+	<!-- Modernize: Enforce a nullable type declaration when the param has a null default value (PHP 7.1+). -->
+	<rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+
+
+	<!--
+	#############################################################################
+	RULES SPECIFICALLY FOR THE AUTOMATED TESTS
+	A few rules never need to be applied to test files.
+	Other rules should _only_ be applied to test files.
+	#############################################################################
+	-->
+	<!-- Tests are not run within the context of a WP install, so overwriting WP globals is fine
+		 (as long as they're reset after). -->
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
+	</rule>
+
+	<!-- It is fine to use the PHP json_encode() function for mocking the WP/Yoast alternative
+		 or for setting up the "expected" value. -->
+	<rule ref="Yoast.Yoast.JsonEncodeAlternative">
+		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Double classes may overload methods in the parent class to just change visibility. -->
+	<rule ref="Generic.CodeAnalysis.UselessOverridingMethod">
+		<exclude-pattern>*/tests(/*)?/Doubles/*\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Enforce that all test code is namespaced. -->
+	<rule ref="PSR1.Classes.ClassDeclaration">
+		<include-pattern>*/tests/*\.php$</include-pattern>
+
+		<!-- "One object per file" is already enforced by another sniff, so don't report. -->
+		<exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/>
+	</rule>
+
+	<!-- Enforce that all test classes are either final or abstract. -->
+	<rule ref="Universal.Classes.RequireFinalClass">
+		<include-pattern>*/tests/*\.php$</include-pattern>
+		<!-- But don't enforce this for Mock/Double classes. -->
+		<exclude-pattern>*/tests(/*)?/Doubles/*\.php$</exclude-pattern>
 	</rule>
 
 </ruleset>

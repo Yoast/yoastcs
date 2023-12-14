@@ -7,7 +7,10 @@ use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FileCommentSniff as Squiz_
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Namespaced files do not need a file docblock in YoastCS.
+ * Namespaced files containing an OO structure do not need a file docblock in YoastCS.
+ *
+ * For namespaced files NOT containing an OO structure, a file docblock is permitted,
+ * though not required.
  *
  * Note: Files without a namespace declaration do still need a file docblock.
  * This includes files which have a non-named namespace declaration which
@@ -22,12 +25,11 @@ use PHP_CodeSniffer\Util\Tokens;
  * see if it's still relevant to have this sniff and if so, if the sniff needs
  * adjustments.}}
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.2.0
+ * @since 1.2.0
+ * @since 3.0.0 Behaviour for files containing an OO structure vs without has been updated
+ *              to allow a file docblock when there is no OO structure.
  */
-class FileCommentSniff extends Squiz_FileCommentSniff {
+final class FileCommentSniff extends Squiz_FileCommentSniff {
 
 	/**
 	 * Processes this test, when one of its tokens is encountered.
@@ -41,6 +43,9 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 
 		$tokens = $phpcsFile->getTokens();
 
+		/*
+		 * Check if the file is namespaced. If not, fall through to the parent sniff.
+		 */
 		$namespace_token = $stackPtr;
 		do {
 			$namespace_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $namespace_token + 1 ), null, true );
@@ -80,38 +85,56 @@ class FileCommentSniff extends Squiz_FileCommentSniff {
 			return parent::process( $phpcsFile, $stackPtr );
 		}
 
+		/*
+		 * As of here, we know we are in a namespaced file.
+		 */
+
 		$comment_start = $phpcsFile->findNext( \T_WHITESPACE, ( $stackPtr + 1 ), $namespace_token, true );
 
-		if ( $comment_start !== false && $tokens[ $comment_start ]['code'] === \T_DOC_COMMENT_OPEN_TAG ) {
+		if ( $comment_start === false || $tokens[ $comment_start ]['code'] !== \T_DOC_COMMENT_OPEN_TAG ) {
+			// No file comment found, we're good.
+			return ( $phpcsFile->numTokens + 1 );
+		}
 
-			// Respect phpcs:disable comments in the file docblock.
-			$ignore = false;
-			if ( $phpcsFile->config->annotations === true && isset( $tokens[ $comment_start ]['comment_closer'] ) ) {
-				for ( $i = ( $comment_start + 1 ); $i < $tokens[ $comment_start ]['comment_closer']; $i++ ) {
-					if ( $tokens[ $i ]['code'] !== \T_PHPCS_DISABLE ) {
-						continue;
-					}
+		// Respect phpcs:disable comments in the file docblock.
+		if ( $phpcsFile->config->annotations === true && isset( $tokens[ $comment_start ]['comment_closer'] ) ) {
+			for ( $i = ( $comment_start + 1 ); $i < $tokens[ $comment_start ]['comment_closer']; $i++ ) {
+				if ( $tokens[ $i ]['code'] !== \T_PHPCS_DISABLE ) {
+					continue;
+				}
 
-					if ( empty( $tokens[ $i ]['sniffCodes'] ) === true
-						|| isset( $tokens[ $i ]['sniffCodes']['Yoast'] ) === true
-						|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting'] ) === true
-						|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment'] ) === true
-						|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment.Unnecessary'] ) === true
-					) {
-						$ignore = true;
-						break;
-					}
+				if ( empty( $tokens[ $i ]['sniffCodes'] ) === true
+					|| isset( $tokens[ $i ]['sniffCodes']['Yoast'] ) === true
+					|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting'] ) === true
+					|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment'] ) === true
+					|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment.Unnecessary'] ) === true
+				) {
+					// Applicable disable annotation found.
+					return ( $phpcsFile->numTokens + 1 );
 				}
 			}
-
-			if ( $ignore === false ) {
-				$phpcsFile->addWarning(
-					'A file containing a (named) namespace declaration does not need a file docblock',
-					$comment_start,
-					'Unnecessary'
-				);
-			}
 		}
+
+		/*
+		 * Okay, so we have a file docblock in a namespaced file, now check if there is a named
+		 * OO structure declaration.
+		 */
+		$find = Tokens::$ooScopeTokens;
+		unset( $find[ \T_ANON_CLASS ] );
+		$hasOODeclaration = $phpcsFile->findNext( $find, $next_non_empty );
+		if ( $hasOODeclaration === false ) {
+			/*
+			 * This is a file which doesn't contain (just) an OO declaration.
+			 * If there is a file docblock, allow it and check it like any other file docblock.
+			 */
+			return parent::process( $phpcsFile, $stackPtr );
+		}
+
+		$phpcsFile->addWarning(
+			'A file containing a (named) namespace declaration does not need a file docblock',
+			$comment_start,
+			'Unnecessary'
+		);
 
 		return ( $phpcsFile->numTokens + 1 );
 	}

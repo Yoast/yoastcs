@@ -7,26 +7,24 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the CoversTag sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.3.0
  *
- * @since   1.3.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Commenting\CoversTagSniff
+ * @covers YoastCS\Yoast\Sniffs\Commenting\CoversTagSniff
  */
-class CoversTagUnitTest extends AbstractSniffUnitTest {
+final class CoversTagUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 		return [
-			36  => 1,
-			37  => 1,
-			38  => 1,
-			39  => 1,
-			40  => 1,
+			20  => 1,
+			21  => 1,
+			22  => 1,
+			23  => 1,
+			24  => 1,
 			47  => 1,
 			48  => 1,
 			49  => 1,
@@ -48,15 +46,39 @@ class CoversTagUnitTest extends AbstractSniffUnitTest {
 			140 => 1,
 			150 => 1,
 			151 => 1,
+			176 => 1,
+			177 => 1,
+			178 => 1,
 		];
 	}
 
 	/**
 	 * Returns the lines where warnings should occur.
 	 *
-	 * @return array <int line number> => <int number of warnings>
+	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
-	public function getWarningList() {
-		return [];
+	public function getWarningList(): array {
+		return [
+			29  => 1,
+			30  => 1,
+			31  => 1,
+			32  => 1,
+			33  => 1,
+			34  => 1,
+			35  => 1,
+			36  => 1,
+			37  => 1,
+			38  => 1,
+			39  => 1,
+			40  => 1,
+			41  => 1,
+			42  => 1,
+			190 => 1,
+			191 => 1,
+			192 => 1,
+			193 => 1,
+			194 => 1,
+			195 => 1,
+		];
 	}
 }

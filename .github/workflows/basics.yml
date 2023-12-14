@@ -6,6 +6,8 @@ on:
   push:
     paths-ignore:
       - '**.md'
+    branches-ignore:
+      - 'main'
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
@@ -26,12 +28,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: 'latest'
           coverage: none
           tools: cs2pr
 
@@ -40,17 +42,20 @@ jobs:
       - name: Validate Composer installation
         run: composer validate --no-check-all --strict
 
-      - name: 'Composer: adjust dependencies'
-        run: |
-          # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
-          composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
-          # Using PHPCS `master` as an early detection system for bugs upstream.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"dev-master" --no-interaction
-          # Using WPCS `master` (=stable). This can be changed back to `dev-develop` after the WPCS 3.0.0 release.
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"dev-master" --no-interaction
+      # Use the WIP/develop branches of all CS dependencies as an early detection system for bugs upstream.
+      - name: 'Composer: adjust dependencies - use dev versions of CS dependencies'
+        run: >
+          composer require --no-update --no-scripts --no-interaction
+          squizlabs/php_codesniffer:"dev-master"
+          phpcsstandards/phpcsutils:"dev-develop"
+          phpcsstandards/phpcsextra:"dev-develop"
+          wp-coding-standards/wpcs:"dev-develop as 3.99" # Alias needed to prevent composer conflict with VIPCS.
+          slevomat/coding-standard:"dev-master"
+          sirbrillig/phpcs-variable-analysis:"2.x"
+          automattic/vipwpcs:"dev-develop"
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
         with:
@@ -64,7 +69,8 @@ jobs:
 
       # Show XML violations inline in the file diff.
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - uses: korelstar/xmllint-problem-matcher@v1
+      - name: Enable showing XML issues inline
+        uses: korelstar/xmllint-problem-matcher@v1
 
       # Validate the ruleset XML file.
       # @link http://xmlsoft.org/xmllint.html
@@ -73,7 +79,6 @@ jobs:
 
       # Validate the Docs XML files.
       # @link http://xmlsoft.org/xmllint.html
-      # For the build to properly error when validating against a scheme, these each have to be in their own condition.
       - name: Validate the XML sniff docs against schema
         run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./Yoast/Docs/*/*Standard.xml
 
@@ -95,3 +100,31 @@ jobs:
       # Check that the sniffs available are feature complete.
       - name: Check sniff feature completeness
         run: composer check-complete
+
+  phpstan:
+    name: "PHPStan"
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 'latest'
+          coverage: none
+          tools: phpstan
+
+      # Install dependencies and handle caching in one go.
+      # Dependencies need to be installed to make sure the PHPCS and PHPUnit classes are recognized.
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: Run PHPStan
+        run: phpstan analyse

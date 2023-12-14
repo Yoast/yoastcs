@@ -5,10 +5,11 @@
     >
     <standard>
     <![CDATA[
-    The @covers tag used to annotate which code is coverage by a test should follow the specifications of PHPUnit with regards to the supported annotations.
-See:
-* https://phpunit.readthedocs.io/en/7.5/code-coverage-analysis.html#specifying-covered-code-parts
-* https://phpunit.readthedocs.io/en/7.5/annotations.html#covers
+    The @covers tag used to annotate which code is covered by a test should follow the specifications of PHPUnit with regards to the supported annotations.
+
+    See:
+    * https://docs.phpunit.de/en/9.6/code-coverage-analysis.html#specifying-covered-code-parts
+    * https://docs.phpunit.de/en/9.6/annotations.html#covers
     ]]>
     </standard>
     <code_comparison>
@@ -24,7 +25,7 @@ class Some_Test extends TestCase {
 }
         ]]>
         </code>
-        <code title="Invalid: Incorrect covers tag annotation.">
+        <code title="Invalid: Incorrect covers tag annotation (superfluous parentheses).">
         <![CDATA[
 class Some_Test extends TestCase {
     /**
@@ -73,7 +74,7 @@ class Some_Test extends TestCase {
     </code_comparison>
     <standard>
     <![CDATA[
-    There should be not be both a @covers tag as well as a @coversNothing tag for the same test.
+    The @covers tag and the @coversNothing tag are mutually exclusive and should never both occur in the same docblock.
     ]]>
     </standard>
     <code_comparison>
@@ -104,6 +105,41 @@ class Some_Test extends TestCase {
      *
      * <em>@coversNothing
      * @covers ::globalFunction</em>
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    The use of @covers ClassName::<[!](public|protected|private)> tags is deprecated since PHPUnit 9.0 and support has been removed in PHPUnit 10.0.
+    These type of annotations should not be used.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: A @covers tag referencing a function or a method.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers <em>::globalFunction</em>
+     * @covers <em>\ClassName::methodName</em>
+     */
+    function test_something() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: A @covers tag using one of the deprecated/removed function group formats.">
+        <![CDATA[
+class Some_Test extends TestCase {
+    /**
+     * Testing...
+     *
+     * @covers <em>\ClassName::<public></em>
+     * @covers <em>\ClassName::<!protected></em>
+     * @covers <em>\ClassName<extended></em>
      */
     function test_something() {}
 }

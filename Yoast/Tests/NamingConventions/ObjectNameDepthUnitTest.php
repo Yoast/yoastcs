@@ -7,22 +7,20 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the ObjectNameDepth sniff.
  *
- * @package Yoast\YoastCS
+ * @since 2.0.0
  *
- * @since   2.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\NamingConventions\ObjectNameDepthSniff
+ * @covers YoastCS\Yoast\Sniffs\NamingConventions\ObjectNameDepthSniff
  */
-class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
+final class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
 	 *
 	 * @param string $testFile The name of the file being tested.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList( $testFile = '' ) {
+	public function getErrorList( string $testFile = '' ): array {
 
 		switch ( $testFile ) {
 			case 'ObjectNameDepthUnitTest.2.inc':
@@ -44,6 +42,9 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 					114 => 1,
 					115 => 1,
 					116 => 1,
+					135 => 1,
+					136 => 1,
+					145 => 1,
 				];
 
 			default:
@@ -56,9 +57,9 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFile The name of the file being tested.
 	 *
-	 * @return array <int line number> => <int number of warnings>
+	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
-	public function getWarningList( $testFile = '' ) {
+	public function getWarningList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			case 'ObjectNameDepthUnitTest.2.inc':
 				return [
@@ -70,4 +71,3 @@ class ObjectNameDepthUnitTest extends AbstractSniffUnitTest {
 		}
 	}
 }
-

@@ -7,32 +7,34 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the BrainMonkeyRaceCondition sniff.
  *
- * @package Yoast\YoastCS
+ * @since 2.3.0
  *
- * @covers  YoastCS\Yoast\Sniffs\Tools\BrainMonkeyRaceConditionSniff
+ * @covers YoastCS\Yoast\Sniffs\Tools\BrainMonkeyRaceConditionSniff
  */
-class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
+final class BrainMonkeyRaceConditionUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Returns the lines where errors should occur.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 		return [
 			104 => 1,
 			113 => 1,
 			122 => 1,
 			131 => 1,
+			176 => 1,
+			185 => 1,
 		];
 	}
 
 	/**
 	 * Returns the lines where warnings should occur.
 	 *
-	 * @return array <int line number> => <int number of warnings>
+	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [];
 	}
 }

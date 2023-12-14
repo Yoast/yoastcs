@@ -5,27 +5,30 @@ namespace YoastCS\Yoast\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 
 /**
- * Verifies functions which are marked as `deprecated` have a `codeCoverageIgnore` tag
+ * Verifies functions/OO structures which are marked as `deprecated` have a `codeCoverageIgnore` tag
  * in their docblock.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   1.1.0
+ * @since 1.1.0
+ * @since 3.0.0 Not just checks function docblocks, but also class/OO docblocks.
  */
-class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
+final class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return (int|string)[]
+	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			\T_FUNCTION,
-		];
+		$targets = Tokens::$ooScopeTokens;
+		// Ignore interfaces as they can't contain code. Ignore anon classes as they are normally nested in another construct.
+		unset( $targets[ \T_ANON_CLASS ], $targets[ \T_INTERFACE ] );
+
+		$targets[ \T_FUNCTION ] = \T_FUNCTION;
+
+		return $targets;
 	}
 
 	/**
@@ -40,7 +43,12 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 
 		$tokens = $phpcsFile->getTokens();
 
-		$ignore                  = Tokens::$methodPrefixes;
+		if ( $tokens[ $stackPtr ]['code'] === \T_FUNCTION ) {
+			$ignore = Tokens::$methodPrefixes;
+		}
+		else {
+			$ignore = Collections::classModifierKeywords();
+		}
 		$ignore[ \T_WHITESPACE ] = \T_WHITESPACE;
 
 		for ( $commentEnd = ( $stackPtr - 1 ); $commentEnd >= 0; $commentEnd-- ) {
@@ -48,16 +56,13 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 				continue;
 			}
 
-			if ( $tokens[ $commentEnd ]['code'] === \T_ATTRIBUTE_END
-				&& isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true
-			) {
+			if ( isset( $tokens[ $commentEnd ]['attribute_opener'] ) === true ) {
 				$commentEnd = $tokens[ $commentEnd ]['attribute_opener'];
 				continue;
 			}
 
 			break;
 		}
-
 
 		if ( $tokens[ $commentEnd ]['code'] !== \T_DOC_COMMENT_CLOSE_TAG ) {
 			// Function without (proper) docblock. Not our concern.
@@ -75,7 +80,7 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 		}
 
 		if ( $deprecated === false ) {
-			// Not a deprecated function.
+			// Not a deprecated function/OO structure.
 			return;
 		}
 
@@ -95,7 +100,7 @@ class CodeCoverageIgnoreDeprecatedSniff implements Sniff {
 		$hasTagAsString = $phpcsFile->findNext( \T_DOC_COMMENT_STRING, ( $commentStart + 1 ), $commentEnd, false, 'codeCoverageIgnore' );
 		if ( $hasTagAsString !== false ) {
 			$prev = $phpcsFile->findPrevious( \T_DOC_COMMENT_WHITESPACE, ( $hasTagAsString - 1 ), $commentStart, true );
-			if ( $prev !== false && $tokens[ $prev ]['code'] === \T_DOC_COMMENT_STAR ) {
+			if ( $tokens[ $prev ]['code'] === \T_DOC_COMMENT_STAR ) {
 				$fix = $phpcsFile->addFixableError(
 					'The `codeCoverageIgnore` annotation in the function docblock needs to be prefixed with an `@`.',
 					$hasTagAsString,

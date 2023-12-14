@@ -8,24 +8,22 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the TestDoubles sniff.
  *
- * @package Yoast\YoastCS
+ * @since 1.0.0
  *
- * @since   1.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\Files\TestDoublesSniff
+ * @covers YoastCS\Yoast\Sniffs\Files\TestDoublesSniff
  */
-class TestDoublesUnitTest extends AbstractSniffUnitTest {
+final class TestDoublesUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Set CLI values before the file is tested.
 	 *
-	 * @param string $testFile The name of the file being tested.
+	 * @param string $filename The name of the file being tested.
 	 * @param Config $config   The config data for the test run.
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $testFile, $config ) {
-		if ( $testFile === 'no-basepath.inc' ) {
+	public function setCliValues( $filename, $config ): void {
+		if ( $filename === 'no-basepath.inc' ) {
 			return;
 		}
 
@@ -37,11 +35,11 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFileBase The base path that the unit tests files will have.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
-	protected function getTestFiles( $testFileBase ) {
+	protected function getTestFiles( $testFileBase ): array {
 		$sep        = \DIRECTORY_SEPARATOR;
-		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
+		$test_files = \glob( \dirname( $testFileBase ) . $sep . 'TestDoublesUnitTests' . $sep . 'tests{' . $sep . ',' . $sep . '*' . $sep . '}*.inc', \GLOB_BRACE );
 
 		if ( ! empty( $test_files ) ) {
 			return $test_files;
@@ -55,28 +53,19 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFile The name of the file being tested.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList( $testFile = '' ) {
+	public function getErrorList( string $testFile = '' ): array {
 
 		switch ( $testFile ) {
 			// In tests/.
 			case 'mock-not-in-correct-dir.inc':
 				return [
-					3 => 1,
-				];
-
-			case 'multiple-objects-in-file.inc':
-				return [
-					5 => 2,
-				];
-
-			case 'multiple-objects-in-file-reverse.inc':
-				return [
-					7 => 2,
+					4 => 1,
 				];
 
 			case 'non-existant-doubles-dir.inc':
+			case 'non-existant-doubles-dirs.inc':
 				return [
 					4 => 1,
 				];
@@ -87,43 +76,55 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 				];
 
 			case 'not-in-correct-dir-double.inc':
-				return [
-					3 => 1,
-				];
-
 			case 'not-in-correct-dir-mock.inc':
+			case 'not-in-correct-dir-enum-double.inc':
+			case 'not-in-correct-dir-interface-double.inc':
+			case 'not-in-correct-dir-trait-double.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
-			// In tests/doubles.
+			// In tests/Doubles.
 			case 'correct-dir-not-double-or-mock.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
-			case 'multiple-mocks-in-file.inc':
-				return [
-					3 => 1,
-					5 => 1,
-				];
-
-			// In tests/doubles-not-correct.
+			// In tests/DoublesNotCorrect.
 			case 'not-in-correct-subdir.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
-			// In tests/mocks.
+			// In tests/Mocks.
 			case 'correct-custom-dir-not-mock.inc':
 				return [
-					3 => 1,
+					4 => 1,
 				];
 
+			// In tests/lowercase.
+			case 'correct-custom-dir-wrong-case.inc':
+				return [
+					4 => 1,
+				];
+
+			// In tests/lowercase.
+			case 'correct-custom-lowercase-dir-not-mock.inc':
+				return [
+					4 => 1,
+				];
+
+			case 'live-coding.inc': // In tests.
 			case 'not-double-or-mock.inc': // In tests.
-			case 'correct-dir-double.inc': // In tests/doubles.
-			case 'correct-dir-mock.inc': // In tests/doubles.
-			case 'correct-custom-dir.inc': // In tests/mocks.
+			case 'non-existant-doubles-dir-not-double.inc': // In tests.
+			case 'correct-dir-double.inc': // In tests/Doubles.
+			case 'correct-dir-mock.inc': // In tests/Doubles.
+			case 'correct-dir-enum.inc': // In tests/Doubles.
+			case 'correct-dir-interface.inc': // In tests/Doubles.
+			case 'correct-dir-trait-double.inc': // In tests/Doubles.
+			case 'correct-custom-dir.inc': // In tests/Mocks.
+			case 'correct-custom-lowercase-dir.inc': // In tests/lowercase.
+			case 'correct-custom-dir-not-mock-wrong-case.inc': // In tests/lowercase.
 			default:
 				return [];
 		}
@@ -134,9 +135,9 @@ class TestDoublesUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @param string $testFile The name of the file being tested.
 	 *
-	 * @return array <int line number> => <int number of warnings>
+	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
-	public function getWarningList( $testFile = '' ) {
+	public function getWarningList( string $testFile = '' ): array {
 		switch ( $testFile ) {
 			case 'no-basepath.inc':
 				return [

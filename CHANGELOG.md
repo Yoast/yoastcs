@@ -4,6 +4,134 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.0.0] - 2023-12-14
+
+#### Added
+* Composer/PHPCS: Dependencies on the following external PHPCS standards packages: [PHPCSUtils], [PHPCSExtra], [SlevomatCodingStandard], [VariableAnalysis] and [WordPressVIP Coding Standards].
+* PHPCS: A best effort has been made to add support for new PHP syntaxes/features to all YoastCS native sniffs and utility functions (or to verify/improve existing support).
+    YoastCS native sniffs and utilities have received fixes for the following syntaxes:
+    * PHP 5.6
+        - Parameter unpacking in function calls.
+    * PHP 8.0
+        - Named arguments in function calls.
+    * PHP 8.1
+        - Enumerations.
+        - First class callables.
+    * PHP 8.2
+        - Readonly classes.
+* PHPCS: The `Yoast.Commenting.CoversTag` sniff includes a new warning for the use of `ClassName<*>` type `@covers` annotations, as these have been deprecated as of PHPUnit 9.0.
+* PHPCS: The `Yoast.Files.FileName` sniff now has the (optional) ability to check whether file names comply with PSR-4.
+    To enable this ability, add the custom `psr4_paths` property to your ruleset. The `psr4_paths` property is an array property and mirrors the `psr4` setting in the Composer `autoload` directive. It expects a namespace prefix as the array key and a comma separated list of relative paths as the array value. Multiple PSR-4 paths can be passed (array elements).
+    For files containing OO structures in a "PSR4 path", the `oo_prefixes` and the `excluded_files_strict_check` properties will be ignored.
+* PHPCS: The `Yoast.NamingConventions.NamespaceName` sniff will now throw a `MissingPrefix` error if a prefix is expected, but the namespace name does not include a prefix.
+* PHPCS: The `Yoast.NamingConventions.NamespaceName` sniff will now throw a `DirectoryInvalid` error if a file is in a directory which would not result in a valid namespace name.
+* PHPCS: The `Yoast.NamingConventions.NamespaceName` sniff now has the (optional) ability to check whether namespace names comply with PSR-4.
+    To enable this ability, add the custom `psr4_paths` property to your ruleset. The `psr4_paths` property is an array property and mirrors the `psr4` setting in the Composer `autoload` directive. It expects a namespace prefix as the array key and a comma separated list of relative paths as the array value. Multiple PSR-4 paths can be passed (array elements).
+    A `psr4_paths` property will take precedence over the, potentially set, `src_directory` and `prefixes` properties.
+* PHPCS: The following sniffs/error codes have been added to/enabled in the YoastCS ruleset (with appropriate configuration):
+    - All new sniffs which were added/included in [WordPressCS 3.0.0](https://github.com/WordPress/WordPress-Coding-Standards/releases/tag/3.0.0).
+    - `PSR1.Classes.ClassDeclaration` (for tests only)
+    - `PSR12.Properties.ConstantVisibility`
+    - `SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation`
+    - `SlevomatCodingStandard.Classes.ClassStructure`
+    - `SlevomatCodingStandard.Classes.ModernClassNameReference`
+    - `SlevomatCodingStandard.Functions.StaticClosure`
+    - `SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses`
+    - `SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants`
+    - `SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions`
+    - `SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly`
+    - `SlevomatCodingStandard.Namespaces.UnusedUses`
+    - `SlevomatCodingStandard.Namespaces.UseFromSameNamespace`
+    - `SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint` (tests excluded)
+    - `SlevomatCodingStandard.TypeHints.LongTypeHints`
+    - `SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue`
+    - `SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition`
+    - `SlevomatCodingStandard.TypeHints.ParameterTypeHint`
+    - `SlevomatCodingStandard.TypeHints.PropertyTypeHint`
+    - `SlevomatCodingStandard.TypeHints.ReturnTypeHint`
+    - `Squiz.Commenting.FunctionComment.InvalidReturnNotVoid`
+    - `Squiz.Commenting.FunctionComment.MissingReturn`
+    - `Squiz.Commenting.FunctionComment.ParamCommentNotCapital`
+    - `Squiz.Commenting.FunctionComment.SpacingAfterParamName`
+    - `Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines`
+    - `Universal.Classes.RequireFinalClass` (for tests only, doubles/mocks excluded)
+    - `Universal.CodeAnalysis.NoDoubleNegative`
+    - `Universal.ControlStructures.DisallowAlternativeSyntax`
+    - `Universal.ControlStructures.IfElseDeclaration`
+    - `Universal.FunctionDeclarations.NoLongClosures`
+    - `Universal.Operators.ConcatPosition`
+    - `Universal.Operators.DisallowLogicalAndOr`
+    - `Universal.PHP.LowercasePHPTag`
+    - `Universal.UseStatements.DisallowUseConst`
+    - `Universal.UseStatements.DisallowUseFunction`
+    - `VariableAnalysis.CodeAnalysis.VariableAnalysis`
+    - `WordPressVIPMinimum.Classes.DeclarationCompatibility`
+    - `WordPressVIPMinimum.Hooks.AlwaysReturnInFilter`
+    - `WordPressVIPMinimum.Security.EscapingVoidReturnFunctions`
+    - `WordPressVIPMinimum.Security.ProperEscapingFunction`
+* PHPCS: New `PathHelper`, `PathValidationHelper` and `PSR4PathsTraits` classes/traits for use by the sniffs.
+* Readme: section on the YoastCS `Threshold` report.
+
+#### Changed
+* :warning: The minimum supported PHP version for this package is now PHP 7.2 (was 5.4).
+* PHPCS: all sniffs are now runtime compatible with PHP 7.2 - 8.3.
+* :warning: PHPCS: All non-abstract classes in YoastCS are now `final` and all non-`public` methods and properties are now `private`.
+    Additionally, all non-private methods in traits have also been made `final`.
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.7.1` to `^3.8.0`.
+* :warning: Composer: Supported version of [WordPressCS] has been changed from `^2.3.0` to `^3.0.1`.
+    YoastCS is now fully compatible with WordPressCS 3.0.
+    Note: WordPressCS 3.0.0 contains breaking changes. Please read the [WordPressCS release announcement](https://make.wordpress.org/core/2023/08/21/wordpresscs-3-0-0-is-now-available/) and follow the [WordPressCS upgrade guides](https://github.com/WordPress/WordPress-Coding-Standards/wiki/).
+* PHPCS: The default value for the `minimum_wp_version` (previously `minimum_supported_wp_version`) property which is used by various WPCS sniffs has been updated to WP `6.2` (was `6.0`).
+* PHPCS: Files in a `wp-content/plugins/` subdirectory will now always be ignored for PHPCS scans.
+* PHPCS: The ruleset included value for the `doubles_path` property in the `Yoast.Files.TestDoubles` sniff has been updated to include the typical Yoast `test/Unit/Doubles` and `test/WP/Doubles` directories as per the restructured tests.
+* PHPCS: The `Yoast.Commenting.CodeCoverageIgnoreDeprecated` sniff will now also examine class docblocks.
+* PHPCS: The `Yoast.Commenting.FileComment` sniff will no longer flag a file docblock in a namespaced file which doesn't contain an OO structure as redundant.
+* PHPCS: The `Yoast.Files.FileName` sniff will now also examine the file name of PHP files using only the PHP short open tag (`<?=`).
+* PHPCS: The `Yoast.Files.FileName` sniff will now respect inline PHPCS native ignore/disable annotations for the sniff.
+    Note: the annotations are respected for the sniff itself, but not for individual error codes from the sniff!
+* PHPCS: The `Yoast.Files.FileName` sniff now recognizes more word separators, meaning that files using other word separators than underscores will now be flagged for not using hyphenation.
+* PHPCS: The `Yoast.Files.FileName` sniff will now throw a potential "missing basepath" warning only once per run, not for each file triggering the sniff.
+* PHPCS: The default value for the `doubles_path` property in the `Yoast.Files.TestDoubles` sniff is now an empty array.
+    This property should now always be set in a custom ruleset.
+    Note: the YoastCS ruleset sets this property, so if the ruleset is used instead of explicitly including the individual sniff, this change has no impact.
+* PHPCS: The "namespace level depth" check in the `Yoast.NamingConventions.NamespaceName` sniff now allows for test fixtures directories being at a deeper level than directly under a `tests` directory.
+* PHPCS: The `Yoast.NamingConventions.ObjectNameDepth` sniff now allows for test classes using a `_TestCase` suffix and will allow for extra object name depth for those, same as for test classes with a `_Test` suffix.
+* :warning: PHPCS: The `Yoast.Yoast.AlternativeFunctions` sniff has been renamed to `Yoast.Yoast.JsonEncodeAlternative`.
+* The `Yoast.Yoast.JsonEncodeAlternative` sniff (previously `Yoast.Yoast.AlternativeFunctions`) is now disabled by default for files in a `/tests/` directory.
+* The `Generic.CodeAnalysis.UselessOverridingMethod` sniff is now disabled by default for files in a `/tests/*/Doubles/` directory.
+* The `WordPress.WP.GlobalVariablesOverride` sniff is now disabled by default for files in a `/tests/` directory.
+* PHPCS: The eror messages for the `Yoast.Files.TestDoubles` sniff have been improved for accuracy.
+* PHPCS: The error message for the `Yoast.NamingConventions.NamespaceName.Invalid` error has been made more informative/actionable.
+* PHPCS: The error message for the `Yoast.NamingConventions.ValidHookName.NonString` warning has been made more actionable.
+* PHPCS: Various sniffs have received efficiency fixes for improved performance.
+* PHPCS: the XML documentation for various sniffs has been updated and improved.
+* Various housekeeping.
+
+#### Removed
+* PHPCS: The `Yoast.ControlStructures.IfElseDeclaration` sniff (replaced by the `Universal.ControlStructures.IfElseDeclaration` sniff from PHPCSExtra).
+* PHPCS: The `Yoast.Namespaces.NamespaceDeclaration` sniff (replaced by a variety of sniffs from PHPCSExtra).
+* PHPCS: Various explicit rule inclusions for sniffs which are now inherited from WordPressCS 3.0.
+* PHPCS: Support for the `Yoast.Files.TestDoubles` `doubles_path` property being passed as a string instead of an array.
+    Passing the property as a string was previously deprecated in YoastCS 1.1.0.
+* PHPCS: The `Yoast.Files.TestDoubles.OneObjectPerFile` error code.
+    This is already checked via the `Generic.Files.OneObjectStructurePerFile` sniff, which is included in WordPressCS, anyway.
+
+#### Fixed
+* PHPCS: Various sniffs now include more defensive coding to prevent potential PHP notices/errors, particularly when running the sniffs during live coding in an IDE.
+* PHPCS: Various sniffs have received fixes for improved handling of directory path and file names passed through custom properties.
+* PHPCS: The `Yoast.Commenting.CoversTag` sniff will no longer flag `::<[!]visibility>` annotations as an invalid format when combined with a `@coversDefaultClass` tag.
+* PHPCS: The `Yoast.Commenting.TestHaveCoversTag` sniff will no longer examine global functions.
+* PHPCS: The `Yoast.Files.FileName` sniff will now handle the values for the `excluded_files_strict_check` property in a case-sensitive manner (as file names are case-sensitive on most operating systems).
+* PHPCS: The `Yoast.Files.TestDoubles` sniff will now handle the values for the `doubles_path` property in a case-sensitive manner (as directory names are case-sensitive on most operating systems).
+* PHPCS: The `Yoast.NamingConventions.NamespaceName` sniff will now bow out earlier if the namespace name is invalid (parse error).
+* PHPCS: The `Yoast.NamingConventions.NamespaceName` sniff will now handle "directory to namespace name" translations more accurately and will no longer throw an error if the directory name contains an underscore.
+* PHPCS: The `Yoast.NamingConventions.ObjectNameDepth` sniff now has a more accurate object name depth calculation for OO structures with a name in `CamelCaps`.
+    This should prevent various false positives for test classes/test doubles.
+* PHPCS: The `Yoast.NamingConventions.ObjectNameDepth` sniff will no longer check if a class extends a known "TestCase" to determine whether to allow for extra object name depth, it will just base itself on the name of the object under examination, which should prevent some false positives.
+* PHPCS: The fixer in the `Yoast.Yoast.JsonEncodeAlternative` sniff (previously `Yoast.Yoast.AlternativeFunctions`) will no longer inadvertently create a parse error when fixing fully qualified function calls.
+* PHPCS: The `Yoast.Yoast.JsonEncodeAlternative` sniff (previously `Yoast.Yoast.AlternativeFunctions`) will now no longer try to auto-fix when it encounters PHP 5.6+ parameter unpacking.
+* PHPCS: The `Yoast.Yoast.JsonEncodeAlternative` sniff (previously `Yoast.Yoast.AlternativeFunctions`) will now no longer try to auto-fix when it encounters a PHP 8.1+ first class callable.
+
 ### [2.3.1] - 2023-03-09
 
 #### Changed
@@ -468,15 +596,21 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 Initial public release as a stand-alone package.
 
 
-[PHP_CodeSniffer]:         https://github.com/squizlabs/PHP_CodeSniffer/releases
-[WordPressCS]:             https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
-[PHPCompatibilityWP]:      https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
-[PHPCompatibility]:        https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
-[PHP Mess Detector]:       https://github.com/phpmd/phpmd/blob/master/CHANGELOG
-[Composer PHPCS plugin]:   https://github.com/PHPCSStandards/composer-installer/releases
-[PHP Parallel Lint]:       https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
-[PHP Console Highlighter]: https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
+[PHP_CodeSniffer]:               https://github.com/PHPCSStandards/PHP_CodeSniffer/releases
+[Composer PHPCS plugin]:         https://github.com/PHPCSStandards/composer-installer/releases
+[PHPCompatibilityWP]:            https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
+[PHPCompatibility]:              https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
+[PHPCSExtra]:                    https://github.com/PHPCSStandards/PHPCSExtra/releases
+[SlevomatCodingStandard]:        https://github.com/slevomat/coding-standard/releases
+[VariableAnalysis]:              https://github.com/sirbrillig/phpcs-variable-analysis/releases
+[WordPressCS]:                   https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
+[WordPressVIP Coding Standards]: https://github.com/Automattic/VIP-Coding-Standards/releases
+[PHP Mess Detector]:             https://github.com/phpmd/phpmd/blob/master/CHANGELOG
+[PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
+[PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.0.0]: https://github.com/Yoast/yoastcs/compare/2.3.1...3.0.0
+[2.3.1]: https://github.com/Yoast/yoastcs/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Yoast/yoastcs/compare/2.2.1...2.3.0
 [2.2.1]: https://github.com/Yoast/yoastcs/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/Yoast/yoastcs/compare/2.1.0...2.2.0

@@ -6,15 +6,12 @@ namespace YoastCS\Yoast\Utils;
  * Trait to add a custom `$prefixes` property to sniffs and utility functions
  * to validate the property value.
  *
- * @package Yoast\YoastCS
- * @author  Juliette Reinders Folmer
- *
- * @since   2.0.0
+ * @since 2.0.0
  */
 trait CustomPrefixesTrait {
 
 	/**
-	 * The prefix which are allowed to be used.
+	 * The prefixes which are allowed to be used.
 	 *
 	 * The prefix(es) should be in the exact case as expected.
 	 *
@@ -24,16 +21,16 @@ trait CustomPrefixesTrait {
 	 * hook names are being deprecated and the new hooks put in place -,
 	 * two prefixes (old and new) will be allowed.
 	 * At a future point in time, this property should be changed
-	 * to allow only a single string.}}
+	 * to allow only a single string.}
 	 *
-	 * @var string[]|string
+	 * @var array<string>
 	 */
 	public $prefixes = [];
 
 	/**
 	 * Target prefixes after validation.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $validated_prefixes = [];
 
@@ -42,7 +39,7 @@ trait CustomPrefixesTrait {
 	 *
 	 * Prevents having to do the same prefix validation over and over again.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $previous_prefixes = [];
 
@@ -55,7 +52,7 @@ trait CustomPrefixesTrait {
 	 *
 	 * @return void
 	 */
-	protected function validate_prefixes() {
+	final protected function validate_prefixes() {
 		if ( $this->previous_prefixes === $this->prefixes ) {
 			return;
 		}
@@ -97,9 +94,9 @@ trait CustomPrefixesTrait {
 	/**
 	 * Overloadable method to do custom prefix filtering prior to validation.
 	 *
-	 * @param string[] $prefixes The unvalidated prefixes.
+	 * @param array<string> $prefixes The unvalidated prefixes.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
 	protected function filter_prefixes( $prefixes ) {
 		return $prefixes;
@@ -108,11 +105,11 @@ trait CustomPrefixesTrait {
 	/**
 	 * Filter out all prefixes which don't contain a namespace separator.
 	 *
-	 * @param string[] $prefixes The unvalidated prefixes.
+	 * @param array<string> $prefixes The unvalidated prefixes.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
-	protected function filter_allow_only_namespace_prefixes( $prefixes ) {
+	final protected function filter_allow_only_namespace_prefixes( $prefixes ) {
 		$filtered = [];
 		foreach ( $prefixes as $prefix ) {
 			if ( \strpos( $prefix, '\\' ) === false ) {
@@ -128,11 +125,11 @@ trait CustomPrefixesTrait {
 	/**
 	 * Filter out all prefixes which only contain lowercase characters.
 	 *
-	 * @param string[] $prefixes The unvalidated prefixes.
+	 * @param array<string> $prefixes The unvalidated prefixes.
 	 *
-	 * @return string[]
+	 * @return array<string>
 	 */
-	protected function filter_exclude_lowercase_prefixes( $prefixes ) {
+	final protected function filter_exclude_lowercase_prefixes( $prefixes ) {
 		$filtered = [];
 		foreach ( $prefixes as $prefix ) {
 			if ( \strtolower( $prefix ) === $prefix ) {

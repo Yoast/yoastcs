@@ -19,38 +19,31 @@ concurrency:
 jobs:
   #### QUICK TEST STAGE ####
   # This is a much quicker test which only runs the unit tests and linting against low/high
-  # supported PHP/PHPCS/WPCS combinations.
+  # of the supported PHP/CS dependencies combinations.
   quicktest:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
+        php_version: ['7.2', 'latest']
+        cs_dependencies: ['lowest', 'stable']
+
         include:
           - php_version: 'latest'
-            phpcs_version: 'dev-master'
-            wpcs_version: 'dev-master'
-          - php_version: 'latest'
-            phpcs_version: '3.7.2'
-            wpcs_version: '2.3.0'
-          - php_version: '5.4'
-            phpcs_version: 'dev-master'
-            wpcs_version: '2.3.0'
-          - php_version: '5.4'
-            phpcs_version: '3.7.2'
-            wpcs_version: 'dev-master'
+            cs_dependencies: 'dev'
 
-    name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - PHPCS ${{ matrix.phpcs_version }} - WPCS ${{ matrix.wpcs_version }}"
+    name: "QTest${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS deps ${{ matrix.cs_dependencies }}"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
+      # With stable PHPCS dependencies, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
       - name: Setup ini config
         id: set_ini
         run: |
-          if [ "${{ matrix.phpcs_version }}" != "dev-master" ]; then
+          if [ "${{ matrix.cs_dependencies }}" != "dev" ]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
@@ -63,43 +56,36 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: adjust dependencies'
-        run: |
-          # Set the PHPCS version to test against.
-          composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
-          # Set the WPCS version to test against.
-          composer require --no-update --no-scripts wp-coding-standards/wpcs:"${{ matrix.wpcs_version }}" --no-interaction
+      - name: "Composer: set PHPCS dependencies for tests (dev)"
+        if: ${{ matrix.cs_dependencies == 'dev' }}
+        run: >
+          composer require --no-update --no-scripts --no-interaction
+          squizlabs/php_codesniffer:"dev-master"
+          phpcsstandards/phpcsutils:"dev-develop"
+          wp-coding-standards/wpcs:"dev-develop as 3.99" # Alias needed to prevent composer conflict with VIPCS.
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
-      - name: Install Composer dependencies - normal
-        if: ${{ startsWith( matrix.php_version, '8' ) == false && matrix.php_version != 'latest' }}
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
+      - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      # For the PHP 8.0 and higher, we need to install with ignore platform reqs as not all dependencies allow it.
-      - name: Install Composer dependencies - with ignore platform
-        if: ${{ startsWith( matrix.php_version, '8' ) || matrix.php_version == 'latest' }}
-        uses: ramsey/composer-install@v2
-        with:
-          composer-options: --ignore-platform-req=php+
-          custom-cache-suffix: $(date -u "+%Y-%m")
+      - name: "Composer: downgrade PHPCS dependencies for tests (lowest) (with ignore platform)"
+        if: ${{ matrix.cs_dependencies == 'lowest' }}
+        run: >
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
+          wp-coding-standards/wpcs
 
       - name: Verify installed standards
         run: vendor/bin/phpcs -i
 
       - name: Lint against parse errors
-        if: matrix.phpcs_version == 'dev-master'
+        if: matrix.cs_dependencies == 'stable'
         run: composer lint
 
-      - name: Run the unit tests - PHP 5.4 - 8.0
-        if: ${{ matrix.php_version < '8.1' && matrix.php_version != 'latest' }}
+      - name: Run the unit tests
         run: composer test
-
-      - name: Run the unit tests - PHP 8.1+
-        if: ${{ matrix.php_version >= '8.1' || matrix.php_version == 'latest'}}
-        run: composer test -- --no-configuration --dont-report-useless-tests
-        env:
-          PHPCS_IGNORE_TESTS: 'PHPCompatibility,WordPress'

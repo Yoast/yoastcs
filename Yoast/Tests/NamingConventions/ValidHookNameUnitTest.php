@@ -8,14 +8,12 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the ValidHookName sniff.
  *
- * @package Yoast\YoastCS
+ * @since 2.0.0
  *
- * @since   2.0.0
- *
- * @covers  YoastCS\Yoast\Sniffs\NamingConventions\ValidHookNameSniff
- * @covers  YoastCS\Yoast\Utils\CustomPrefixesTrait
+ * @covers YoastCS\Yoast\Sniffs\NamingConventions\ValidHookNameSniff
+ * @covers YoastCS\Yoast\Utils\CustomPrefixesTrait
  */
-class ValidHookNameUnitTest extends AbstractSniffUnitTest {
+final class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 
 	/**
 	 * Set warnings level to 3 to trigger suggestions as warnings.
@@ -25,16 +23,16 @@ class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 	 *
 	 * @return void
 	 */
-	public function setCliValues( $filename, $config ) {
+	public function setCliValues( $filename, $config ): void {
 		$config->warningSeverity = 3;
 	}
 
 	/**
 	 * Returns the lines where errors should occur.
 	 *
-	 * @return array <int line number> => <int number of errors>
+	 * @return array<int, int> Key is the line number, value is the number of expected errors.
 	 */
-	public function getErrorList() {
+	public function getErrorList(): array {
 
 		return [
 			14  => 1,
@@ -52,15 +50,16 @@ class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 			108 => 1,
 			111 => 1,
 			119 => 1,
+			149 => 1,
 		];
 	}
 
 	/**
 	 * Returns the lines where warnings should occur.
 	 *
-	 * @return array <int line number> => <int number of warnings>
+	 * @return array<int, int> Key is the line number, value is the number of expected warnings.
 	 */
-	public function getWarningList() {
+	public function getWarningList(): array {
 		return [
 			16  => 1,
 			19  => 1,
@@ -81,7 +80,7 @@ class ValidHookNameUnitTest extends AbstractSniffUnitTest {
 			136 => 1, // Severity: 3.
 			140 => 1,
 			141 => 2, // Severity: 3 + 5.
+			147 => 1,
 		];
 	}
 }
-

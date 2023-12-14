@@ -4,18 +4,22 @@ namespace YoastCS\Yoast\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\ObjectDeclarations;
+use PHPCSUtils\Utils\TextStrings;
+use YoastCS\Yoast\Utils\PathHelper;
+use YoastCS\Yoast\Utils\PathValidationHelper;
 
 /**
- * Check that all mock/doubles classes are in their own file and in a `doubles` directory.
+ * Check that all mock/doubles OO structures are in a dedicated directory for test fixtures.
  *
- * Additionally, checks that all classes in the `doubles` directory/directories
- * have `Double` or `Mock` in the class name.
+ * Additionally, checks that all OO structures in this fixtures directory/directories
+ * have `Double` or `Mock` in their name.
  *
- * @package Yoast\YoastCS
- *
- * @since   1.0.0
+ * @since 1.0.0
+ * @since 3.0.0 This sniff will no longer check for multiple OO object declarations within one file.
  */
-class TestDoublesSniff implements Sniff {
+final class TestDoublesSniff implements Sniff {
 
 	/**
 	 * Relative paths to the directories where the test doubles/mocks are allowed to be placed.
@@ -23,42 +27,34 @@ class TestDoublesSniff implements Sniff {
 	 * The paths should be relative to the root/basepath of the project and can be
 	 * customized from within a custom ruleset.
 	 *
-	 * Preferably only one path is provided per project, but in exceptional circumstances
-	 * multiple paths can be allowed.
-	 *
-	 * The new PHPCS 3.4.0 array `extend` feature can be used to add to this list.
-	 * To overrule the list, just set the property.
-	 * {@link https://github.com/squizlabs/PHP_CodeSniffer/pull/2154}
-	 *
 	 * @since 1.0.0
 	 * @since 1.1.0 The property type has changed from string to array.
 	 *              Use of this property with a string value has been deprecated.
+	 * @since 3.0.0 The default value has changed to an empty array.
+	 *              This property will now always need to be set from within a ruleset.
 	 *
-	 * @var string[]
+	 * @var array<string>
 	 */
-	public $doubles_path = [
-		'/tests/doubles',
-	];
+	public $doubles_path = [];
 
 	/**
-	 * Validated absolute target paths for test double/mock classes or an empty array
+	 * Validated absolute target paths for test fixture directories or an empty array
 	 * if the intended target directory/directories don't exist.
 	 *
-	 * @var string[]
+	 * @var array<string, string>
 	 */
-	protected $target_paths;
+	private $target_paths;
 
 	/**
 	 * Returns an array of tokens this test wants to listen for.
 	 *
-	 * @return (int|string)[]
+	 * @return array<int|string>
 	 */
 	public function register() {
-		return [
-			\T_CLASS,
-			\T_INTERFACE,
-			\T_TRAIT,
-		];
+		$targets = Tokens::$ooScopeTokens;
+		unset( $targets[ \T_ANON_CLASS ] );
+
+		return $targets;
 	}
 
 	/**
@@ -72,10 +68,10 @@ class TestDoublesSniff implements Sniff {
 	 */
 	public function process( File $phpcsFile, $stackPtr ) {
 		// Stripping potential quotes to ensure `stdin_path` passed by IDEs does not include quotes.
-		$file = \preg_replace( '`^([\'"])(.*)\1$`Ds', '$2', $phpcsFile->getFileName() );
+		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return;
+			return; // @codeCoverageIgnore
 		}
 
 		if ( ! isset( $phpcsFile->config->basepath ) ) {
@@ -99,33 +95,13 @@ class TestDoublesSniff implements Sniff {
 			return ( $phpcsFile->numTokens + 1 );
 		}
 
-		/*
-		 * BC-compatibility for when the property was still a string.
-		 *
-		 * {@internal This should be removed in YoastCS 2.0.0.}}
-		 */
-		if ( \is_string( $this->doubles_path ) ) {
-			$this->doubles_path = (array) $this->doubles_path;
-		}
-
-		$tokens    = $phpcsFile->getTokens();
-		$base_path = $this->normalize_directory_separators( $phpcsFile->config->basepath );
-		$base_path = \rtrim( $base_path, '/' ) . '/'; // Make sure the base_path ends in a single slash.
-
 		if ( ! isset( $this->target_paths ) || \defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
-			$this->target_paths = [];
-
-			foreach ( $this->doubles_path as $doubles_path ) {
-				$target_path  = $base_path;
-				$target_path .= \trim( $this->normalize_directory_separators( $doubles_path ), '/' ) . '/';
-
-				if ( \file_exists( $target_path ) && \is_dir( $target_path ) ) {
-					$this->target_paths[] = \strtolower( $target_path );
-				}
-			}
+			$this->target_paths = PathValidationHelper::relative_to_absolute( $phpcsFile, $this->doubles_path );
+			$this->target_paths = \array_filter( $this->target_paths, 'file_exists' );
+			$this->target_paths = \array_filter( $this->target_paths, 'is_dir' );
 		}
 
-		$object_name = $phpcsFile->getDeclarationName( $stackPtr );
+		$object_name = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 		if ( empty( $object_name ) ) {
 			return;
 		}
@@ -135,100 +111,72 @@ class TestDoublesSniff implements Sniff {
 			$name_contains_double_or_mock = true;
 		}
 
-
+		$tokens = $phpcsFile->getTokens();
 		if ( empty( $this->target_paths ) === true ) {
-			if ( $name_contains_double_or_mock === true ) {
-				// No valid target paths found.
-				$data = [
-					$phpcsFile->config->basepath,
-				];
-
-				if ( \count( $this->doubles_path ) === 1 ) {
-					$data[] = 'directory';
-					$data[] = \implode( '', $this->doubles_path );
-				}
-				else {
-					$all_paths = \implode( '", "', $this->doubles_path );
-					$all_paths = \substr_replace( $all_paths, ' and', \strrpos( $all_paths, ',' ), 1 );
-
-					$data[] = 'directories';
-					$data[] = $all_paths;
-				}
-
-				$phpcsFile->addError(
-					'Double/Mock test helper class detected, but no test doubles sub-%2$s found in "%1$s". Expected: "%3$s". Please create the sub-%2$s.',
-					$stackPtr,
-					'NoDoublesDirectory',
-					$data
-				);
-			}
-		}
-		else {
-			$path_to_file  = $this->normalize_directory_separators( $file );
-			$is_double_dir = false;
-
-			foreach ( $this->target_paths as $target_path ) {
-				if ( \stripos( $path_to_file, $target_path ) !== false ) {
-					$is_double_dir = true;
-					break;
-				}
+			if ( $name_contains_double_or_mock === false ) {
+				return;
 			}
 
+			// Mock/Double class found, but no valid target paths found.
 			$data = [
 				$tokens[ $stackPtr ]['content'],
-				$object_name,
+				$phpcsFile->config->basepath,
 			];
 
-			if ( $name_contains_double_or_mock === true && $is_double_dir === false ) {
-				$phpcsFile->addError(
-					'Double/Mock test helper classes should be placed in a dedicated test doubles sub-directory. Found %s: %s',
-					$stackPtr,
-					'WrongDirectory',
-					$data
-				);
+			if ( \count( $this->doubles_path ) === 1 ) {
+				$data[] = 'directory';
+				$data[] = \implode( '', $this->doubles_path );
 			}
-			elseif ( $name_contains_double_or_mock === false && $is_double_dir === true ) {
-				$phpcsFile->addError(
-					'Double/Mock test helper classes should contain "Double" or "Mock" in the class name. Found %s: %s',
-					$stackPtr,
-					'InvalidClassName',
-					$data
-				);
+			else {
+				$all_paths = \implode( '", "', $this->doubles_path );
+				$all_paths = \substr_replace( $all_paths, ' and', \strrpos( $all_paths, ',' ), 1 );
+
+				$data[] = 'directories';
+				$data[] = $all_paths;
+			}
+
+			$phpcsFile->addError(
+				'Double/Mock test helper %1$s detected, but no test fixtures sub-%3$s found in "%2$s". Expected: "%4$s". Please create the sub-%3$s.',
+				$stackPtr,
+				'NoDoublesDirectory',
+				$data
+			);
+
+			return;
+		}
+
+		$path_to_file  = PathHelper::normalize_absolute_path( $file );
+		$is_double_dir = false;
+
+		foreach ( $this->target_paths as $target_path ) {
+			if ( PathHelper::path_starts_with( $path_to_file, $target_path ) === true ) {
+				$is_double_dir = true;
+				break;
 			}
 		}
 
-		if ( $name_contains_double_or_mock === true ) {
-			$more_objects_in_file = $phpcsFile->findNext( $this->register(), ( $stackPtr + 1 ) );
-			if ( $more_objects_in_file === false ) {
-				$more_objects_in_file = $phpcsFile->findPrevious( $this->register(), ( $stackPtr - 1 ) );
-			}
+		$data = [
+			$tokens[ $stackPtr ]['content'],
+			$object_name,
+		];
 
-			if ( $more_objects_in_file !== false ) {
-				$data = [
-					$tokens[ $stackPtr ]['content'],
-					$object_name,
-					$tokens[ $more_objects_in_file ]['content'],
-					$phpcsFile->getDeclarationName( $more_objects_in_file ),
-				];
-
-				$phpcsFile->addError(
-					'Double/Mock test helper classes should be in their own file. Found %1$s: %2$s and %3$s: %4$s',
-					$stackPtr,
-					'OneObjectPerFile',
-					$data
-				);
-			}
+		if ( $name_contains_double_or_mock === true && $is_double_dir === false ) {
+			$phpcsFile->addError(
+				'Double/Mock test helpers should be placed in a dedicated test fixtures sub-directory. Found %s: %s',
+				$stackPtr,
+				'WrongDirectory',
+				$data
+			);
+			return;
 		}
-	}
 
-	/**
-	 * Normalize all directory separators to be a forward slash.
-	 *
-	 * @param string $path Path to normalize.
-	 *
-	 * @return string
-	 */
-	private function normalize_directory_separators( $path ) {
-		return \strtr( $path, '\\', '/' );
+		if ( $name_contains_double_or_mock === false && $is_double_dir === true ) {
+			$phpcsFile->addError(
+				'Double/Mock test helpers should contain "Double" or "Mock" in the class name. Found %s: %s',
+				$stackPtr,
+				'InvalidClassName',
+				$data
+			);
+		}
 	}
 }

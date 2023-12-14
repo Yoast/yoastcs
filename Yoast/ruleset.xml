@@ -246,8 +246,31 @@
 	SNIFFS RELATED TO CODE STRUCTURING
 	#############################################################################
 	-->
+	<!-- CS/QA: Enforce consistent order of OO structures. -->
+	<rule ref="SlevomatCodingStandard.Classes.ClassStructure">
+		<properties>
+			<property name="groups" type="array">
+				<element value="uses"/>
+				<element value="enum cases"/>
+				<element value="constants"/>
+				<element value="properties"/>
+				<element value="methods"/>
+			</property>
+		</properties>
+	</rule>
+
 	<!-- CS: ensure exactly one blank line before each property declaration. -->
 	<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
+
+	<!-- CS/QA: Forbid the use long closures. Use named functions instead. -->
+	<rule ref="Universal.FunctionDeclarations.NoLongClosures">
+		<properties>
+			<property name="maxLines" value="10"/>
+		</properties>
+
+		<!-- Disable the warning, only have an error. -->
+		<exclude name="Universal.FunctionDeclarations.NoLongClosures.ExceedsRecommended"/>
+	</rule>
 
 
 	<!--

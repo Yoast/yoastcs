@@ -470,4 +470,9 @@
 		<exclude-pattern>*/tests/*\.php$</exclude-pattern>
 	</rule>
 
+	<!-- Double classes may overload methods in the parent class to just change visibility. -->
+	<rule ref="Generic.CodeAnalysis.UselessOverridingMethod">
+		<exclude-pattern>*/tests(/*)?/Doubles/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>

@@ -50,6 +50,7 @@ jobs:
           phpcsstandards/phpcsutils:"dev-develop"
           phpcsstandards/phpcsextra:"dev-develop"
           wp-coding-standards/wpcs:"dev-develop"
+          slevomat/coding-standard:"dev-master"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer

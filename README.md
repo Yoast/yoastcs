@@ -67,6 +67,7 @@ The `Yoast` standard for PHP_CodeSniffer is comprised of the following:
 * The [`PHPCompatibilityWP`](https://github.com/PHPCompatibility/PHPCompatibilityWP) ruleset which checks code for PHP cross-version compatibility while preventing false positives for functionality polyfilled within WordPress.
 * Select additional sniffs taken from [`PHP_CodeSniffer`](https://github.com/PHPCSStandards/PHP_CodeSniffer).
 * Select additional sniffs taken from [`PHPCSExtra`](https://github.com/PHPCSStandards/PHPCSExtra).
+* Select additional sniffs taken from [`SlevomatCodingStandard`](https://github.com/slevomat/coding-standard).
 * A number of custom Yoast specific sniffs.
 
 Files within version management and dependency related directories, such as the Composer `vendor` directory, are excluded from the scans by default.

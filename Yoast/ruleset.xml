@@ -169,8 +169,19 @@
 	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
 	<rule ref="PSR12.Files.OpenTag"/>
 
+	<!-- CS: Enforces that a PHP open tag uses lowercase. -->
+	<!-- PHPCSExtra 1.2.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
+	<rule ref="Universal.PHP.LowercasePHPTag"/>
+
 	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
 	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
+
+	<!-- CS: Forbid the use of alternative control structure syntax, except in combination with inline HTML. -->
+	<rule ref="Universal.ControlStructures.DisallowAlternativeSyntax">
+		<properties>
+			<property name="allowWithInlineHTML" value="true"/>
+		</properties>
+	</rule>
 
 	<!-- Error prevention: Make sure the condition in a inline if declaration is bracketed. -->
 	<rule ref="Squiz.ControlStructures.InlineIfDeclaration"/>
@@ -185,6 +196,12 @@
 		</properties>
 	</rule>
 
+	<!-- CS/QA: Forbid the use of the and/or logical operators. -->
+	<rule ref="Universal.Operators.DisallowLogicalAndOr"/>
+
+	<!-- CS/QA: Forbid the use double `!`. -->
+	<rule ref="Universal.CodeAnalysis.NoDoubleNegative"/>
+
 	<!-- CS: enforce that boolean operators between conditions in multi-line control structures are
 		 consistently at the start or end of the line, not a mix of both. -->
 	<rule ref="PSR12.ControlStructures.BooleanOperatorPlacement">
@@ -193,6 +210,16 @@
 			<property name="allowOnly" value="first"/>
 		</properties>
 	</rule>
+
+	<!-- CS: enforce that concatenation operators in multi-line concatenations are
+		 consistently at the start of the line. -->
+	<rule ref="Universal.Operators.ConcatPosition"/>
+
+	<!-- CS/QA: Disallow implicit array creation. -->
+	<rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
+
+	<!-- CS/QA: Enforce static closures when a closure doesn't access $this. -->
+	<rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
 
 
 	<!--

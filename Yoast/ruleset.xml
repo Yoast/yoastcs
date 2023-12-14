@@ -161,6 +161,25 @@
 
 	<!--
 	#############################################################################
+	SNIFF FOR USE OF UNDEFINED/UNUSED VARIABLES
+	#############################################################################
+	-->
+	<rule ref="VariableAnalysis">
+		<properties>
+			<property name="allowUnusedCaughtExceptions" value="true"/>
+			<property name="allowUnusedParametersBeforeUsed" value="true"/>
+			<property name="allowUnusedForeachVariables" value="true"/>
+			<property name="allowWordPressPassByRefFunctions" value="true"/>
+
+			<!-- These two properties (attempt to) prevent false positives for interaction with views. -->
+			<property name="allowUnusedVariablesBeforeRequire" value="true"/>
+			<property name="allowUndefinedVariablesInFileScope" value="true"/>
+		</properties>
+	</rule>
+
+
+	<!--
+	#############################################################################
 	ADD SOME SPECIFIC EXTRA SNIFFS
 	These may make it into WPCS at some point. If so, they can be removed here.
 	#############################################################################

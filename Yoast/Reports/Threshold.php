@@ -19,6 +19,8 @@ use PHP_CodeSniffer\Reports\Report;
  * available which can be used in calling scripts.
  *
  * @since 2.2.0
+ *
+ * @phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Flags unused params which are required via the interface. Invalid.
  */
 final class Threshold implements Report {
 

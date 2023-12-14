@@ -273,6 +273,45 @@
 	</rule>
 
 
+	<!-- NAMESPACED FILES AND IMPORT USE STATEMENTS -->
+
+	<!-- CS/QA: Enforce all classes to be imported. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+		<properties>
+			<property name="searchAnnotations" value="true"/>
+			<property name="allowFullyQualifiedGlobalConstants" value="true"/>
+			<property name="allowFullyQualifiedGlobalFunctions" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- CS: Enforce alphabetically ordered import use statements. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
+		<properties>
+			<property name="psr12Compatible" value="true"/>
+			<property name="caseSensitive" value="false"/>
+		</properties>
+	</rule>
+
+	<!-- CS/QA: Disallow unused import use statements. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+		<properties>
+			<!-- Allow import use statements for classes only referenced in documentation. -->
+			<property name="searchAnnotations" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- CS/QA: Disallow import use statements for structures in the same namespace. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+
+	<!-- CS: For namespaced functions/constants: import the namespace, not the function/constant. -->
+	<rule ref="Universal.UseStatements.DisallowUseConst"/>
+	<rule ref="Universal.UseStatements.DisallowUseFunction"/>
+
+	<!-- CS: For global functions/constants: use fully qualified inline names. -->
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions"/>
+
+
 	<!--
 	#############################################################################
 	SNIFFS RELATED TO COMMENTS AND DOCBLOCKS

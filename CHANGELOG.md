@@ -600,6 +600,7 @@ Initial public release as a stand-alone package.
 [Composer PHPCS plugin]:         https://github.com/PHPCSStandards/composer-installer/releases
 [PHPCompatibilityWP]:            https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
 [PHPCompatibility]:              https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
+[PHPCSUtils]:                    https://github.com/PHPCSStandards/PHPCSUtils/releases
 [PHPCSExtra]:                    https://github.com/PHPCSStandards/PHPCSExtra/releases
 [SlevomatCodingStandard]:        https://github.com/slevomat/coding-standard/releases
 [VariableAnalysis]:              https://github.com/sirbrillig/phpcs-variable-analysis/releases

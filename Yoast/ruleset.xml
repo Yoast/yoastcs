@@ -188,10 +188,6 @@
 	<!-- PHPCS 3.5.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
 	<rule ref="PSR12.Files.OpenTag"/>
 
-	<!-- CS: Enforces that a PHP open tag uses lowercase. -->
-	<!-- PHPCSExtra 1.2.0: This sniff may be added to WPCS in due time and can then be removed from this ruleset. -->
-	<rule ref="Universal.PHP.LowercasePHPTag"/>
-
 	<!-- Demand that "else(if)" is on a new line after the scope closer of the preceding if. -->
 	<rule ref="Universal.ControlStructures.IfElseDeclaration"/>
 
@@ -217,9 +213,6 @@
 
 	<!-- CS/QA: Forbid the use of the and/or logical operators. -->
 	<rule ref="Universal.Operators.DisallowLogicalAndOr"/>
-
-	<!-- CS/QA: Forbid the use double `!`. -->
-	<rule ref="Universal.CodeAnalysis.NoDoubleNegative"/>
 
 	<!-- CS: enforce that boolean operators between conditions in multi-line control structures are
 		 consistently at the start or end of the line, not a mix of both. -->

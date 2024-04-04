@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.1.0] - 2024-04-05
+
+#### Added
+
+* Threshold report: aside from the pre-existing `YOASTCS_ABOVE_THRESHOLD` constant, a new `YOASTCS_THRESHOLD_EXACT_MATCH` constant will now be available to determine (from a calling script) whether the error/warning thresholds were matched exactly or need to be updated.
+
+#### Changed
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.8.0` to `^3.9.1`.
+* Composer: Supported version of [PHPCSUtils] has been changed from `^1.0.9` to `^1.0.10`.
+* Composer: Supported version of [WordPressCS] has been changed from `^3.0.1` to `^3.1.0`.
+    This introduces one new sniff - `Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence` - to the YoastCS ruleset.
+* Composer: Supported version of [SlevomatCodingStandards] has been changed from `^8.14.0` to `^8.15.0`.
+* Composer: Supported version of [PHP Parallel Lint] has been changed from `^1.3.2` to `^1.4.0`.
+* PHPCS: The default value for the `minimum_wp_version` (previously `minimum_supported_wp_version`) property which is used by various WPCS sniffs has been updated to WP `6.3` (was `6.2`).
+* Various housekeeping.
+
+
 ### [3.0.0] - 2023-12-14
 
 #### Added
@@ -610,6 +627,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.1.0]: https://github.com/Yoast/yoastcs/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/Yoast/yoastcs/compare/2.3.1...3.0.0
 [2.3.1]: https://github.com/Yoast/yoastcs/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Yoast/yoastcs/compare/2.2.1...2.3.0

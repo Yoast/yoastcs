@@ -121,6 +121,8 @@ final class ThresholdReportTest extends NonSniffTestCase {
 					. '\\033\[33mCoding standards WARNINGS: 300/0\.\\033\[0m\s+'
 					. '\\033\[31mPlease fix any errors introduced in your code and run PHPCS again to verify\.\\033\[0m\s+'
 					. '\\033\[33mPlease fix any warnings introduced in your code and run PHPCS again to verify\.\\033\[0m\s+'
+					. 'YOASTCS_ABOVE_THRESHOLD: true\s+'
+					. 'YOASTCS_THRESHOLD_EXACT_MATCH: false\s+'
 					. '`',
 			],
 			'Threshold: both errors and warnings below threshold' => [
@@ -136,6 +138,8 @@ final class ThresholdReportTest extends NonSniffTestCase {
 					. '\\033\[32mFound less warnings than the threshold, great job!\\033\[0m\s+'
 					. 'Please update the WARNINGS threshold in the composer.json file to \\033\[32m300\.\\033\[0m\s+'
 					. 'Coding standards checks have passed!\s+'
+					. 'YOASTCS_ABOVE_THRESHOLD: false\s+'
+					. 'YOASTCS_THRESHOLD_EXACT_MATCH: false\s+'
 					. '`',
 			],
 			'Threshold: both errors and warnings exactly at threshold' => [
@@ -147,6 +151,8 @@ final class ThresholdReportTest extends NonSniffTestCase {
 					. '\\033\[32mCoding standards ERRORS: 150/150\.\\033\[0m\s+'
 					. '\\033\[32mCoding standards WARNINGS: 300/300\.\\033\[0m\s+'
 					. 'Coding standards checks have passed!\s+'
+					. 'YOASTCS_ABOVE_THRESHOLD: false\s+'
+					. 'YOASTCS_THRESHOLD_EXACT_MATCH: true\s+'
 					. '`',
 			],
 			'Threshold: errors below threshold, warnings above' => [
@@ -160,6 +166,8 @@ final class ThresholdReportTest extends NonSniffTestCase {
 					. '\\033\[32mFound less errors than the threshold, great job!\\033\[0m\s+'
 					. 'Please update the ERRORS threshold in the composer\.json file to \\033\[32m150\.\\033\[0m\s+'
 					. '\\033\[33mPlease fix any warnings introduced in your code and run PHPCS again to verify\.\\033\[0m\s+'
+					. 'YOASTCS_ABOVE_THRESHOLD: true\s+'
+					. 'YOASTCS_THRESHOLD_EXACT_MATCH: false\s+'
 					. '`',
 			],
 			'Threshold: errors above threshold, warnings below' => [
@@ -173,6 +181,8 @@ final class ThresholdReportTest extends NonSniffTestCase {
 					. '\\033\[31mPlease fix any errors introduced in your code and run PHPCS again to verify\.\\033\[0m\s+'
 					. '\\033\[32mFound less warnings than the threshold, great job!\\033\[0m\s+'
 					. 'Please update the WARNINGS threshold in the composer.json file to \\033\[32m300\.\\033\[0m\s+'
+					. 'YOASTCS_ABOVE_THRESHOLD: true\s+'
+					. 'YOASTCS_THRESHOLD_EXACT_MATCH: false\s+'
 					. '`',
 			],
 			'Threshold: both errors and warnings above threshold' => [
@@ -185,6 +195,8 @@ final class ThresholdReportTest extends NonSniffTestCase {
 					. '\\033\[33mCoding standards WARNINGS: 300/200\.\\033\[0m\s+'
 					. '\\033\[31mPlease fix any errors introduced in your code and run PHPCS again to verify\.\\033\[0m\s+'
 					. '\\033\[33mPlease fix any warnings introduced in your code and run PHPCS again to verify\.\\033\[0m\s+'
+					. 'YOASTCS_ABOVE_THRESHOLD: true\s+'
+					. 'YOASTCS_THRESHOLD_EXACT_MATCH: false\s+'
 					. '`',
 			],
 		];

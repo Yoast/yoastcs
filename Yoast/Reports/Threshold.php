@@ -133,6 +133,7 @@ final class Threshold implements Report {
 		echo \PHP_EOL;
 
 		$above_threshold = false;
+		$below_threshold = false;
 
 		if ( $totalErrors > $error_threshold ) {
 			echo self::RED, 'Please fix any errors introduced in your code and run PHPCS again to verify.', self::RESET, \PHP_EOL;
@@ -141,6 +142,7 @@ final class Threshold implements Report {
 		elseif ( $totalErrors < $error_threshold ) {
 			echo self::GREEN, 'Found less errors than the threshold, great job!', self::RESET, \PHP_EOL;
 			echo 'Please update the ERRORS threshold in the composer.json file to ', self::GREEN, $totalErrors, '.', self::RESET, \PHP_EOL;
+			$below_threshold = true;
 		}
 
 		if ( $totalWarnings > $warning_threshold ) {
@@ -150,6 +152,7 @@ final class Threshold implements Report {
 		elseif ( $totalWarnings < $warning_threshold ) {
 			echo self::GREEN, 'Found less warnings than the threshold, great job!', self::RESET, \PHP_EOL;
 			echo 'Please update the WARNINGS threshold in the composer.json file to ', self::GREEN, $totalWarnings, '.', self::RESET, \PHP_EOL;
+			$below_threshold = true;
 		}
 
 		if ( $above_threshold === false ) {
@@ -157,10 +160,18 @@ final class Threshold implements Report {
 			echo 'Coding standards checks have passed!', \PHP_EOL;
 		}
 
-		// Make the threshold comparison outcome available to the calling script.
+		// Make the threshold comparison outcomes available to the calling script.
 		// The conditional define is only so as to make the method testable.
-		if ( \defined( 'YOASTCS_ABOVE_THRESHOLD' ) === false ) {
+		$exact_match = ( $above_threshold === false && $below_threshold === false );
+		if ( \defined( 'PHP_CODESNIFFER_IN_TESTS' ) === false ) {
 			\define( 'YOASTCS_ABOVE_THRESHOLD', $above_threshold );
+			\define( 'YOASTCS_THRESHOLD_EXACT_MATCH', $exact_match );
+		}
+		else {
+			// Only used in the tests to verify the above constants are being set correctly.
+			echo \PHP_EOL;
+			echo 'YOASTCS_ABOVE_THRESHOLD: ', ( $above_threshold === true ) ? 'true' : 'false', \PHP_EOL;
+			echo 'YOASTCS_THRESHOLD_EXACT_MATCH: ', ( $exact_match === true ) ? 'true' : 'false', \PHP_EOL;
 		}
 	}
 }

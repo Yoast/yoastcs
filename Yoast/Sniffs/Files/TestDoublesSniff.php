@@ -71,7 +71,7 @@ final class TestDoublesSniff implements Sniff {
 		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return; // @codeCoverageIgnore
+			return $phpcsFile->numTokens; // @codeCoverageIgnore
 		}
 
 		if ( ! isset( $phpcsFile->config->basepath ) ) {
@@ -81,7 +81,7 @@ final class TestDoublesSniff implements Sniff {
 				'MissingBasePath'
 			);
 
-			return ( $phpcsFile->numTokens + 1 );
+			return $phpcsFile->numTokens;
 		}
 
 		if ( empty( $this->doubles_path ) ) {
@@ -92,7 +92,7 @@ final class TestDoublesSniff implements Sniff {
 				'NoDoublesPathProperty'
 			);
 
-			return ( $phpcsFile->numTokens + 1 );
+			return $phpcsFile->numTokens;
 		}
 
 		if ( ! isset( $this->target_paths ) || \defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {

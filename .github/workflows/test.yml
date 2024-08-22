@@ -55,12 +55,12 @@ jobs:
 
           # Experimental build(s). These are allowed to fail.
           # PHP nightly
-          - php_version: '8.5'
+          - php_version: 'nightly'
             cs_dependencies: 'dev'
 
     name: "Test${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
-    continue-on-error: ${{ matrix.php_version == '8.5' }}
+    continue-on-error: ${{ matrix.php_version == 'nightly' }}
 
     steps:
       - name: Checkout code
@@ -122,7 +122,7 @@ jobs:
       # The results of the linting will be shown inline in the PR via the CS2PR tool.
       # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
       - name: Lint against parse errors
-        if: ${{ matrix.cs_dependencies == 'stable' }}
+        if: ${{ matrix.cs_dependencies == 'stable' || matrix.php_version == 'nightly' }}
         run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests

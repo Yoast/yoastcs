@@ -254,7 +254,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 			 */
 			if ( $this->prefix_quote_style === '"' ) {
 				\preg_match_all( '`[\\\\]+`', $this->found_prefix, $matches );
-				if ( empty( $matches ) === false ) {
+				if ( empty( $matches[0] ) === false ) {
 					$counter = 0;
 					foreach ( $matches[0] as $match ) {
 						if ( $match === '\\' ) {

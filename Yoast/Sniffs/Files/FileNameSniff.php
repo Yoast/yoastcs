@@ -144,7 +144,7 @@ final class FileNameSniff implements Sniff {
 		$file = TextStrings::stripQuotes( $phpcsFile->getFileName() );
 
 		if ( $file === 'STDIN' ) {
-			return ( $phpcsFile->numTokens + 1 ); // @codeCoverageIgnore
+			return $phpcsFile->numTokens; // @codeCoverageIgnore
 		}
 
 		// Respect phpcs:disable comments as long as they are not accompanied by an enable.
@@ -167,7 +167,7 @@ final class FileNameSniff implements Sniff {
 
 				if ( $i === false ) {
 					// The entire (rest of the) file is disabled.
-					return ( $phpcsFile->numTokens + 1 );
+					return $phpcsFile->numTokens;
 				}
 			}
 		}
@@ -278,7 +278,7 @@ final class FileNameSniff implements Sniff {
 		}
 
 		// Only run this sniff once per file, no need to run it again.
-		return ( $phpcsFile->numTokens + 1 );
+		return $phpcsFile->numTokens;
 	}
 
 	/**

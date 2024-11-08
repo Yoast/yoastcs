@@ -93,7 +93,7 @@ final class FileCommentSniff extends Squiz_FileCommentSniff {
 
 		if ( $comment_start === false || $tokens[ $comment_start ]['code'] !== \T_DOC_COMMENT_OPEN_TAG ) {
 			// No file comment found, we're good.
-			return ( $phpcsFile->numTokens + 1 );
+			return $phpcsFile->numTokens;
 		}
 
 		// Respect phpcs:disable comments in the file docblock.
@@ -110,7 +110,7 @@ final class FileCommentSniff extends Squiz_FileCommentSniff {
 					|| isset( $tokens[ $i ]['sniffCodes']['Yoast.Commenting.FileComment.Unnecessary'] ) === true
 				) {
 					// Applicable disable annotation found.
-					return ( $phpcsFile->numTokens + 1 );
+					return $phpcsFile->numTokens;
 				}
 			}
 		}
@@ -136,6 +136,6 @@ final class FileCommentSniff extends Squiz_FileCommentSniff {
 			'Unnecessary'
 		);
 
-		return ( $phpcsFile->numTokens + 1 );
+		return $phpcsFile->numTokens;
 	}
 }

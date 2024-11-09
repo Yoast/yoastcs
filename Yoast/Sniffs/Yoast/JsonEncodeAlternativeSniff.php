@@ -29,10 +29,10 @@ final class JsonEncodeAlternativeSniff extends AbstractFunctionRestrictionsSniff
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var array<string, string|string[]> Function names as the keys and the name of the first declared parameter
-	 *                                     as the value.
-	 *                                     There can be multiple parameter names if the parameter
-	 *                                     was renamed over time.
+	 * @var array<string, string|array<string>> Function names as the keys and the name of the first declared parameter
+	 *                                          as the value.
+	 *                                          There can be multiple parameter names if the parameter
+	 *                                          was renamed over time.
 	 */
 	private const PARAM_INFO = [
 		'json_encode'    => 'value',
@@ -47,7 +47,7 @@ final class JsonEncodeAlternativeSniff extends AbstractFunctionRestrictionsSniff
 	/**
 	 * Groups of functions to restrict.
 	 *
-	 * @return array<string, array<string, string[]>>
+	 * @return array<string, array<string, array<string>>>
 	 */
 	public function getGroups() {
 		return [

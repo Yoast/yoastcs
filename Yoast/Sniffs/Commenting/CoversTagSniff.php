@@ -267,7 +267,7 @@ final class CoversTagSniff implements Sniff {
 							continue;
 						}
 
-						if ( ! isset( $first ) ) {
+						if ( $first === null ) {
 							$first = \explode( '-', $ptrs );
 							$data  = [ $tokens[ $first[0] ]['line'] ];
 							continue;

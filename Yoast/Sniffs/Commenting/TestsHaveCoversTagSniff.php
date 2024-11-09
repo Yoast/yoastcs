@@ -35,7 +35,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 * @param File $phpcsFile The file being scanned.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void|int Optionally returns a stack pointer. This sniff will not be
+	 * @return int|void Optionally returns a stack pointer. This sniff will not be
 	 *                  called again on the current file until the returned stack
 	 *                  pointer is reached.
 	 */
@@ -57,7 +57,7 @@ final class TestsHaveCoversTagSniff implements Sniff {
 	 * @param File $phpcsFile The file being scanned.
 	 * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
 	 *
-	 * @return void|int If covers annotations were found (or this is not a test class),
+	 * @return int|void If covers annotations were found (or this is not a test class),
 	 *                  will return the stack pointer to the end of the class.
 	 */
 	private function process_class( File $phpcsFile, $stackPtr ) {

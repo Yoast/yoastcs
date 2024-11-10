@@ -37,30 +37,30 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php_version: ['7.3', '7.4', '8.0', '8.1', '8.2']
+        php_version: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
         cs_dependencies: ['lowest', 'stable']
 
         include:
           # Make the matrix complete (when combined with the code coverage builds).
           - php_version: '7.2'
             cs_dependencies: 'stable'
-          - php_version: '8.3'
+          - php_version: '8.4'
             cs_dependencies: 'stable'
 
           # Test against dev versions of all CS dependencies with select PHP versions for early detection of issues.
-          - php_version: '7.4'
+          - php_version: '8.0'
             cs_dependencies: 'dev'
-          - php_version: '8.1'
+          - php_version: '8.2'
             cs_dependencies: 'dev'
 
           # Experimental build(s). These are allowed to fail.
           # PHP nightly
-          - php_version: '8.4'
+          - php_version: '8.5'
             cs_dependencies: 'dev'
 
     name: "Test${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
-    continue-on-error: ${{ matrix.php_version == '8.4' }}
+    continue-on-error: ${{ matrix.php_version == '8.5' }}
 
     steps:
       - name: Checkout code
@@ -142,7 +142,7 @@ jobs:
 
     strategy:
       matrix:
-        php_version: ['7.2', '8.3']
+        php_version: ['7.2', '8.4']
         cs_dependencies: ['lowest', 'dev']
 
     name: "Coverage${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"

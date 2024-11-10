@@ -203,7 +203,7 @@ final class FileNameSniff implements Sniff {
 
 			$oo_name = ObjectDeclarations::getName( $phpcsFile, $oo_structure );
 
-			if ( ! empty( $oo_name ) ) {
+			if ( \is_string( $oo_name ) && $oo_name !== '' ) {
 
 				if ( $this->is_in_psr4_path( $phpcsFile, $file ) ) {
 					$error      = 'Directory marked as a PSR-4 path. File names should 100%% match the name of the OO structure contained in the file for PSR-4 compliance.';

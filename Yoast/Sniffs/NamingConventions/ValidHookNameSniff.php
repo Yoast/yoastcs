@@ -178,6 +178,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * @param string $regex          The punctuation regular expression to use.
 	 * @param string $transform_type Whether to do a partial or complete transform.
 	 *                               Valid values are: 'full', 'case', 'punctuation'.
+	 *
 	 * @return string
 	 */
 	protected function transform( $text_string, $regex, $transform_type = 'full' ) {

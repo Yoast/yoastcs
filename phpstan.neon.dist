@@ -10,93 +10,29 @@ parameters:
 #	treatPhpDocTypesAsCertain: false
 #	reportUnmatchedIgnoredErrors: false
 	dynamicConstantNames:
+		- PHP_CODESNIFFER_VERBOSITY
 		- YOASTCS_ABOVE_THRESHOLD
 
 	ignoreErrors:
-		# Level 3
-		-
-			# This is an issue with the PHPCS docs. Can't be helped.
-			message: '`^Property PHP_CodeSniffer\\Config::\$basepath \(string\) does not accept null\.$`'
-			path: Yoast/Tests/Utils/PSR4PathsTraitTest.php
-			count: 1
-		-
-			# This is a test specifically checking the handling when an invalid value is passed, so this is okay.
-			message: '`^Property YoastCS\\Yoast\\Tests\\Utils\\PSR4PathsTraitTest::\$psr4_paths \(array\<string, string\>\) does not accept array\<int, string\>\.$`'
-			path: Yoast/Tests/Utils/PSR4PathsTraitTest.php
-			count: 1
-
 		# Level 4
 		-
 			# Bug in PHPStan: PHPStan doesn't seem to like uninitialized properties...
+			# https://github.com/phpstan/phpstan/issues/10305
 			message: '`^Property \S+Sniff::\$target_paths \(array<string, string>\) in isset\(\) is not nullable\.$`'
 			path: Yoast/Sniffs/Files/TestDoublesSniff.php
 			count: 1
-		-
-			# Defensive coding in the PSR4PathsTrait as the property value is user provided via the ruleset. This is okay.
-			message: '`^Strict comparison using === between true and false will always evaluate to false\.$`'
-			paths:
-				- Yoast/Sniffs/Files/FileNameSniff.php
-				- Yoast/Sniffs/NamingConventions/NamespaceNameSniff.php
-				- Yoast/Tests/Utils/PSR4PathsTraitTest.php
 
 		# Level 5
 		# We're not using strict types, so this will be juggled without any issues.
 		- '#^Parameter \#3 \$value of method \S+File::recordMetric\(\) expects string, \(?(float|int|bool)(<[^>]+>)?(\|(float|int|bool)(<[^>]+>)?)*\)? given\.$#'
 
-		# Level 7
+		# Level 8
+		# PHPStan (x2) being overzealous: preg_replace() will only return null if an error occured.
 		-
-			# False positive: the explode will never return `false` as it is never given an empty string separator.
-			message: '`^Parameter #2 \$array of function array_map expects array, array<int, string>\|false given\.$`'
-			path: Yoast/Sniffs/Commenting/CoversTagSniff.php
-			count: 1
-		-
-			# False positive: the preg_replace will never return `null` as the regex is valid.
 			message: '`^Parameter #1 \$str of function strtolower expects string, string\|null given\.$`'
 			path: Yoast/Sniffs/Files/FileNameSniff.php
 			count: 1
 		-
-			# False positive: the preg_replace will never return `null` as the regex is valid.
 			message: '`^Parameter #2 \$str of function explode expects string, string\|null given\.$`'
 			path: Yoast/Sniffs/NamingConventions/NamespaceNameSniff.php
 			count: 1
-		-
-			# False positive: the passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.
-			message: '`^Binary operation "\+" between int\|string and 1 results in an error\.$`'
-			count: 2
-			path: Yoast/Sniffs/NamingConventions/ValidHookNameSniff.php
-		-
-			# False positive: the passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.
-			message: '`^Parameter #2 \$start of method PHP_CodeSniffer\\Files\\File::findNext\(\) expects int, int\|string given\.$`'
-			count: 2
-			path: Yoast/Sniffs/NamingConventions/ValidHookNameSniff.php
-		-
-			# False positive: the passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.
-			message: '`^Parameter #1 \$stackPtr of method PHP_CodeSniffer\\Fixer::replaceToken\(\) expects int, int\|string given\.$`'
-			path: Yoast/Sniffs/Yoast/JsonEncodeAlternativeSniff.php
-			count: 1
-		-
-			# This is a test specifically checking type handling, so this is okay.
-			message: '`^Parameter #1 \$path of static method YoastCS\\Yoast\\Utils\\PathHelper::trailingslashit\(\) expects string, bool\|string given\.$`'
-			path: Yoast/Tests/Utils/PathHelperTest.php
-			count: 1
-
-		# Not a real issue (x 4), PHPstan just doesn't know the format of the array well enough.
-		-
-			message: '`^Binary operation "\+" between int\|string and 1 results in an error\.$`'
-			count: 2
-			path: Yoast/Sniffs/Tools/BrainMonkeyRaceConditionSniff.php
-
-		-
-			message: '`^Parameter #2 \$start of method PHP_CodeSniffer\\Files\\File::findNext\(\) expects int, int\|string given\.$`'
-			count: 2
-			path: Yoast/Sniffs/Tools/BrainMonkeyRaceConditionSniff.php
-
-		-
-			message: '`^Binary operation "\+" between int\|string and 1 results in an error\.$`'
-			count: 1
-			path: Yoast/Sniffs/Yoast/JsonEncodeAlternativeSniff.php
-
-		-
-			message: '`^Parameter #2 \$start of method PHP_CodeSniffer\\Files\\File::findNext\(\) expects int, int\|string given\.$`'
-			count: 1
-			path: Yoast/Sniffs/Yoast/JsonEncodeAlternativeSniff.php

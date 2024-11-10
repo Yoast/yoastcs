@@ -213,7 +213,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 	 * @return void
 	 */
 	private function verify_yoast_hook_name( $stackPtr, $hook_name_param ) {
-
+		// @phpstan-ignore binaryOp.invalid, argument.type (The passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.)
 		$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 		if ( $first_non_empty === false ) {
 			// Shouldn't be possible as we've checked this before.
@@ -281,6 +281,7 @@ final class ValidHookNameSniff extends WPCS_ValidHookNameSniff {
 		$allow  = [ \T_CONSTANT_ENCAPSED_STRING ];
 		$allow += Tokens::$emptyTokens;
 
+		// @phpstan-ignore binaryOp.invalid, argument.type (The passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.)
 		$has_non_string = $this->phpcsFile->findNext( $allow, $hook_name_param['start'], ( $hook_name_param['end'] + 1 ), true );
 		if ( $has_non_string !== false ) {
 			/*

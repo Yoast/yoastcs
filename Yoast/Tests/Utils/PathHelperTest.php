@@ -238,6 +238,7 @@ final class PathHelperTest extends TestCase {
 	 * @return void
 	 */
 	public function test_trailingslashit( $input, $expected ) {
+		// @phpstan-ignore argument.type (This is exactly what we're testing.)
 		$this->assertSame( $expected, PathHelper::trailingslashit( $input ) );
 	}
 

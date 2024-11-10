@@ -357,6 +357,7 @@ final class CoversTagSniff implements Sniff {
 			$tokens      = $phpcsFile->getTokens();
 			$annotation  = $tokens[ $stackPtr ]['content'];
 			$annotations = \explode( $separator, $annotation );
+			// @phpstan-ignore argument.type (explode will never return `false` as it is never given an empty string separator.)
 			$annotations = \array_map( 'trim', $annotations );
 			$annotations = \array_filter( $annotations ); // Remove empties.
 

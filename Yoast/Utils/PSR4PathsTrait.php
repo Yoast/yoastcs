@@ -140,6 +140,7 @@ trait PSR4PathsTrait {
 		$validated_paths = [];
 
 		foreach ( $this->psr4_paths as $prefix => $paths ) {
+			// @phpstan-ignore function.alreadyNarrowedType, identical.alwaysFalse (Defensive coding as the property value is user provided via the ruleset.)
 			if ( \is_string( $prefix ) === false || $prefix === '' ) {
 				throw new RuntimeException(
 					'Invalid value passed for `psr4_paths`. Path "' . $paths . '" is not associated with a namespace prefix'

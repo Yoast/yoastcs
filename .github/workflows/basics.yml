@@ -27,9 +27,6 @@ jobs:
     name: 'Basic CS and QA checks'
     runs-on: ubuntu-latest
 
-    env:
-      XMLLINT_INDENT: '	'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -91,10 +88,6 @@ jobs:
       - name: Validate the XML sniff docs against schema
         run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./Yoast/Docs/*/*Standard.xml
 
-      # Check the code-style consistency of the XML ruleset files.
-      - name: Check XML ruleset code style
-        run: diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml")
-
       # Check the codestyle of the files within YoastCS.
       # The results of the CS check will be shown inline in the PR via the CS2PR tool.
       # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
@@ -109,6 +102,35 @@ jobs:
       # Check that the sniffs available are feature complete.
       - name: Check sniff feature completeness
         run: composer check-complete
+
+  xml-cs:
+    name: 'XML Code style'
+    runs-on: ubuntu-latest
+
+    env:
+      XMLLINT_INDENT: '	'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Updating the lists can fail intermittently, typically after Microsoft has released a new package.
+      # This should not be blocking for this job, so ignore any errors from this step.
+      # Ref: https://github.com/dotnet/core/issues/4167
+      - name: Update the available packages list
+        continue-on-error: true
+        run: sudo apt-get update
+
+      - name: Install xmllint
+        run: sudo apt-get install --no-install-recommends -y libxml2-utils
+
+      # Show XML violations inline in the file diff.
+      - name: Enable showing XML issues inline
+        uses: korelstar/xmllint-problem-matcher@v1
+
+      # Check the code-style consistency of the XML ruleset file.
+      - name: Check XML code style
+        run: diff -B --tabsize=4 ./Yoast/ruleset.xml <(xmllint --format "./Yoast/ruleset.xml")
 
   phpstan:
     name: "PHPStan"

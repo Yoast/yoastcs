@@ -116,6 +116,7 @@ final class JsonEncodeAlternativeSniff extends AbstractFunctionRestrictionsSniff
 		 */
 		$value_param = PassedParameters::getParameterFromStack( $params, 1, self::PARAM_INFO[ $matched_content ] );
 		if ( \is_array( $value_param ) && \count( $params ) === 1 ) {
+			// @phpstan-ignore binaryOp.invalid, argument.type (The passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.)
 			$first_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, $value_param['start'], ( $value_param['end'] + 1 ), true );
 			if ( $first_token === false || $this->tokens[ $first_token ]['code'] !== \T_ELLIPSIS ) {
 				/*
@@ -171,6 +172,8 @@ final class JsonEncodeAlternativeSniff extends AbstractFunctionRestrictionsSniff
 		if ( \is_array( $value_param ) && isset( $value_param['name_token'] ) ) {
 			// Update the parameter name when the function call uses named parameters.
 			// `$data` is the parameter name used in the WPSEO_Utils::format_json_encode() function.
+
+			// @phpstan-ignore argument.type (The passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.)
 			$this->phpcsFile->fixer->replaceToken( $value_param['name_token'], 'data' );
 		}
 

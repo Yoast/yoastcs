@@ -74,6 +74,7 @@ final class PathHelper {
 	 * @return string
 	 */
 	public static function trailingslashit( $path ) {
+		// @phpstan-ignore function.alreadyNarrowedType (Defensive coding as the application is not type safe.)
 		if ( ! \is_string( $path ) || $path === '' ) {
 			return '';
 		}

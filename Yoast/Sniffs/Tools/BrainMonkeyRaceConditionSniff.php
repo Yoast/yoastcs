@@ -79,11 +79,13 @@ final class BrainMonkeyRaceConditionSniff implements Sniff {
 		$expected   = Tokens::$emptyTokens;
 		$expected[] = \T_CONSTANT_ENCAPSED_STRING;
 
+		// @phpstan-ignore binaryOp.invalid, argument.type (The passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.)
 		$hasUnexpected = $phpcsFile->findNext( $expected, $param['start'], ( $param['end'] + 1 ), true );
 		if ( $hasUnexpected !== false ) {
 			return;
 		}
 
+		// @phpstan-ignore binaryOp.invalid, argument.type (The passed value will only ever be an integer, PHPStan just doesn't know the shape of the array.)
 		$text        = $phpcsFile->findNext( Tokens::$emptyTokens, $param['start'], ( $param['end'] + 1 ), true );
 		$textContent = TextStrings::stripQuotes( $tokens[ $text ]['content'] );
 		if ( $textContent !== 'apply_filters' && $textContent !== 'do_action' ) {

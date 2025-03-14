@@ -348,8 +348,6 @@
 	<!-- Check property type information, but don't enforce native type declarations. -->
 	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
 		<properties>
-			<!-- PHP 7.4+. -->
-			<property name="enableNativeTypeHint" value="false"/>
 			<!-- PHP 8.0+. -->
 			<property name="enableMixedTypeHint" value="false"/>
 			<property name="enableUnionTypeHint" value="false"/>
@@ -358,6 +356,9 @@
 			<!-- PHP 8.2+. -->
 			<property name="enableStandaloneNullTrueFalseTypeHints" value="false"/>
 		</properties>
+
+		<!-- PHP 7.4+. -->
+		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
 	</rule>
 
 	<!-- Check parameter type information, but don't enforce native type declarations. -->

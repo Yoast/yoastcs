@@ -17,7 +17,7 @@ final class PathHelperTest extends TestCase {
 	/**
 	 * Test normalizing an absolute directory path.
 	 *
-	 * @dataProvider data_normalize_path
+	 * @dataProvider data_normalize_absolute_path
 	 * @covers       ::normalize_absolute_path
 	 *
 	 * @param string $input        The input string.
@@ -30,23 +30,56 @@ final class PathHelperTest extends TestCase {
 	}
 
 	/**
+	 * Data provider.
+	 *
+	 * @see test_normalize_absolute_path() For the array format.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function data_normalize_absolute_path() {
+		$data = self::data_normalize_path();
+
+		foreach ( $data as $key => $value ) {
+			unset( $data[ $key ]['exp_relative'] );
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Test normalizing a relative directory path.
 	 *
-	 * @dataProvider data_normalize_path
+	 * @dataProvider data_normalize_relative_path
 	 * @covers       ::normalize_relative_path
 	 *
 	 * @param string $input        The input string.
-	 * @param string $unused       Unused param.
 	 * @param string $exp_relative The expected function output.
 	 *
 	 * @return void
 	 */
-	public function test_normalize_relative_path( $input, $unused, $exp_relative ) {
+	public function test_normalize_relative_path( $input, $exp_relative ) {
 		$this->assertSame( $exp_relative, PathHelper::normalize_relative_path( $input ) );
 	}
 
 	/**
 	 * Data provider.
+	 *
+	 * @see test_normalize_relative_path() For the array format.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function data_normalize_relative_path() {
+		$data = self::data_normalize_path();
+
+		foreach ( $data as $key => $value ) {
+			unset( $data[ $key ]['exp_absolute'] );
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Data provider helper.
 	 *
 	 * @see test_normalize_absolute_path() For the array format.
 	 * @see test_normalize_relative_path() For the array format.

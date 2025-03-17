@@ -56,7 +56,7 @@
 			 Ref: https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#minimum-wp-version-to-check-for-usage-of-deprecated-functions-classes-and-function-parameters
 		-->
 		<properties>
-			<property name="minimum_wp_version" value="6.5"/>
+			<property name="minimum_wp_version" value="6.6"/>
 		</properties>
 
 		<!-- No need for this sniff as every Yoast travis script includes linting all files. -->

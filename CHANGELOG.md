@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.2.0] - 2025-03-19
+
+#### Added
+* PHPCS: The `Generic.Strings.UnnecessaryHeredoc` sniff.
+* PHPCS: The `Generic.WhiteSpace.HereNowdocIdentifierSpacing` sniff.
+
+#### Changed
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.9.1` to `^3.12.0`.
+* Composer: Supported version of [PHPCSUtils] has been changed from `^1.0.10` to `^1.0.12`.
+* Composer: Supported version of [PHPCompatibilityWP] has been changed from `^2.1.4` to `^2.1.6`.
+* Composer: Supported version of [VariableAnalysis] has been changed from `^2.11.17` to `^2.12.0`.
+* Composer: Supported version of [WordPressVIP Coding Standards] has been changed from `^3.0.0` to `^3.0.1`.
+* Composer: Updated the supported versions of dev dependencies.
+* PHPCS: The default setting for the minimum supported PHP version for repos using YoastCS is now PHP `7.4` (was `7.2`).
+* PHPCS: The default value for the `minimum_wp_version` property which is used by various WPCS sniffs has been updated to WP `6.6` (was `6.3`).
+* PHPCS: verified runtime compatibility with PHP 8.4.
+* PHPCS: compatibility with [SlevomatCodingStandard] 8.16.0.
+* Various housekeeping.
+
+#### Fixed
+* PHPCS: The spacing around comma's in short arrays nested in function calls will now be flagged correctly again.
+
 ### [3.1.0] - 2024-04-05
 
 #### Added
@@ -15,7 +37,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * Composer: Supported version of [PHPCSUtils] has been changed from `^1.0.9` to `^1.0.10`.
 * Composer: Supported version of [WordPressCS] has been changed from `^3.0.1` to `^3.1.0`.
     This introduces one new sniff - `Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence` - to the YoastCS ruleset.
-* Composer: Supported version of [SlevomatCodingStandards] has been changed from `^8.14.0` to `^8.15.0`.
+* Composer: Supported version of [SlevomatCodingStandard] has been changed from `^8.14.0` to `^8.15.0`.
 * Composer: Supported version of [PHP Parallel Lint] has been changed from `^1.3.2` to `^1.4.0`.
 * PHPCS: The default value for the `minimum_wp_version` (previously `minimum_supported_wp_version`) property which is used by various WPCS sniffs has been updated to WP `6.3` (was `6.2`).
 * Various housekeeping.
@@ -627,6 +649,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.2.0]: https://github.com/Yoast/yoastcs/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/Yoast/yoastcs/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/Yoast/yoastcs/compare/2.3.1...3.0.0
 [2.3.1]: https://github.com/Yoast/yoastcs/compare/2.3.0...2.3.1

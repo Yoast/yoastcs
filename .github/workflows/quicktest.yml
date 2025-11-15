@@ -60,7 +60,7 @@ jobs:
         if: ${{ matrix.cs_dependencies == 'dev' }}
         run: >
           composer require --no-update --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"dev-master"
+          squizlabs/php_codesniffer:"3.x-dev"
           phpcsstandards/phpcsutils:"dev-develop"
           wp-coding-standards/wpcs:"dev-develop as 3.99" # Alias needed to prevent composer conflict with VIPCS.
 

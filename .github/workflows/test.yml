@@ -24,6 +24,45 @@ env:
   WPCS_HIGHEST: 'dev-develop as 3.99' # Alias needed to prevent composer conflict with VIPCS.
 
 jobs:
+  lint:
+    if: ${{ github.ref != 'refs/heads/develop' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php_version: ['7.2', '8.0', '8.4', 'nightly']
+
+    name: "Lint: PHP ${{ matrix.php_version }}"
+
+    continue-on-error: ${{ matrix.php_version == 'nightly' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+          ini-file: 'development'
+          coverage: none
+          tools: cs2pr
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
+      - name: Install Composer dependencies - normal
+        uses: ramsey/composer-install@v3
+        with:
+          # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
+          composer-options: ${{ matrix.php_version == 'nightly' && '--ignore-platform-req=php+' || '' }}
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
+
+      # The results of the linting will be shown inline in the PR via the CS2PR tool.
+      # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
+      - name: Lint against parse errors
+        run: composer lint -- --checkstyle | cs2pr
+
   #### TEST STAGE ####
   test:
     if: ${{ github.ref != 'refs/heads/develop' }}
@@ -58,7 +97,7 @@ jobs:
           - php_version: 'nightly'
             cs_dependencies: 'dev'
 
-    name: "Test${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
+    name: "Test: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
     continue-on-error: ${{ matrix.php_version == 'nightly' }}
 
@@ -83,7 +122,6 @@ jobs:
           php-version: ${{ matrix.php_version }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
-          tools: cs2pr
 
       - name: "Composer: set PHPCS dependencies for tests (dev)"
         if: ${{ matrix.cs_dependencies == 'dev' }}
@@ -121,12 +159,6 @@ jobs:
       - name: Verify installed standards
         run: vendor/bin/phpcs -i
 
-      # The results of the linting will be shown inline in the PR via the CS2PR tool.
-      # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
-      - name: Lint against parse errors
-        if: ${{ matrix.cs_dependencies == 'stable' || matrix.php_version == 'nightly' }}
-        run: composer lint -- --checkstyle | cs2pr
-
       - name: Run the unit tests
         run: composer test
 
@@ -147,7 +179,7 @@ jobs:
         php_version: ['7.2', '8.4']
         cs_dependencies: ['lowest', 'dev']
 
-    name: "Coverage${{ matrix.cs_dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
+    name: "Coverage: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"
 
     steps:
       - name: Checkout code
@@ -170,7 +202,6 @@ jobs:
           php-version: ${{ matrix.php_version }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: xdebug
-          tools: cs2pr
 
       - name: "Composer: set PHPCS dependencies for tests (dev)"
         if: ${{ matrix.cs_dependencies == 'dev' }}
@@ -205,12 +236,6 @@ jobs:
 
       - name: Verify installed standards
         run: vendor/bin/phpcs -i
-
-      # The results of the linting will be shown inline in the PR via the CS2PR tool.
-      # @link https://github.com/staabm/annotate-pull-request-from-checkstyle/
-      - name: Lint against parse errors
-        if: ${{ matrix.cs_dependencies == 'dev' }}
-        run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests with code coverage
         run: composer coverage

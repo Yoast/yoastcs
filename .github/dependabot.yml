@@ -15,6 +15,12 @@ updates:
       prefix: "GH Actions:"
     labels:
       - "yoast cs/qa"
+    groups:
+      action-runners:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
 
   # Maintain dependencies for Composer.
   - package-ecosystem: "composer"

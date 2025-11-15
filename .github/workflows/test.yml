@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PHPCS_HIGHEST: 'dev-master'
+  PHPCS_HIGHEST: '3.x-dev'
   UTILS_HIGHEST: 'dev-develop'
   WPCS_HIGHEST: 'dev-develop as 3.99' # Alias needed to prevent composer conflict with VIPCS.
 

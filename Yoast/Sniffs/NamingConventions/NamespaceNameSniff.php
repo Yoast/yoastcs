@@ -424,7 +424,7 @@ final class NamespaceNameSniff implements Sniff {
 		$this->validated_src_directory = [];
 
 		// Note: the check whether a basepath is available is done in the main `process()` routine.
-		$base_path = PathHelper::normalize_absolute_path( $phpcsFile->config->basepath );
+		$base_path = PathHelper::normalize_absolute_path( $phpcsFile->config->basepath ); // @phpstan-ignore argument.type
 
 		// Add any src directories.
 		$absolute_paths = PathValidationHelper::relative_to_absolute( $phpcsFile, $this->src_directory );

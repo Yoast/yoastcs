@@ -311,7 +311,7 @@ final class PSR4PathsTraitTest extends NonSniffTestCase {
 		$this->assertSame( $input['expected'], $this->validated_psr4_paths, 'Validated paths has not been set correctly' );
 
 		// Now make sure that the missing basepath resets the validated paths.
-		$phpcsFile->config->basepath = null; // @phpstan-ignore assign.propertyType (Issue with the PHPCS docs. Can't be helped.)
+		$phpcsFile->config->basepath = null;
 
 		$this->validate_psr4_paths( $phpcsFile );
 

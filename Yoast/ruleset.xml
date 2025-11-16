@@ -246,6 +246,12 @@
 	<!-- CS/QA: Enforce static closures when a closure doesn't access $this. -->
 	<rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
 
+	<!-- CS/QA: Forbid referencing true/false/null in fully qualified form. -->
+	<rule ref="Universal.PHP.NoFQNTrueFalseNull"/>
+
+	<!-- Demand a trailing comma for multi-line, multi-attribute attribute blocks, forbid otherwise. -->
+	<rule ref="Universal.Attributes.TrailingComma"/>
+
 
 	<!--
 	#############################################################################

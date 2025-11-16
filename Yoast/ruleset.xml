@@ -246,12 +246,6 @@
 	<!-- CS/QA: Enforce static closures when a closure doesn't access $this. -->
 	<rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
 
-	<!-- CS/QA: Enforce using nowdocs instead of heredocs when there is no interpolation/expressions. -->
-	<rule ref="Generic.Strings.UnnecessaryHeredoc"/>
-
-	<!-- CS/QA: Enforce no space between the lt-chars and the heredoc/nowdoc identifier. -->
-	<rule ref="Generic.WhiteSpace.HereNowdocIdentifierSpacing"/>
-
 
 	<!--
 	#############################################################################

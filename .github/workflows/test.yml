@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        php_version: ['7.2', '8.0', '8.4', 'nightly']
+        php_version: ['7.2', '8.0', '8.5', 'nightly']
 
     name: "Lint: PHP ${{ matrix.php_version }}"
 
@@ -52,7 +52,7 @@ jobs:
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
-      - name: Install Composer dependencies - normal
+      - name: Install Composer dependencies
         uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # 3.1.1
         with:
           # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
@@ -78,14 +78,14 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php_version: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+        php_version: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
         cs_dependencies: ['lowest', 'stable']
 
         include:
           # Make the matrix complete (when combined with the code coverage builds).
           - php_version: '7.2'
             cs_dependencies: 'stable'
-          - php_version: '8.4'
+          - php_version: '8.5'
             cs_dependencies: 'stable'
 
           # Test against dev versions of all CS dependencies with select PHP versions for early detection of issues.
@@ -141,7 +141,7 @@ jobs:
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
-      - name: Install Composer dependencies - normal
+      - name: Install Composer dependencies
         uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # 3.1.1
         with:
           # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
@@ -180,7 +180,7 @@ jobs:
 
     strategy:
       matrix:
-        php_version: ['7.2', '8.4']
+        php_version: ['7.2', '8.5']
         cs_dependencies: ['lowest', 'dev']
 
     name: "Coverage: PHP ${{ matrix.php_version }} - CS Deps ${{ matrix.cs_dependencies }}"

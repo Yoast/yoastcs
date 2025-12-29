@@ -57,6 +57,8 @@ jobs:
           php-version: ${{ matrix.php_version }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
+        env:
+          fail-fast: true
 
       - name: "Composer: set PHPCS dependencies for tests (dev)"
         if: ${{ matrix.cs_dependencies == 'dev' }}

@@ -39,6 +39,8 @@ jobs:
           php-version: 'latest'
           coverage: none
           tools: cs2pr
+        env:
+          fail-fast: true
 
       # Validate the composer.json file.
       # @link https://getcomposer.org/doc/03-cli.md#validate
@@ -158,6 +160,8 @@ jobs:
           php-version: 'latest'
           coverage: none
           tools: phpstan:2.x
+        env:
+          fail-fast: true
 
       # Install dependencies and handle caching in one go.
       # Dependencies need to be installed to make sure the PHPCS and PHPUnit classes are recognized.

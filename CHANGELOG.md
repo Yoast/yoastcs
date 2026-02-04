@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.3.0] - 2026-02-04
+
+#### Added
+* PHPCS: The `SlevomatCodingStandard.Arrays.ArrayAccess` sniff.
+* PHPCS: The `SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator` sniff.
+* PHPCS: The `SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator` sniff.
+* PHPCS: The `SlevomatCodingStandard.Functions.RequireTrailingCommaInCall` sniff.
+* PHPCS: The `SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall` sniff (for single-line function calls).
+* PHPCS: The `SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator` sniff.
+* PHPCS: The `Universal.Attributes.TrailingComma` sniff.
+* PHPCS: The `Universal.Attributes.BracketSpacing` sniff (via WordPressCS).
+* PHPCS: The `Universal.Attributes.DisallowAttributeParentheses` sniff (via WordPressCS).
+* PHPCS: The `Universal.PHP.NoFQNTrueFalseNull` sniff.
+* PHPCS: The `Universal.PHP.RequireExitDieParentheses` sniff.
+* PHPCS: The `WordPress.WP.GetMetaSingle` sniff (via WordPressCS).
+
+#### Changed
+* Composer: Supported version of [PHPCSExtra] has been changed from `^1.2.1` to `^1.5.0`.
+* Composer: Supported version of [VariableAnalysis] has been changed from `^2.12.0` to `^2.13.0`.
+* Composer: Supported version of [WordPressCS] has been changed from `^3.1.0` to `^3.3.0`.
+* PHPCS: The default value for the `minimum_wp_version` property which is used by various WPCS sniffs has been updated to WP `6.8` (was `6.6`).
+* Various housekeeping.
+
+
 ### [3.2.0] - 2025-03-19
 
 #### Added
@@ -649,6 +673,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.3.0]: https://github.com/Yoast/yoastcs/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/Yoast/yoastcs/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/Yoast/yoastcs/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/Yoast/yoastcs/compare/2.3.1...3.0.0

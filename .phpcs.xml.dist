@@ -51,6 +51,11 @@
 		<!-- Sniffs are not run in the context of WordPress. -->
 		<exclude name="WordPress.Security"/>
 		<exclude name="WordPress.WP"/>
+
+		<!-- Exclude select "modern PHP" sniffs, which conflict with the minimum supported PHP version of this package. -->
+		<exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall"/><!-- PHP 7.3+. -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator"/><!-- PHP 7.4+. -->
+		<exclude name="SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator"/><!-- PHP 7.4+. -->
 	</rule>
 
 	<!-- While PHPCompatibility is already included in the Yoast ruleset, it uses

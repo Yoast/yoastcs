@@ -252,6 +252,12 @@
 	<!-- Demand a trailing comma for multi-line, multi-attribute attribute blocks, forbid otherwise. -->
 	<rule ref="Universal.Attributes.TrailingComma"/>
 
+	<!-- Disallow whitespace between array access operator and the variable and between array access brackets. -->
+	<rule ref="SlevomatCodingStandard.Arrays.ArrayAccess"/>
+
+	<!-- CS: Always require parentheses for exit/die statements. -->
+	<rule ref="Universal.PHP.RequireExitDieParentheses"/>
+
 
 	<!--
 	#############################################################################
@@ -462,6 +468,31 @@
 
 	<!-- Modernize: Enforce a nullable type declaration when the param has a null default value (PHP 7.1+). -->
 	<rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+
+	<!-- Modernize: Enforce the use of the null coalesce operator (PHP 7.0+) and null coalesce equals (PHP 7.4+) in select circumstances. -->
+	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator">
+		<properties>
+			<property name="checkIfConditions" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Modernize: Enforce a trailing comma after the last parameter in a multi-line function call (PHP 7.3+). -->
+	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall"/>
+	<!-- ... but forbid a trailing comma when the function call is single line. -->
+	<rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall">
+		<properties>
+			<property name="onlySingleLine" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Modernize: Enforce underscore separators in long numbers for readability (PHP 7.4+). -->
+	<rule ref="SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator">
+		<properties>
+			<property name="minDigitsBeforeDecimalPoint" value="5"/>
+			<property name="minDigitsAfterDecimalPoint " value="5"/>
+		</properties>
+	</rule>
 
 
 	<!--

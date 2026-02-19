@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.4.0] - 2026-02-20
+
+#### Changed
+* Composer: Supported version of [PHPCompatibilityWP] has been changed from `^2.1.6` to `^3.0.0@alpha`.
+    This allows for installing the much, much improved PHPCompatibility 10.0.0 (prerelease).
+    To do so, the `composer.json` file of packages requiring this package must have `"minimum-stability": "dev"` or `"alpha"` (or other tweaks which net the same effect).
+
+
 ### [3.3.0] - 2026-02-04
 
 #### Added
@@ -673,6 +681,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.4.0]: https://github.com/Yoast/yoastcs/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/Yoast/yoastcs/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/Yoast/yoastcs/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/Yoast/yoastcs/compare/3.0.0...3.1.0

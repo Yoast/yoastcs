@@ -669,15 +669,15 @@ Initial public release as a stand-alone package.
 
 [PHP_CodeSniffer]:               https://github.com/PHPCSStandards/PHP_CodeSniffer/releases
 [Composer PHPCS plugin]:         https://github.com/PHPCSStandards/composer-installer/releases
-[PHPCompatibilityWP]:            https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
-[PHPCompatibility]:              https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
+[PHPCompatibilityWP]:            https://github.com/PHPCompatibility/PHPCompatibilityWP/releases
+[PHPCompatibility]:              https://github.com/PHPCompatibility/PHPCompatibility/releases
 [PHPCSUtils]:                    https://github.com/PHPCSStandards/PHPCSUtils/releases
 [PHPCSExtra]:                    https://github.com/PHPCSStandards/PHPCSExtra/releases
 [SlevomatCodingStandard]:        https://github.com/slevomat/coding-standard/releases
 [VariableAnalysis]:              https://github.com/sirbrillig/phpcs-variable-analysis/releases
-[WordPressCS]:                   https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
+[WordPressCS]:                   https://github.com/WordPress/WordPress-Coding-Standards/releases
 [WordPressVIP Coding Standards]: https://github.com/Automattic/VIP-Coding-Standards/releases
-[PHP Mess Detector]:             https://github.com/phpmd/phpmd/blob/master/CHANGELOG
+[PHP Mess Detector]:             https://github.com/phpmd/phpmd/releases
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 

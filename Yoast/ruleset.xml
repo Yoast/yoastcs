@@ -471,11 +471,7 @@
 
 	<!-- Modernize: Enforce the use of the null coalesce operator (PHP 7.0+) and null coalesce equals (PHP 7.4+) in select circumstances. -->
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
-	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator">
-		<properties>
-			<property name="checkIfConditions" value="true"/>
-		</properties>
-	</rule>
+	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator"/>
 
 	<!-- Modernize: Enforce a trailing comma after the last parameter in a multi-line function call (PHP 7.3+). -->
 	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall"/>

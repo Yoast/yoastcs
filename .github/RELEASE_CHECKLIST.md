@@ -6,22 +6,23 @@ Release checklist
 - [ ] If no upcoming versioned milestone exists, and there are merged PRs in the `Next release` milestone:
     - [ ] Determine what the version number should be for the release and rename the `Next release` milestone to that version number.
       This project uses [semantic versioning](https://semver.org/) to determine the version of the next release.
-    - [ ] Move anything that is still open in the `Next release` milestone to a new `Next release` milestone.
+    - [ ] Create a new "Next release" milestone for the release _after_ this one.
+    - [ ] Move anything that is still open in the current milestone to the new `Next release` milestone.
 - [ ] Verify that any PR merged since the last release has a milestone attached to it.
 - [ ] Create a changelog based on everything in the milestone, pull the changelog changes & merge the PR.
   Verify that a release link at the bottom of the `CHANGELOG.md` file has been added.
-- [ ] Make sure that `develop` is ahead of `main`.
-  - If not, merge `main` into `develop` or fast-forward `develop` to be equal to `main`.
+- [ ] Double-check that nothing was merged into the `main` branch.
+    - If there are unreleased commits in `main`, merge `main` into `develop` or cherrypick the commits from main into the `develop` branch.
 
 ## Release
 
 - [ ] Open a PR to merge the `develop` branch to `main`.
 - [ ] Merge that PR once all CI checks have passed.
-- [ ] Create a release on GitHub, also creating a new tab (targeting `main`) in the process, and copy & paste the changelog to it.
-  - Add/edit the relevant links to the bottom of the changelog to make sure all texts between `[]` in changelog entries become links.
+- [ ] Create a release on GitHub, also creating a new tag (targeting `main`) in the process, and copy & paste the changelog to it.
+    - Add/edit the relevant links to the bottom of the changelog to make sure all texts between `[]` in changelog entries become links.
     - For example: `[PHP_CodeSniffer]` only becomes a link when `[PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer/releases` is present as well.
 - [ ] Publish the release.
-- [ ] Merge the `main` branch into `develop`.
+- [ ] Fast-forward `develop` to `main`.
 - [ ] Close the milestone.
 - [ ] Open a new milestone for the next release.
 - [ ] If any open PRs/issues which were milestoned for the release did not make it into the release, update their milestone.

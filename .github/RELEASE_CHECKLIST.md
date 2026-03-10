@@ -24,8 +24,6 @@ Release checklist
 - [ ] Publish the release.
 - [ ] Fast-forward `develop` to `main`.
 - [ ] Close the milestone.
-- [ ] Open a new milestone for the next release.
-- [ ] If any open PRs/issues which were milestoned for the release did not make it into the release, update their milestone.
 
 ## Announce
 

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.4.1] - 2026-03-03
+
+#### Fixed
+* PHPCS: a PHPCS run with the SlevomatCodingStandard locked at a version below 8.17.0 would error out on a "ERROR: Property "checkIfConditions" does not exist" error.
+
 ### [3.4.0] - 2026-02-20
 
 #### Changed
@@ -669,18 +674,19 @@ Initial public release as a stand-alone package.
 
 [PHP_CodeSniffer]:               https://github.com/PHPCSStandards/PHP_CodeSniffer/releases
 [Composer PHPCS plugin]:         https://github.com/PHPCSStandards/composer-installer/releases
-[PHPCompatibilityWP]:            https://github.com/PHPCompatibility/PHPCompatibilityWP#changelog
-[PHPCompatibility]:              https://github.com/PHPCompatibility/PHPCompatibility/blob/master/CHANGELOG.md
+[PHPCompatibilityWP]:            https://github.com/PHPCompatibility/PHPCompatibilityWP/releases
+[PHPCompatibility]:              https://github.com/PHPCompatibility/PHPCompatibility/releases
 [PHPCSUtils]:                    https://github.com/PHPCSStandards/PHPCSUtils/releases
 [PHPCSExtra]:                    https://github.com/PHPCSStandards/PHPCSExtra/releases
 [SlevomatCodingStandard]:        https://github.com/slevomat/coding-standard/releases
 [VariableAnalysis]:              https://github.com/sirbrillig/phpcs-variable-analysis/releases
-[WordPressCS]:                   https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/CHANGELOG.md
+[WordPressCS]:                   https://github.com/WordPress/WordPress-Coding-Standards/releases
 [WordPressVIP Coding Standards]: https://github.com/Automattic/VIP-Coding-Standards/releases
-[PHP Mess Detector]:             https://github.com/phpmd/phpmd/blob/master/CHANGELOG
+[PHP Mess Detector]:             https://github.com/phpmd/phpmd/releases
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.4.1]: https://github.com/Yoast/yoastcs/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/Yoast/yoastcs/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/Yoast/yoastcs/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/Yoast/yoastcs/compare/3.1.0...3.2.0

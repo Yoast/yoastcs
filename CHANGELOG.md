@@ -4,10 +4,21 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.4.2] - 2026-07-28
+
+#### Changed
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.12.0` to `^3.13.5`.
+* Composer: Supported version of [PHPCSUtils] has been changed from `^1.0.12` to `^1.2.3`.
+* Composer: Supported version of [PHPCSExtra] has been changed from `^1.5.0` to `^1.5.1`.
+* Composer: Supported version of [WordPressCS] has been changed from `^3.3.0` to `^3.4.1`.
+* Various housekeeping.
+
+
 ### [3.4.1] - 2026-03-03
 
 #### Fixed
 * PHPCS: a PHPCS run with the SlevomatCodingStandard locked at a version below 8.17.0 would error out on a "ERROR: Property "checkIfConditions" does not exist" error.
+
 
 ### [3.4.0] - 2026-02-20
 
@@ -62,6 +73,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 
 #### Fixed
 * PHPCS: The spacing around comma's in short arrays nested in function calls will now be flagged correctly again.
+
 
 ### [3.1.0] - 2024-04-05
 
@@ -208,11 +220,13 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * PHPCS: The `Yoast.Yoast.JsonEncodeAlternative` sniff (previously `Yoast.Yoast.AlternativeFunctions`) will now no longer try to auto-fix when it encounters PHP 5.6+ parameter unpacking.
 * PHPCS: The `Yoast.Yoast.JsonEncodeAlternative` sniff (previously `Yoast.Yoast.AlternativeFunctions`) will now no longer try to auto-fix when it encounters a PHP 8.1+ first class callable.
 
+
 ### [2.3.1] - 2023-03-09
 
 #### Changed
 * PHPCS: The default setting for the minimum supported PHP version for repos using YoastCS is now PHP 7.2 (was 5.6).
 * Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.7.1` to `^3.7.2`.
+
 
 ### [2.3.0] - 2023-01-09
 
@@ -230,6 +244,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 
 #### Fixed
 * PHPCS: `Yoast.Files.FileComment`: the sniff will now allow for and respect `phpcs:disable` comments for this sniff when found in a file docblock.
+
 
 ### [2.2.1] - 2022-02-22
 
@@ -441,6 +456,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 #### Fixed
 * PHPCS: The `Yoast.Files.FileName` sniff will now always suggest removing the longest prefix of the prefixes passed in the configuration.
 
+
 ### [1.2.2] - 2019-01-21
 
 #### Changed
@@ -448,10 +464,12 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * Composer: Supported version of [WordPressCS] has been changed from `^1.2.0` to `^2.0.0`.
 * PHPCS: The PHPCompatibility ruleset will now explicitly only be applied to PHP files.
 
+
 ### [1.2.1] - 2018-12-28
 
 #### Fixed
 * PHPCS: Undefined variable in the `Yoast.Namespaces.NamespaceDeclaration` sniff.
+
 
 ### [1.2.0] - 2018-12-21
 
@@ -464,6 +482,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
     - Namespace declarations without a namespace name, i.e. `namespace;` which in effect means "global namespace".
     - Scoped namespace declarations.
     - Multiple namespace declarations in one file.
+
 
 ### [1.1.0] - 2018-12-18
 
@@ -494,6 +513,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
     - If the `basepath` contained a trailing slash, the sniff could give incorrect results.
     - Prevent the sniff from recognizing a path like `/tests/doublesniff` as correct when `/test/doubles` is in the allowed list.
     - The `OneObjectPerFile` check will now check both code _above_ the detected mock/double class as well as code _below_ it.
+
 
 ### [1.0.0] - 2018-08-24
 
@@ -530,6 +550,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 
 #### Fixed
 * Travis: Builds on PHP 7.2 and nightly were failing because of changes in the Travis images (higher PHPUnit version).
+
 
 ### [0.5] - 2018-01-25
 
@@ -603,6 +624,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 #### Fixed
 * Travis: Builds for PHP 5.2 and 5.3 were failing because of changes in the Travis images.
 
+
 ### [0.4.2] - 2017-03-22
 
 #### Changed
@@ -641,6 +663,7 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a C
 * Composer: Supported version of [WordPressCS] has been changed from `0.9` to `~0.10.0`.
 * Composer: Included version of [PHP Mess Detector] has been updated from `2.4.2` to `2.4.3`.
     The minimum supported version remains at `2.2.3`.
+
 
 ### [0.3] - 2016-05-03
 
@@ -686,6 +709,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.4.2]: https://github.com/Yoast/yoastcs/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/Yoast/yoastcs/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/Yoast/yoastcs/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/Yoast/yoastcs/compare/3.2.0...3.3.0

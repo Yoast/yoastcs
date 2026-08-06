@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/) and [Keep a CHANGELOG](https://keepachangelog.com/).
 
+### [3.4.3] - 2026-08-07
+
+#### Changed
+* Composer: Supported version of [PHP_CodeSniffer] has been changed from `^3.13.5` to `^3.13.6`.
+* PHPCS: The default value for the `minimum_wp_version` property which is used by various WPCS sniffs has been updated to WP `6.9` (was `6.8`).
+* Various housekeeping.
+
+
 ### [3.4.2] - 2026-07-28
 
 #### Changed
@@ -709,6 +717,7 @@ Initial public release as a stand-alone package.
 [PHP Parallel Lint]:             https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases
 [PHP Console Highlighter]:       https://github.com/php-parallel-lint/PHP-Console-Highlighter/releases
 
+[3.4.3]: https://github.com/Yoast/yoastcs/compare/3.4.2...3.4.3
 [3.4.2]: https://github.com/Yoast/yoastcs/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/Yoast/yoastcs/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/Yoast/yoastcs/compare/3.3.0...3.4.0

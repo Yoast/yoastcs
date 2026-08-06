@@ -34,7 +34,7 @@
 		"phpcsstandards/phpcsutils": "^1.2.3",
 		"sirbrillig/phpcs-variable-analysis": "^2.13.0",
 		"slevomat/coding-standard": "^8.15.0",
-		"squizlabs/php_codesniffer": "^3.13.5",
+		"squizlabs/php_codesniffer": "^3.13.6",
 		"wp-coding-standards/wpcs": "^3.4.1"
 	},
 	"require-dev": {

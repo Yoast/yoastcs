@@ -21,7 +21,7 @@ concurrency:
 jobs:
   actionlint:
     name: 'Lint GH Action workflows'
-    uses: Yoast/.github/.github/workflows/reusable-actionlint.yml@7606779a4fe18ca9d780e4c675dd18e577af0429 # v1.0.1
+    uses: Yoast/.github/.github/workflows/reusable-actionlint.yml@c7ea73969576c490c927dd9482de30aa8b6801e4 # v1.1.0
 
   checkcs:
     name: 'Basic CS and QA checks'
@@ -34,7 +34,7 @@ jobs:
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # 2.37.2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962  # 2.40.0
         with:
           php-version: 'latest'
           coverage: none
@@ -68,31 +68,31 @@ jobs:
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Validate ruleset against XML schema
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "./Yoast/ruleset.xml"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
       - name: Validate the XML sniff docs against schema
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "./Yoast/Docs/*/*Standard.xml"
           xsd-file: "vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd"
 
       - name: Validate Project PHPCS ruleset against schema
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: ".phpcs.xml.dist"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
       - name: "Validate PHPUnit config for use with PHPUnit 8"
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "phpunit.xml.dist"
           xsd-file: "vendor/phpunit/phpunit/schema/8.5.xsd"
 
       - name: "Validate PHPUnit config for use with PHPUnit 9"
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "phpunit.xml.dist"
           xsd-file: "vendor/phpunit/phpunit/schema/9.2.xsd"
@@ -155,7 +155,7 @@ jobs:
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # 2.37.2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962  # 2.40.0
         with:
           php-version: 'latest'
           coverage: none
